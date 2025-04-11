@@ -1,194 +1,176 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simulateur Financier</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulateur de Rendement Airbnb</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(120deg, #1e3c72, #2a5298);
+      font-family: 'Inter', sans-serif;
+      background: #f9f9f9;
       margin: 0;
       padding: 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: #333;
     }
-    .menu {
-      margin-bottom: 30px;
-    }
-    .menu button {
-      padding: 10px 20px;
-      margin: 0 10px;
-      border: none;
-      border-radius: 6px;
-      background-color: #f1f1f1;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    .menu button.active {
-      background-color: #2a5298;
-      color: white;
-    }
-    .container {
-      display: none;
-      max-width: 1000px;
-      width: 100%;
+    .main-container {
+      max-width: 1200px;
+      margin: auto;
       background: white;
       padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      border-radius: 12px;
     }
-    .visible {
-      display: block !important;
+    h1, h2 {
+      color: #1f3558;
     }
-    .form-section, .result-section {
-      flex: 1;
-      min-width: 300px;
+    .highlight {
+      text-align: center;
+      background: #edf6ff;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 10px;
     }
-    .form-section label {
-      display: block;
-      margin-top: 15px;
-      font-weight: 600;
+    .highlight .cashflow {
+      font-size: 28px;
+      font-weight: 700;
+      color: #146c94;
+    }
+    .section {
+      margin-top: 40px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    td, th {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    th {
+      background: #f0f4f8;
     }
     input, select {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
+      padding: 8px;
       border-radius: 6px;
-      font-size: 16px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
     }
-    .result-box {
-      margin-top: 20px;
-      padding: 20px;
-      background-color: #f5f8fb;
-      border-radius: 12px;
-      border: 1px dashed #ccc;
+    .right-align {
+      text-align: right;
     }
-    .result-box p {
-      margin: 8px 0;
-      white-space: nowrap;
+    .category-header {
+      background: #eaf3fb;
+      font-weight: 600;
     }
-    .monthly-amount {
-      font-size: 28px;
+    .total-row {
       font-weight: bold;
-      color: #2a5298;
+      background: #f5f5f5;
     }
   </style>
 </head>
 <body>
-  <div class="menu">
-    <button class="active" onclick="switchMode('credit')">Simulateur Crédit</button>
-    <button onclick="switchMode('airbnb')">Simulateur Cashflow Airbnb</button>
-  </div>
+  <div class="main-container">
+    <h1>Simulateur rendement locatif Airbnb</h1>
 
-  <div id="credit" class="container visible">
-    <h2>💰 Calculateur de Crédit</h2>
-    <div class="form-section">
-      <label>Prix du bien :</label>
-      <input type="number" id="prix" value="100000" oninput="calculerCredit()">
-
-      <label>Apport personnel :</label>
-      <input type="number" id="apport" value="40000" oninput="calculerCredit()">
-
-      <label>Durée du prêt (années) :</label>
-      <input type="range" id="duree" min="1" max="25" step="0.5" value="20" oninput="actualiserDuree(); calculerCredit();">
-      <div id="dureeVal">20 ans</div>
-
-      <label>Taux d'intérêt annuel (%) :</label>
-      <input type="number" id="taux" value="3.6" step="0.1" oninput="calculerCredit()">
-
-      <label>Frais de notaire (%) :</label>
-      <select id="notaire" onchange="calculerCredit()">
-        <script>for (let i = 1; i <= 10; i++) document.write(`<option value="${i / 100}">${i}%</option>`);</script>
-      </select>
+    <div class="highlight">
+      <div id="rendementNet">+12,7 %</div>
+      <div>Rendement net (brut : <span id="rendementBrut">25,7%</span>)</div>
+      <div class="cashflow" id="cashflow">706 €/mois</div>
+      <div>Cashflow (effort d'épargne ou gain)</div>
     </div>
-    <div class="result-box">
-      <p class="monthly-amount" id="mensualite">-- €/mois</p>
-      <p id="montantEmprunt"></p>
-      <p id="interets"></p>
-      <p id="fraisNotaire"></p>
+
+    <div class="section">
+      <h2>Données de l'investissement locatif</h2>
+      <table>
+        <tr><td>Prix FAI</td><td><input id="prixFAI" type="number" value="105000"></td><td>€</td></tr>
+        <tr><td>Travaux</td><td><input id="travaux" type="number" value="10000"></td><td>€</td></tr>
+        <tr><td>Frais de notaire (%)</td>
+          <td>
+            <select id="notairePourcentage">
+              <script>
+                for (let i = 0; i <= 10; i++) {
+                  document.write(`<option value="${i / 100}">${i} %</option>`);
+                }
+              </script>
+            </select>
+          </td>
+          <td></td>
+        </tr>
+        <tr><td>Meubles</td><td><input id="meubles" type="number" value="10000"></td><td>€</td></tr>
+        <tr class="category-header"><td>Revenus Annuels bruts</td><td><input id="revenus" type="number" value="35000"></td><td>€</td></tr>
+        <tr><td>Montant Emprunté</td><td><input id="emprunt" type="number" value="123400"></td><td>€</td></tr>
+        <tr><td>Frais de dossier</td><td><input id="fraisDossier" type="number" value="900"></td><td>€</td></tr>
+        <tr><td>Frais crédit logement</td><td><input id="fraisCredit" type="number" value="1818"></td><td>€</td></tr>
+      </table>
     </div>
-  </div>
 
-  <div id="airbnb" class="container">
-    <h2>📈 Simulateur Cashflow Airbnb</h2>
-    <div class="form-section">
-      <label>Revenus annuels bruts (€) :</label>
-      <input type="number" id="revenus" value="35000" oninput="calculerAirbnb()">
-
-      <label>Charges mensuelles (€) :</label>
-      <input type="number" id="charges" value="1490" oninput="calculerAirbnb()">
-
-      <label>Échéance emprunt mensuelle (€) :</label>
-      <input type="number" id="echeance" value="731" oninput="calculerAirbnb()">
-
-      <label>Taux imposition (%) :</label>
-      <input type="number" id="tauxImpots" value="0" oninput="calculerAirbnb()">
-    </div>
-    <div class="result-box">
-      <p id="rendement"></p>
-      <p id="cashflow"></p>
+    <div class="section">
+      <h2>Charges location Airbnb & Emprunt</h2>
+      <table id="chargesTable">
+        <tr><th>Libellé</th><th>Dépenses moyennes<br>(€/mois)</th><th>% des revenus</th></tr>
+        <tr><td>EDF / Gaz / Eau</td><td><input type="number" value="50"></td><td></td></tr>
+        <tr><td>Netflix, Prime Video, etc.</td><td><input type="number" value="20"></td><td></td></tr>
+        <tr><td>Internet haut débit</td><td><input type="number" value="30"></td><td></td></tr>
+        <tr><td>Consommables</td><td><input type="number" value="30"></td><td></td></tr>
+        <tr><td>Commissions plateformes</td><td><input type="number" value="467"></td><td>16%</td></tr>
+        <tr><td>Petits travaux maintenance</td><td><input type="number" value="100"></td><td></td></tr>
+        <tr><td>Logiciel prix dynamiques</td><td><input type="number" value="20"></td><td></td></tr>
+        <tr><td>Logiciel PMS</td><td><input type="number" value="20"></td><td></td></tr>
+        <tr><td>Serrure connectée</td><td><input type="number" value="6"></td><td></td></tr>
+        <tr><td>Ménage / Nettoyage</td><td><input type="number" value="525"></td><td>18%</td></tr>
+        <tr><td>Conciergerie</td><td><input type="number" value="0"></td><td>0%</td></tr>
+        <tr><td>Assurances</td><td><input type="number" value="12"></td><td></td></tr>
+        <tr><td>Taxe foncière</td><td><input type="number" value="50"></td><td></td></tr>
+        <tr><td>Taxe d'habitation</td><td><input type="number" value="50"></td><td></td></tr>
+        <tr><td>Charges copropriété</td><td><input type="number" value="50"></td><td></td></tr>
+        <tr><td>Comptable</td><td><input type="number" value="30"></td><td></td></tr>
+        <tr><td>CFE</td><td><input type="number" value="30"></td><td></td></tr>
+        <tr><td>Autre</td><td><input type="number" value="0"></td><td></td></tr>
+        <tr><td>Autre</td><td><input type="number" value="0"></td><td></td></tr>
+        <tr class="total-row"><td>TOTAL CHARGES</td><td id="totalCharges">1490</td><td></td></tr>
+      </table>
     </div>
   </div>
 
   <script>
-    function switchMode(mode) {
-      document.querySelectorAll('.container').forEach(c => c.classList.remove('visible'));
-      document.getElementById(mode).classList.add('visible');
-      document.querySelectorAll('.menu button').forEach(b => b.classList.remove('active'));
-      document.querySelector(`.menu button[onclick="switchMode('${mode}')"]`).classList.add('active');
+    function calculerTotalCharges() {
+      const lignes = document.querySelectorAll('#chargesTable tr td:nth-child(2) input');
+      let total = 0;
+      lignes.forEach(input => {
+        total += parseFloat(input.value) || 0;
+      });
+      document.getElementById('totalCharges').innerText = total.toFixed(0);
+      return total;
     }
 
-    function actualiserDuree() {
-      const val = parseFloat(document.getElementById('duree').value);
-      document.getElementById('dureeVal').innerText = val === 1 ? '1 an' : val + ' ans';
-    }
+    function calculerCashflow() {
+      const prixFAI = parseFloat(document.getElementById('prixFAI').value) || 0;
+      const travaux = parseFloat(document.getElementById('travaux').value) || 0;
+      const meubles = parseFloat(document.getElementById('meubles').value) || 0;
+      const revenus = parseFloat(document.getElementById('revenus').value) || 0;
+      const charges = calculerTotalCharges();
+      const emprunt = parseFloat(document.getElementById('emprunt').value) || 0;
+      const mensualite = emprunt / 20 / 12;
+      const notairePourcent = parseFloat(document.getElementById('notairePourcentage').value || 0);
+      const fraisNotaire = prixFAI * notairePourcent;
 
-    function calculerCredit() {
-      const prix = parseFloat(document.getElementById("prix").value);
-      const apport = parseFloat(document.getElementById("apport").value);
-      const duree = parseFloat(document.getElementById("duree").value);
-      const tauxAnnuel = parseFloat(document.getElementById("taux").value);
-      const notaireRate = parseFloat(document.getElementById("notaire").value);
-
-      const fraisNotaire = prix * notaireRate;
-      const capital = prix + fraisNotaire - apport;
-      const r = tauxAnnuel / 100 / 12;
-      const n = duree * 12;
-
-      const mensualite = (capital * r) / (1 - Math.pow(1 + r, -n));
-      const total = mensualite * n;
-      const interets = total - capital;
-
-      document.getElementById("mensualite").innerText = mensualite.toFixed(0) + " €/mois";
-      document.getElementById("montantEmprunt").innerText = `Montant de l'emprunt : ${capital.toLocaleString()} €`;
-      document.getElementById("interets").innerText = `Coût des intérêts : ${interets.toLocaleString()} €`;
-      document.getElementById("fraisNotaire").innerText = `Frais de notaire : ${fraisNotaire.toLocaleString()} € (${(notaireRate * 100)}%)`;
-    }
-
-    function calculerAirbnb() {
-      const revenus = parseFloat(document.getElementById("revenus").value);
-      const charges = parseFloat(document.getElementById("charges").value);
-      const echeance = parseFloat(document.getElementById("echeance").value);
-      const impots = parseFloat(document.getElementById("tauxImpots").value) / 100;
-
-      const totalMensuel = charges + echeance;
+      const totalMensuel = charges + mensualite;
       const cashflow = revenus / 12 - totalMensuel;
-      const rendement = ((cashflow * 12) / revenus) * 100;
+      const totalInvestissement = prixFAI + travaux + meubles + fraisNotaire;
+      const rendementBrut = revenus / totalInvestissement;
 
-      document.getElementById("cashflow").innerText = `${cashflow.toFixed(0)} €/mois Cashflow`;
-      document.getElementById("rendement").innerText = `${rendement.toFixed(1)}% Rendement net (brut : ${(revenus / 123400 * 100).toFixed(1)}%)`;
+      document.getElementById('cashflow').innerText = `${cashflow.toFixed(0)} €/mois`;
+      document.getElementById('rendementBrut').innerText = (rendementBrut * 100).toFixed(1) + '%';
+      document.getElementById('rendementNet').innerText = (cashflow * 12 / revenus * 100).toFixed(1) + ' %';
     }
 
-    window.onload = () => {
-      actualiserDuree();
-      calculerCredit();
-      calculerAirbnb();
-    }
+    document.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('input', calculerCashflow);
+    });
+
+    window.onload = calculerCashflow;
   </script>
 </body>
 </html>
