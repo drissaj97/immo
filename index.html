@@ -3,47 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simulateur de Crédit</title>
+  <title>Simulateur de Crédit Immobilier</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f0f4f8;
+      background-color: #f8f9fc;
       margin: 0;
-      padding: 0;
+      padding: 40px;
       display: flex;
       justify-content: center;
-      align-items: center;
-      min-height: 100vh;
     }
     .container {
-      background: white;
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 1000px;
+      background: #fff;
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      max-width: 450px;
-      width: 90%;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      gap: 30px;
+    }
+    .form-section, .result-section {
+      flex: 1;
+      min-width: 280px;
     }
     h2 {
-      text-align: center;
-      color: #333;
+      margin-top: 0;
+      color: #1d3557;
     }
     label {
       display: block;
-      margin-top: 15px;
+      margin-top: 20px;
       font-weight: bold;
+      color: #333;
     }
-    input, select {
+    input, select, .range-input {
       width: 100%;
-      padding: 8px 10px;
+      padding: 10px;
       margin-top: 5px;
       border: 1px solid #ccc;
       border-radius: 6px;
+      font-size: 16px;
+    }
+    input[type=range] {
+      padding: 0;
     }
     button {
-      margin-top: 20px;
+      margin-top: 25px;
       width: 100%;
-      padding: 10px;
-      background-color: #007bff;
+      padding: 12px;
+      background-color: #0066cc;
       color: white;
       font-size: 16px;
       border: none;
@@ -51,67 +60,76 @@
       cursor: pointer;
     }
     button:hover {
-      background-color: #0056b3;
+      background-color: #004999;
     }
-    .result {
-      margin-top: 25px;
-      padding: 15px;
-      background: #f8f9fa;
+    .result-box {
+      padding: 20px;
+      background-color: #f1f3f5;
       border-radius: 8px;
       border: 1px solid #ddd;
+    }
+    .result-box p {
+      font-size: 16px;
+      margin: 8px 0;
+    }
+    .monthly-amount {
+      font-size: 28px;
+      font-weight: bold;
+      color: #1d3557;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Simulateur de Crédit</h2>
+    <div class="form-section">
+      <h2>Calculer mes mensualités</h2>
+      <label>Prix du bien :</label>
+      <input type="number" id="prix" value="100000">
 
-    <label for="devise">Devise :</label>
-    <select id="devise">
-      <option value="€">Euro (€)</option>
-      <option value="DH">Dirham (DH)</option>
-    </select>
+      <label>Apport personnel :</label>
+      <input type="number" id="apport" value="40000">
 
-    <label>Prix du bien :</label>
-    <input type="number" id="prix" value="200000" />
+      <label>Durée du prêt (années) :</label>
+      <input type="range" id="duree" min="5" max="25" value="20" oninput="document.getElementById('dureeVal').innerText = this.value + ' ans';">
+      <div style="text-align:right; color: #555; font-size: 14px;" id="dureeVal">20 ans</div>
 
-    <label>Apport personnel :</label>
-    <input type="number" id="apport" value="50000" />
+      <label>Taux d'intérêt annuel (%) :</label>
+      <input type="number" id="taux" value="3.6" step="0.1">
 
-    <label>Durée (en années) :</label>
-    <input type="number" id="duree" value="20" />
+      <button onclick="calculer()">Calculer</button>
+    </div>
 
-    <label>Taux d’intérêt annuel (%) :</label>
-    <input type="number" id="taux" value="2.5" step="0.1" />
-
-    <button onclick="calculer()">Calculer</button>
-
-    <div class="result">
-      <p id="mensualite"></p>
-      <p id="totalRembourse"></p>
-      <p id="interets"></p>
+    <div class="result-section">
+      <h2>Mensualités :</h2>
+      <div class="result-box">
+        <p class="monthly-amount" id="mensualite">-- €/mois</p>
+        <p id="montantEmprunt"></p>
+        <p id="interets"></p>
+        <p id="fraisNotaire"></p>
+      </div>
     </div>
   </div>
 
   <script>
     function calculer() {
-      const devise = document.getElementById("devise").value;
       const prix = parseFloat(document.getElementById("prix").value);
       const apport = parseFloat(document.getElementById("apport").value);
       const duree = parseInt(document.getElementById("duree").value);
       const tauxAnnuel = parseFloat(document.getElementById("taux").value);
 
       const capital = prix - apport;
-      const r = tauxAnnuel / 100 / 12; // taux mensuel
-      const n = duree * 12; // nombre de mois
+      const r = tauxAnnuel / 100 / 12;
+      const n = duree * 12;
 
       const mensualite = (capital * r) / (1 - Math.pow(1 + r, -n));
       const total = mensualite * n;
       const interets = total - capital;
+      const fraisNotaire = prix * 0.03;
 
-      document.getElementById("mensualite").innerText = "Mensualité : " + mensualite.toFixed(2) + " " + devise;
-      document.getElementById("totalRembourse").innerText = "Montant total remboursé : " + total.toFixed(2) + " " + devise;
-      document.getElementById("interets").innerText = "Total des intérêts : " + interets.toFixed(2) + " " + devise;
+      document.getElementById("mensualite").innerText = mensualite.toFixed(0) + " €/mois";
+      document.getElementById("montantEmprunt").innerText = "Montant de l'emprunt : " + capital.toLocaleString() + " €";
+      document.getElementById("interets").innerText = "Coût des intérêts : " + interets.toLocaleString(undefined, { maximumFractionDigits: 0 }) + " €";
+      document.getElementById("fraisNotaire").innerText = "Frais de notaire : " + fraisNotaire.toLocaleString(undefined, { maximumFractionDigits: 0 }) + " € (3%)";
     }
   </script>
 </body>
