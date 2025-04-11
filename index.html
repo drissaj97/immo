@@ -87,6 +87,13 @@
   <div class="container">
     <div class="form-section">
       <h2>💰 Calculateur de Crédit</h2>
+
+      <label>Devise :</label>
+      <select id="devise" onchange="calculer()">
+        <option value="€">Euro (€)</option>
+        <option value="DH">Dirham (DH)</option>
+      </select>
+
       <label>Prix du bien :</label>
       <input type="number" id="prix" value="100000" oninput="calculer()">
 
@@ -94,7 +101,7 @@
       <input type="number" id="apport" value="40000" oninput="calculer()">
 
       <label>Durée du prêt :</label>
-      <input type="range" id="duree" min="1" max="25" step="0.5" value="20" oninput="document.getElementById('dureeVal').innerText = this.value + ' ans'; calculer();">
+      <input type="range" id="duree" min="1" max="25" step="0.5" value="20" oninput="actualiserDuree(); calculer();">
       <div id="dureeVal">20 ans</div>
 
       <label>Taux d'intérêt annuel (%) :</label>
@@ -113,11 +120,18 @@
   </div>
 
   <script>
+    function actualiserDuree() {
+      const val = parseFloat(document.getElementById('duree').value);
+      const texte = val === 1 ? '1 an' : (Number.isInteger(val) ? val + ' ans' : val + ' ans');
+      document.getElementById('dureeVal').innerText = texte;
+    }
+
     function calculer() {
       const prix = parseFloat(document.getElementById("prix").value);
       const apport = parseFloat(document.getElementById("apport").value);
       const duree = parseFloat(document.getElementById("duree").value);
       const tauxAnnuel = parseFloat(document.getElementById("taux").value);
+      const devise = document.getElementById("devise").value;
 
       if (isNaN(prix) || isNaN(apport) || isNaN(duree) || isNaN(tauxAnnuel)) return;
 
@@ -130,13 +144,16 @@
       const total = mensualite * n;
       const interets = total - capital;
 
-      document.getElementById("mensualite").innerText = mensualite.toFixed(0) + " €/mois";
-      document.getElementById("montantEmprunt").innerText = "Montant de l'emprunt : " + capital.toLocaleString() + " €";
-      document.getElementById("interets").innerText = "Coût des intérêts : " + interets.toLocaleString(undefined, { maximumFractionDigits: 0 }) + " €";
-      document.getElementById("fraisNotaire").innerText = "Frais de notaire : " + fraisNotaire.toLocaleString(undefined, { maximumFractionDigits: 0 }) + " € (3%)";
+      document.getElementById("mensualite").innerText = mensualite.toFixed(0) + " " + devise + "/mois";
+      document.getElementById("montantEmprunt").innerText = "Montant de l'emprunt : " + capital.toLocaleString() + " " + devise;
+      document.getElementById("interets").innerText = "Coût des intérêts : " + interets.toLocaleString(undefined, { maximumFractionDigits: 0 }) + " " + devise;
+      document.getElementById("fraisNotaire").innerText = "Frais de notaire : " + fraisNotaire.toLocaleString(undefined, { maximumFractionDigits: 0 }) + " " + devise + " (3%)";
     }
 
-    window.onload = calculer;
+    window.onload = () => {
+      actualiserDuree();
+      calculer();
+    };
   </script>
 </body>
 </html>
