@@ -79,6 +79,27 @@
       color: #0f766e;
       font-size: 28px;
     }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+      .container {
+        flex-direction: column;
+      }
+      .form-section, .result-section {
+        padding: 20px;
+        border-right: none;
+      }
+      .slider-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .slider-value {
+        margin-top: 10px;
+        text-align: right;
+      }
+    }
   </style>
 </head>
 <body>
