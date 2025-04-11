@@ -87,7 +87,7 @@
       <h2>Calculer mes mensualités</h2>
 
       <label for="devise">Devise :</label>
-      <select id="devise" onchange="calculer()">
+      <select id="devise" onchange="adjustDefaults(); calculer();">
         <option value="€">Euro (€)</option>
         <option value="DH">Dirham (DH)</option>
       </select>
@@ -127,6 +127,17 @@
       document.getElementById("dureeValue").innerText = duree + (duree == 1 ? " an" : " ans");
     }
 
+    function adjustDefaults() {
+      const devise = document.getElementById("devise").value;
+      if (devise === "DH") {
+        document.getElementById("prix").value = 1000000;
+        document.getElementById("apport").value = 400000;
+      } else {
+        document.getElementById("prix").value = 100000;
+        document.getElementById("apport").value = 50000;
+      }
+    }
+
     function calculer() {
       const devise = document.getElementById("devise").value;
       const prix = parseFloat(document.getElementById("prix").value);
@@ -152,6 +163,7 @@
 
     window.onload = function() {
       updateSlider();
+      adjustDefaults();
       calculer();
     }
   </script>
