@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulateur de Crédit</title>
+</head>
+<body>
+  <h2>Simulateur de Crédit</h2>
+
+  <label>Prix du bien (DH):</label>
+  <input type="number" id="prix" value="1577000"><br>
+
+  <label>Apport personnel (DH):</label>
+  <input type="number" id="apport" value="400000"><br>
+
+  <label>Durée (années):</label>
+  <input type="number" id="duree" value="15"><br>
+
+  <label>Taux d’intérêt annuel (%):</label>
+  <input type="number" id="taux" value="4.2" step="0.1"><br>
+
+  <button onclick="calculer()">Calculer</button>
+
+  <h3>Résultat :</h3>
+  <p id="mensualite"></p>
+  <p id="totalRembourse"></p>
+  <p id="interets"></p>
+
+  <script>
+    function calculer() {
+      let prix = parseFloat(document.getElementById("prix").value);
+      let apport = parseFloat(document.getElementById("apport").value);
+      let duree = parseInt(document.getElementById("duree").value);
+      let tauxAnnuel = parseFloat(document.getElementById("taux").value);
+
+      let capital = prix - apport;
+      let r = tauxAnnuel / 100 / 12; // taux mensuel
+      let n = duree * 12; // nombre de mois
+
+      let mensualite = (capital * r) / (1 - Math.pow(1 + r, -n));
+      let total = mensualite * n;
+      let interets = total - capital;
+
+      document.getElementById("mensualite").innerText = "Mensualité : " + mensualite.toFixed(2) + " DH";
+      document.getElementById("totalRembourse").innerText = "Montant total remboursé : " + total.toFixed(2) + " DH";
+      document.getElementById("interets").innerText = "Total des intérêts : " + interets.toFixed(2) + " DH";
+    }
+  </script>
+</body>
+</html>
