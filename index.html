@@ -6,9 +6,12 @@
   <title>Simulateur de Crédit Immobilier</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Inter', sans-serif;
-      background: #f8fafc;
+      background: linear-gradient(to right, #f0f4ff, #e3f2fd);
       margin: 0;
       padding: 40px;
       display: flex;
@@ -17,16 +20,17 @@
     .container {
       display: flex;
       flex-direction: row;
-      background: #fff;
+      background: #ffffff;
       border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       width: 100%;
-      max-width: 1000px;
+      max-width: 1100px;
       overflow: hidden;
     }
     .form-section {
       flex: 1;
       padding: 40px;
+      background: #f8fbff;
       border-right: 1px solid #e0e0e0;
     }
     .result-section {
@@ -42,14 +46,21 @@
       font-weight: 600;
       margin-top: 20px;
       display: block;
+      color: #334155;
     }
     input, select {
       width: 100%;
       padding: 12px;
       margin-top: 8px;
-      border-radius: 8px;
+      border-radius: 10px;
       border: 1px solid #cbd5e1;
       font-size: 16px;
+      background-color: #fff;
+      transition: border 0.3s;
+    }
+    input:focus, select:focus {
+      border-color: #3b82f6;
+      outline: none;
     }
     .slider-container {
       margin-top: 8px;
@@ -65,21 +76,24 @@
       font-weight: bold;
       min-width: 60px;
       white-space: nowrap;
+      color: #0f172a;
     }
     .result-section h3 {
-      font-size: 24px;
+      font-size: 26px;
       color: #0f172a;
       margin-bottom: 16px;
     }
     .result-section p {
       font-size: 18px;
-      margin: 8px 0;
+      margin: 12px 0;
       color: #334155;
+      border-bottom: 1px dashed #cbd5e1;
+      padding-bottom: 8px;
     }
     .highlight {
       font-weight: bold;
       color: #0f766e;
-      font-size: 28px;
+      font-size: 32px;
     }
 
     @media (max-width: 768px) {
@@ -88,9 +102,10 @@
       }
       .container {
         flex-direction: column;
+        border-radius: 10px;
       }
       .form-section, .result-section {
-        padding: 20px;
+        padding: 24px;
         border-right: none;
       }
       .slider-container {
@@ -109,7 +124,7 @@
 <body>
   <div class="container">
     <div class="form-section">
-      <h2>Calculer mes mensualités</h2>
+      <h2>📊 Calculer mes mensualités</h2>
 
       <label for="devise">Devise :</label>
       <select id="devise" onchange="adjustDefaults(); calculer();">
@@ -139,7 +154,7 @@
     </div>
 
     <div class="result-section">
-      <h3>Mensualités : <span class="highlight" id="mensualite"></span></h3>
+      <h3>💰 Mensualités : <span class="highlight" id="mensualite"></span></h3>
       <p id="totalRembourse"></p>
       <p id="interets"></p>
       <p id="fraisNotaire"></p>
