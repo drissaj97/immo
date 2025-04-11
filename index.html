@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simulateur de Crédit Immobilier</title>
+  <title>Simulateur Financier</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
@@ -12,139 +12,148 @@
       margin: 0;
       padding: 40px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      min-height: 100vh;
       color: #333;
     }
+    .menu {
+      margin-bottom: 30px;
+    }
+    .menu button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      border: none;
+      border-radius: 6px;
+      background-color: #f1f1f1;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .menu button.active {
+      background-color: #2a5298;
+      color: white;
+    }
     .container {
-      display: flex;
-      flex-wrap: wrap;
+      display: none;
       max-width: 1000px;
+      width: 100%;
       background: white;
-      padding: 40px;
-      border-radius: 20px;
+      padding: 30px;
+      border-radius: 16px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      gap: 30px;
+    }
+    .visible {
+      display: block !important;
     }
     .form-section, .result-section {
       flex: 1;
       min-width: 300px;
     }
-    h2 {
-      margin-top: 0;
-      color: #1e3c72;
-    }
-    label {
+    .form-section label {
       display: block;
-      margin-top: 20px;
+      margin-top: 15px;
       font-weight: 600;
     }
-    input, select, .range-input {
+    input, select {
       width: 100%;
-      padding: 12px;
-      margin-top: 6px;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
       font-size: 16px;
-      transition: border 0.3s;
-    }
-    input:focus, select:focus {
-      border-color: #1e3c72;
-      outline: none;
-    }
-    input[type=range] {
-      padding: 0;
     }
     .result-box {
-      padding: 25px;
+      margin-top: 20px;
+      padding: 20px;
       background-color: #f5f8fb;
-      border-radius: 16px;
-      border: 2px dashed #d0d7de;
-      animation: fadeIn 0.8s ease;
+      border-radius: 12px;
+      border: 1px dashed #ccc;
     }
     .result-box p {
-      font-size: 16px;
-      margin: 10px 0;
+      margin: 8px 0;
       white-space: nowrap;
     }
     .monthly-amount {
-      font-size: 32px;
+      font-size: 28px;
       font-weight: bold;
       color: #2a5298;
-    }
-    #dureeVal {
-      text-align: right;
-      color: #555;
-      font-size: 14px;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="menu">
+    <button class="active" onclick="switchMode('credit')">Simulateur Crédit</button>
+    <button onclick="switchMode('airbnb')">Simulateur Cashflow Airbnb</button>
+  </div>
+
+  <div id="credit" class="container visible">
+    <h2>💰 Calculateur de Crédit</h2>
     <div class="form-section">
-      <h2>💰 Calculateur de Crédit</h2>
-
-      <label>Devise :</label>
-      <select id="devise" onchange="calculer()">
-        <option value="€">Euro (€)</option>
-        <option value="DH">Dirham (DH)</option>
-      </select>
-
       <label>Prix du bien :</label>
-      <input type="number" id="prix" value="100000" oninput="calculer()">
+      <input type="number" id="prix" value="100000" oninput="calculerCredit()">
 
       <label>Apport personnel :</label>
-      <input type="number" id="apport" value="40000" oninput="calculer()">
+      <input type="number" id="apport" value="40000" oninput="calculerCredit()">
 
-      <label>Durée du prêt :</label>
-      <input type="range" id="duree" min="1" max="25" step="0.5" value="20" oninput="actualiserDuree(); calculer();">
+      <label>Durée du prêt (années) :</label>
+      <input type="range" id="duree" min="1" max="25" step="0.5" value="20" oninput="actualiserDuree(); calculerCredit();">
       <div id="dureeVal">20 ans</div>
 
       <label>Taux d'intérêt annuel (%) :</label>
-      <input type="number" id="taux" value="3.6" step="0.1" oninput="calculer()">
+      <input type="number" id="taux" value="3.6" step="0.1" oninput="calculerCredit()">
 
       <label>Frais de notaire (%) :</label>
-      <select id="notaire" onchange="calculer()">
-        <script>
-          for (let i = 1; i <= 10; i++) {
-            document.write(`<option value="${i / 100}">${i} %</option>`);
-          }
-        </script>
+      <select id="notaire" onchange="calculerCredit()">
+        <script>for (let i = 1; i <= 10; i++) document.write(`<option value="${i / 100}">${i}%</option>`);</script>
       </select>
     </div>
+    <div class="result-box">
+      <p class="monthly-amount" id="mensualite">-- €/mois</p>
+      <p id="montantEmprunt"></p>
+      <p id="interets"></p>
+      <p id="fraisNotaire"></p>
+    </div>
+  </div>
 
-    <div class="result-section">
-      <h2>📊 Résultats</h2>
-      <div class="result-box">
-        <p class="monthly-amount" id="mensualite">-- €/mois</p>
-        <p id="montantEmprunt"></p>
-        <p id="interets"></p>
-        <p id="fraisNotaire"></p>
-      </div>
+  <div id="airbnb" class="container">
+    <h2>📈 Simulateur Cashflow Airbnb</h2>
+    <div class="form-section">
+      <label>Revenus annuels bruts (€) :</label>
+      <input type="number" id="revenus" value="35000" oninput="calculerAirbnb()">
+
+      <label>Charges mensuelles (€) :</label>
+      <input type="number" id="charges" value="1490" oninput="calculerAirbnb()">
+
+      <label>Échéance emprunt mensuelle (€) :</label>
+      <input type="number" id="echeance" value="731" oninput="calculerAirbnb()">
+
+      <label>Taux imposition (%) :</label>
+      <input type="number" id="tauxImpots" value="0" oninput="calculerAirbnb()">
+    </div>
+    <div class="result-box">
+      <p id="rendement"></p>
+      <p id="cashflow"></p>
     </div>
   </div>
 
   <script>
-    function actualiserDuree() {
-      const val = parseFloat(document.getElementById('duree').value);
-      const texte = val === 1 ? '1 an' : (Number.isInteger(val) ? val + ' ans' : val + ' ans');
-      document.getElementById('dureeVal').innerText = texte;
+    function switchMode(mode) {
+      document.querySelectorAll('.container').forEach(c => c.classList.remove('visible'));
+      document.getElementById(mode).classList.add('visible');
+      document.querySelectorAll('.menu button').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.menu button[onclick="switchMode('${mode}')"]`).classList.add('active');
     }
 
-    function calculer() {
+    function actualiserDuree() {
+      const val = parseFloat(document.getElementById('duree').value);
+      document.getElementById('dureeVal').innerText = val === 1 ? '1 an' : val + ' ans';
+    }
+
+    function calculerCredit() {
       const prix = parseFloat(document.getElementById("prix").value);
       const apport = parseFloat(document.getElementById("apport").value);
       const duree = parseFloat(document.getElementById("duree").value);
       const tauxAnnuel = parseFloat(document.getElementById("taux").value);
       const notaireRate = parseFloat(document.getElementById("notaire").value);
-      const devise = document.getElementById("devise").value;
-
-      if (isNaN(prix) || isNaN(apport) || isNaN(duree) || isNaN(tauxAnnuel) || isNaN(notaireRate)) return;
 
       const fraisNotaire = prix * notaireRate;
       const capital = prix + fraisNotaire - apport;
@@ -155,16 +164,31 @@
       const total = mensualite * n;
       const interets = total - capital;
 
-      document.getElementById("mensualite").innerText = mensualite.toFixed(0) + " " + devise + "/mois";
-      document.getElementById("montantEmprunt").innerText = `Montant de l'emprunt : ${capital.toLocaleString()} ${devise}`;
-      document.getElementById("interets").innerText = `Coût des intérêts : ${interets.toLocaleString(undefined, { maximumFractionDigits: 0 })} ${devise}`;
-      document.getElementById("fraisNotaire").innerText = `Frais de notaire : ${fraisNotaire.toLocaleString(undefined, { maximumFractionDigits: 0 })} ${devise} (${(notaireRate * 100)}%)`;
+      document.getElementById("mensualite").innerText = mensualite.toFixed(0) + " €/mois";
+      document.getElementById("montantEmprunt").innerText = `Montant de l'emprunt : ${capital.toLocaleString()} €`;
+      document.getElementById("interets").innerText = `Coût des intérêts : ${interets.toLocaleString()} €`;
+      document.getElementById("fraisNotaire").innerText = `Frais de notaire : ${fraisNotaire.toLocaleString()} € (${(notaireRate * 100)}%)`;
+    }
+
+    function calculerAirbnb() {
+      const revenus = parseFloat(document.getElementById("revenus").value);
+      const charges = parseFloat(document.getElementById("charges").value);
+      const echeance = parseFloat(document.getElementById("echeance").value);
+      const impots = parseFloat(document.getElementById("tauxImpots").value) / 100;
+
+      const totalMensuel = charges + echeance;
+      const cashflow = revenus / 12 - totalMensuel;
+      const rendement = ((cashflow * 12) / revenus) * 100;
+
+      document.getElementById("cashflow").innerText = `${cashflow.toFixed(0)} €/mois Cashflow`;
+      document.getElementById("rendement").innerText = `${rendement.toFixed(1)}% Rendement net (brut : ${(revenus / 123400 * 100).toFixed(1)}%)`;
     }
 
     window.onload = () => {
       actualiserDuree();
-      calculer();
-    };
+      calculerCredit();
+      calculerAirbnb();
+    }
   </script>
 </body>
 </html>
