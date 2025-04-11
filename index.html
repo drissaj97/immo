@@ -48,20 +48,6 @@
     input[type=range] {
       padding: 0;
     }
-    button {
-      margin-top: 25px;
-      width: 100%;
-      padding: 12px;
-      background-color: #0066cc;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #004999;
-    }
     .result-box {
       padding: 20px;
       background-color: #f1f3f5;
@@ -84,19 +70,17 @@
     <div class="form-section">
       <h2>Calculer mes mensualités</h2>
       <label>Prix du bien :</label>
-      <input type="number" id="prix" value="100000">
+      <input type="number" id="prix" value="100000" oninput="calculer()">
 
       <label>Apport personnel :</label>
-      <input type="number" id="apport" value="40000">
+      <input type="number" id="apport" value="40000" oninput="calculer()">
 
       <label>Durée du prêt (années) :</label>
-      <input type="range" id="duree" min="5" max="25" value="20" oninput="document.getElementById('dureeVal').innerText = this.value + ' ans';">
+      <input type="range" id="duree" min="5" max="25" value="20" oninput="document.getElementById('dureeVal').innerText = this.value + ' ans'; calculer();">
       <div style="text-align:right; color: #555; font-size: 14px;" id="dureeVal">20 ans</div>
 
       <label>Taux d'intérêt annuel (%) :</label>
-      <input type="number" id="taux" value="3.6" step="0.1">
-
-      <button onclick="calculer()">Calculer</button>
+      <input type="number" id="taux" value="3.6" step="0.1" oninput="calculer()">
     </div>
 
     <div class="result-section">
@@ -117,8 +101,10 @@
       const duree = parseInt(document.getElementById("duree").value);
       const tauxAnnuel = parseFloat(document.getElementById("taux").value);
 
+      if (isNaN(prix) || isNaN(apport) || isNaN(duree) || isNaN(tauxAnnuel)) return;
+
       const fraisNotaire = prix * 0.03;
-      const capital = prix + fraisNotaire - apport; // Ajout du coût notaire au prix avant soustraction de l'apport
+      const capital = prix + fraisNotaire - apport;
       const r = tauxAnnuel / 100 / 12;
       const n = duree * 12;
 
@@ -131,6 +117,8 @@
       document.getElementById("interets").innerText = "Coût des intérêts : " + interets.toLocaleString(undefined, { maximumFractionDigits: 0 }) + " €";
       document.getElementById("fraisNotaire").innerText = "Frais de notaire : " + fraisNotaire.toLocaleString(undefined, { maximumFractionDigits: 0 }) + " € (3%)";
     }
+
+    window.onload = calculer;
   </script>
 </body>
 </html>
