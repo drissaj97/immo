@@ -4,87 +4,105 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Simulateur de Crédit Immobilier</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f8f9fc;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(120deg, #1e3c72, #2a5298);
       margin: 0;
       padding: 40px;
       display: flex;
       justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #333;
     }
     .container {
       display: flex;
       flex-wrap: wrap;
       max-width: 1000px;
-      background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       gap: 30px;
     }
     .form-section, .result-section {
       flex: 1;
-      min-width: 280px;
+      min-width: 300px;
     }
     h2 {
       margin-top: 0;
-      color: #1d3557;
+      color: #1e3c72;
     }
     label {
       display: block;
       margin-top: 20px;
-      font-weight: bold;
-      color: #333;
+      font-weight: 600;
     }
     input, select, .range-input {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+      padding: 12px;
+      margin-top: 6px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
       font-size: 16px;
+      transition: border 0.3s;
+    }
+    input:focus {
+      border-color: #1e3c72;
+      outline: none;
     }
     input[type=range] {
       padding: 0;
     }
     .result-box {
-      padding: 20px;
-      background-color: #f1f3f5;
-      border-radius: 8px;
-      border: 1px solid #ddd;
+      padding: 25px;
+      background-color: #f5f8fb;
+      border-radius: 16px;
+      border: 2px dashed #d0d7de;
+      animation: fadeIn 0.8s ease;
     }
     .result-box p {
       font-size: 16px;
-      margin: 8px 0;
+      margin: 10px 0;
     }
     .monthly-amount {
-      font-size: 28px;
+      font-size: 32px;
       font-weight: bold;
-      color: #1d3557;
+      color: #2a5298;
+    }
+    #dureeVal {
+      text-align: right;
+      color: #555;
+      font-size: 14px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="form-section">
-      <h2>Calculer mes mensualités</h2>
+      <h2>💰 Calculateur de Crédit</h2>
       <label>Prix du bien :</label>
       <input type="number" id="prix" value="100000" oninput="calculer()">
 
       <label>Apport personnel :</label>
       <input type="number" id="apport" value="40000" oninput="calculer()">
 
-      <label>Durée du prêt (années) :</label>
-      <input type="range" id="duree" min="5" max="25" value="20" oninput="document.getElementById('dureeVal').innerText = this.value + ' ans'; calculer();">
-      <div style="text-align:right; color: #555; font-size: 14px;" id="dureeVal">20 ans</div>
+      <label>Durée du prêt :</label>
+      <input type="range" id="duree" min="1" max="25" step="0.5" value="20" oninput="document.getElementById('dureeVal').innerText = this.value + ' ans'; calculer();">
+      <div id="dureeVal">20 ans</div>
 
       <label>Taux d'intérêt annuel (%) :</label>
       <input type="number" id="taux" value="3.6" step="0.1" oninput="calculer()">
     </div>
 
     <div class="result-section">
-      <h2>Mensualités :</h2>
+      <h2>📊 Résultats</h2>
       <div class="result-box">
         <p class="monthly-amount" id="mensualite">-- €/mois</p>
         <p id="montantEmprunt"></p>
@@ -98,7 +116,7 @@
     function calculer() {
       const prix = parseFloat(document.getElementById("prix").value);
       const apport = parseFloat(document.getElementById("apport").value);
-      const duree = parseInt(document.getElementById("duree").value);
+      const duree = parseFloat(document.getElementById("duree").value);
       const tauxAnnuel = parseFloat(document.getElementById("taux").value);
 
       if (isNaN(prix) || isNaN(apport) || isNaN(duree) || isNaN(tauxAnnuel)) return;
