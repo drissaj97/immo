@@ -1,49 +1,117 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Simulateur de Crédit</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 450px;
+      width: 90%;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 25px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+  </style>
 </head>
 <body>
-  <h2>Simulateur de Crédit</h2>
+  <div class="container">
+    <h2>Simulateur de Crédit</h2>
 
-  <label>Prix du bien (DH):</label>
-  <input type="number" id="prix" value="1577000"><br>
+    <label for="devise">Devise :</label>
+    <select id="devise">
+      <option value="€">Euro (€)</option>
+      <option value="DH">Dirham (DH)</option>
+    </select>
 
-  <label>Apport personnel (DH):</label>
-  <input type="number" id="apport" value="400000"><br>
+    <label>Prix du bien :</label>
+    <input type="number" id="prix" value="200000" />
 
-  <label>Durée (années):</label>
-  <input type="number" id="duree" value="15"><br>
+    <label>Apport personnel :</label>
+    <input type="number" id="apport" value="50000" />
 
-  <label>Taux d’intérêt annuel (%):</label>
-  <input type="number" id="taux" value="4.2" step="0.1"><br>
+    <label>Durée (en années) :</label>
+    <input type="number" id="duree" value="20" />
 
-  <button onclick="calculer()">Calculer</button>
+    <label>Taux d’intérêt annuel (%) :</label>
+    <input type="number" id="taux" value="2.5" step="0.1" />
 
-  <h3>Résultat :</h3>
-  <p id="mensualite"></p>
-  <p id="totalRembourse"></p>
-  <p id="interets"></p>
+    <button onclick="calculer()">Calculer</button>
+
+    <div class="result">
+      <p id="mensualite"></p>
+      <p id="totalRembourse"></p>
+      <p id="interets"></p>
+    </div>
+  </div>
 
   <script>
     function calculer() {
-      let prix = parseFloat(document.getElementById("prix").value);
-      let apport = parseFloat(document.getElementById("apport").value);
-      let duree = parseInt(document.getElementById("duree").value);
-      let tauxAnnuel = parseFloat(document.getElementById("taux").value);
+      const devise = document.getElementById("devise").value;
+      const prix = parseFloat(document.getElementById("prix").value);
+      const apport = parseFloat(document.getElementById("apport").value);
+      const duree = parseInt(document.getElementById("duree").value);
+      const tauxAnnuel = parseFloat(document.getElementById("taux").value);
 
-      let capital = prix - apport;
-      let r = tauxAnnuel / 100 / 12; // taux mensuel
-      let n = duree * 12; // nombre de mois
+      const capital = prix - apport;
+      const r = tauxAnnuel / 100 / 12; // taux mensuel
+      const n = duree * 12; // nombre de mois
 
-      let mensualite = (capital * r) / (1 - Math.pow(1 + r, -n));
-      let total = mensualite * n;
-      let interets = total - capital;
+      const mensualite = (capital * r) / (1 - Math.pow(1 + r, -n));
+      const total = mensualite * n;
+      const interets = total - capital;
 
-      document.getElementById("mensualite").innerText = "Mensualité : " + mensualite.toFixed(2) + " DH";
-      document.getElementById("totalRembourse").innerText = "Montant total remboursé : " + total.toFixed(2) + " DH";
-      document.getElementById("interets").innerText = "Total des intérêts : " + interets.toFixed(2) + " DH";
+      document.getElementById("mensualite").innerText = "Mensualité : " + mensualite.toFixed(2) + " " + devise;
+      document.getElementById("totalRembourse").innerText = "Montant total remboursé : " + total.toFixed(2) + " " + devise;
+      document.getElementById("interets").innerText = "Total des intérêts : " + interets.toFixed(2) + " " + devise;
     }
   </script>
 </body>
