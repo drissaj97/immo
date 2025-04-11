@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Simulateur Financier</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Inter', sans-serif;
       background: #f0f4f8;
       margin: 0;
       padding: 20px;
@@ -29,7 +30,7 @@
       background-color: #0056b3;
     }
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: auto;
       background: white;
       padding: 30px;
@@ -76,108 +77,125 @@
 </head>
 <body>
   <div class="menu">
-    <button class="active" onclick="switchView('credit')">Simulateur Crédit</button>
-    <button onclick="switchView('airbnb')">Simulateur Airbnb</button>
+    <button class="active" onclick="switchView('credit', this)">💰 Simulateur de Crédit</button>
+    <button onclick="switchView('airbnb', this)">📊 Simulateur Cashflow Airbnb</button>
   </div>
 
   <!-- Simulateur Crédit -->
   <div id="credit" class="container">
     <h2>Simulateur de Crédit</h2>
-    <label for="devise">Devise :</label>
-    <select id="devise">
+    <label>Devise :</label>
+    <select id="devise" onchange="calculerCredit()">
       <option value="€">Euro (€)</option>
       <option value="DH">Dirham (DH)</option>
     </select>
+
     <label>Prix du bien :</label>
-    <input type="number" id="prix" value="200000" />
+    <input type="number" id="prix" value="200000" oninput="calculerCredit()" />
+
     <label>Apport personnel :</label>
-    <input type="number" id="apport" value="50000" />
+    <input type="number" id="apport" value="50000" oninput="calculerCredit()" />
+
     <label>Durée (en années) :</label>
-    <input type="number" id="duree" value="20" />
+    <input type="number" id="duree" value="20" min="1" step="0.5" oninput="calculerCredit()" />
+
     <label>Taux d’intérêt annuel (%) :</label>
-    <input type="number" id="taux" value="2.5" step="0.1" />
-    <button onclick="calculer()">Calculer</button>
+    <input type="number" id="taux" value="2.5" step="0.1" oninput="calculerCredit()" />
+
+    <label>Frais de notaire (% du prix) :</label>
+    <select id="fraisNotaire" onchange="calculerCredit()">
+      <script>for (let i = 0; i <= 10; i++) document.write(`<option value="${i / 100}">${i} %</option>`);</script>
+    </select>
+
     <div class="result">
       <p id="mensualite"></p>
       <p id="totalRembourse"></p>
       <p id="interets"></p>
+      <p id="notaireMontant"></p>
     </div>
   </div>
 
   <!-- Simulateur Airbnb -->
   <div id="airbnb" class="container hidden">
-    <h2>Simulateur rendement locatif Airbnb</h2>
+    <h2>Simulateur Cashflow Airbnb</h2>
     <div class="table-section">
-      <h3>Données de l'investissement locatif</h3>
+      <h3>Données de l'investissement</h3>
       <table>
-        <tr><td>Prix FAI</td><td><input type="number" value="105000"></td></tr>
-        <tr><td>Travaux</td><td><input type="number" value="10000"></td></tr>
-        <tr><td>Frais de notaire</td><td><input type="number" value="8400"></td></tr>
-        <tr><td>Meubles</td><td><input type="number" value="10000"></td></tr>
-        <tr><td>Revenus Annuels bruts</td><td><input type="number" value="35000"></td></tr>
-        <tr><td>Montant Emprunté</td><td><input type="number" value="123400"></td></tr>
-        <tr><td>Frais de dossier</td><td><input type="number" value="900"></td></tr>
-        <tr><td>Frais crédit logement</td><td><input type="number" value="1818"></td></tr>
+        <tr><td>Prix FAI</td><td><input type="number" id="prixFAI" value="105000" oninput="calculerAirbnb()"></td></tr>
+        <tr><td>Travaux</td><td><input type="number" id="travaux" value="10000" oninput="calculerAirbnb()"></td></tr>
+        <tr><td>Frais de notaire</td><td><input type="number" id="notaire" value="8400" oninput="calculerAirbnb()"></td></tr>
+        <tr><td>Meubles</td><td><input type="number" id="meubles" value="10000" oninput="calculerAirbnb()"></td></tr>
+        <tr><td>Revenus annuels bruts</td><td><input type="number" id="revenus" value="35000" oninput="calculerAirbnb()"></td></tr>
+        <tr><td>Mensualité emprunt</td><td><input type="number" id="mensualiteAirbnb" value="731" oninput="calculerAirbnb()"></td></tr>
+        <tr><td>Durée emprunt (ans)</td><td><input type="number" id="dureeAirbnb" value="20" oninput="calculerAirbnb()"></td></tr>
       </table>
     </div>
     <div class="table-section">
-      <h3>Charges location Airbnb & Emprunt</h3>
+      <h3>Charges fixes mensuelles</h3>
       <table>
-        <tr><td>Charges Airbnb mensuelles</td><td><input type="number" value="1480"></td></tr>
-        <tr><td>Échéance Emprunt mensuelle</td><td><input type="number" value="731"></td></tr>
-        <tr><td>Impôts mensuels</td><td><input type="number" value="0"></td></tr>
+        <tr><td>Charges Airbnb</td><td><input type="number" id="chargesAirbnb" value="1480" oninput="calculerAirbnb()"></td></tr>
+        <tr><td>Impôts mensuels</td><td><input type="number" id="impots" value="0" oninput="calculerAirbnb()"></td></tr>
       </table>
     </div>
-    <div class="table-section">
-      <h3>Détails des charges mensuelles</h3>
-      <table>
-        <tr><td>EDF / Gaz / Eau</td><td><input type="number" value="50"></td></tr>
-        <tr><td>Netflix, Prime Video</td><td><input type="number" value="20"></td></tr>
-        <tr><td>Internet haut débit</td><td><input type="number" value="30"></td></tr>
-        <tr><td>Consommables</td><td><input type="number" value="30"></td></tr>
-        <tr><td>Commission plateformes</td><td><input type="number" value="467"></td></tr>
-        <tr><td>Petits travaux maintenance</td><td><input type="number" value="100"></td></tr>
-        <tr><td>Logiciel prix dynamiques</td><td><input type="number" value="20"></td></tr>
-        <tr><td>Logiciel PMS</td><td><input type="number" value="20"></td></tr>
-        <tr><td>Serrure connectée</td><td><input type="number" value="6"></td></tr>
-        <tr><td>Ménage / Nettoyage</td><td><input type="number" value="525"></td></tr>
-        <tr><td>Conciergerie</td><td><input type="number" value="0"></td></tr>
-        <tr><td>Assurances</td><td><input type="number" value="12"></td></tr>
-        <tr><td>Taxe foncière</td><td><input type="number" value="50"></td></tr>
-        <tr><td>Taxe d'habitation</td><td><input type="number" value="50"></td></tr>
-        <tr><td>Charges copropriété</td><td><input type="number" value="50"></td></tr>
-        <tr><td>Comptable</td><td><input type="number" value="30"></td></tr>
-        <tr><td>CFE</td><td><input type="number" value="30"></td></tr>
-        <tr><td>Autre</td><td><input type="number" value="0"></td></tr>
-        <tr><td>Autre</td><td><input type="number" value="0"></td></tr>
-      </table>
+    <div class="result">
+      <p id="cashflow"></p>
+      <p id="rendement"></p>
     </div>
   </div>
 
   <script>
-    function switchView(view) {
-      document.getElementById('credit').classList.add('hidden');
-      document.getElementById('airbnb').classList.add('hidden');
-      document.querySelectorAll('.menu button').forEach(btn => btn.classList.remove('active'));
+    function switchView(view, button) {
+      document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
       document.getElementById(view).classList.remove('hidden');
-      event.target.classList.add('active');
+      document.querySelectorAll('.menu button').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
     }
 
-    function calculer() {
+    function calculerCredit() {
       const devise = document.getElementById("devise").value;
       const prix = parseFloat(document.getElementById("prix").value);
       const apport = parseFloat(document.getElementById("apport").value);
-      const duree = parseInt(document.getElementById("duree").value);
+      const duree = parseFloat(document.getElementById("duree").value);
       const tauxAnnuel = parseFloat(document.getElementById("taux").value);
-      const capital = prix - apport;
+      const fraisNotaire = parseFloat(document.getElementById("fraisNotaire").value);
+
+      const capital = prix - apport + (prix * fraisNotaire);
       const r = tauxAnnuel / 100 / 12;
       const n = duree * 12;
+
       const mensualite = (capital * r) / (1 - Math.pow(1 + r, -n));
       const total = mensualite * n;
       const interets = total - capital;
-      document.getElementById("mensualite").innerText = "Mensualité : " + mensualite.toFixed(2) + " " + devise;
-      document.getElementById("totalRembourse").innerText = "Montant total remboursé : " + total.toFixed(2) + " " + devise;
-      document.getElementById("interets").innerText = "Total des intérêts : " + interets.toFixed(2) + " " + devise;
+
+      document.getElementById("mensualite").innerText = `Mensualité : ${mensualite.toFixed(2)} ${devise}`;
+      document.getElementById("totalRembourse").innerText = `Montant total remboursé : ${total.toFixed(2)} ${devise}`;
+      document.getElementById("interets").innerText = `Total des intérêts : ${interets.toFixed(2)} ${devise}`;
+      document.getElementById("notaireMontant").innerText = `Frais de notaire : ${(prix * fraisNotaire).toFixed(2)} ${devise} (${(fraisNotaire * 100).toFixed(0)}%)`;
+    }
+
+    function calculerAirbnb() {
+      const revenusAnnuels = parseFloat(document.getElementById("revenus").value);
+      const mensualite = parseFloat(document.getElementById("mensualiteAirbnb").value);
+      const charges = parseFloat(document.getElementById("chargesAirbnb").value);
+      const impots = parseFloat(document.getElementById("impots").value);
+      const revenusMensuels = revenusAnnuels / 12;
+      const cashflow = revenusMensuels - mensualite - charges - impots;
+
+      const prixFAI = parseFloat(document.getElementById("prixFAI").value);
+      const travaux = parseFloat(document.getElementById("travaux").value);
+      const notaire = parseFloat(document.getElementById("notaire").value);
+      const meubles = parseFloat(document.getElementById("meubles").value);
+
+      const totalInvestissement = prixFAI + travaux + notaire + meubles;
+      const rendement = ((revenusAnnuels / totalInvestissement) * 100).toFixed(2);
+
+      document.getElementById("cashflow").innerText = `💸 Cashflow mensuel : ${cashflow.toFixed(0)} €`;
+      document.getElementById("rendement").innerText = `📈 Rendement brut annuel : ${rendement} %`;
+    }
+
+    window.onload = function () {
+      calculerCredit();
+      calculerAirbnb();
     }
   </script>
 </body>
