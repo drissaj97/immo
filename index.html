@@ -49,7 +49,7 @@
       font-size: 16px;
       transition: border 0.3s;
     }
-    input:focus {
+    input:focus, select:focus {
       border-color: #1e3c72;
       outline: none;
     }
@@ -66,6 +66,7 @@
     .result-box p {
       font-size: 16px;
       margin: 10px 0;
+      white-space: nowrap;
     }
     .monthly-amount {
       font-size: 32px;
@@ -106,6 +107,15 @@
 
       <label>Taux d'intérêt annuel (%) :</label>
       <input type="number" id="taux" value="3.6" step="0.1" oninput="calculer()">
+
+      <label>Frais de notaire (%) :</label>
+      <select id="notaire" onchange="calculer()">
+        <script>
+          for (let i = 1; i <= 10; i++) {
+            document.write(`<option value="${i / 100}">${i} %</option>`);
+          }
+        </script>
+      </select>
     </div>
 
     <div class="result-section">
@@ -131,11 +141,12 @@
       const apport = parseFloat(document.getElementById("apport").value);
       const duree = parseFloat(document.getElementById("duree").value);
       const tauxAnnuel = parseFloat(document.getElementById("taux").value);
+      const notaireRate = parseFloat(document.getElementById("notaire").value);
       const devise = document.getElementById("devise").value;
 
-      if (isNaN(prix) || isNaN(apport) || isNaN(duree) || isNaN(tauxAnnuel)) return;
+      if (isNaN(prix) || isNaN(apport) || isNaN(duree) || isNaN(tauxAnnuel) || isNaN(notaireRate)) return;
 
-      const fraisNotaire = prix * 0.03;
+      const fraisNotaire = prix * notaireRate;
       const capital = prix + fraisNotaire - apport;
       const r = tauxAnnuel / 100 / 12;
       const n = duree * 12;
@@ -145,9 +156,9 @@
       const interets = total - capital;
 
       document.getElementById("mensualite").innerText = mensualite.toFixed(0) + " " + devise + "/mois";
-      document.getElementById("montantEmprunt").innerText = "Montant de l'emprunt : " + capital.toLocaleString() + " " + devise;
-      document.getElementById("interets").innerText = "Coût des intérêts : " + interets.toLocaleString(undefined, { maximumFractionDigits: 0 }) + " " + devise;
-      document.getElementById("fraisNotaire").innerText = "Frais de notaire : " + fraisNotaire.toLocaleString(undefined, { maximumFractionDigits: 0 }) + " " + devise + " (3%)";
+      document.getElementById("montantEmprunt").innerText = `Montant de l'emprunt : ${capital.toLocaleString()} ${devise}`;
+      document.getElementById("interets").innerText = `Coût des intérêts : ${interets.toLocaleString(undefined, { maximumFractionDigits: 0 })} ${devise}`;
+      document.getElementById("fraisNotaire").innerText = `Frais de notaire : ${fraisNotaire.toLocaleString(undefined, { maximumFractionDigits: 0 })} ${devise} (${(notaireRate * 100)}%)`;
     }
 
     window.onload = () => {
