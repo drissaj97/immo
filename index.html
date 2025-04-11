@@ -117,14 +117,14 @@
       const duree = parseInt(document.getElementById("duree").value);
       const tauxAnnuel = parseFloat(document.getElementById("taux").value);
 
-      const capital = prix - apport;
+      const fraisNotaire = prix * 0.03;
+      const capital = prix + fraisNotaire - apport; // Ajout du coût notaire au prix avant soustraction de l'apport
       const r = tauxAnnuel / 100 / 12;
       const n = duree * 12;
 
       const mensualite = (capital * r) / (1 - Math.pow(1 + r, -n));
       const total = mensualite * n;
       const interets = total - capital;
-      const fraisNotaire = prix * 0.03;
 
       document.getElementById("mensualite").innerText = mensualite.toFixed(0) + " €/mois";
       document.getElementById("montantEmprunt").innerText = "Montant de l'emprunt : " + capital.toLocaleString() + " €";
