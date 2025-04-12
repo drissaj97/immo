@@ -97,15 +97,30 @@
 <body>
   <div class="container">
     <h2>🏠 Simulateur de Cashflow Airbnb</h2>
+
+    <label>Mode de simulation :</label>
+    <select id="mode" onchange="toggleFields(); calculer();">
+      <option value="credit">Avec crédit</option>
+      <option value="comptant">Comptant (sans crédit)</option>
+    </select>
+
     <label>Prix du bien (€) :</label>
     <input type="number" id="prix" value="60000" oninput="calculer()">
 
-    <label>Apport personnel (€) :</label>
-    <input type="number" id="apport" value="10000" oninput="calculer()">
+    <div id="creditFields">
+      <label>Apport personnel (€) :</label>
+      <input type="number" id="apport" value="10000" oninput="calculer()">
+
+      <label>Durée du prêt (années) :</label>
+      <input type="number" id="duree" value="10" oninput="calculer()">
+
+      <label>Taux d'intérêt annuel (%) :</label>
+      <input type="number" id="taux" value="3.5" oninput="calculer()">
+    </div>
 
     <label>Frais de notaire (%) :</label>
     <select id="notaire" onchange="calculer()">
-      <script>for(let i = 0; i <= 10; i++) document.write(`<option value="${i}">${i} %</option>`);</script>
+      <script>for(let i = 0; i <= 10; i++) document.write(`<option value="${i}" ${i === 3 ? 'selected' : ''}>${i} %</option>`);</script>
     </select>
 
     <label>Travaux (€) :</label>
@@ -113,12 +128,6 @@
 
     <label>Meubles (€) :</label>
     <input type="number" id="meubles" value="10000" oninput="calculer()">
-
-    <label>Durée du prêt (années) :</label>
-    <input type="number" id="duree" value="10" oninput="calculer()">
-
-    <label>Taux d'intérêt annuel (%) :</label>
-    <input type="number" id="taux" value="3.5" oninput="calculer()">
 
     <label>Loyer moyen par nuit (€) :</label>
     <input type="number" id="loyer" value="50" oninput="calculer()">
@@ -148,14 +157,17 @@
   </div>
 
   <script>
+    function toggleFields() {
+      const mode = document.getElementById("mode").value;
+      document.getElementById("creditFields").style.display = mode === "credit" ? "block" : "none";
+    }
+
     function calculer() {
+      const mode = document.getElementById("mode").value;
       const prix = +document.getElementById("prix").value;
-      const apport = +document.getElementById("apport").value;
       const tauxNotaire = +document.getElementById("notaire").value / 100;
       const travaux = +document.getElementById("travaux").value;
       const meubles = +document.getElementById("meubles").value;
-      const duree = +document.getElementById("duree").value;
-      const taux = +document.getElementById("taux").value / 100;
       const loyer = +document.getElementById("loyer").value;
       const nuits = +document.getElementById("nuits").value;
       const gestion = +document.getElementById("gestion").value / 100;
@@ -163,32 +175,49 @@
 
       const fraisNotaire = prix * tauxNotaire;
       const montantTotal = prix + fraisNotaire + travaux + meubles;
-      const emprunt = montantTotal - apport;
-      const mensualite = (emprunt * (taux/12)) / (1 - Math.pow(1 + taux/12, -duree*12));
-
       const revenuBrut = loyer * nuits;
       const fraisGestion = revenuBrut * gestion;
-      const cashflowMensuel = revenuBrut - mensualite - fraisGestion - charges;
-      const cashflowAnnuel = cashflowMensuel * 12;
 
+      let mensualite = 0;
+      let cashflowMensuel = 0;
+      let cashflowAnnuel = 0;
+      let rendementNet = 0;
+
+      if (mode === "credit") {
+        const apport = +document.getElementById("apport").value;
+        const duree = +document.getElementById("duree").value;
+        const taux = +document.getElementById("taux").value / 100;
+        const emprunt = montantTotal - apport;
+        mensualite = (emprunt * (taux/12)) / (1 - Math.pow(1 + taux/12, -duree*12));
+        cashflowMensuel = revenuBrut - mensualite - fraisGestion - charges;
+      } else {
+        mensualite = 0;
+        cashflowMensuel = revenuBrut - fraisGestion - charges;
+      }
+
+      cashflowAnnuel = cashflowMensuel * 12;
       const rendementBrut = (revenuBrut * 12 / montantTotal) * 100;
-      const rendementNet = (cashflowAnnuel / montantTotal) * 100;
+      rendementNet = (cashflowAnnuel / montantTotal) * 100;
 
-      document.getElementById("mensualite").textContent = mensualite.toFixed(2) + " €";
-      document.getElementById("revenu").textContent = revenuBrut.toFixed(2) + " €";
-      document.getElementById("fraisGestion").textContent = fraisGestion.toFixed(2) + " €";
-      document.getElementById("cashflow").textContent = cashflowMensuel.toFixed(2) + " €";
-      document.getElementById("cashflowAn").textContent = cashflowAnnuel.toFixed(2) + " €";
-      document.getElementById("rendementBrut").textContent = rendementBrut.toFixed(1) + " %";
-      document.getElementById("rendementNet").textContent = rendementNet.toFixed(1) + " %";
+      document.getElementById("mensualite").textContent = Math.round(mensualite) + " €";
+      document.getElementById("revenu").textContent = Math.round(revenuBrut) + " €";
+      document.getElementById("fraisGestion").textContent = Math.round(fraisGestion) + " €";
+      document.getElementById("cashflow").textContent = Math.round(cashflowMensuel) + " €";
+      document.getElementById("cashflowAn").textContent = Math.round(cashflowAnnuel) + " €";
+      document.getElementById("rendementBrut").textContent = Math.round(rendementBrut) + " %";
+      document.getElementById("rendementNet").textContent = Math.round(rendementNet) + " %";
 
       const indicator = document.getElementById("yieldIndicator");
       let position = Math.min(rendementNet, 15) / 15 * 100;
-      indicator.textContent = rendementNet.toFixed(1) + "%";
+      indicator.textContent = Math.round(rendementNet) + "%";
       indicator.style.left = position + "%";
     }
 
-    window.onload = calculer;
+    window.onload = () => {
+      toggleFields();
+      calculer();
+    };
   </script>
 </body>
 </html>
+
