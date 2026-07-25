@@ -2,6 +2,7 @@ import type { SemsaraiPropertiesResponse } from "./types";
 
 const DEFAULT_API = "https://server-production-a8d0.up.railway.app";
 const CACHE_TTL_MS = Number(process.env.SEMSARAI_CACHE_TTL_MS ?? "900000"); // 15 min
+const FETCH_TIMEOUT_MS = Number(process.env.SEMSARAI_FETCH_TIMEOUT_MS ?? "4000");
 
 export type FetchSemsaraiOptions = {
   page?: number;
@@ -24,7 +25,9 @@ async function fetchFromApi(
   apiUrl: string,
 ): Promise<SemsaraiPropertiesResponse> {
   let lastError: unknown;
-  for (let attempt = 1; attempt <= 3; attempt++) {
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
     try {
       const res = await fetch(`${apiUrl}/operations/get-properties`, {
         method: "POST",
@@ -33,11 +36,12 @@ async function fetchFromApi(
           "User-Agent": "DarBladi-Import/1.0",
         },
         body: JSON.stringify({ json: { page, limit } }),
+        signal: controller.signal,
       });
 
       if (!res.ok) {
-        if (res.status >= 500 && attempt < 3) {
-          await new Promise((r) => setTimeout(r, attempt * 800));
+        if (res.status >= 500 && attempt < 2) {
+          await new Promise((r) => setTimeout(r, 400));
           continue;
         }
         throw new Error(`Semsarai API ${res.status}: ${await res.text()}`);
@@ -47,10 +51,12 @@ async function fetchFromApi(
       return data.json;
     } catch (err) {
       lastError = err;
-      if (attempt < 3) {
-        await new Promise((r) => setTimeout(r, attempt * 800));
+      if (attempt < 2) {
+        await new Promise((r) => setTimeout(r, 400));
         continue;
       }
+    } finally {
+      clearTimeout(timer);
     }
   }
   throw lastError;

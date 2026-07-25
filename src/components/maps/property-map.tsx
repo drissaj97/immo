@@ -36,7 +36,6 @@ export function PropertyMap({
   const mapRef = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<maplibregl.Marker[]>([]);
   const [ready, setReady] = useState(false);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!mapContainer.current || mapRef.current) return;
@@ -60,6 +59,9 @@ export function PropertyMap({
     );
 
     map.on("load", () => setReady(true));
+    map.on("error", (e) => {
+      console.warn("[map] erreur tuiles:", e?.error?.message ?? e);
+    });
     mapRef.current = map;
 
     return () => {
@@ -85,9 +87,6 @@ export function PropertyMap({
       el.className = "map-poi-marker";
       el.title = `${poi.category} · ${poi.name}`;
       el.innerHTML = `<span>${poiIcon(poi.category)}</span>`;
-      el.addEventListener("click", (e) => {
-        e.stopPropagation();
-      });
 
       const marker = new maplibregl.Marker({ element: el, anchor: "center" })
         .setLngLat([poi.longitude, poi.latitude])
@@ -107,18 +106,13 @@ export function PropertyMap({
 
     for (const point of points) {
       const isExact = point.coordinateSource === "exact";
-      const isSelected = selectedId === point.id;
       const poiKey = `${point.mapLatitude.toFixed(3)}|${point.mapLongitude.toFixed(3)}`;
-      const pois = nearbyPoisByKey[poiKey] ?? [];
+      const pois = nearbyPoisByKey[poiKey] ?? nearbyPois;
 
       const el = document.createElement("button");
       el.type = "button";
-      el.className = `map-listing-marker ${isExact ? "map-listing-marker--exact" : "map-listing-marker--approx"}${isSelected ? " map-listing-marker--active" : ""}`;
+      el.className = `map-listing-marker ${isExact ? "map-listing-marker--exact" : "map-listing-marker--approx"}`;
       el.innerHTML = `<span>${formatPriceShort(point.price)}</span>`;
-      el.addEventListener("click", (e) => {
-        e.stopPropagation();
-        setSelectedId(point.id);
-      });
 
       const popup = new maplibregl.Popup({
         offset: 16,
@@ -133,7 +127,6 @@ export function PropertyMap({
         .addTo(map);
 
       el.addEventListener("click", () => {
-        popup.addTo(map);
         map.flyTo({ center: [point.mapLongitude, point.mapLatitude], zoom: Math.max(map.getZoom(), 14) });
       });
 
@@ -152,7 +145,7 @@ export function PropertyMap({
         duration: 800,
       });
     }
-  }, [points, nearbyPoisByKey, nearbyPois, ready, locale, selectedId, zoom]);
+  }, [points, nearbyPoisByKey, nearbyPois, ready, locale, zoom]);
 
   return (
     <div className="relative h-full min-h-[400px] w-full">

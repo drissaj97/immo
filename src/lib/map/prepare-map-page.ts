@@ -12,18 +12,36 @@ export type MapPageData = {
   listings: ListingWithLocation[];
 };
 
-/** Prépare données carte côté serveur (coords + POI quartier). */
+const POI_BUDGET_MS = Number(process.env.MAP_POI_BUDGET_MS ?? "1500");
+
+function emptyPois(): MapPageData["nearbyPoisByKey"] {
+  return {};
+}
+
+/** Prépare données carte côté serveur (coords + POI optionnels, non-bloquants). */
 export async function prepareMapPageData(listings: ListingWithLocation[]): Promise<MapPageData> {
   const points = prepareMapListings(listings);
-  const poisMap = await getNearbyPoisForListings(
-    points.map((p) => ({
-      mapLatitude: p.mapLatitude,
-      mapLongitude: p.mapLongitude,
-      coordinateSource: p.coordinateSource,
-    })),
-  );
 
-  const nearbyPoisByKey: MapPageData["nearbyPoisByKey"] = {};
+  let poisMap = new Map<string, Awaited<ReturnType<typeof getNearbyPoisForListings>> extends Map<string, infer V> ? V : never>();
+
+  try {
+    poisMap = await Promise.race([
+      getNearbyPoisForListings(
+        points.map((p) => ({
+          mapLatitude: p.mapLatitude,
+          mapLongitude: p.mapLongitude,
+          coordinateSource: p.coordinateSource,
+        })),
+      ),
+      new Promise<typeof poisMap>((resolve) =>
+        setTimeout(() => resolve(new Map()), POI_BUDGET_MS),
+      ),
+    ]);
+  } catch {
+    poisMap = new Map();
+  }
+
+  const nearbyPoisByKey: MapPageData["nearbyPoisByKey"] = emptyPois();
   const poiSeen = new Set<string>();
   const nearbyPois: MapPoiPoint[] = [];
 

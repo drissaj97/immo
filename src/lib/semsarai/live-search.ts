@@ -40,6 +40,7 @@ async function searchByNeighborhood(filters: SearchFilters): Promise<AggregatedL
   const seen = new Set(localMatches.map((l) => l.id));
   const matched: AggregatedListing[] = [...localMatches];
 
+  const hasCityCatalog = hasNeighborhoodCatalog(filters.city!);
   const cached = loadNeighborhoodCatalog(filters.city!, filters.neighborhood!);
   for (const property of cached) {
     const listing = normalizeSemsaraiListing(semsaraiPropertyToListing(property));
@@ -48,11 +49,15 @@ async function searchByNeighborhood(filters: SearchFilters): Promise<AggregatedL
     matched.push(listing);
   }
 
-  const needsScan = !hasNeighborhoodCatalog(filters.city!) || cached.length === 0;
-
-  if (needsScan) {
+  // Scan API fallback optionnel — désactivé par défaut pour ne jamais bloquer le site.
+  // Activer avec SEMSARAI_LIVE_NEIGHBORHOOD_SCAN=true (budget ~2.5s).
+  const liveScanEnabled = process.env.SEMSARAI_LIVE_NEIGHBORHOOD_SCAN === "true";
+  if (liveScanEnabled && !hasCityCatalog && matched.length < 12) {
     try {
-      const scanned = await scanApiForNeighborhood(filters, seen);
+      const scanned = await Promise.race([
+        scanApiForNeighborhood(filters, seen),
+        new Promise<AggregatedListing[]>((resolve) => setTimeout(() => resolve([]), 2500)),
+      ]);
       for (const listing of scanned) {
         if (seen.has(listing.id)) continue;
         seen.add(listing.id);
