@@ -1,5 +1,6 @@
 import { ListingsFeed } from "@/components/listings/listings-feed";
 import { PropertySearch } from "@/components/search/property-search";
+import { PopularSearchLinks } from "@/components/search/popular-search-links";
 import { searchListings } from "@/server/repositories/listings";
 import { getGeographySearchTree } from "@/lib/geography/index";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";

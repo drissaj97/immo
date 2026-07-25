@@ -1,5 +1,6 @@
 import { ListingsFeed } from "@/components/listings/listings-feed";
 import { PropertySearch } from "@/components/search/property-search";
+import { PopularSearchLinks } from "@/components/search/popular-search-links";
 import { searchListings } from "@/server/repositories/listings";
 import { getGeographySearchTree } from "@/lib/geography/index";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
@@ -100,7 +101,10 @@ export default async function LouerPage({
           <p className="mt-12 text-center text-charcoal/60">Aucune annonce de location pour ces critères.</p>
         )
       ) : (
-        <p className="mt-12 text-center text-charcoal/60">{locationGateMessage()}</p>
+        <div className="mt-12 space-y-4 text-center">
+          <p className="text-charcoal/60">{locationGateMessage()}</p>
+          <PopularSearchLinks locale={locale} path="louer" />
+        </div>
       )}
     </div>
   );
