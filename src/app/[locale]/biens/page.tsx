@@ -38,7 +38,6 @@ export default async function BiensPage({
     hasPool: sp.hasPool === "true" ? true : undefined,
     isVerified: sp.isVerified === "true" ? true : undefined,
     source: sp.source as SearchFilters["source"],
-    includeDemo: sp.demo === "1" || sp.includeDemo === "true" ? true : undefined,
     sort: (sp.sort as SearchFilters["sort"]) ?? "recent",
     page: sp.page ? Number(sp.page) : 1,
   };
@@ -56,14 +55,6 @@ export default async function BiensPage({
           <Link href={`/${locale}/agregateur`} className="text-deep-green hover:underline">
             Sources ({Object.keys(aggStats.bySource).length})
           </Link>
-          {!filters.includeDemo && (
-            <>
-              {" · "}
-              <Link href={`/${locale}/biens?demo=1`} className="text-charcoal/50 hover:text-deep-green">
-                Afficher données démo
-              </Link>
-            </>
-          )}
         </p>
       </div>
 

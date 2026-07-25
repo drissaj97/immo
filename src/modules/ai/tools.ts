@@ -16,11 +16,10 @@ export async function toolSearchListings(
 ): Promise<ControlledToolResult> {
   const { items, total } = await searchListings({
     ...(filters as SearchFilters),
-    includeDemo: true,
   });
   return {
     tool: "searchListings",
-    source: "DarBladi — catalogue démo",
+    source: "DarBladi — catalogue agrégé",
     data: { items: items.slice(0, 5).map((l) => ({
       id: l.id,
       title: l.title,

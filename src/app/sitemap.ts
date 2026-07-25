@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
-import { DEMO_LISTINGS } from "@/lib/data/demo-data";
+import { getAggregatedListings } from "@/lib/aggregation/sync";
 import { NEIGHBORHOOD_KNOWLEDGE } from "@/lib/data/neighborhood-knowledge";
 import { DEMO_ORGANIZATIONS } from "@/lib/data/marketplace-data";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
   const locales = ["fr", "en", "ar"];
 
@@ -25,6 +25,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/conformite",
   ];
 
+  const catalog = await getAggregatedListings();
+  const publishedListings = catalog.filter((l) => l.status === "published" && !l.isDemo);
+
   const entries: MetadataRoute.Sitemap = [];
 
   for (const locale of locales) {
@@ -37,7 +40,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       });
     }
 
-    for (const listing of DEMO_LISTINGS.filter((l) => l.status === "published")) {
+    for (const listing of publishedListings) {
       entries.push({
         url: `${baseUrl}/${locale}/biens/${listing.slug}`,
         lastModified: new Date(listing.publishedAt),

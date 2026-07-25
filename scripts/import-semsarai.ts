@@ -12,7 +12,7 @@ import { fetchSemsaraiProperties } from "../src/lib/semsarai/client";
 import { semsaraiPropertyToListing, semsaraiSlug } from "../src/lib/semsarai/normalizer";
 import { downloadListingImages } from "../src/lib/media/download-images";
 
-const IMPORT_LIMIT = Number(process.env.SEMSARAI_IMPORT_LIMIT ?? "100");
+const IMPORT_LIMIT = Number(process.env.SEMSARAI_IMPORT_LIMIT ?? "500");
 const PAGE_SIZE = Number(process.env.SEMSARAI_PAGE_SIZE ?? "50");
 const DOWNLOAD_IMAGES = !process.argv.includes("--no-download");
 const MEDIA_ROOT = path.join(process.cwd(), "public");

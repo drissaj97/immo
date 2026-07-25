@@ -6,7 +6,7 @@
  */
 import "dotenv/config";
 import { config } from "dotenv";
-import { DEMO_LISTINGS } from "../src/lib/data/demo-data";
+import { getStaticCatalogListings, listingEmbeddingText } from "../src/lib/aggregation/catalog";
 import { NEIGHBORHOOD_KNOWLEDGE } from "../src/lib/data/neighborhood-knowledge";
 import { createEmbeddingProvider } from "../src/modules/ai/embeddings-provider";
 
@@ -35,9 +35,9 @@ async function main() {
     metadata: { city: k.city, neighborhood: k.neighborhood, type: "neighborhood" },
   }));
 
-  const listingItems = DEMO_LISTINGS.filter((l) => l.status === "published").map((l) => ({
+  const listingItems = getStaticCatalogListings().map((l) => ({
     id: l.id,
-    text: `${l.title} ${l.description} ${l.location.city} ${l.location.neighborhood}`,
+    text: listingEmbeddingText(l),
     metadata: { slug: l.slug, city: l.location.city, type: "listing" },
   }));
 
@@ -45,25 +45,30 @@ async function main() {
   const texts = allItems.map((i) => i.text);
   const embeddings = await provider.embedBatch(texts);
 
+  await sql`DELETE FROM listing_embeddings WHERE is_demo = false`;
+
   let inserted = 0;
   for (let i = 0; i < allItems.length; i++) {
     const item = allItems[i];
     const vec = embeddings[i];
     const vectorStr = `[${vec.join(",")}]`;
+    const isListing = item.metadata.type === "listing";
 
     await sql`
       INSERT INTO listing_embeddings (content, embedding, is_demo)
       VALUES (
         ${item.text},
         ${vectorStr}::vector,
-        true
+        ${!isListing}
       )
     `;
     inserted++;
   }
 
   await sql.end();
-  console.info(`[seed-embeddings] Inserted ${inserted} embeddings (${neighborhoodItems.length} quartiers, ${listingItems.length} annonces)`);
+  console.info(
+    `[seed-embeddings] Inserted ${inserted} embeddings (${neighborhoodItems.length} quartiers, ${listingItems.length} annonces réelles)`,
+  );
 }
 
 main().catch((err) => {

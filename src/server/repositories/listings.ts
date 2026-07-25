@@ -4,6 +4,7 @@ import type { AggregatedListing } from "@/lib/aggregation/types";
 import { useDatabase } from "@/lib/db/repository";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import * as dbRepo from "@/server/repositories/listings-db";
+import { syncListingEmbedding } from "@/server/repositories/embedding-sync";
 
 export type ListingWithLocation = DemoListing & {
   aggregationSource?: AggregatedListing["aggregationSource"];
@@ -13,7 +14,7 @@ export type ListingWithLocation = DemoListing & {
 
 function matchesFilters(listing: ListingWithLocation, filters: SearchFilters): boolean {
   if (listing.status !== "published" && !filters.query?.includes("admin")) return false;
-  if (filters.includeDemo !== true && listing.isDemo) return false;
+  if (listing.isDemo) return false;
   if (filters.source && "aggregationSource" in listing) {
     const src = (listing as AggregatedListing).aggregationSource;
     if (src !== filters.source) return false;
@@ -186,6 +187,7 @@ export async function approveListing(id: string): Promise<boolean> {
   if (!listing) return false;
   listing.status = "published";
   listing.publishedAt = new Date().toISOString();
+  void syncListingEmbedding(listing);
   return true;
 }
 

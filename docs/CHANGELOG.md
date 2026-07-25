@@ -7,6 +7,25 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [1.6.0] — 2026-07-25
+
+### Catalogue 100 % réel — Phase 10
+
+- Suppression des 17 annonces démo du catalogue public (source `darbladi` retirée)
+- Import SEMSAR AI par défaut **500 annonces** (`SEMSARAI_IMPORT_LIMIT`)
+- Sync live API optionnelle (`SEMSARAI_LIVE_SYNC=true`, cache 15 min)
+- Sitemap SEO basé sur le catalogue agrégé réel
+- Embeddings RAG indexés sur Holding IMMO + SEMSAR AI (plus de démo)
+- Cron `/api/v1/cron/aggregation` : sync multi-sources + réindex pgvector
+- Bannière démo retirée · assistant IA sans `includeDemo`
+
+### Sources additionnelles (activation partenaire)
+
+- PropAPIS (`PROPAPIS_API_KEY`) — Avito + Mubawab licenciés
+- Feeds partenaires `data/feeds/{avito,mubawab,sarouty}.json`
+
+---
+
 ## [1.5.0] — 2026-07-25
 
 ### Scraping SEMSAR AI (semsarai.ma)

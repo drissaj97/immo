@@ -15,8 +15,8 @@ DarBladi est un **index agrégé**, pas un scrapeur. Chaque annonce affiche :
 | Source | Statut actuel | Activation |
 |--------|---------------|------------|
 | Holding IMMO | ✅ Actif (50 annonces, ~21 photos/annonce) | Import JSON-LD + HTML + téléchargement photos |
-| SEMSAR AI | ✅ Actif (import API, ~73k dispo) | `pnpm import:semsarai` — semsarai.ma |
-| DarBladi | ✅ Actif | Publications plateforme |
+| SEMSAR AI | ✅ Actif (import API, ~73k dispo) | `pnpm import:semsarai` — défaut 500 annonces |
+| DarBladi | ⏸ Plateforme | Publications directes via PostgreSQL (pas de données fictives) |
 | Avito.ma | ⏳ Partenariat requis | Voir ci-dessous |
 | Mubawab.ma | ⏳ Partenariat requis | Voir ci-dessous |
 | Sarouty.ma | ⏳ Partenariat requis | Contrat à négocier |
@@ -79,6 +79,7 @@ src/lib/aggregation/
 pnpm aggregation:sync          # Sync toutes les sources
 pnpm import:semsarai           # Import semsarai.ma (API + photos)
 SEMSARAI_IMPORT_LIMIT=500 pnpm import:semsarai
+SEMSARAI_LIVE_SYNC=true pnpm dev   # complète via API (cache 15 min)
 pnpm import:holding            # Re-import Holding IMMO + téléchargement photos
 pnpm import:holding -- --no-download  # Métadonnées seulement (URLs distantes)
 curl /api/v1/aggregation/status # Stats JSON
@@ -109,5 +110,5 @@ Priorité en cas de doublon :
 
 - [ ] Signature partenariat Avito Group
 - [ ] Signature partenariat Dubizzle Group / Mubawab
-- [ ] Index pgvector sur catalogue agrégé
+- [x] Index pgvector sur catalogue agrégé (cron + seed)
 - [ ] Alertes cross-sources (« même bien moins cher sur… »)

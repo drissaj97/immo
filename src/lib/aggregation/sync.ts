@@ -1,7 +1,7 @@
 import type { AggregatedListing, AggregationStats, AggregationSyncResult } from "./types";
 import { dedupeAggregatedListings } from "./dedupe";
-import { fetchDarbladiListings, fetchHoldingListings } from "./sources/holding-source";
-import { fetchSemsaraiListings } from "./sources/semsarai-source";
+import { fetchHoldingListings } from "./sources/holding-source";
+import { fetchSemsaraiListings, resetSemsaraiLiveCache } from "./sources/semsarai-source";
 import { fetchPartnerFeed } from "./sources/partner-feed";
 import { fetchPropAPISListings } from "./sources/propapis-source";
 import { AGGREGATION_SOURCES } from "./sources/registry";
@@ -19,7 +19,6 @@ export async function syncAggregatedCatalog(): Promise<{
   const sources: Array<{ name: string; fn: () => Promise<AggregatedListing[]> | AggregatedListing[] }> = [
     { name: "semsarai", fn: fetchSemsaraiListings },
     { name: "holding-immo", fn: fetchHoldingListings },
-    { name: "darbladi", fn: fetchDarbladiListings },
     { name: "avito", fn: () => fetchPartnerFeed("avito") },
     { name: "mubawab", fn: () => fetchPartnerFeed("mubawab") },
     { name: "sarouty", fn: () => fetchPartnerFeed("sarouty") },
@@ -83,4 +82,5 @@ export async function getAggregationStats(): Promise<AggregationStats> {
 export function resetAggregationCache(): void {
   cachedCatalog = null;
   lastSyncAt = null;
+  resetSemsaraiLiveCache();
 }

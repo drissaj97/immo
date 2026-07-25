@@ -22,8 +22,8 @@ export const AGGREGATION_SOURCES: AggregationSourceConfig[] = [
     name: "DarBladi",
     website: "https://darbladi.ma",
     licenseStatus: "first_party",
-    enabled: true,
-    description: "Annonces publiées directement sur la plateforme",
+    enabled: false,
+    description: "Publications directes — nécessite DATABASE_URL (pas de données fictives)",
   },
   {
     id: "avito",

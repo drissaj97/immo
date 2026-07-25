@@ -2,7 +2,6 @@ import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { DemoBanner } from "@/components/layout/footer";
 import { CookieConsent } from "@/components/layout/cookie-consent";
 import { PwaRegister } from "@/components/layout/pwa-register";
 import { ReferralCapture } from "@/components/affiliates/referral-capture";
@@ -50,7 +49,6 @@ export default async function LocaleLayout({
         <meta name="apple-mobile-web-app-title" content="DarBladi" />
       </head>
       <body className="min-h-full flex flex-col bg-ivory text-charcoal antialiased">
-        <DemoBanner message={messages.demo} />
         <Header locale={typedLocale} messages={messages} user={user} />
         <main className="flex-1">{children}</main>
         <Footer messages={messages} locale={locale} />
