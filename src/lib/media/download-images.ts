@@ -8,12 +8,13 @@ const EXT_BY_TYPE: Record<string, string> = {
   "image/jpg": ".jpg",
   "image/png": ".png",
   "image/webp": ".webp",
+  "image/avif": ".avif",
 };
 
 export function extensionFromUrl(url: string): string {
   const clean = url.split("?")[0];
   const ext = path.extname(clean).toLowerCase();
-  if ([".jpg", ".jpeg", ".png", ".webp"].includes(ext)) return ext === ".jpeg" ? ".jpg" : ext;
+  if ([".jpg", ".jpeg", ".png", ".webp", ".avif"].includes(ext)) return ext === ".jpeg" ? ".jpg" : ext;
   return ".jpg";
 }
 
@@ -28,8 +29,17 @@ export async function downloadImageToFile(sourceUrl: string, destPath: string): 
 
   mkdirSync(path.dirname(destPath), { recursive: true });
 
+  const referer = sourceUrl.includes("mubawab-media.com")
+    ? "https://www.mubawab.ma/"
+    : sourceUrl.includes("semsarai.ma")
+      ? "https://www.semsarai.ma/"
+      : undefined;
+
   const res = await fetch(sourceUrl, {
-    headers: { "User-Agent": "DarBladi-Import/1.0 (+first-party migration)" },
+    headers: {
+      "User-Agent": "DarBladi-Import/1.0 (+first-party migration)",
+      ...(referer ? { Referer: referer } : {}),
+    },
   });
 
   if (!res.ok) {

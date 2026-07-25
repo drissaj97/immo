@@ -4,6 +4,7 @@ import type { DemoListing } from "@/lib/data/demo-data";
 export type AggregationSourceId =
   | "darbladi"
   | "holding-immo"
+  | "semsarai"
   | "avito"
   | "mubawab"
   | "sarouty";

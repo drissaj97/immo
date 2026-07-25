@@ -10,6 +10,14 @@ export const AGGREGATION_SOURCES: AggregationSourceConfig[] = [
     description: "Agence sœur — import JSON-LD autorisé",
   },
   {
+    id: "semsarai",
+    name: "SEMSAR AI",
+    website: "https://www.semsarai.ma",
+    licenseStatus: "licensed_api",
+    enabled: true,
+    description: "Agrégateur semsarai.ma — import API publique (~73k annonces Maroc)",
+  },
+  {
     id: "darbladi",
     name: "DarBladi",
     website: "https://darbladi.ma",

@@ -41,6 +41,7 @@ function matchesFilters(listing: ListingWithLocation, filters: SearchFilters): b
 
 function listingPriority(listing: ListingWithLocation): number {
   if (listing.isDemo) return 0;
+  if (listing.aggregationSource === "semsarai") return 4;
   if (listing.aggregationSource === "holding-immo") return 3;
   if (listing.isExternal) return 2;
   return 1;

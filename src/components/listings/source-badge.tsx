@@ -3,6 +3,7 @@ import type { ListingWithLocation } from "@/server/repositories/listings";
 const SOURCE_LABELS: Record<string, { label: string; color: string }> = {
   "holding-immo": { label: "Holding IMMO", color: "bg-emerald-100 text-emerald-800" },
   darbladi: { label: "DarBladi", color: "bg-teal-100 text-teal-800" },
+  semsarai: { label: "SEMSAR AI", color: "bg-indigo-100 text-indigo-800" },
   "samsar-ia": { label: "DarBladi", color: "bg-teal-100 text-teal-800" },
   avito: { label: "Avito.ma", color: "bg-orange-100 text-orange-800" },
   mubawab: { label: "Mubawab", color: "bg-blue-100 text-blue-800" },

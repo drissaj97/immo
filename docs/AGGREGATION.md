@@ -15,6 +15,7 @@ DarBladi est un **index agrégé**, pas un scrapeur. Chaque annonce affiche :
 | Source | Statut actuel | Activation |
 |--------|---------------|------------|
 | Holding IMMO | ✅ Actif (50 annonces, ~21 photos/annonce) | Import JSON-LD + HTML + téléchargement photos |
+| SEMSAR AI | ✅ Actif (import API, ~73k dispo) | `pnpm import:semsarai` — semsarai.ma |
 | DarBladi | ✅ Actif | Publications plateforme |
 | Avito.ma | ⏳ Partenariat requis | Voir ci-dessous |
 | Mubawab.ma | ⏳ Partenariat requis | Voir ci-dessous |
@@ -76,6 +77,8 @@ src/lib/aggregation/
 
 ```bash
 pnpm aggregation:sync          # Sync toutes les sources
+pnpm import:semsarai           # Import semsarai.ma (API + photos)
+SEMSARAI_IMPORT_LIMIT=500 pnpm import:semsarai
 pnpm import:holding            # Re-import Holding IMMO + téléchargement photos
 pnpm import:holding -- --no-download  # Métadonnées seulement (URLs distantes)
 curl /api/v1/aggregation/status # Stats JSON

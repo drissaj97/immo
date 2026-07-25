@@ -143,15 +143,16 @@ pnpm db:seed
 Insère locations, listings et taux de change depuis `demo-data.ts`.  
 Sans `DATABASE_URL`, le seed s'arrête proprement (mode in-memory actif).
 
-### Photos réelles Holding IMMO
+### Photos réelles (SEMSAR AI + Holding IMMO)
 
-Les annonces Holding IMMO utilisent des **photos scrapées** (pas Unsplash). Après un clone :
+Les annonces agrégées utilisent des **photos scrapées** (pas Unsplash). Après un clone :
 
 ```bash
-pnpm import:holding   # télécharge ~1057 photos → public/media/holding/
+pnpm import:semsarai   # ~100 annonces depuis semsarai.ma + photos
+pnpm import:holding    # 50 annonces Holding IMMO + photos
 ```
 
-Sans cette étape, les fiches Holding IMMO affichent des images cassées.  
+Sans import, les images locales sont absentes (URLs distantes Mubawab utilisées en fallback).  
 Les annonces **démo** (Unsplash) sont masquées par défaut — lien « Afficher données démo » sur `/biens`.
 
 ---

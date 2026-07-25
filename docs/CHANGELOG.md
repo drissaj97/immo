@@ -7,6 +7,17 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [1.5.0] — 2026-07-25
+
+### Scraping SEMSAR AI (semsarai.ma)
+
+- Import via API publique `operations/get-properties` (~73 000 annonces)
+- Script `pnpm import:semsarai` + téléchargement photos locales
+- Source agrégation `semsarai` — prioritaire dans le catalogue DarBladi
+- Support images Mubawab/Agenz (Referer + fallback URL distante)
+
+---
+
 ## [1.4.2] — 2026-07-25
 
 ### Restauration marque DarBladi

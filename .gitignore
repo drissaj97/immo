@@ -44,3 +44,5 @@ next-env.d.ts
 # médias importés (téléchargés via pnpm import:holding)
 /public/media/holding/**
 !/public/media/holding/.gitkeep
+/public/media/semsarai/**
+!/public/media/semsarai/.gitkeep

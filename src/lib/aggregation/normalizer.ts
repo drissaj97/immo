@@ -76,6 +76,7 @@ export function normalizePartnerListing(
 function sourceDisplayName(source: AggregationSourceId): string {
   const names: Record<AggregationSourceId, string> = {
     "darbladi": "DarBladi",
+    semsarai: "SEMSAR AI",
     "holding-immo": "Holding IMMO",
     avito: "Avito.ma",
     mubawab: "Mubawab.ma",
