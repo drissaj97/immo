@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { convertPrice } from "@/server/repositories/listings";
+import { convertPrice } from "@/lib/currency";
 
 describe("currency conversion", () => {
   it("converts MAD to EUR indicatively", () => {

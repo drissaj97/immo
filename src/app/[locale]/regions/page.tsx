@@ -3,6 +3,8 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { getRegions } from "@/server/repositories/listings";
 import { getGeographyIndex } from "@/lib/geography/index";
 
+export const revalidate = 3600;
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return buildMetadata({

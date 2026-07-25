@@ -1,5 +1,5 @@
 import { HOLDING_IMPORT_META } from "@/lib/data/holding-listings";
-import { SEMSARAI_IMPORT_META } from "@/lib/data/semsarai-listings";
+import { SEMSARAI_IMPORT_META } from "@/lib/data/semsarai-meta";
 
 export type PartnerOrganization = {
   id: string;

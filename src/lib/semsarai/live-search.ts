@@ -2,12 +2,13 @@ import { fetchSemsaraiProperties } from "@/lib/semsarai/client";
 import { semsaraiPropertyToListing } from "@/lib/semsarai/normalizer";
 import { normalizeSemsaraiListing } from "@/lib/semsarai/normalizer";
 import { fetchHoldingListings } from "@/lib/aggregation/sources/holding-source";
+import { SEMSARAI_API_TOTAL } from "@/lib/data/semsarai-meta";
 import type { AggregatedListing } from "@/lib/aggregation/types";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { hasActiveFilters, listingMatchesFilters } from "@/lib/search/listing-filters-match";
 
 const API_PAGE_SIZE = Number(process.env.SEMSARAI_PAGE_SIZE ?? "50");
-const MAX_SCAN_PAGES = Number(process.env.SEMSARAI_SEARCH_SCAN_PAGES ?? "300");
+const MAX_SCAN_PAGES = Number(process.env.SEMSARAI_SEARCH_SCAN_PAGES ?? "25");
 
 function sortListings(listings: AggregatedListing[], sort?: SearchFilters["sort"]): AggregatedListing[] {
   const copy = [...listings];
@@ -29,7 +30,7 @@ function holdingMatches(filters: SearchFilters): AggregatedListing[] {
   return fetchHoldingListings().filter((l) => listingMatchesFilters(l, filters));
 }
 
-/** Recherche live via API semsarai.ma — accès aux ~73k annonces sans limite statique. */
+/** Recherche live via API semsarai.ma — réponses mises en cache 15 min. */
 export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
   items: AggregatedListing[];
   total: number;
@@ -44,8 +45,7 @@ export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
   const activeFilters = hasActiveFilters(filters);
 
   if (!activeFilters) {
-    const apiPage = page;
-    const batch = await fetchSemsaraiProperties({ page: apiPage, limit: API_PAGE_SIZE });
+    const batch = await fetchSemsaraiProperties({ page, limit: API_PAGE_SIZE });
     const apiItems = batch.properties.map((p) =>
       normalizeSemsaraiListing(semsaraiPropertyToListing(p)),
     );
@@ -65,10 +65,15 @@ export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
   const matched: AggregatedListing[] = [...holding];
   let apiPage = 1;
   let scannedPages = 0;
+  let apiTotalCount: number = SEMSARAI_API_TOTAL;
+  const targetMatches = page * limit;
+  const maxPages = filters.city || filters.neighborhood ? MAX_SCAN_PAGES : Math.min(MAX_SCAN_PAGES, 10);
 
-  while (apiPage <= MAX_SCAN_PAGES) {
+  while (apiPage <= maxPages) {
     const batch = await fetchSemsaraiProperties({ page: apiPage, limit: API_PAGE_SIZE });
     scannedPages += 1;
+    if (apiPage === 1) apiTotalCount = batch.totalCount;
+
     if (!batch.properties.length) break;
 
     for (const property of batch.properties) {
@@ -79,19 +84,14 @@ export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
     }
 
     if (batch.properties.length < API_PAGE_SIZE) break;
+    if (matched.length >= targetMatches + limit) break;
     apiPage += 1;
-
-    if (!filters.city && !filters.neighborhood && matched.length >= page * limit * 2) {
-      break;
-    }
   }
 
   const sorted = sortListings(matched, filters.sort);
   const start = (page - 1) * limit;
   const items = sorted.slice(start, start + limit);
-
-  const firstBatch = await fetchSemsaraiProperties({ page: 1, limit: 1 });
-  const totalAvailable = firstBatch.totalCount + holding.length;
+  const totalAvailable = apiTotalCount + holding.length;
 
   return {
     items,
@@ -103,7 +103,12 @@ export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
   };
 }
 
+/** Total catalogue — cache API ou valeur embarquée. */
 export async function getSemsaraiTotalCount(): Promise<number> {
-  const batch = await fetchSemsaraiProperties({ page: 1, limit: 1 });
-  return batch.totalCount;
+  try {
+    const batch = await fetchSemsaraiProperties({ page: 1, limit: 1 });
+    return batch.totalCount;
+  } catch {
+    return SEMSARAI_API_TOTAL;
+  }
 }

@@ -2,6 +2,8 @@ import { ListingCard } from "@/components/listings/listing-card";
 import { searchListings } from "@/server/repositories/listings";
 import { buildMetadata } from "@/lib/seo/metadata";
 
+export const revalidate = 300;
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return buildMetadata({ title: "Acheter un bien", description: "Villas, appartements et terrains à vendre.", path: "/acheter", locale });

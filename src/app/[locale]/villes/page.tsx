@@ -4,6 +4,8 @@ import { getCities, getRegions } from "@/server/repositories/listings";
 import { slugify } from "@/lib/geography/slug";
 import { getGeographyIndex } from "@/lib/geography/index";
 
+export const revalidate = 3600;
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return buildMetadata({

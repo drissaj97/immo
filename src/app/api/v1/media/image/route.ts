@@ -45,9 +45,8 @@ export async function GET(request: Request) {
     }
 
     const contentType = res.headers.get("content-type") ?? "image/jpeg";
-    const body = await res.arrayBuffer();
 
-    return new NextResponse(body, {
+    return new NextResponse(res.body, {
       headers: {
         "Content-Type": contentType,
         "Cache-Control": "public, max-age=86400, stale-while-revalidate=604800",

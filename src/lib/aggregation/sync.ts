@@ -4,6 +4,7 @@ import type { AggregatedListing, AggregationStats, AggregationSyncResult } from 
 import { dedupeAggregatedListings } from "./dedupe";
 import { fetchHoldingListings } from "./sources/holding-source";
 import { fetchSemsaraiListings, resetSemsaraiLiveCache } from "./sources/semsarai-source";
+import { clearSemsaraiApiCache } from "@/lib/semsarai/client";
 import { fetchPartnerFeed } from "./sources/partner-feed";
 import { fetchPropAPISListings } from "./sources/propapis-source";
 import { AGGREGATION_SOURCES } from "./sources/registry";
@@ -85,6 +86,7 @@ export function resetAggregationCache(): void {
   cachedCatalog = null;
   lastSyncAt = null;
   resetSemsaraiLiveCache();
+  clearSemsaraiApiCache();
   resetStaticCatalogCache();
   resetCatalogAnalyticsCache();
 }

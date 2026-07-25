@@ -1,11 +1,12 @@
+import Link from "next/link";
 import { PropertySearch } from "@/components/search/property-search";
 import { ListingCard } from "@/components/listings/listing-card";
 import { getFeaturedListings, getCities } from "@/server/repositories/listings";
-import { getSemsaraiTotalCount } from "@/lib/semsarai/live-search";
-import Link from "next/link";
-import { getMessages, type Locale } from "@/lib/i18n/config";
+import { SEMSARAI_API_TOTAL } from "@/lib/data/semsarai-meta";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { Button } from "@/components/ui/button";
+
+export const revalidate = 300;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -19,11 +20,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  const messages = getMessages(locale as Locale);
-  const featured = await getFeaturedListings(6);
-  const cities = await getCities();
+  const [featured, cities] = await Promise.all([getFeaturedListings(6), getCities()]);
   const allCities = cities.map(({ city, count, region }) => ({ city, count, region }));
-  const apiTotal = await getSemsaraiTotalCount().catch(() => null);
+  const apiTotal = SEMSARAI_API_TOTAL;
 
   return (
     <>

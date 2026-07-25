@@ -1,12 +1,21 @@
+import dynamic from "next/dynamic";
 import { ListingCard } from "@/components/listings/listing-card";
 import { ListingPagination } from "@/components/listings/listing-pagination";
-import { PropertyMap } from "@/components/maps/property-map";
 import { searchListings, getCities } from "@/server/repositories/listings";
-import { getSemsaraiTotalCount } from "@/lib/semsarai/live-search";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { PropertySearch } from "@/components/search/property-search";
 import Link from "next/link";
+
+const PropertyMap = dynamic(
+  () => import("@/components/maps/property-map").then((m) => m.PropertyMap),
+  {
+    ssr: false,
+    loading: () => <div className="h-64 animate-pulse rounded-lg bg-sand/50" />,
+  },
+);
+
+export const revalidate = 300;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -44,13 +53,12 @@ export default async function BiensPage({
     limit: 48,
   };
 
-  const [{ items, total, totalPages, totalAvailable }, apiTotal, cities] = await Promise.all([
+  const [{ items, total, totalPages, totalAvailable }, cities] = await Promise.all([
     searchListings(filters),
-    getSemsaraiTotalCount().catch(() => null),
     getCities(),
   ]);
 
-  const catalogTotal = apiTotal ?? totalAvailable ?? total;
+  const catalogTotal = totalAvailable ?? total;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8">

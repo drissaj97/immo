@@ -1,7 +1,5 @@
-import { getAggregatedListings } from "@/lib/aggregation/sync";
-import { DEMO_LISTINGS, EXCHANGE_RATES, type DemoListing } from "@/lib/data/demo-data";
-import { SEMSARAI_LISTINGS } from "@/lib/data/semsarai-listings";
 import { HOLDING_LISTINGS } from "@/lib/data/holding-listings";
+import { loadSemsaraiListings } from "@/lib/data/static-catalog-loader";
 import type { AggregatedListing } from "@/lib/aggregation/types";
 import { useDatabase } from "@/lib/db/repository";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
@@ -14,6 +12,8 @@ import {
   getAllRegions,
   getGeographyIndex,
 } from "@/lib/geography/index";
+import { DEMO_LISTINGS, type DemoListing } from "@/lib/data/demo-data";
+export { convertPrice } from "@/lib/currency";
 
 const USE_LIVE_SEARCH = process.env.SEMSARAI_LIVE_SEARCH !== "false";
 
@@ -80,6 +80,11 @@ function sortListings(listings: ListingWithLocation[], sort?: SearchFilters["sor
   }
 }
 
+async function getAggregatedListingsLazy(): Promise<AggregatedListing[]> {
+  const { getAggregatedListings } = await import("@/lib/aggregation/sync");
+  return getAggregatedListings();
+}
+
 async function liveSearchListings(filters: SearchFilters = {}) {
   const page = filters.page ?? 1;
   const limit = filters.limit ?? 48;
@@ -96,7 +101,7 @@ async function liveSearchListings(filters: SearchFilters = {}) {
 async function demoSearchListings(filters: SearchFilters = {}) {
   const page = filters.page ?? 1;
   const limit = filters.limit ?? 12;
-  const all = await getAggregatedListings();
+  const all = await getAggregatedListingsLazy();
   const filtered = sortListings(
     all.filter((l) => matchesFilters(l, filters)),
     filters.sort,
@@ -133,12 +138,18 @@ export async function getListingBySlug(slug: string): Promise<ListingWithLocatio
     const listing = await dbRepo.dbGetListingBySlug(slug);
     if (listing) return listing;
   }
-  const staticHit =
-    HOLDING_LISTINGS.find((l) => l.slug === slug) ??
-    SEMSARAI_LISTINGS.find((l) => l.slug === slug);
-  if (staticHit) return staticHit as ListingWithLocation;
 
-  const all = await getAggregatedListings();
+  const holdingHit = HOLDING_LISTINGS.find((l) => l.slug === slug);
+  if (holdingHit) return holdingHit as ListingWithLocation;
+
+  if (USE_LIVE_SEARCH) {
+    const semsar = await loadSemsaraiListings();
+    const hit = semsar.find((l) => l.slug === slug);
+    if (hit) return hit as ListingWithLocation;
+    return null;
+  }
+
+  const all = await getAggregatedListingsLazy();
   return all.find((l) => l.slug === slug) ?? null;
 }
 
@@ -147,7 +158,7 @@ export async function getListingById(id: string): Promise<ListingWithLocation | 
     const listing = await dbRepo.dbGetListingById(id);
     if (listing) return listing;
   }
-  const all = await getAggregatedListings();
+  const all = await getAggregatedListingsLazy();
   return all.find((l) => l.id === id) ?? null;
 }
 
@@ -160,7 +171,7 @@ export async function getFeaturedListings(limit = 6): Promise<ListingWithLocatio
     const { items } = await searchSemsaraiLive({ limit, page: 1 });
     return items.slice(0, limit) as ListingWithLocation[];
   }
-  const all = await getAggregatedListings();
+  const all = await getAggregatedListingsLazy();
   return all
     .filter((l) => l.status === "published" && !l.isDemo)
     .sort(
@@ -190,7 +201,7 @@ export async function getCities(): Promise<Array<{ city: string; count: number; 
     if (cities.length > 0) return cities;
   }
 
-  const all = await getAggregatedListings();
+  const all = await getAggregatedListingsLazy();
   const fallback = buildFallbackFromListings(all.filter((x) => x.status === "published"));
   return fallback.cities.map((c) => ({ city: c.name, count: c.count, region: c.region }));
 }
@@ -226,7 +237,6 @@ export async function getRegions(): Promise<
       slug: region
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-|-$/g, ""),
     }))
@@ -239,22 +249,6 @@ export async function getCityIndex(cityName: string) {
 
 export async function getRegionIndex(regionSlug: string) {
   return getAllRegions().find((r) => r.slug === regionSlug.toLowerCase());
-}
-
-export function convertPrice(
-  amount: number,
-  from: "MAD" | "EUR" | "USD",
-  to: "MAD" | "EUR" | "USD",
-): { amount: number; rate: number; date: string; source: string } {
-  const inMad = amount / EXCHANGE_RATES[from];
-  const converted = inMad * EXCHANGE_RATES[to];
-  const rate = EXCHANGE_RATES[to] / EXCHANGE_RATES[from];
-  return {
-    amount: Math.round(converted),
-    rate,
-    date: EXCHANGE_RATES.date,
-    source: EXCHANGE_RATES.source,
-  };
 }
 
 const draftStore: DemoListing[] = [];

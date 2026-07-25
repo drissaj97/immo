@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ListingImage } from "@/components/listings/listing-image";
 import { formatPrice } from "@/lib/utils";
 import type { ListingWithLocation } from "@/server/repositories/listings";
-import { convertPrice } from "@/server/repositories/listings";
+import { convertPrice } from "@/lib/currency";
 import { SourceBadge } from "@/components/listings/source-badge";
 
 export function ListingCard({
