@@ -22,6 +22,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const messages = getMessages(locale as Locale);
   const featured = await getFeaturedListings(6);
   const cities = await getCities();
+  const allCities = cities.map(({ city, count, region }) => ({ city, count, region }));
   const apiTotal = await getSemsaraiTotalCount().catch(() => null);
 
   return (
@@ -48,7 +49,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             investissement et assistant intelligent.
           </p>
           <div className="mt-10 text-left">
-            <PropertySearch locale={locale} variant="hero" />
+            <PropertySearch locale={locale} variant="hero" cities={allCities} />
           </div>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link href={`/${locale}/darbladi`}>
@@ -84,18 +85,28 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
       <section className="bg-sand/40 py-16">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <h2 className="font-serif text-3xl">Villes couvertes</h2>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <h2 className="font-serif text-3xl">Villes couvertes</h2>
+            <Link href={`/${locale}/villes`} className="text-sm text-deep-green hover:underline">
+              Voir les {cities.length} villes →
+            </Link>
+          </div>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-            {cities.map(({ city, count }) => (
+            {cities.slice(0, 12).map(({ city, count }) => (
               <Link
                 key={city}
                 href={`/${locale}/biens?city=${encodeURIComponent(city)}`}
                 className="rounded-lg border border-charcoal/10 bg-ivory p-6 transition hover:border-deep-green/30"
               >
                 <p className="font-serif text-xl">{city}</p>
-                <p className="mt-1 text-sm text-charcoal/60">{count} annonces</p>
+                <p className="mt-1 text-sm text-charcoal/60">{count.toLocaleString("fr-MA")} annonces</p>
               </Link>
             ))}
+          </div>
+          <div className="mt-8 text-center">
+            <Link href={`/${locale}/regions`}>
+              <Button variant="outline">Explorer les régions du Maroc</Button>
+            </Link>
           </div>
         </div>
       </section>

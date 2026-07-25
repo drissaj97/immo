@@ -8,21 +8,6 @@ import { Input } from "@/components/ui/input";
 
 const STORAGE_KEY = "darbladi-last-search";
 
-const POPULAR_CITIES = [
-  "Casablanca",
-  "Rabat",
-  "Marrakech",
-  "Tanger",
-  "Agadir",
-  "Fès",
-  "Salé",
-  "Meknès",
-  "Oujda",
-  "Kénitra",
-  "Tétouan",
-  "Nador",
-];
-
 type SavedSearch = {
   transactionType: "sale" | "long_term_rent";
   city: string;
@@ -31,11 +16,19 @@ type SavedSearch = {
   maxPrice: string;
 };
 
+export type CityOption = {
+  city: string;
+  count?: number;
+  region?: string;
+};
+
 type PropertySearchProps = {
   locale: string;
   variant?: "hero" | "compact";
   defaultTransaction?: "sale" | "long_term_rent";
   initial?: Partial<SavedSearch>;
+  /** Toutes les villes indexées (datalist autocomplete). */
+  cities?: CityOption[];
 };
 
 export function PropertySearch({
@@ -43,6 +36,7 @@ export function PropertySearch({
   variant = "hero",
   defaultTransaction = "sale",
   initial,
+  cities = [],
 }: PropertySearchProps) {
   const router = useRouter();
   const [tab, setTab] = useState<"sale" | "long_term_rent">(
@@ -182,6 +176,9 @@ export function PropertySearch({
           <label className="mb-1.5 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-charcoal/60">
             <MapPin className="h-3.5 w-3.5" />
             Ville
+            {cities.length > 0 && (
+              <span className="normal-case text-charcoal/40">({cities.length} villes)</span>
+            )}
           </label>
           <Input
             list="darbladi-cities"
@@ -191,7 +188,7 @@ export function PropertySearch({
             className="h-11"
           />
           <datalist id="darbladi-cities">
-            {POPULAR_CITIES.map((c) => (
+            {cities.map(({ city: c }) => (
               <option key={c} value={c} />
             ))}
           </datalist>

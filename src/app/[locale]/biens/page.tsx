@@ -1,7 +1,7 @@
 import { ListingCard } from "@/components/listings/listing-card";
 import { ListingPagination } from "@/components/listings/listing-pagination";
 import { PropertyMap } from "@/components/maps/property-map";
-import { searchListings } from "@/server/repositories/listings";
+import { searchListings, getCities } from "@/server/repositories/listings";
 import { getSemsaraiTotalCount } from "@/lib/semsarai/live-search";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -44,9 +44,10 @@ export default async function BiensPage({
     limit: 48,
   };
 
-  const [{ items, total, totalPages, totalAvailable }, apiTotal] = await Promise.all([
+  const [{ items, total, totalPages, totalAvailable }, apiTotal, cities] = await Promise.all([
     searchListings(filters),
     getSemsaraiTotalCount().catch(() => null),
+    getCities(),
   ]);
 
   const catalogTotal = apiTotal ?? totalAvailable ?? total;
@@ -69,6 +70,7 @@ export default async function BiensPage({
         <PropertySearch
           locale={locale}
           variant="compact"
+          cities={cities.map(({ city, count, region }) => ({ city, count, region }))}
           defaultTransaction={filters.transactionType === "long_term_rent" ? "long_term_rent" : "sale"}
           initial={{
             transactionType: filters.transactionType === "long_term_rent" ? "long_term_rent" : "sale",

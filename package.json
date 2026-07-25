@@ -1,6 +1,6 @@
 {
   "name": "darbladi",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -17,6 +17,7 @@
     "db:seed-embeddings": "tsx scripts/seed-embeddings.ts",
     "import:holding": "tsx scripts/import-holding-immo.ts",
     "import:semsarai": "tsx scripts/import-semsarai.ts",
+    "geography:build": "tsx scripts/build-geography-index.ts",
     "aggregation:sync": "tsx scripts/sync-aggregation.ts"
   },
   "dependencies": {

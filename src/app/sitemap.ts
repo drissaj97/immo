@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { getAggregatedListings } from "@/lib/aggregation/sync";
 import { buildCatalogNeighborhoods } from "@/lib/aggregation/catalog-analytics";
 import { PARTNER_ORGANIZATIONS } from "@/lib/data/marketplace-data";
+import { getGeographyIndex } from "@/lib/geography/index";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
@@ -13,6 +14,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/louer",
     "/neuf",
     "/biens",
+    "/villes",
+    "/regions",
     "/carte",
     "/investir",
     "/simulateur-rentabilite",
@@ -57,6 +60,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: "weekly",
         priority: 0.75,
       });
+    }
+
+    const geo = getGeographyIndex();
+    if (geo) {
+      for (const city of geo.cities) {
+        entries.push({
+          url: `${baseUrl}/${locale}/villes/${city.slug}`,
+          lastModified: new Date(geo.builtAt),
+          changeFrequency: "weekly",
+          priority: 0.8,
+        });
+      }
+      for (const region of geo.regions) {
+        entries.push({
+          url: `${baseUrl}/${locale}/regions/${region.slug}`,
+          lastModified: new Date(geo.builtAt),
+          changeFrequency: "weekly",
+          priority: 0.8,
+        });
+      }
     }
 
     for (const org of PARTNER_ORGANIZATIONS) {

@@ -8,6 +8,12 @@ import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import * as dbRepo from "@/server/repositories/listings-db";
 import { syncListingEmbedding } from "@/server/repositories/embedding-sync";
 import { searchSemsaraiLive } from "@/lib/semsarai/live-search";
+import {
+  buildFallbackFromListings,
+  getAllCities,
+  getAllRegions,
+  getGeographyIndex,
+} from "@/lib/geography/index";
 
 const USE_LIVE_SEARCH = process.env.SEMSARAI_LIVE_SEARCH !== "false";
 
@@ -173,17 +179,66 @@ export async function getPendingListings(): Promise<ListingWithLocation[]> {
   return DEMO_LISTINGS.filter((l) => l.status === "pending_review" || l.status === "draft");
 }
 
-export async function getCities(): Promise<Array<{ city: string; count: number }>> {
+export async function getCities(): Promise<Array<{ city: string; count: number; region?: string }>> {
+  const index = getGeographyIndex();
+  if (index && index.cities.length > 0) {
+    return index.cities.map((c) => ({ city: c.name, count: c.count, region: c.region }));
+  }
+
   if (useDatabase()) {
     const cities = await dbRepo.dbGetCities();
     if (cities.length > 0) return cities;
   }
-  const map = new Map<string, number>();
+
   const all = await getAggregatedListings();
-  for (const l of all.filter((x) => x.status === "published")) {
-    map.set(l.location.city, (map.get(l.location.city) ?? 0) + 1);
+  const fallback = buildFallbackFromListings(all.filter((x) => x.status === "published"));
+  return fallback.cities.map((c) => ({ city: c.name, count: c.count, region: c.region }));
+}
+
+export async function getRegions(): Promise<
+  Array<{ region: string; count: number; cities: string[]; slug: string }>
+> {
+  const index = getGeographyIndex();
+  if (index && index.regions.length > 0) {
+    return index.regions.map((r) => ({
+      region: r.name,
+      count: r.count,
+      cities: r.cities,
+      slug: r.slug,
+    }));
   }
-  return Array.from(map.entries()).map(([city, count]) => ({ city, count }));
+
+  const cities = await getCities();
+  const regionMap = new Map<string, { count: number; cities: Set<string> }>();
+  for (const { city, count, region } of cities) {
+    const r = region ?? city;
+    const entry = regionMap.get(r) ?? { count: 0, cities: new Set<string>() };
+    entry.count += count;
+    entry.cities.add(city);
+    regionMap.set(r, entry);
+  }
+
+  return Array.from(regionMap.entries())
+    .map(([region, data]) => ({
+      region,
+      count: data.count,
+      cities: Array.from(data.cities).sort((a, b) => a.localeCompare(b, "fr")),
+      slug: region
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, ""),
+    }))
+    .sort((a, b) => b.count - a.count);
+}
+
+export async function getCityIndex(cityName: string) {
+  return getAllCities().find((c) => c.name.toLowerCase() === cityName.toLowerCase());
+}
+
+export async function getRegionIndex(regionSlug: string) {
+  return getAllRegions().find((r) => r.slug === regionSlug.toLowerCase());
 }
 
 export function convertPrice(
