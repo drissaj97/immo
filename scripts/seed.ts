@@ -9,6 +9,7 @@ import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "../src/lib/db/schema";
+import { getCatalogListings } from "../src/lib/data/catalog";
 import { DEMO_LISTINGS, DEMO_LOCATIONS, DEMO_USERS, EXCHANGE_RATES } from "../src/lib/data/demo-data";
 import {
   DEMO_ORGANIZATIONS,
@@ -78,7 +79,8 @@ async function main() {
   }
 
   console.log("Seeding listings...");
-  for (const listing of DEMO_LISTINGS) {
+  const catalogListings = getCatalogListings();
+  for (const listing of catalogListings) {
     const locationId = locationIdBySlug.get(listing.location.slug);
     const [inserted] = await db
       .insert(schema.listings)
@@ -112,7 +114,7 @@ async function main() {
         completenessScore: listing.completenessScore,
         freshnessScore: listing.freshnessScore,
         isVerified: listing.isVerified,
-        isDemo: true,
+        isDemo: listing.isDemo,
         publishedAt: new Date(listing.publishedAt),
       })
       .onConflictDoUpdate({

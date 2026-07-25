@@ -1,3 +1,4 @@
+import { getCatalogListings } from "@/lib/data/catalog";
 import { DEMO_LISTINGS } from "@/lib/data/demo-data";
 import { NEIGHBORHOOD_KNOWLEDGE } from "@/lib/data/neighborhood-knowledge";
 import { createEmbeddingProvider } from "@/modules/ai/embeddings-provider";
@@ -15,7 +16,7 @@ const neighborhoodDocs = buildEmbeddingDocuments(
 );
 
 const listingDocs = buildEmbeddingDocuments(
-  DEMO_LISTINGS.filter((l) => l.status === "published").map((l) => ({
+  getCatalogListings().filter((l) => l.status === "published").map((l) => ({
     id: l.id,
     text: `${l.title} ${l.description} ${l.location.city} ${l.location.neighborhood} ${l.listingType} ${l.transactionType}`,
     metadata: { slug: l.slug, city: l.location.city, type: "listing" },

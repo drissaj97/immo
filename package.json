@@ -14,7 +14,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:seed": "tsx scripts/seed.ts",
-    "db:seed-embeddings": "tsx scripts/seed-embeddings.ts"
+    "db:seed-embeddings": "tsx scripts/seed-embeddings.ts",
+    "import:holding": "tsx scripts/import-holding-immo.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.3",

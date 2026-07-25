@@ -7,6 +7,11 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     include: ["tests/**/*.test.ts", "tests/**/*.test.tsx"],
+    env: {
+      AI_PROVIDER: "mock",
+      EMBEDDING_PROVIDER: "mock",
+      OPENAI_API_KEY: "",
+    },
   },
   resolve: {
     alias: {

@@ -37,10 +37,12 @@ export type DemoListing = {
   images: string[];
   sourceType: string;
   sourceName: string;
+  sourceUrl?: string;
+  externalId?: string;
   completenessScore: number;
   freshnessScore: number;
   isVerified: boolean;
-  isDemo: true;
+  isDemo: true | false;
   publishedAt: string;
   estimatedYield?: number;
 };

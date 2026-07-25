@@ -66,7 +66,7 @@ describe("Geographic expansion 20+", () => {
   it("index embeddings à jour", () => {
     const stats = getEmbeddingIndexStats();
     expect(stats.neighborhoods).toBeGreaterThanOrEqual(20);
-    expect(stats.listings).toBeGreaterThanOrEqual(15);
+    expect(stats.listings).toBeGreaterThanOrEqual(50);
     expect(stats.provider).toBe("mock");
   });
 

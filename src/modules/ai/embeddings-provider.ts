@@ -1,5 +1,7 @@
 /** Embedding provider abstraction — mock (local) or OpenAI text-embedding-3-small. */
 
+import { OpenAIQuotaError, openaiFetch } from "./openai-fetch";
+
 export type EmbeddingProviderName = "mock" | "openai";
 
 export interface EmbeddingProvider {
@@ -35,7 +37,7 @@ class OpenAIEmbeddingProvider implements EmbeddingProvider {
     const key = process.env.OPENAI_API_KEY;
     if (!key) throw new Error("OPENAI_API_KEY required for OpenAI embeddings");
 
-    const res = await fetch("https://api.openai.com/v1/embeddings", {
+    const res = await openaiFetch("https://api.openai.com/v1/embeddings", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${key}`,
@@ -49,6 +51,10 @@ class OpenAIEmbeddingProvider implements EmbeddingProvider {
 
     if (!res.ok) {
       const err = await res.text();
+      if (res.status === 429 && err.includes("quota")) {
+        console.warn("[ai:embeddings] Quota exceeded — falling back to mock embeddings");
+        return texts.map((t) => mockEmbed(t, this.dimensions));
+      }
       throw new Error(`OpenAI embeddings failed: ${err}`);
     }
 

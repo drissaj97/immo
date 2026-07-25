@@ -1,5 +1,5 @@
 import { assistantResponseSchema, type AssistantResponse, type LLMMessage, type ToolContext } from "./types";
-import { createLLMProvider, MockLLMProvider, OpenAILLMProvider } from "./llm-provider";
+import { createLLMProvider, MockLLMProvider, OpenAILLMProvider, ResilientLLMProvider } from "./llm-provider";
 import { executeFromNaturalLanguage } from "./tools";
 
 const SYSTEM_PROMPT = `Tu es DarBladi, l'assistant immobilier pour le Maroc.
@@ -32,8 +32,23 @@ export async function runAssistant(
   ];
 
   let response: AssistantResponse;
+  let mode = provider.name;
 
-  if (provider instanceof OpenAILLMProvider) {
+  if (provider instanceof ResilientLLMProvider) {
+    try {
+      response = await provider.structured(assistantResponseSchema, messages);
+      mode = provider.activeMode === "mock-fallback" ? "mock-fallback" : "openai";
+      if (provider.fallbackReasonText) {
+        response.assumptions = [
+          ...(response.assumptions ?? []),
+          provider.fallbackReasonText,
+        ];
+      }
+    } catch {
+      response = await new MockLLMProvider().structured(assistantResponseSchema, messages);
+      mode = "mock";
+    }
+  } else if (provider instanceof OpenAILLMProvider) {
     try {
       response = await provider.structured(assistantResponseSchema, messages);
     } catch {
@@ -52,7 +67,7 @@ export async function runAssistant(
     citations: [
       ...(response.citations ?? []),
       {
-        source: "DarBladi catalogue démo",
+        source: "DarBladi catalogue",
         type: "fact" as const,
         label: `${listings.length} bien(s) correspondant(s)`,
       },
@@ -64,7 +79,9 @@ export async function runAssistant(
           }]
         : []),
     ],
-    mode: provider.name,
+    mode: provider instanceof ResilientLLMProvider && provider.activeMode === "mock-fallback"
+      ? "mock-fallback"
+      : mode,
     toolResults,
   };
 }

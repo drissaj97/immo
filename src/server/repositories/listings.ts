@@ -1,3 +1,4 @@
+import { getCatalogListings } from "@/lib/data/catalog";
 import { DEMO_LISTINGS, EXCHANGE_RATES, type DemoListing } from "@/lib/data/demo-data";
 import { useDatabase } from "@/lib/db/repository";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
@@ -42,11 +43,16 @@ function sortListings(listings: DemoListing[], sort?: SearchFilters["sort"]): De
   }
 }
 
+function getAllListings(): DemoListing[] {
+  return getCatalogListings();
+}
+
 function demoSearchListings(filters: SearchFilters = {}) {
   const page = filters.page ?? 1;
   const limit = filters.limit ?? 12;
+  const all = getAllListings();
   const filtered = sortListings(
-    DEMO_LISTINGS.filter((l) => matchesFilters(l, filters)),
+    all.filter((l) => matchesFilters(l, filters)),
     filters.sort,
   );
   const start = (page - 1) * limit;
@@ -77,7 +83,7 @@ export async function getListingBySlug(slug: string): Promise<ListingWithLocatio
     const listing = await dbRepo.dbGetListingBySlug(slug);
     if (listing) return listing;
   }
-  return DEMO_LISTINGS.find((l) => l.slug === slug) ?? null;
+  return getAllListings().find((l) => l.slug === slug) ?? null;
 }
 
 export async function getListingById(id: string): Promise<ListingWithLocation | null> {
@@ -85,7 +91,7 @@ export async function getListingById(id: string): Promise<ListingWithLocation | 
     const listing = await dbRepo.dbGetListingById(id);
     if (listing) return listing;
   }
-  return DEMO_LISTINGS.find((l) => l.id === id) ?? null;
+  return getAllListings().find((l) => l.id === id) ?? null;
 }
 
 export async function getFeaturedListings(limit = 6): Promise<ListingWithLocation[]> {
@@ -93,7 +99,8 @@ export async function getFeaturedListings(limit = 6): Promise<ListingWithLocatio
     const items = await dbRepo.dbGetFeaturedListings(limit);
     if (items.length > 0) return items;
   }
-  return DEMO_LISTINGS.filter((l) => l.status === "published")
+  return getAllListings()
+    .filter((l) => l.status === "published")
     .sort((a, b) => b.completenessScore - a.completenessScore)
     .slice(0, limit);
 }
@@ -103,7 +110,7 @@ export async function getPendingListings(): Promise<ListingWithLocation[]> {
     const items = await dbRepo.dbGetPendingListings();
     if (items.length > 0) return items;
   }
-  return DEMO_LISTINGS.filter((l) => l.status === "pending_review" || l.status === "draft");
+  return getAllListings().filter((l) => l.status === "pending_review" || l.status === "draft");
 }
 
 export async function getCities(): Promise<Array<{ city: string; count: number }>> {
@@ -112,7 +119,7 @@ export async function getCities(): Promise<Array<{ city: string; count: number }
     if (cities.length > 0) return cities;
   }
   const map = new Map<string, number>();
-  for (const l of DEMO_LISTINGS.filter((x) => x.status === "published")) {
+  for (const l of getAllListings().filter((x) => x.status === "published")) {
     map.set(l.location.city, (map.get(l.location.city) ?? 0) + 1);
   }
   return Array.from(map.entries()).map(([city, count]) => ({ city, count }));

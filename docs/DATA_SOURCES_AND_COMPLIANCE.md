@@ -13,7 +13,8 @@
 | Source | Type | Statut | Usage MVP | Notes conformité |
 |--------|------|--------|-----------|------------------|
 | **Saisie first-party** | Annonces créées par utilisateurs plateforme | **Autorisée** | Publication agent/admin | Contrat CGU, validation modération |
-| **Données démo internes** | `demo-data.ts` | **Autorisée** | Catalogue MVP | Fictives, références SA-D*, Unsplash |
+| **Données démo internes** | `demo-data.ts` | **Autorisée** | Catalogue seed | Fictives, références SA-D*, Unsplash |
+| **Holding IMMO (first-party)** | Import JSON-LD `holding-listings.ts` | **Autorisée** | Catalogue principal Marrakech | Migration agence sœur, `isDemo: false`, source tracée |
 | **API partenaires agences** | Flux XML/JSON signé | **À vérifier** | Non implémenté | Nécessite contrat, DPA, droits diffusion |
 | **Promoteurs (programmes neufs)** | Import manuel / API | **À vérifier** | Section `/neuf` démo | Mandat commercial requis |
 | **Banque Al-Maghrib** | Taux de change officiels | **Autorisée** | Conversion EUR/USD | Source indicative, disclaimer affiché |

@@ -7,6 +7,24 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [1.2.0] — 2026-07-25
+
+### Quota OpenAI + catalogue Holding IMMO
+
+**Résolution quota OpenAI**
+- Fallback automatique `ResilientLLMProvider` si `insufficient_quota`
+- Endpoint `GET /api/v1/ai/health` — diagnostic quota/billing
+- Variable `AI_FALLBACK_ON_QUOTA=true` (défaut)
+- Script `pnpm exec tsx scripts/test-openai.ts`
+
+**Catalogue réel Holding IMMO (50 annonces)**
+- Import first-party depuis sitemap + JSON-LD Schema.org
+- Script `pnpm import:holding` → `src/lib/data/holding-listings.ts`
+- Catalogue unifié via `getCatalogListings()` (~68 annonces publiées)
+- `isDemo: false`, photos réelles, références HI###, source tracée
+
+---
+
 ## [1.1.0] — 2026-07-25
 
 ### Phase 9 — Release
