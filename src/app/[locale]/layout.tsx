@@ -1,0 +1,63 @@
+import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { notFound } from "next/navigation";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { CookieConsent } from "@/components/layout/cookie-consent";
+import { PwaRegister } from "@/components/layout/pwa-register";
+import { ReferralCapture } from "@/components/affiliates/referral-capture";
+import { Suspense } from "react";
+import { getSession } from "@/lib/auth/session";
+import { getMessages, isRtl, locales, type Locale } from "@/lib/i18n/config";
+import "../globals.css";
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-cormorant",
+  weight: ["400", "500", "600", "700"],
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+});
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
+export default async function LocaleLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  if (!locales.includes(locale as Locale)) notFound();
+
+  const typedLocale = locale as Locale;
+  const messages = getMessages(typedLocale);
+  const user = await getSession();
+  const dir = isRtl(typedLocale) ? "rtl" : "ltr";
+
+  return (
+    <html lang={locale} dir={dir} className={`${cormorant.variable} ${dmSans.variable} h-full`}>
+      <head>
+        <meta name="theme-color" content="#1B4332" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content="DarBladi" />
+      </head>
+      <body className="min-h-full flex flex-col bg-ivory text-charcoal antialiased">
+        <Header locale={typedLocale} messages={messages} user={user} />
+        <main className="flex-1">{children}</main>
+        <Footer messages={messages} locale={locale} />
+        <CookieConsent locale={locale} />
+        <PwaRegister />
+        <Suspense fallback={null}>
+          <ReferralCapture locale={locale} />
+        </Suspense>
+      </body>
+    </html>
+  );
+}

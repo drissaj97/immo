@@ -1,0 +1,33 @@
+{
+  "source": "avito",
+  "licenseStatus": "scraped",
+  "syncedAt": "2026-07-25T17:05:08.569Z",
+  "listings": [
+    {
+      "externalId": "58150512",
+      "title": "TRIANGLE D’OR Appartement À LOUER meublé et moderne",
+      "description": "TRIANGLE D’OR Appartement À LOUER meublé et moderne",
+      "price": 10000,
+      "currency": "MAD",
+      "transactionType": "long_term_rent",
+      "listingType": "apartment",
+      "city": "Triangle D Or",
+      "neighborhood": "Triangle D Or",
+      "images": [
+        "https://content.avito.ma/classifieds/images/10150983417?t=images",
+        "https://content.avito.ma/classifieds/images/10150983418?t=images",
+        "https://content.avito.ma/classifieds/images/10150983417?t=images",
+        "https://content.avito.ma/classifieds/images/10150983418?t=images",
+        "https://content.avito.ma/stores/logo_4019_gsx.jpg",
+        "https://assets.avito.ma/icons/svg/adparam_rooms.svg",
+        "https://assets.avito.ma/icons/svg/adparam_bathrooms.svg",
+        "https://assets.avito.ma/icons/svg/adparam_size.svg",
+        "https://assets.avito.ma/icons/svg/adparam_floor.svg",
+        "https://assets.avito.ma/icons/svg/adparam_deposit.svg",
+        "https://assets.avito.ma/icons/svg/adparam_spare_rooms.svg",
+        "https://assets.avito.ma/icons/svg/adparam_elevator.svg"
+      ],
+      "sourceUrl": "https://www.avito.ma/fr/triangle_d_or/appartements/TRIANGLE_D_OR_Appartement_%C3%80_LOUER_meubl%C3%A9_et_moderne_58150512.htm"
+    }
+  ]
+}
