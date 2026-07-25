@@ -10,11 +10,12 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const sim = saveSimulation(
+  const sim = await saveSimulation(
     body.name ?? "Simulation",
     body.inputs as InvestmentInputs,
     body.scenario ?? "central",
     body.listingId,
+    user.id,
   );
 
   return NextResponse.json(sim);
@@ -27,5 +28,5 @@ export async function GET() {
   }
 
   const { listSimulations } = await import("@/server/repositories/investment");
-  return NextResponse.json(listSimulations(user.id));
+  return NextResponse.json(await listSimulations(user.id));
 }

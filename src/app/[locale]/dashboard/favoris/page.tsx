@@ -1,25 +1,28 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { DEMO_LISTINGS } from "@/lib/data/demo-data";
+import { redirect } from "next/navigation";
+import { getSession } from "@/lib/auth/session";
+import { listFavoriteListings } from "@/server/repositories/favorites";
 import { ListingCard } from "@/components/listings/listing-card";
+import { buildMetadata } from "@/lib/seo/metadata";
 
-function readFavoriteListings() {
-  if (typeof window === "undefined") return [];
-  const ids = JSON.parse(localStorage.getItem("darbladi_favorites") ?? "[]") as string[];
-  return DEMO_LISTINGS.filter((l) => ids.includes(l.id));
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  return buildMetadata({ title: "Favoris", description: "Vos biens favoris.", path: "/dashboard/favoris", locale });
 }
 
-export default function FavorisPage() {
-  const params = useParams();
-  const locale = (params.locale as string) ?? "fr";
-  const [favorites] = useState(readFavoriteListings);
+export default async function FavorisPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const user = await getSession();
+  if (!user) redirect(`/${locale}/connexion`);
+
+  const favorites = await listFavoriteListings(user.id);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
       <h1 className="font-serif text-3xl">Favoris</h1>
+      <Link href={`/${locale}/dashboard`} className="mt-2 inline-block text-sm text-deep-green hover:underline">
+        ← Dashboard
+      </Link>
       {favorites.length === 0 ? (
         <p className="mt-4 text-charcoal/60">
           Aucun favori.{" "}

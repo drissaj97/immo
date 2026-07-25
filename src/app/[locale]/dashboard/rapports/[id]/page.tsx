@@ -19,7 +19,7 @@ export default async function ReportPage({
   params: Promise<{ locale: string; id: string }>;
 }) {
   const { locale, id } = await params;
-  const report = getInvestmentReport(id);
+  const report = await getInvestmentReport(id);
   if (!report) notFound();
 
   return <InvestmentReportView report={report} locale={locale} />;

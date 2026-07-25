@@ -7,6 +7,36 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [0.5.0] — 2026-07-25
+
+### Phase 5 — Marketplace multi-acteurs
+
+- Pages `/professionnels`, `/promoteurs` avec fiches agences, agents et programmes neufs
+- Dashboard CRM `/dashboard/leads` (statuts new → contacted → qualified → closed)
+- Import CSV partenaires `/dashboard/import` + API `/api/import/listings`
+- Alertes et recherches sauvegardées `/dashboard/alertes` + API `/api/saved-searches`
+- Données démo : 3 agences, 2 promoteurs, 3 agents, 3 programmes neufs
+- Navigation enrichie (Professionnels, Promoteurs)
+- Formulaire contact → création lead
+
+---
+
+## [0.4.0] — 2026-07-25
+
+### Phase 4 — Production data & auth
+
+- Repository PostgreSQL pour listings avec fallback `DEMO_MODE` / mémoire
+- Abstraction auth `AUTH_PROVIDER` (JWT + stub Supabase-ready)
+- Favoris persistants API `/api/favorites` + page dashboard
+- Simulations et rapports persistés en DB quand PostgreSQL configuré
+- Schéma étendu : `organizations`, `leads`, `saved_searches`, `projects`, etc.
+- Seed enrichi : users bcrypt, orgs, leads, `external_id` pour IDs démo
+- Migration RLS `supabase/migrations/001_rls.sql`
+- CI GitHub Actions (typecheck, lint, test, build)
+- `.env.example` documenté
+
+---
+
 ## [0.3.0] — 2026-07-25
 
 ### Rebranding DarBladi + Phase 3 — Intelligence artificielle

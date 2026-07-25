@@ -1,7 +1,7 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
-import { DEMO_USERS } from "@/lib/data/demo-data";
+import { authenticateWithProvider } from "@/lib/auth/provider";
 
 export type SessionUser = {
   id: string;
@@ -30,14 +30,7 @@ export async function authenticateUser(
   email: string,
   password: string,
 ): Promise<SessionUser | null> {
-  const user = DEMO_USERS.find((u) => u.email === email);
-  if (!user || user.password !== password) return null;
-  return {
-    id: user.id,
-    email: user.email,
-    role: user.role,
-    fullName: user.fullName,
-  };
+  return authenticateWithProvider(email, password);
 }
 
 export async function createSession(user: SessionUser) {

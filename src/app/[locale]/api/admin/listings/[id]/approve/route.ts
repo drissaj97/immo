@@ -11,6 +11,6 @@ export async function POST(
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
   const { id } = await params;
-  const ok = approveListing(id);
+  const ok = await approveListing(id);
   return NextResponse.json({ ok });
 }

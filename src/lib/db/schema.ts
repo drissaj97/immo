@@ -159,7 +159,10 @@ export const favorites = pgTable(
       .references(() => listings.id, { onDelete: "cascade" }),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   },
-  (table) => [index("favorites_user_idx").on(table.userId)],
+  (table) => [
+    index("favorites_user_idx").on(table.userId),
+    index("favorites_user_listing_idx").on(table.userId, table.listingId),
+  ],
 );
 
 export const exchangeRates = pgTable("exchange_rates", {
@@ -229,6 +232,121 @@ export const auditLogs = pgTable("audit_logs", {
   action: varchar("action", { length: 128 }).notNull(),
   entityType: varchar("entity_type", { length: 64 }),
   entityId: uuid("entity_id"),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const organizationTypeEnum = pgEnum("organization_type", [
+  "agency",
+  "developer",
+  "management",
+  "partner",
+  "other",
+]);
+
+export const organizations = pgTable("organizations", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: varchar("name", { length: 255 }).notNull(),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  type: organizationTypeEnum("type").notNull().default("agency"),
+  description: text("description"),
+  logoUrl: text("logo_url"),
+  isVerified: boolean("is_verified").default(false),
+  isDemo: boolean("is_demo").default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const organizationMembers = pgTable(
+  "organization_members",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    role: varchar("role", { length: 64 }).notNull().default("agent"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [index("org_members_user_idx").on(table.userId)],
+);
+
+export const professionalProfiles = pgTable("professional_profiles", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => users.id),
+  organizationId: uuid("organization_id").references(() => organizations.id),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  displayName: varchar("display_name", { length: 255 }).notNull(),
+  bio: text("bio"),
+  phone: varchar("phone", { length: 32 }),
+  city: varchar("city", { length: 128 }),
+  isVerified: boolean("is_verified").default(false),
+  isDemo: boolean("is_demo").default(true),
+});
+
+export const projects = pgTable("projects", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").references(() => organizations.id),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  city: varchar("city", { length: 128 }).notNull(),
+  neighborhood: varchar("neighborhood", { length: 128 }),
+  status: varchar("status", { length: 32 }).default("selling"),
+  deliveryDate: timestamp("delivery_date", { withTimezone: true }),
+  isDemo: boolean("is_demo").default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const leads = pgTable(
+  "leads",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    listingId: uuid("listing_id").references(() => listings.id),
+    assignedToId: uuid("assigned_to_id").references(() => users.id),
+    organizationId: uuid("organization_id").references(() => organizations.id),
+    contactName: varchar("contact_name", { length: 255 }),
+    contactEmail: varchar("contact_email", { length: 255 }),
+    contactPhone: varchar("contact_phone", { length: 32 }),
+    message: text("message"),
+    status: varchar("status", { length: 32 }).notNull().default("new"),
+    source: varchar("source", { length: 64 }).default("website"),
+    isDemo: boolean("is_demo").default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [index("leads_status_idx").on(table.status)],
+);
+
+export const savedSearches = pgTable(
+  "saved_searches",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    name: varchar("name", { length: 255 }).notNull(),
+    filters: jsonb("filters").notNull(),
+    alertEnabled: boolean("alert_enabled").default(false),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [index("saved_searches_user_idx").on(table.userId)],
+);
+
+export const conversations = pgTable("conversations", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => users.id),
+  title: varchar("title", { length: 255 }),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const messages = pgTable("messages", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  conversationId: uuid("conversation_id")
+    .notNull()
+    .references(() => conversations.id, { onDelete: "cascade" }),
+  role: varchar("role", { length: 16 }).notNull(),
+  content: text("content").notNull(),
   metadata: jsonb("metadata"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });

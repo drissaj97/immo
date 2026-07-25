@@ -27,6 +27,8 @@ export function Header({
     { href: `${prefix}/acheter`, label: messages.nav.buy },
     { href: `${prefix}/louer`, label: messages.nav.rent },
     { href: `${prefix}/neuf`, label: messages.nav.new },
+    { href: `${prefix}/professionnels`, label: "Professionnels" },
+    { href: `${prefix}/promoteurs`, label: "Promoteurs" },
     { href: `${prefix}/carte`, label: messages.nav.map },
     { href: `${prefix}/investir`, label: messages.nav.invest },
     { href: `${prefix}/darbladi`, label: messages.nav.ai },

@@ -15,8 +15,8 @@ export default async function SimulationsPage({ params }: { params: Promise<{ lo
   const user = await getSession();
   if (!user) redirect(`/${locale}/connexion`);
 
-  const simulations = listSimulations(user.id);
-  const reports = listReports();
+  const simulations = await listSimulations(user.id);
+  const reports = await listReports(user.id);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8">

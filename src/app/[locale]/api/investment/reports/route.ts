@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getSession } from "@/lib/auth/session";
 import { getListingById } from "@/server/repositories/listings";
 import { createInvestmentReport } from "@/server/repositories/investment";
 
@@ -7,6 +8,7 @@ export async function POST(
   { params }: { params: Promise<{ locale: string }> },
 ) {
   await params;
+  const user = await getSession();
   const { listingId } = await request.json();
   if (!listingId) {
     return NextResponse.json({ error: "listingId required" }, { status: 400 });
@@ -17,6 +19,6 @@ export async function POST(
     return NextResponse.json({ error: "Listing not found" }, { status: 404 });
   }
 
-  const report = createInvestmentReport(listing);
+  const report = await createInvestmentReport(listing, user?.id);
   return NextResponse.json({ id: report.id, report });
 }

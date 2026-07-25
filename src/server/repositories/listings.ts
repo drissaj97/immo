@@ -1,5 +1,7 @@
 import { DEMO_LISTINGS, EXCHANGE_RATES, type DemoListing } from "@/lib/data/demo-data";
+import { useDatabase } from "@/lib/db/repository";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
+import * as dbRepo from "@/server/repositories/listings-db";
 
 export type ListingWithLocation = DemoListing;
 
@@ -40,12 +42,7 @@ function sortListings(listings: DemoListing[], sort?: SearchFilters["sort"]): De
   }
 }
 
-export async function searchListings(filters: SearchFilters = {}): Promise<{
-  items: ListingWithLocation[];
-  total: number;
-  page: number;
-  totalPages: number;
-}> {
+function demoSearchListings(filters: SearchFilters = {}) {
   const page = filters.page ?? 1;
   const limit = filters.limit ?? 12;
   const filtered = sortListings(
@@ -62,25 +59,58 @@ export async function searchListings(filters: SearchFilters = {}): Promise<{
   };
 }
 
+export async function searchListings(filters: SearchFilters = {}): Promise<{
+  items: ListingWithLocation[];
+  total: number;
+  page: number;
+  totalPages: number;
+}> {
+  if (useDatabase()) {
+    const result = await dbRepo.dbSearchListings(filters);
+    if (result) return result;
+  }
+  return demoSearchListings(filters);
+}
+
 export async function getListingBySlug(slug: string): Promise<ListingWithLocation | null> {
+  if (useDatabase()) {
+    const listing = await dbRepo.dbGetListingBySlug(slug);
+    if (listing) return listing;
+  }
   return DEMO_LISTINGS.find((l) => l.slug === slug) ?? null;
 }
 
 export async function getListingById(id: string): Promise<ListingWithLocation | null> {
+  if (useDatabase()) {
+    const listing = await dbRepo.dbGetListingById(id);
+    if (listing) return listing;
+  }
   return DEMO_LISTINGS.find((l) => l.id === id) ?? null;
 }
 
 export async function getFeaturedListings(limit = 6): Promise<ListingWithLocation[]> {
+  if (useDatabase()) {
+    const items = await dbRepo.dbGetFeaturedListings(limit);
+    if (items.length > 0) return items;
+  }
   return DEMO_LISTINGS.filter((l) => l.status === "published")
     .sort((a, b) => b.completenessScore - a.completenessScore)
     .slice(0, limit);
 }
 
 export async function getPendingListings(): Promise<ListingWithLocation[]> {
+  if (useDatabase()) {
+    const items = await dbRepo.dbGetPendingListings();
+    if (items.length > 0) return items;
+  }
   return DEMO_LISTINGS.filter((l) => l.status === "pending_review" || l.status === "draft");
 }
 
 export async function getCities(): Promise<Array<{ city: string; count: number }>> {
+  if (useDatabase()) {
+    const cities = await dbRepo.dbGetCities();
+    if (cities.length > 0) return cities;
+  }
   const map = new Map<string, number>();
   for (const l of DEMO_LISTINGS.filter((x) => x.status === "published")) {
     map.set(l.location.city, (map.get(l.location.city) ?? 0) + 1);
@@ -104,7 +134,6 @@ export function convertPrice(
   };
 }
 
-// In-memory store for drafts created during demo sessions
 const draftStore: DemoListing[] = [];
 
 export function addDraftListing(listing: DemoListing) {
@@ -112,7 +141,11 @@ export function addDraftListing(listing: DemoListing) {
   DEMO_LISTINGS.push(listing);
 }
 
-export function approveListing(id: string): boolean {
+export async function approveListing(id: string): Promise<boolean> {
+  if (useDatabase()) {
+    const ok = await dbRepo.dbApproveListing(id);
+    if (ok) return true;
+  }
   const listing = DEMO_LISTINGS.find((l) => l.id === id);
   if (!listing) return false;
   listing.status = "published";
@@ -120,7 +153,11 @@ export function approveListing(id: string): boolean {
   return true;
 }
 
-export function rejectListing(id: string): boolean {
+export async function rejectListing(id: string): Promise<boolean> {
+  if (useDatabase()) {
+    const ok = await dbRepo.dbRejectListing(id);
+    if (ok) return true;
+  }
   const listing = DEMO_LISTINGS.find((l) => l.id === id);
   if (!listing) return false;
   listing.status = "rejected";
