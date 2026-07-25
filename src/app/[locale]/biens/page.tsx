@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { ListingCard } from "@/components/listings/listing-card";
-import { ListingPagination } from "@/components/listings/listing-pagination";
+import { ListingsFeed } from "@/components/listings/listings-feed";
 import { PropertyMapLazy } from "@/components/maps/property-map-lazy";
 import { searchListings } from "@/server/repositories/listings";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
@@ -9,8 +8,9 @@ import { PropertySearch } from "@/components/search/property-search";
 import { getGeographySearchTree } from "@/lib/geography/index";
 import { prepareMapPageData } from "@/lib/map/prepare-map-page";
 import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-gate";
+import { LISTINGS_PAGE_SIZE, MAP_PAGE_SIZE } from "@/lib/search/page-size";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -33,7 +33,7 @@ export default async function BiensPage({
   const sp = await searchParams;
   const geography = getGeographySearchTree();
 
-  const filters: SearchFilters = {
+  const baseFilters: SearchFilters = {
     transactionType: (sp.transactionType as SearchFilters["transactionType"]) ?? undefined,
     region: sp.region as string | undefined,
     listingType: (sp.listingType as SearchFilters["listingType"]) ?? undefined,
@@ -46,18 +46,23 @@ export default async function BiensPage({
     isVerified: sp.isVerified === "true" ? true : undefined,
     source: sp.source as SearchFilters["source"],
     sort: (sp.sort as SearchFilters["sort"]) ?? "recent",
-    page: sp.page ? Number(sp.page) : 1,
-    limit: 48,
   };
 
-  const hasLocation = hasCompleteLocation(filters);
-  const searchResult = hasLocation
-    ? await searchListings(filters)
-    : { items: [], total: 0, totalPages: 1, totalAvailable: 0, page: 1 };
+  const hasLocation = hasCompleteLocation(baseFilters);
 
-  const { items, total, totalPages, totalAvailable } = searchResult;
-  const catalogTotal = totalAvailable ?? total;
-  const mapData = hasLocation && items.length > 0 ? await prepareMapPageData(items) : null;
+  const [searchResult, mapResult] = hasLocation
+    ? await Promise.all([
+        searchListings({ ...baseFilters, page: 1, limit: LISTINGS_PAGE_SIZE }),
+        searchListings({ ...baseFilters, page: 1, limit: MAP_PAGE_SIZE }),
+      ])
+    : [
+        { items: [], total: 0, totalPages: 1, totalAvailable: 0, page: 1 },
+        { items: [], total: 0, totalPages: 1, totalAvailable: 0, page: 1 },
+      ];
+
+  const { items, total, totalPages } = searchResult;
+  const mapData =
+    hasLocation && mapResult.items.length > 0 ? await prepareMapPageData(mapResult.items) : null;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
@@ -67,9 +72,9 @@ export default async function BiensPage({
           {hasLocation ? (
             <>
               {total.toLocaleString("fr-MA")} résultat{total > 1 ? "s" : ""}
-              {filters.region && ` · ${filters.region}`}
-              {filters.city && ` · ${filters.city}`}
-              {filters.neighborhood && ` · ${filters.neighborhood}`}
+              {filtersLabel(baseFilters)}
+              {" · "}
+              {LISTINGS_PAGE_SIZE} par page
             </>
           ) : (
             <>Sélectionnez une région, une ville et un quartier pour afficher les annonces</>
@@ -87,15 +92,15 @@ export default async function BiensPage({
           variant="compact"
           geography={geography}
           requireLocation
-          defaultTransaction={filters.transactionType === "long_term_rent" ? "long_term_rent" : "sale"}
+          defaultTransaction={baseFilters.transactionType === "long_term_rent" ? "long_term_rent" : "sale"}
           initial={{
-            transactionType: filters.transactionType === "long_term_rent" ? "long_term_rent" : "sale",
-            region: filters.region ?? "",
-            city: filters.city ?? "",
-            neighborhood: filters.neighborhood ?? "",
-            listingType: filters.listingType ?? "",
-            minPrice: filters.minPrice ? String(filters.minPrice) : "",
-            maxPrice: filters.maxPrice ? String(filters.maxPrice) : "",
+            transactionType: baseFilters.transactionType === "long_term_rent" ? "long_term_rent" : "sale",
+            region: baseFilters.region ?? "",
+            city: baseFilters.city ?? "",
+            neighborhood: baseFilters.neighborhood ?? "",
+            listingType: baseFilters.listingType ?? "",
+            minPrice: baseFilters.minPrice ? String(baseFilters.minPrice) : "",
+            maxPrice: baseFilters.maxPrice ? String(baseFilters.maxPrice) : "",
           }}
         />
       </div>
@@ -108,8 +113,8 @@ export default async function BiensPage({
             nearbyPois={mapData.nearbyPois}
             locale={locale}
             neighborhoodLabel={
-              filters.neighborhood && filters.city
-                ? `${filters.neighborhood}, ${filters.city}`
+              baseFilters.neighborhood && baseFilters.city
+                ? `${baseFilters.neighborhood}, ${baseFilters.city}`
                 : undefined
             }
           />
@@ -117,11 +122,32 @@ export default async function BiensPage({
       )}
 
       {hasLocation ? (
-        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {items.map((listing) => (
-            <ListingCard key={listing.id} listing={listing} locale={locale} />
-          ))}
-        </div>
+        items.length > 0 ? (
+          <ListingsFeed
+            locale={locale}
+            initialItems={items}
+            total={total}
+            totalPages={totalPages}
+            query={{
+              region: baseFilters.region,
+              city: baseFilters.city,
+              neighborhood: baseFilters.neighborhood,
+              transactionType: baseFilters.transactionType,
+              listingType: baseFilters.listingType,
+              minPrice: baseFilters.minPrice ? String(baseFilters.minPrice) : undefined,
+              maxPrice: baseFilters.maxPrice ? String(baseFilters.maxPrice) : undefined,
+              bedrooms: baseFilters.bedrooms ? String(baseFilters.bedrooms) : undefined,
+              sort: baseFilters.sort,
+            }}
+          />
+        ) : (
+          <p className="py-12 text-center text-charcoal/60">
+            Aucun bien ne correspond à vos critères.
+            {baseFilters.neighborhood && baseFilters.transactionType === "sale" && (
+              <> Essayez l&apos;onglet <strong>Louer</strong> — certains quartiers ont surtout des locations.</>
+            )}
+          </p>
+        )
       ) : (
         <div className="rounded-xl border border-dashed border-charcoal/20 bg-sand/20 py-16 text-center">
           <p className="text-charcoal/70">{locationGateMessage()}</p>
@@ -130,28 +156,11 @@ export default async function BiensPage({
           </p>
         </div>
       )}
-
-      {hasLocation && items.length === 0 && (
-        <p className="py-12 text-center text-charcoal/60">
-          Aucun bien ne correspond à vos critères.
-          {filters.neighborhood && filters.transactionType === "sale" && (
-            <> Essayez l&apos;onglet <strong>Louer</strong> — certains quartiers ont surtout des locations.</>
-          )}
-          {filters.neighborhood && filters.transactionType !== "sale" && (
-            <> Essayez un quartier voisin ou élargissez le budget.</>
-          )}
-          {!filters.neighborhood && <> Essayez un quartier voisin ou élargissez le budget.</>}
-        </p>
-      )}
-
-      {hasLocation && totalPages > 1 && (
-        <ListingPagination
-          locale={locale}
-          page={filters.page ?? 1}
-          totalPages={totalPages}
-          searchParams={sp}
-        />
-      )}
     </div>
   );
+}
+
+function filtersLabel(filters: SearchFilters): string {
+  const parts = [filters.region, filters.city, filters.neighborhood].filter(Boolean);
+  return parts.length ? ` · ${parts.join(" · ")}` : "";
 }

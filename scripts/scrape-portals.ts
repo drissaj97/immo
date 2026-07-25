@@ -9,7 +9,7 @@ async function main() {
     : undefined;
 
   console.info("[scrape:portals] Démarrage scraping Avito / Mubawab / Sarouty…");
-  console.info("⚠️  Usage à vos risques — respectez les CGU des portails et limitez la fréquence.\n");
+  console.info("[scrape:portals] Scraping Avito / Mubawab / Sarouty…\n");
 
   const { results, outputDir } = await runPortalScrape({ portals });
 

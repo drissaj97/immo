@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import type { AggregationSourceId, PartnerFeedFile } from "@/lib/aggregation/types";
 import { scrapeAvito } from "./sources/avito-scraper";
@@ -38,6 +38,15 @@ export async function runPortalScrape(options: ScrapeOptions = {}): Promise<Scra
     }
 
     const source = PORTAL_SOURCE[portal];
+
+    if (listings.length === 0) {
+      const previous = loadExistingFeed(source);
+      if (previous?.listings?.length) {
+        errors.push(`0 nouvelles annonces — conservation du feed précédent (${previous.listings.length})`);
+        listings = previous.listings;
+      }
+    }
+
     const feed: PartnerFeedFile = {
       source,
       licenseStatus: "scraped",
@@ -46,11 +55,20 @@ export async function runPortalScrape(options: ScrapeOptions = {}): Promise<Scra
     };
 
     writeFileSync(path.join(FEED_DIR, `${source}.json`), JSON.stringify(feed, null, 2), "utf-8");
-
     results.push({ source, listings, errors, scrapedAt });
   }
 
   return { results, outputDir: FEED_DIR };
+}
+
+function loadExistingFeed(source: AggregationSourceId): PartnerFeedFile | null {
+  const filePath = path.join(FEED_DIR, `${source}.json`);
+  if (!existsSync(filePath)) return null;
+  try {
+    return JSON.parse(readFileSync(filePath, "utf-8")) as PartnerFeedFile;
+  } catch {
+    return null;
+  }
 }
 
 function parsePortalsEnv(): ScrapePortal[] {

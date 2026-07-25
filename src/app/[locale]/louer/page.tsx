@@ -1,12 +1,13 @@
-import { ListingCard } from "@/components/listings/listing-card";
+import { ListingsFeed } from "@/components/listings/listings-feed";
 import { PropertySearch } from "@/components/search/property-search";
 import { searchListings } from "@/server/repositories/listings";
 import { getGeographySearchTree } from "@/lib/geography/index";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-gate";
+import { LISTINGS_PAGE_SIZE } from "@/lib/search/page-size";
 import { buildMetadata } from "@/lib/seo/metadata";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -37,17 +38,22 @@ export default async function LouerPage({
     listingType: (sp.listingType as SearchFilters["listingType"]) ?? undefined,
     minPrice: sp.minPrice ? Number(sp.minPrice) : undefined,
     maxPrice: sp.maxPrice ? Number(sp.maxPrice) : undefined,
-    limit: 24,
+    page: 1,
+    limit: LISTINGS_PAGE_SIZE,
   };
 
   const hasLocation = hasCompleteLocation(filters);
-  const { items } = hasLocation ? await searchListings(filters) : { items: [] };
+  const { items, total, totalPages } = hasLocation
+    ? await searchListings(filters)
+    : { items: [], total: 0, totalPages: 1 };
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
       <h1 className="font-serif text-3xl">Louer un bien immobilier</h1>
       <p className="mt-2 text-charcoal/60">
-        Filtrez par région, ville et quartier pour une recherche location rapide.
+        {hasLocation
+          ? `${total.toLocaleString("fr-MA")} annonces · ${LISTINGS_PAGE_SIZE} par page`
+          : "Filtrez par région, ville et quartier pour une recherche location rapide."}
       </p>
 
       <div className="mt-8">
@@ -71,17 +77,30 @@ export default async function LouerPage({
       </div>
 
       {hasLocation ? (
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((l) => (
-            <ListingCard key={l.id} listing={l} locale={locale} />
-          ))}
-        </div>
+        items.length > 0 ? (
+          <div className="mt-10">
+            <ListingsFeed
+              locale={locale}
+              initialItems={items}
+              total={total}
+              totalPages={totalPages}
+              columns="sm:grid-cols-2 lg:grid-cols-3"
+              query={{
+                region: filters.region,
+                city: filters.city,
+                neighborhood: filters.neighborhood,
+                transactionType: "long_term_rent",
+                listingType: filters.listingType,
+                minPrice: filters.minPrice ? String(filters.minPrice) : undefined,
+                maxPrice: filters.maxPrice ? String(filters.maxPrice) : undefined,
+              }}
+            />
+          </div>
+        ) : (
+          <p className="mt-12 text-center text-charcoal/60">Aucune annonce de location pour ces critères.</p>
+        )
       ) : (
         <p className="mt-12 text-center text-charcoal/60">{locationGateMessage()}</p>
-      )}
-
-      {hasLocation && items.length === 0 && (
-        <p className="mt-12 text-center text-charcoal/60">Aucune annonce de location pour ces critères.</p>
       )}
     </div>
   );

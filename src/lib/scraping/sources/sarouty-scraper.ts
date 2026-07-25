@@ -41,9 +41,9 @@ export async function scrapeSarouty(options: ScrapeOptions = {}): Promise<{
   errors: string[];
 }> {
   const pageSize = 50;
-  const maxPages = options.maxPages ?? Number(process.env.SCRAPE_SAROUTY_MAX_PAGES ?? 20);
-  const maxListings = options.maxListings ?? Number(process.env.SCRAPE_MAX_LISTINGS ?? 1000);
-  const delayMs = options.delayMs ?? Number(process.env.SCRAPE_DELAY_MS ?? 300);
+  const maxPages = options.maxPages ?? Number(process.env.SCRAPE_SAROUTY_MAX_PAGES ?? 200);
+  const maxListings = options.maxListings ?? Number(process.env.SCRAPE_MAX_LISTINGS ?? 5000);
+  const delayMs = options.delayMs ?? Number(process.env.SCRAPE_DELAY_MS ?? 80);
 
   const listings: RawPartnerListing[] = [];
   const errors: string[] = [];
@@ -57,6 +57,7 @@ export async function scrapeSarouty(options: ScrapeOptions = {}): Promise<{
       const response = await fetchJson<SaroutyListResponse>(url);
 
       if (response.status !== "success" || !response.data?.data?.length) {
+        if (page === 1) errors.push("Sarouty API: réponse vide");
         break;
       }
 
@@ -70,10 +71,14 @@ export async function scrapeSarouty(options: ScrapeOptions = {}): Promise<{
       }
 
       const totalPages = response.data.meta.total_pages;
+      if (page % 20 === 0) {
+        console.info(`[sarouty] page ${page}/${totalPages} — ${listings.length} annonces`);
+      }
       if (page >= totalPages) break;
     } catch (err) {
       errors.push(`page ${page}: ${String(err)}`);
-      break;
+      await sleep(delayMs * 2);
+      continue;
     }
 
     await sleep(delayMs);

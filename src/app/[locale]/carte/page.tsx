@@ -4,11 +4,12 @@ import { searchListings } from "@/server/repositories/listings";
 import { getGeographySearchTree } from "@/lib/geography/index";
 import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-gate";
 import { prepareMapPageData } from "@/lib/map/prepare-map-page";
+import { MAP_PAGE_SIZE } from "@/lib/search/page-size";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { buildMetadata } from "@/lib/seo/metadata";
 import Link from "next/link";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -37,7 +38,7 @@ export default async function CartePage({
     city: sp.city as string | undefined,
     neighborhood: sp.neighborhood as string | undefined,
     listingType: (sp.listingType as SearchFilters["listingType"]) ?? undefined,
-    limit: 100,
+    limit: MAP_PAGE_SIZE,
   };
 
   const hasLocation = hasCompleteLocation(filters);

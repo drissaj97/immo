@@ -17,6 +17,7 @@ import { resolveMoroccoRegion } from "@/lib/geography/morocco-regions";
 import { cityMatches, neighborhoodMatches } from "@/lib/search/location-match";
 import { enrichSearchFilters, hasCompleteLocation } from "@/lib/search/location-gate";
 import { fetchHoldingListings } from "@/lib/aggregation/sources/holding-source";
+import { LISTINGS_PAGE_SIZE } from "@/lib/search/page-size";
 
 const USE_LIVE_SEARCH = process.env.SEMSARAI_LIVE_SEARCH !== "false";
 
@@ -97,7 +98,7 @@ async function getAggregatedListingsLazy(): Promise<AggregatedListing[]> {
 
 async function liveSearchListings(filters: SearchFilters = {}) {
   const page = filters.page ?? 1;
-  const limit = filters.limit ?? 48;
+  const limit = filters.limit ?? LISTINGS_PAGE_SIZE;
   const result = await searchSemsaraiLive({ ...filters, page, limit });
   return {
     items: result.items as ListingWithLocation[],
@@ -110,7 +111,7 @@ async function liveSearchListings(filters: SearchFilters = {}) {
 
 async function demoSearchListings(filters: SearchFilters = {}) {
   const page = filters.page ?? 1;
-  const limit = filters.limit ?? 12;
+  const limit = filters.limit ?? LISTINGS_PAGE_SIZE;
   const all = await getAggregatedListingsLazy();
   const filtered = sortListings(
     all.filter((l) => matchesFilters(l, filters)),

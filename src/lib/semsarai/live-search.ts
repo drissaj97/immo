@@ -9,6 +9,8 @@ import { mergeListingsById, searchLocalCatalog } from "@/lib/search/local-catalo
 import { loadNeighborhoodCatalog, hasNeighborhoodCatalog } from "@/lib/search/neighborhood-catalog";
 import { scanApiForNeighborhood } from "@/lib/semsarai/neighborhood-api-scan";
 
+import { LISTINGS_PAGE_SIZE } from "@/lib/search/page-size";
+
 const API_PAGE_SIZE = Number(process.env.SEMSARAI_PAGE_SIZE ?? "50");
 const MAX_SCAN_PAGES = Number(process.env.SEMSARAI_SEARCH_SCAN_PAGES ?? "25");
 
@@ -81,7 +83,7 @@ export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
   scannedPages: number;
 }> {
   const page = filters.page ?? 1;
-  const limit = filters.limit ?? 48;
+  const limit = filters.limit ?? LISTINGS_PAGE_SIZE;
 
   if (!hasCompleteLocation(filters)) {
     return {
