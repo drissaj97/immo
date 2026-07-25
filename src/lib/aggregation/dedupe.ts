@@ -5,6 +5,7 @@ const LICENSE_PRIORITY: Record<string, number> = {
   first_party: 4,
   partner_contract: 3,
   licensed_api: 2,
+  scraped: 1,
   pending: 1,
   disabled: 0,
 };

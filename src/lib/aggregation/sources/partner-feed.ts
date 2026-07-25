@@ -43,6 +43,11 @@ export async function fetchPartnerFeed(source: AggregationSourceId): Promise<Agg
   );
 }
 
+export function hasLocalPartnerFeed(source: AggregationSourceId): boolean {
+  const feed = loadFeedFile(source);
+  return Boolean(feed && feed.listings.length > 0 && feed.licenseStatus !== "disabled");
+}
+
 export function getPartnerFeedPath(source: AggregationSourceId): string {
   return path.join(FEED_DIR, `${source}.json`);
 }

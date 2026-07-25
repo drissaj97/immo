@@ -19,9 +19,9 @@ async function main() {
   }, {});
   console.info("\nPar source:", bySource);
 
-  if (!process.env.PROPAPIS_API_KEY && !process.env.AVITO_PARTNER_FEED_URL) {
-    console.info("\nℹ Avito/Mubawab: déposez data/feeds/avito.json ou configurez PROPAPIS_API_KEY");
-    console.info("  Voir docs/AGGREGATION.md pour les partenariats officiels.");
+  if (!process.env.PROPAPIS_API_KEY && !process.env.AVITO_PARTNER_FEED_URL && process.env.SCRAPING_ENABLED !== "true") {
+    console.info("\nℹ Avito/Mubawab/Sarouty: pnpm scrape:portals ou déposez data/feeds/*.json");
+    console.info("  Voir docs/AGGREGATION.md — risques légaux du scraping non autorisé.");
   }
 }
 

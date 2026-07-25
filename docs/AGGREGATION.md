@@ -21,10 +21,22 @@ DarBladi est un **index agrégé**, pas un scrapeur. Chaque annonce affiche :
 | Mubawab.ma | ⏳ Partenariat requis | Voir ci-dessous |
 | Sarouty.ma | ⏳ Partenariat requis | Contrat à négocier |
 
-## ⚠️ Pas de scraping
+## ⚠️ Scraping direct (non partenaire)
 
 Les CGU d'Avito et Mubawab **interdisent l'extraction automatisée** sans autorisation.
-DarBladi **n'implémente pas de scraper** pour ces portails.
+DarBladi propose un mode scraping **opt-in** pour les cas où vous acceptez ce risque :
+
+```bash
+# Limiter la charge — commencer petit
+SCRAPE_PORTALS=sarouty,mubawab SCRAPE_MAX_LISTINGS=100 pnpm scrape:portals
+SCRAPING_ENABLED=true pnpm aggregation:sync
+```
+
+| Portail | Méthode | Notes |
+|---------|---------|-------|
+| Sarouty | API `b2c-be-prod.api.sarouty.ma` | ~51k annonces, fiable |
+| Mubawab | JSON-LD sur fiches `/fr/a/{id}` | Seeds depuis catalogue SEMSAR |
+| Avito | Playwright + proxy résidentiel | Cloudflare bloque les IP datacenter |
 
 ## Voies conformes pour Avito & Mubawab
 

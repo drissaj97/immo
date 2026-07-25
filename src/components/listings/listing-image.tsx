@@ -9,6 +9,9 @@ const PLACEHOLDER =
 const PROXY_HOSTS = new Set([
   "www.mubawab-media.com",
   "www.mubawab.ma",
+  "content.avito.ma",
+  "www.avito.ma",
+  "sarouty-prod.s3.eu-west-3.amazonaws.com",
   "medias.yakeey.com",
   "yakeey.com",
   "agenz.ma",

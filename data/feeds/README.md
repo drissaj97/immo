@@ -29,7 +29,18 @@ Déposez ici les exports JSON **autorisés par contrat** depuis Avito, Mubawab o
 }
 ```
 
-## Activation
+## Scraping direct (opt-in)
+
+```bash
+pnpm scrape:portals
+# ou ciblé :
+pnpm scrape:portals --portals=sarouty,mubawab
+SCRAPING_ENABLED=true pnpm aggregation:sync
+```
+
+Fichiers générés avec `"licenseStatus": "scraped"`.
+
+## Activation partenaire
 
 1. **Contrat partenaire** — contact commercial Avito / Mubawab
 2. **Ou PropAPIS** — `PROPAPIS_API_KEY` dans `.env.local` (agrégateur licencié)

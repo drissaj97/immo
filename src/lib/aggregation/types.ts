@@ -13,6 +13,7 @@ export type AggregationLicenseStatus =
   | "first_party"
   | "partner_contract"
   | "licensed_api"
+  | "scraped"
   | "pending"
   | "disabled";
 

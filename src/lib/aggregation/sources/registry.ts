@@ -1,4 +1,12 @@
 import type { AggregationSourceConfig } from "../types";
+import { hasLocalPartnerFeed } from "./partner-feed";
+
+function portalEnabled(source: "avito" | "mubawab" | "sarouty"): boolean {
+  if (process.env[`${source.toUpperCase()}_PARTNER_FEED_URL`]) return true;
+  if (process.env.PROPAPIS_API_KEY && source !== "sarouty") return true;
+  if (process.env.SCRAPING_ENABLED === "true") return true;
+  return hasLocalPartnerFeed(source);
+}
 
 export const AGGREGATION_SOURCES: AggregationSourceConfig[] = [
   {
@@ -29,25 +37,33 @@ export const AGGREGATION_SOURCES: AggregationSourceConfig[] = [
     id: "avito",
     name: "Avito.ma",
     website: "https://www.avito.ma/fr/immobilier",
-    licenseStatus: process.env.AVITO_PARTNER_FEED_URL ? "partner_contract" : "pending",
-    enabled: Boolean(process.env.AVITO_PARTNER_FEED_URL || process.env.PROPAPIS_API_KEY),
-    description: "Nécessite contrat partenaire Avito ou flux PropAPIS licencié",
+    licenseStatus: hasLocalPartnerFeed("avito")
+      ? "scraped"
+      : process.env.AVITO_PARTNER_FEED_URL
+        ? "partner_contract"
+        : "pending",
+    enabled: portalEnabled("avito"),
+    description: "Flux partenaire, PropAPIS, ou scraping direct (SCRAPING_ENABLED + pnpm scrape:portals)",
   },
   {
     id: "mubawab",
     name: "Mubawab.ma",
     website: "https://www.mubawab.ma",
-    licenseStatus: process.env.MUBAWAB_PARTNER_FEED_URL ? "partner_contract" : "pending",
-    enabled: Boolean(process.env.MUBAWAB_PARTNER_FEED_URL || process.env.PROPAPIS_API_KEY),
-    description: "Nécessite contrat Dubizzle Group ou flux PropAPIS licencié",
+    licenseStatus: hasLocalPartnerFeed("mubawab")
+      ? "scraped"
+      : process.env.MUBAWAB_PARTNER_FEED_URL
+        ? "partner_contract"
+        : "pending",
+    enabled: portalEnabled("mubawab"),
+    description: "Flux partenaire, PropAPIS, ou scraping JSON-LD (pnpm scrape:portals)",
   },
   {
     id: "sarouty",
     name: "Sarouty.ma",
     website: "https://www.sarouty.ma",
-    licenseStatus: "pending",
-    enabled: Boolean(process.env.SAROUTY_PARTNER_FEED_URL),
-    description: "Partenariat à négocier",
+    licenseStatus: hasLocalPartnerFeed("sarouty") ? "scraped" : "pending",
+    enabled: portalEnabled("sarouty"),
+    description: "API publique b2c-be-prod.api.sarouty.ma ou flux local scrapé",
   },
 ];
 

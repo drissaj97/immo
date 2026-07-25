@@ -3,6 +3,9 @@ import { NextResponse } from "next/server";
 const REFERERS: Record<string, string> = {
   "www.mubawab-media.com": "https://www.mubawab.ma/",
   "www.mubawab.ma": "https://www.mubawab.ma/",
+  "content.avito.ma": "https://www.avito.ma/",
+  "www.avito.ma": "https://www.avito.ma/",
+  "sarouty-prod.s3.eu-west-3.amazonaws.com": "https://www.sarouty.ma/",
   "medias.yakeey.com": "https://www.yakeey.com/",
   "yakeey.com": "https://www.yakeey.com/",
   "agenz.ma": "https://www.agenz.ma/",

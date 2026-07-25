@@ -1,6 +1,6 @@
 {
   "name": "darbladi",
-  "version": "1.9.1",
+  "version": "1.10.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -18,7 +18,8 @@
     "import:holding": "tsx scripts/import-holding-immo.ts",
     "import:semsarai": "tsx scripts/import-semsarai.ts",
     "geography:build": "tsx scripts/build-geography-index.ts",
-    "aggregation:sync": "tsx scripts/sync-aggregation.ts"
+    "aggregation:sync": "tsx scripts/sync-aggregation.ts",
+    "scrape:portals": "tsx scripts/scrape-portals.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.3",
