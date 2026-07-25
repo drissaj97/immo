@@ -1,19 +1,11 @@
-import dynamic from "next/dynamic";
 import { ListingCard } from "@/components/listings/listing-card";
 import { ListingPagination } from "@/components/listings/listing-pagination";
+import { PropertyMapLazy } from "@/components/maps/property-map-lazy";
 import { searchListings, getCities } from "@/server/repositories/listings";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { PropertySearch } from "@/components/search/property-search";
 import Link from "next/link";
-
-const PropertyMap = dynamic(
-  () => import("@/components/maps/property-map").then((m) => m.PropertyMap),
-  {
-    ssr: false,
-    loading: () => <div className="h-64 animate-pulse rounded-lg bg-sand/50" />,
-  },
-);
 
 export const revalidate = 300;
 
@@ -91,7 +83,7 @@ export default async function BiensPage({
       </div>
 
       <div className="mb-6 h-64 overflow-hidden rounded-lg border border-charcoal/10 lg:hidden">
-        <PropertyMap listings={items} />
+        <PropertyMapLazy listings={items} />
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
