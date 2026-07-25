@@ -31,7 +31,9 @@ export function Footer({ messages, locale }: { messages: Messages; locale: strin
           <ul className="space-y-2 text-sm">
             <li><a href={`${prefix}/mentions-legales`} className="hover:text-bronze">{messages.footer.legal}</a></li>
             <li><a href={`${prefix}/confidentialite`} className="hover:text-bronze">Confidentialité</a></li>
+            <li><a href={`${prefix}/conformite`} className="hover:text-bronze">Conformité CNDP</a></li>
             <li><a href={`${prefix}/conditions`} className="hover:text-bronze">Conditions</a></li>
+            <li><a href={`${prefix}/developpeurs`} className="hover:text-bronze">API partenaires</a></li>
           </ul>
         </div>
         <div>

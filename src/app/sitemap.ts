@@ -21,6 +21,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/professionnels",
     "/promoteurs",
     "/contact",
+    "/developpeurs",
+    "/conformite",
   ];
 
   const entries: MetadataRoute.Sitemap = [];

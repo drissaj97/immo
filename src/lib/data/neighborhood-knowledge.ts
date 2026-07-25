@@ -115,6 +115,28 @@ export const NEIGHBORHOOD_KNOWLEDGE: NeighborhoodKnowledge[] = [
     tags: ["littoral", "mer", "rendement"],
     isDemo: true,
   },
+  {
+    slug: "agadir/founty",
+    city: "Agadir",
+    neighborhood: "Founty",
+    region: "Souss-Massa",
+    summary: "Station balnéaire au sud, appartements vue mer et investissement locatif saisonnier.",
+    highlights: ["Plage Founty", "Tourisme", "Climat ensoleillé"],
+    investmentNotes: ["Location saisonnière", "Marché touristique", "Prix modérés vs nord"],
+    tags: ["mer", "tourisme", "agadir"],
+    isDemo: true,
+  },
+  {
+    slug: "fes/medina",
+    city: "Fès",
+    neighborhood: "Médina",
+    region: "Fès-Meknès",
+    summary: "Patrimoine UNESCO, riads et biens de caractère pour résidence ou hébergement touristique.",
+    highlights: ["Patrimoine UNESCO", "Riads", "Tourisme culturel"],
+    investmentNotes: ["Niche tourisme", "Rénovation patrimoine", "Réglementation spécifique"],
+    tags: ["patrimoine", "riad", "culture"],
+    isDemo: true,
+  },
 ];
 
 export function getNeighborhoodBySlug(slug: string): NeighborhoodKnowledge | undefined {

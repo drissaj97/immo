@@ -7,6 +7,34 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [0.7.0] — 2026-07-25
+
+### Phase 6 — API partenaires, CNDP, PWA, emails
+
+**API publique v1**
+- Endpoints `/api/v1/listings`, `/api/v1/listings/[id]`, `/api/v1/market-metrics`, `/api/v1/health`
+- Authentification par clé API + rate limiting (60 req/min)
+- Documentation `/developpeurs`
+- Clé démo : `darbladi-demo-partner-key`
+
+**Conformité CNDP**
+- Page `/conformite` (Loi 09-08)
+- Cookie consent banner
+- Export et suppression données `/dashboard/donnees`
+- API `/api/account` (GET export, DELETE suppression)
+
+**PWA & emails**
+- Manifest PWA (`manifest.ts` + icônes)
+- Provider email mock + stub Resend
+- Notifications alertes recherche et leads
+- Cron stub `/api/v1/cron/alerts`
+
+**Expansion**
+- Quartiers Agadir Founty, Fès Médina
+- 29 tests passent
+
+---
+
 ## [0.6.0] — 2026-07-25
 
 ### Phase 3.1 — RAG quartiers + début Phase 6

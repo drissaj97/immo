@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { DemoBanner } from "@/components/layout/footer";
+import { CookieConsent } from "@/components/layout/cookie-consent";
 import { getSession } from "@/lib/auth/session";
 import { getMessages, isRtl, locales, type Locale } from "@/lib/i18n/config";
 import "../globals.css";
@@ -39,11 +40,18 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} dir={dir} className={`${cormorant.variable} ${dmSans.variable} h-full`}>
+      <head>
+        <meta name="theme-color" content="#1B4332" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content="DarBladi" />
+      </head>
       <body className="min-h-full flex flex-col bg-ivory text-charcoal antialiased">
         <DemoBanner message={messages.demo} />
         <Header locale={typedLocale} messages={messages} user={user} />
         <main className="flex-1">{children}</main>
         <Footer messages={messages} locale={locale} />
+        <CookieConsent locale={locale} />
       </body>
     </html>
   );

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth/session";
+import { sendLeadNotification } from "@/lib/email/provider";
 import { createLead, listLeads, updateLeadStatus } from "@/server/repositories/leads";
 
 export async function GET() {
@@ -21,6 +22,9 @@ export async function POST(request: Request) {
     message: body.message,
     source: body.source ?? "website",
   });
+
+  void sendLeadNotification("agent@darbladi.demo", lead.contactName ?? "Visiteur");
+
   return NextResponse.json({ lead }, { status: 201 });
 }
 

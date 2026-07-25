@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth/session";
+import { sendAlertEmail } from "@/lib/email/provider";
+import { searchListings } from "@/server/repositories/listings";
 import { createSavedSearch, deleteSavedSearch, listSavedSearches } from "@/server/repositories/saved-searches";
 
 export async function GET() {
@@ -24,6 +26,12 @@ export async function POST(request: Request) {
     body.filters ?? {},
     body.alertEnabled ?? false,
   );
+
+  if (body.alertEnabled) {
+    const { total } = await searchListings(body.filters ?? {});
+    void sendAlertEmail(user.email, search.name, total);
+  }
+
   return NextResponse.json(search, { status: 201 });
 }
 

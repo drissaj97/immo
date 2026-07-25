@@ -16,6 +16,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const links = [
     { href: `/${locale}/dashboard/favoris`, label: "Favoris" },
     { href: `/${locale}/dashboard/alertes`, label: "Alertes" },
+    { href: `/${locale}/dashboard/donnees`, label: "Mes données (CNDP)" },
     { href: `/${locale}/dashboard/analytics`, label: "Analytics investisseur" },
     { href: `/${locale}/comparer`, label: "Comparateur" },
     { href: `/${locale}/dashboard/simulations`, label: "Simulations & rapports" },
