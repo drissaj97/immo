@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { PropertySearch } from "@/components/search/property-search";
 import { ListingCard } from "@/components/listings/listing-card";
-import { getFeaturedListings, getCities } from "@/server/repositories/listings";
+import { getFeaturedListings } from "@/server/repositories/listings";
 import { SEMSARAI_API_TOTAL } from "@/lib/data/semsarai-meta";
+import { getGeographySearchTree } from "@/lib/geography/index";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { Button } from "@/components/ui/button";
 
@@ -20,8 +21,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  const [featured, cities] = await Promise.all([getFeaturedListings(6), getCities()]);
-  const allCities = cities.map(({ city, count, region }) => ({ city, count, region }));
+  const geography = getGeographySearchTree();
+  const cities = geography.regions.flatMap((r) =>
+    r.cities.map((c) => ({ city: c.name, count: c.count, region: r.name })),
+  );
+  const [featured] = await Promise.all([getFeaturedListings(6)]);
   const apiTotal = SEMSARAI_API_TOTAL;
 
   return (
@@ -48,7 +52,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             investissement et assistant intelligent.
           </p>
           <div className="mt-10 text-left">
-            <PropertySearch locale={locale} variant="hero" cities={allCities} />
+            <PropertySearch locale={locale} variant="hero" geography={geography} requireLocation />
           </div>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link href={`/${locale}/darbladi`}>

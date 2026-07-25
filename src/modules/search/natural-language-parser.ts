@@ -5,6 +5,7 @@ export const searchFiltersSchema = z.object({
   transactionType: z.enum(["sale", "long_term_rent", "seasonal_rent"]).optional(),
   listingType: z.enum(["apartment", "villa", "riad", "land", "commercial", "office"]).optional(),
   city: z.string().optional(),
+  region: z.string().optional(),
   neighborhood: z.string().optional(),
   minPrice: z.number().optional(),
   maxPrice: z.number().optional(),

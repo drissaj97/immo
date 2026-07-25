@@ -2,6 +2,8 @@ import type { DemoListing } from "@/lib/data/demo-data";
 import type { AggregatedListing } from "@/lib/aggregation/types";
 import type { SemsaraiProperty } from "./types";
 
+import { resolveMoroccoRegion } from "@/lib/geography/morocco-regions";
+
 function slugify(text: string): string {
   return text
     .toLowerCase()
@@ -38,6 +40,7 @@ export function semsaraiPropertyToListing(
   const slug = semsaraiSlug(p.title, p.id);
   const city = p.cityName ?? "Maroc";
   const neighborhood = p.quartier ?? city;
+  const region = resolveMoroccoRegion(city, city);
   const siteLabel = p.site ? p.site.charAt(0).toUpperCase() + p.site.slice(1) : "Portail";
 
   return {
@@ -61,7 +64,7 @@ export function semsaraiPropertyToListing(
       id: `loc-semsar-${slugify(city)}-${slugify(neighborhood)}`,
       city,
       neighborhood,
-      region: city,
+      region,
       slug: `${slugify(city)}/${slugify(neighborhood)}`,
       latitude: 33.5,
       longitude: -7.5,

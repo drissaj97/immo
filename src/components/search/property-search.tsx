@@ -1,25 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MapPin, Home, Search, RotateCcw, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import type { GeographySearchTree } from "@/lib/geography/search-tree";
 
 const STORAGE_KEY = "darbladi-last-search";
 
 type SavedSearch = {
   transactionType: "sale" | "long_term_rent";
+  region: string;
   city: string;
+  neighborhood: string;
   listingType: string;
   minPrice: string;
   maxPrice: string;
-};
-
-export type CityOption = {
-  city: string;
-  count?: number;
-  region?: string;
 };
 
 type PropertySearchProps = {
@@ -27,26 +24,52 @@ type PropertySearchProps = {
   variant?: "hero" | "compact";
   defaultTransaction?: "sale" | "long_term_rent";
   initial?: Partial<SavedSearch>;
-  /** Toutes les villes indexées (datalist autocomplete). */
-  cities?: CityOption[];
+  geography?: GeographySearchTree;
+  /** Exiger région + ville avant recherche (réponse serveur rapide). */
+  requireLocation?: boolean;
+  /** Page de résultats (défaut: /biens). */
+  searchPath?: string;
 };
+
+const selectClassName =
+  "flex h-11 w-full rounded-md border border-charcoal/15 bg-ivory px-3 text-sm disabled:cursor-not-allowed disabled:opacity-50";
 
 export function PropertySearch({
   locale,
   variant = "hero",
   defaultTransaction = "sale",
   initial,
-  cities = [],
+  geography,
+  requireLocation = true,
+  searchPath,
 }: PropertySearchProps) {
   const router = useRouter();
   const [tab, setTab] = useState<"sale" | "long_term_rent">(
     initial?.transactionType ?? defaultTransaction,
   );
+  const [region, setRegion] = useState(initial?.region ?? "");
   const [city, setCity] = useState(initial?.city ?? "");
+  const [neighborhood, setNeighborhood] = useState(initial?.neighborhood ?? "");
   const [listingType, setListingType] = useState(initial?.listingType ?? "");
   const [minPrice, setMinPrice] = useState(initial?.minPrice ?? "");
   const [maxPrice, setMaxPrice] = useState(initial?.maxPrice ?? "");
   const [hasSaved, setHasSaved] = useState(false);
+
+  const regions = geography?.regions ?? [];
+
+  const selectedRegion = useMemo(
+    () => regions.find((r) => r.name === region || r.slug === region),
+    [regions, region],
+  );
+
+  const cities = selectedRegion?.cities ?? [];
+
+  const selectedCity = useMemo(
+    () => cities.find((c) => c.name === city || c.slug === city),
+    [cities, city],
+  );
+
+  const neighborhoods = selectedCity?.neighborhoods ?? [];
 
   useEffect(() => {
     try {
@@ -59,7 +82,9 @@ export function PropertySearch({
   function buildParams(): URLSearchParams {
     const params = new URLSearchParams();
     params.set("transactionType", tab);
-    if (city.trim()) params.set("city", city.trim());
+    if (region) params.set("region", region);
+    if (city) params.set("city", city);
+    if (neighborhood) params.set("neighborhood", neighborhood);
     if (listingType) params.set("listingType", listingType);
     if (minPrice) params.set("minPrice", minPrice);
     if (maxPrice) params.set("maxPrice", maxPrice);
@@ -68,10 +93,14 @@ export function PropertySearch({
 
   function handleSearch(e?: React.FormEvent) {
     e?.preventDefault();
+    if (requireLocation && (!region || !city)) return;
+
     const params = buildParams();
     const saved: SavedSearch = {
       transactionType: tab,
+      region,
       city,
+      neighborhood,
       listingType,
       minPrice,
       maxPrice,
@@ -82,15 +111,17 @@ export function PropertySearch({
     } catch {
       /* ignore */
     }
-    router.push(`/${locale}/biens?${params.toString()}`);
+    router.push(`${searchPath ?? `/${locale}/biens`}?${params.toString()}`);
   }
 
   function handleReset() {
+    setRegion("");
     setCity("");
+    setNeighborhood("");
     setListingType("");
     setMinPrice("");
     setMaxPrice("");
-    setTab("sale");
+    setTab(defaultTransaction);
     try {
       localStorage.removeItem(STORAGE_KEY);
       setHasSaved(false);
@@ -104,8 +135,10 @@ export function PropertySearch({
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return;
       const saved = JSON.parse(raw) as SavedSearch;
-      setTab(saved.transactionType ?? "sale");
+      setTab(saved.transactionType ?? defaultTransaction);
+      setRegion(saved.region ?? "");
       setCity(saved.city ?? "");
+      setNeighborhood(saved.neighborhood ?? "");
       setListingType(saved.listingType ?? "");
       setMinPrice(saved.minPrice ?? "");
       setMaxPrice(saved.maxPrice ?? "");
@@ -114,6 +147,7 @@ export function PropertySearch({
     }
   }
 
+  const canSearch = !requireLocation || (Boolean(region) && Boolean(city));
   const isHero = variant === "hero";
 
   return (
@@ -171,38 +205,82 @@ export function PropertySearch({
         </div>
       </div>
 
-      <form onSubmit={handleSearch} className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <div className="md:col-span-2">
-          <label className="mb-1.5 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-charcoal/60">
-            <MapPin className="h-3.5 w-3.5" />
-            Ville
-            {cities.length > 0 && (
-              <span className="normal-case text-charcoal/40">({cities.length} villes)</span>
-            )}
+      <form onSubmit={handleSearch} className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div>
+          <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-charcoal/60">
+            1. Région
           </label>
-          <Input
-            list="darbladi-cities"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            placeholder="Casablanca, Marrakech, Rabat…"
-            className="h-11"
-          />
-          <datalist id="darbladi-cities">
-            {cities.map(({ city: c }) => (
-              <option key={c} value={c} />
+          <select
+            value={region}
+            onChange={(e) => {
+              setRegion(e.target.value);
+              setCity("");
+              setNeighborhood("");
+            }}
+            className={selectClassName}
+            required={requireLocation}
+          >
+            <option value="">Choisir une région</option>
+            {regions.map((r) => (
+              <option key={r.slug} value={r.name}>
+                {r.name} ({r.count.toLocaleString("fr-MA")})
+              </option>
             ))}
-          </datalist>
+          </select>
+        </div>
+
+        <div>
+          <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-charcoal/60">
+            2. Ville
+          </label>
+          <select
+            value={city}
+            onChange={(e) => {
+              setCity(e.target.value);
+              setNeighborhood("");
+            }}
+            disabled={!region}
+            className={selectClassName}
+            required={requireLocation}
+          >
+            <option value="">{region ? "Choisir une ville" : "Sélectionnez d'abord une région"}</option>
+            {cities.map((c) => (
+              <option key={c.slug} value={c.name}>
+                {c.name} ({c.count.toLocaleString("fr-MA")})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-charcoal/60">
+            3. Quartier
+          </label>
+          <select
+            value={neighborhood}
+            onChange={(e) => setNeighborhood(e.target.value)}
+            disabled={!city}
+            className={selectClassName}
+          >
+            <option value="">
+              {city ? "Tous les quartiers" : "Sélectionnez d'abord une ville"}
+            </option>
+            {neighborhoods.map((n) => (
+              <option key={n.slug} value={n.name}>
+                {n.name} ({n.count.toLocaleString("fr-MA")})
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
           <label className="mb-1.5 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-charcoal/60">
-            <Home className="h-3.5 w-3.5" />
             Type de bien
           </label>
           <select
             value={listingType}
             onChange={(e) => setListingType(e.target.value)}
-            className="flex h-11 w-full rounded-md border border-charcoal/15 bg-ivory px-3 text-sm"
+            className={selectClassName}
           >
             <option value="">Tous les types</option>
             <option value="apartment">Appartement</option>
@@ -213,7 +291,7 @@ export function PropertySearch({
           </select>
         </div>
 
-        <div>
+        <div className="md:col-span-2">
           <label className="mb-1.5 text-xs font-medium uppercase tracking-wide text-charcoal/60">
             Budget (MAD)
           </label>
@@ -235,11 +313,23 @@ export function PropertySearch({
           </div>
         </div>
 
-        <div className="md:col-span-2 lg:col-span-4">
-          <Button type="submit" className="h-12 w-full gap-2 text-base" variant="default">
+        <div className="md:col-span-2 lg:col-span-3">
+          <Button
+            type="submit"
+            disabled={!canSearch}
+            className="h-12 w-full gap-2 text-base"
+            variant="default"
+          >
             <Search className="h-5 w-5" />
-            Rechercher dans tout le Maroc
+            {canSearch
+              ? "Rechercher les annonces"
+              : "Choisissez une région et une ville"}
           </Button>
+          {requireLocation && (
+            <p className="mt-2 text-center text-xs text-charcoal/50">
+              Filtrage par région → ville → quartier pour une réponse serveur rapide
+            </p>
+          )}
         </div>
       </form>
     </div>

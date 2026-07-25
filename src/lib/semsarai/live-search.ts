@@ -30,7 +30,14 @@ function holdingMatches(filters: SearchFilters): AggregatedListing[] {
   return fetchHoldingListings().filter((l) => listingMatchesFilters(l, filters));
 }
 
-/** Recherche live via API semsarai.ma — réponses mises en cache 15 min. */
+function scanPageLimit(filters: SearchFilters): number {
+  if (filters.neighborhood) return 8;
+  if (filters.city) return 12;
+  if (filters.region) return 18;
+  return Math.min(MAX_SCAN_PAGES, 10);
+}
+
+/** Recherche ciblée — scan limité quand région/ville/quartier sont définis. */
 export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
   items: AggregatedListing[];
   total: number;
@@ -67,7 +74,7 @@ export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
   let scannedPages = 0;
   let apiTotalCount: number = SEMSARAI_API_TOTAL;
   const targetMatches = page * limit;
-  const maxPages = filters.city || filters.neighborhood ? MAX_SCAN_PAGES : Math.min(MAX_SCAN_PAGES, 10);
+  const maxPages = scanPageLimit(filters);
 
   while (apiPage <= maxPages) {
     const batch = await fetchSemsaraiProperties({ page: apiPage, limit: API_PAGE_SIZE });

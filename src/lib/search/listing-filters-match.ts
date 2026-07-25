@@ -1,6 +1,13 @@
 import type { DemoListing } from "@/lib/data/demo-data";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import type { AggregatedListing } from "@/lib/aggregation/types";
+import { resolveMoroccoRegion } from "@/lib/geography/morocco-regions";
+
+function listingRegion(listing: DemoListing | AggregatedListing): string {
+  const city = listing.location.city;
+  const hint = listing.location.region ?? city;
+  return resolveMoroccoRegion(city, hint);
+}
 
 export function listingMatchesFilters(
   listing: DemoListing | AggregatedListing,
@@ -8,6 +15,9 @@ export function listingMatchesFilters(
 ): boolean {
   if (filters.transactionType && listing.transactionType !== filters.transactionType) return false;
   if (filters.listingType && listing.listingType !== filters.listingType) return false;
+  if (filters.region && listingRegion(listing).toLowerCase() !== filters.region.toLowerCase()) {
+    return false;
+  }
   if (filters.city && listing.location.city.toLowerCase() !== filters.city.toLowerCase()) return false;
   if (
     filters.neighborhood &&
@@ -39,6 +49,7 @@ export function listingMatchesFilters(
 export function hasActiveFilters(filters: SearchFilters): boolean {
   return Boolean(
     filters.transactionType ||
+      filters.region ||
       filters.city ||
       filters.neighborhood ||
       filters.listingType ||

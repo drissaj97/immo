@@ -3,6 +3,9 @@ import path from "path";
 import type { CityIndex, MoroccoGeographyIndex, RegionIndex } from "./types";
 import { slugify } from "./slug";
 import { resolveMoroccoRegion } from "./morocco-regions";
+import { buildGeographySearchTree, type GeographySearchTree } from "./search-tree";
+
+export type { GeographySearchTree, RegionSearchNode, CitySearchNode, NeighborhoodSearchNode } from "./search-tree";
 
 const CACHE_PATH = path.join(process.cwd(), "data/cache/morocco-geography.json");
 
@@ -109,6 +112,12 @@ export function finalizeIndex(
     cities,
     regions,
   };
+}
+
+export function getGeographySearchTree(): GeographySearchTree {
+  const index = getGeographyIndex();
+  if (!index) return { regions: [] };
+  return buildGeographySearchTree(index.regions, index.cities);
 }
 
 export { CACHE_PATH };
