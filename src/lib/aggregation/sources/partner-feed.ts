@@ -1,9 +1,20 @@
 import { readFileSync, existsSync } from "fs";
 import path from "path";
-import type { AggregatedListing, AggregationSourceId, PartnerFeedFile } from "../types";
+import type { AggregatedListing, AggregationSourceId, PartnerFeedFile, RawPartnerListing } from "../types";
 import { normalizePartnerListing } from "../normalizer";
 
 const FEED_DIR = path.join(process.cwd(), "data/feeds");
+const MAX_FEED_LISTINGS = Number(process.env.PARTNER_FEED_MAX_LISTINGS ?? "3000");
+
+const feedCache = new Map<AggregationSourceId, AggregatedListing[]>();
+
+function slimRaw(raw: RawPartnerListing): RawPartnerListing {
+  return {
+    ...raw,
+    description: (raw.description ?? raw.title ?? "").slice(0, 280),
+    images: (raw.images ?? []).slice(0, 2),
+  };
+}
 
 function loadFeedFile(source: AggregationSourceId): PartnerFeedFile | null {
   const filePath = path.join(FEED_DIR, `${source}.json`);
@@ -27,20 +38,30 @@ async function loadFeedFromUrl(url: string): Promise<PartnerFeedFile | null> {
 }
 
 export async function fetchPartnerFeed(source: AggregationSourceId): Promise<AggregatedListing[]> {
+  const cached = feedCache.get(source);
+  if (cached) return cached;
+
   const envKey = `${source.toUpperCase().replace(/-/g, "_")}_PARTNER_FEED_URL`;
   const feedUrl = process.env[envKey];
 
   const feed = feedUrl ? await loadFeedFromUrl(feedUrl) : loadFeedFile(source);
-  if (!feed || feed.listings.length === 0) return [];
-
-  if (feed.licenseStatus === "disabled") {
-    console.warn(`[aggregation] Feed ${source} disabled by license`);
+  if (!feed || feed.listings.length === 0) {
+    feedCache.set(source, []);
     return [];
   }
 
-  return feed.listings.map((raw) =>
-    normalizePartnerListing(raw, source, feed.licenseStatus),
-  );
+  if (feed.licenseStatus === "disabled") {
+    console.warn(`[aggregation] Feed ${source} disabled by license`);
+    feedCache.set(source, []);
+    return [];
+  }
+
+  const listings = feed.listings
+    .slice(0, MAX_FEED_LISTINGS)
+    .map((raw) => normalizePartnerListing(slimRaw(raw), source, feed.licenseStatus));
+
+  feedCache.set(source, listings);
+  return listings;
 }
 
 export function hasLocalPartnerFeed(source: AggregationSourceId): boolean {
@@ -50,4 +71,8 @@ export function hasLocalPartnerFeed(source: AggregationSourceId): boolean {
 
 export function getPartnerFeedPath(source: AggregationSourceId): string {
   return path.join(FEED_DIR, `${source}.json`);
+}
+
+export function resetPartnerFeedCache(): void {
+  feedCache.clear();
 }

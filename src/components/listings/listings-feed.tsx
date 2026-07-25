@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { ListingCard } from "@/components/listings/listing-card";
 import type { ListingWithLocation } from "@/server/repositories/listings";
 import { LISTINGS_PAGE_SIZE } from "@/lib/search/page-size";
@@ -38,16 +38,17 @@ export function ListingsFeed({
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const loadingRef = useRef(false);
-  const sentinelRef = useRef<HTMLDivElement>(null);
+  const queryKey = JSON.stringify(query);
 
   useEffect(() => {
     setItems(initialItems);
     setPage(1);
     setHasMore(totalPages > 1);
     setError(null);
-  }, [initialItems, totalPages]);
+    loadingRef.current = false;
+  }, [initialItems, totalPages, queryKey]);
 
-  async function loadNextPage() {
+  const loadNextPage = useCallback(async () => {
     if (loadingRef.current || !hasMore) return;
     loadingRef.current = true;
     const nextPage = page + 1;
@@ -68,6 +69,11 @@ export function ListingsFeed({
         page: number;
       };
 
+      if (!data.items?.length) {
+        setHasMore(false);
+        return;
+      }
+
       startTransition(() => {
         setItems((prev) => {
           const seen = new Set(prev.map((l) => l.id));
@@ -84,24 +90,10 @@ export function ListingsFeed({
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur de chargement");
+      setHasMore(false);
     } finally {
       loadingRef.current = false;
     }
-  }
-
-  useEffect(() => {
-    const node = sentinelRef.current;
-    if (!node || !hasMore) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) void loadNextPage();
-      },
-      { rootMargin: "400px" },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasMore, page, query, locale]);
 
   return (
@@ -112,22 +104,19 @@ export function ListingsFeed({
         ))}
       </div>
 
-      <div ref={sentinelRef} className="mt-8 flex flex-col items-center gap-3 py-4">
+      <div className="mt-8 flex flex-col items-center gap-3 py-4">
         {hasMore && (
           <button
             type="button"
             onClick={() => void loadNextPage()}
-            disabled={isPending || loadingRef.current}
-            className="rounded-lg border border-charcoal/15 bg-ivory px-5 py-2.5 text-sm text-charcoal hover:border-deep-green/40 disabled:opacity-50"
+            disabled={isPending}
+            className="rounded-lg bg-deep-green px-5 py-2.5 text-sm text-ivory hover:bg-deep-green/90 disabled:opacity-50"
           >
-            {isPending || loadingRef.current
-              ? "Chargement…"
-              : `Charger ${LISTINGS_PAGE_SIZE} annonces de plus`}
+            {isPending ? "Chargement…" : `Afficher ${LISTINGS_PAGE_SIZE} annonces de plus`}
           </button>
         )}
         <p className="text-xs text-charcoal/50">
           {items.length.toLocaleString("fr-MA")} / {total.toLocaleString("fr-MA")} annonces affichées
-          {hasMore ? " · chargement automatique en cours" : ""}
         </p>
         {error && <p className="text-xs text-red-700">{error}</p>}
       </div>

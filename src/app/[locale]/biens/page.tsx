@@ -8,7 +8,7 @@ import { PropertySearch } from "@/components/search/property-search";
 import { getGeographySearchTree } from "@/lib/geography/index";
 import { prepareMapPageData } from "@/lib/map/prepare-map-page";
 import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-gate";
-import { LISTINGS_PAGE_SIZE, MAP_PAGE_SIZE } from "@/lib/search/page-size";
+import { LISTINGS_PAGE_SIZE } from "@/lib/search/page-size";
 
 export const revalidate = 60;
 
@@ -50,19 +50,13 @@ export default async function BiensPage({
 
   const hasLocation = hasCompleteLocation(baseFilters);
 
-  const [searchResult, mapResult] = hasLocation
-    ? await Promise.all([
-        searchListings({ ...baseFilters, page: 1, limit: LISTINGS_PAGE_SIZE }),
-        searchListings({ ...baseFilters, page: 1, limit: MAP_PAGE_SIZE }),
-      ])
-    : [
-        { items: [], total: 0, totalPages: 1, totalAvailable: 0, page: 1 },
-        { items: [], total: 0, totalPages: 1, totalAvailable: 0, page: 1 },
-      ];
+  // Une seule recherche (10) pour éviter double scan / saturation mémoire
+  const searchResult = hasLocation
+    ? await searchListings({ ...baseFilters, page: 1, limit: LISTINGS_PAGE_SIZE })
+    : { items: [], total: 0, totalPages: 1, totalAvailable: 0, page: 1 };
 
   const { items, total, totalPages } = searchResult;
-  const mapData =
-    hasLocation && mapResult.items.length > 0 ? await prepareMapPageData(mapResult.items) : null;
+  const mapData = hasLocation && items.length > 0 ? await prepareMapPageData(items) : null;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8">

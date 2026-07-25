@@ -1,10 +1,11 @@
 import { fetchHoldingListings } from "@/lib/aggregation/sources/holding-source";
-import { fetchPartnerFeed } from "@/lib/aggregation/sources/partner-feed";
+import { fetchPartnerFeed, resetPartnerFeedCache } from "@/lib/aggregation/sources/partner-feed";
 import { loadSemsaraiListings } from "@/lib/data/static-catalog-loader";
 import { normalizeSemsaraiListing } from "@/lib/semsarai/normalizer";
 import type { AggregatedListing, AggregationSourceId } from "@/lib/aggregation/types";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { listingMatchesFilters } from "@/lib/search/listing-filters-match";
+import { hasNeighborhoodCatalog } from "@/lib/search/neighborhood-catalog";
 
 const PARTNER_SOURCES: AggregationSourceId[] = ["avito", "mubawab", "sarouty"];
 
@@ -30,11 +31,40 @@ async function getPartnerCatalog(): Promise<AggregatedListing[]> {
   return partnerPromise;
 }
 
-/** Recherche dans le catalogue embarqué + flux scrapés locaux. */
+function pushMatches(
+  matched: AggregatedListing[],
+  listings: AggregatedListing[],
+  filters: SearchFilters,
+) {
+  for (const listing of listings) {
+    if (listing.status === "published" && listingMatchesFilters(listing, filters)) {
+      matched.push(listing);
+    }
+  }
+}
+
+/**
+ * Recherche locale.
+ * Si un cache quartier existe pour la ville, on évite de charger les 5000 SEMSAR
+ * (déjà couverts par neighborhood-catalog) — réduit fortement la RAM.
+ */
 export async function searchLocalCatalog(filters: SearchFilters = {}): Promise<AggregatedListing[]> {
-  const [listings, partner] = await Promise.all([getSearchCatalog(), getPartnerCatalog()]);
-  const all = [...listings, ...partner];
-  return all.filter((l) => l.status === "published" && listingMatchesFilters(l, filters));
+  const matched: AggregatedListing[] = [];
+  const useNeighborhoodCache =
+    Boolean(filters.city && filters.neighborhood && hasNeighborhoodCatalog(filters.city));
+
+  const partner = await getPartnerCatalog();
+  pushMatches(matched, partner, filters);
+
+  if (useNeighborhoodCache) {
+    // Holding only — le reste SEMSAR vient du cache quartier dans live-search
+    pushMatches(matched, fetchHoldingListings(), filters);
+    return matched;
+  }
+
+  const listings = await getSearchCatalog();
+  pushMatches(matched, listings, filters);
+  return matched;
 }
 
 export function mergeListingsById(...groups: AggregatedListing[][]): AggregatedListing[] {
@@ -53,4 +83,5 @@ export function mergeListingsById(...groups: AggregatedListing[][]): AggregatedL
 export function resetLocalCatalogCache(): void {
   catalogPromise = null;
   partnerPromise = null;
+  resetPartnerFeedCache();
 }
