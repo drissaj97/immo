@@ -42,7 +42,7 @@ function matchesFilters(listing: ListingWithLocation, filters: SearchFilters): b
     );
     if (listingRegion.toLowerCase() !== filters.region.toLowerCase()) return false;
   }
-  if (filters.city && !cityMatches(filters.city, listing.location.city)) return false;
+  if (filters.city && !cityMatches(filters.city, listing)) return false;
   if (filters.neighborhood && !neighborhoodMatches(filters.neighborhood, listing)) return false;
   if (filters.minPrice && listing.price < filters.minPrice) return false;
   if (filters.maxPrice && listing.price > filters.maxPrice) return false;

@@ -7,8 +7,20 @@ export function normalizeLocationKey(value: string): string {
     .trim();
 }
 
-export function cityMatches(filterCity: string, listingCity: string): boolean {
-  return normalizeLocationKey(filterCity) === normalizeLocationKey(listingCity);
+export function cityMatches(
+  filterCity: string,
+  listingOrCity: string | { location: { city: string; neighborhood: string } },
+): boolean {
+  const listingCity =
+    typeof listingOrCity === "string" ? listingOrCity : listingOrCity.location.city;
+  const neighborhood =
+    typeof listingOrCity === "string" ? "" : listingOrCity.location.neighborhood;
+
+  if (normalizeLocationKey(filterCity) === normalizeLocationKey(listingCity)) return true;
+  if (neighborhood && normalizeLocationKey(filterCity) === normalizeLocationKey(neighborhood)) {
+    return true;
+  }
+  return false;
 }
 
 function tokenizeLocation(value: string): string[] {

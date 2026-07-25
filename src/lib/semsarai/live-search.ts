@@ -1,12 +1,13 @@
 import { fetchSemsaraiProperties } from "@/lib/semsarai/client";
-import { semsaraiPropertyToListing } from "@/lib/semsarai/normalizer";
-import { normalizeSemsaraiListing } from "@/lib/semsarai/normalizer";
+import { semsaraiPropertyToListing, normalizeSemsaraiListing } from "@/lib/semsarai/normalizer";
 import { SEMSARAI_API_TOTAL } from "@/lib/data/semsarai-meta";
 import type { AggregatedListing } from "@/lib/aggregation/types";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { hasActiveFilters, listingMatchesFilters } from "@/lib/search/listing-filters-match";
 import { hasCompleteLocation } from "@/lib/search/location-gate";
 import { mergeListingsById, searchLocalCatalog } from "@/lib/search/local-catalog-search";
+import { loadNeighborhoodCatalog, hasNeighborhoodCatalog } from "@/lib/search/neighborhood-catalog";
+import { scanApiForNeighborhood } from "@/lib/semsarai/neighborhood-api-scan";
 
 const API_PAGE_SIZE = Number(process.env.SEMSARAI_PAGE_SIZE ?? "50");
 const MAX_SCAN_PAGES = Number(process.env.SEMSARAI_SEARCH_SCAN_PAGES ?? "25");
@@ -28,10 +29,41 @@ function sortListings(listings: AggregatedListing[], sort?: SearchFilters["sort"
 }
 
 function scanPageLimit(filters: SearchFilters): number {
-  if (filters.neighborhood) return 3;
+  if (filters.neighborhood) return MAX_SCAN_PAGES;
   if (filters.city) return 5;
   if (filters.region) return 8;
   return Math.min(MAX_SCAN_PAGES, 10);
+}
+
+async function searchByNeighborhood(filters: SearchFilters): Promise<AggregatedListing[]> {
+  const localMatches = await searchLocalCatalog(filters);
+  const seen = new Set(localMatches.map((l) => l.id));
+  const matched: AggregatedListing[] = [...localMatches];
+
+  const cached = loadNeighborhoodCatalog(filters.city!, filters.neighborhood!);
+  for (const property of cached) {
+    const listing = normalizeSemsaraiListing(semsaraiPropertyToListing(property));
+    if (!listingMatchesFilters(listing, filters) || seen.has(listing.id)) continue;
+    seen.add(listing.id);
+    matched.push(listing);
+  }
+
+  const needsScan = !hasNeighborhoodCatalog(filters.city!) || cached.length === 0;
+
+  if (needsScan) {
+    try {
+      const scanned = await scanApiForNeighborhood(filters, seen);
+      for (const listing of scanned) {
+        if (seen.has(listing.id)) continue;
+        seen.add(listing.id);
+        matched.push(listing);
+      }
+    } catch (err) {
+      console.warn("[search] Scan API quartier partiel:", err);
+    }
+  }
+
+  return matched;
 }
 
 /** Recherche live API + catalogue local embarqué (résultats quartier fiables). */
@@ -75,6 +107,22 @@ export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
       page,
       totalPages: Math.max(1, Math.ceil(totalAvailable / limit)),
       scannedPages: 1,
+    };
+  }
+
+  if (filters.neighborhood) {
+    const matched = await searchByNeighborhood(filters);
+    const sorted = sortListings(matched, filters.sort);
+    const start = (page - 1) * limit;
+    const items = sorted.slice(start, start + limit);
+
+    return {
+      items,
+      total: sorted.length,
+      totalAvailable: sorted.length,
+      page,
+      totalPages: Math.max(1, Math.ceil(sorted.length / limit)),
+      scannedPages: hasNeighborhoodCatalog(filters.city!) ? 0 : -1,
     };
   }
 

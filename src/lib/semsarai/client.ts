@@ -23,21 +23,37 @@ async function fetchFromApi(
   limit: number,
   apiUrl: string,
 ): Promise<SemsaraiPropertiesResponse> {
-  const res = await fetch(`${apiUrl}/operations/get-properties`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "User-Agent": "DarBladi-Import/1.0",
-    },
-    body: JSON.stringify({ json: { page, limit } }),
-  });
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const res = await fetch(`${apiUrl}/operations/get-properties`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "User-Agent": "DarBladi-Import/1.0",
+        },
+        body: JSON.stringify({ json: { page, limit } }),
+      });
 
-  if (!res.ok) {
-    throw new Error(`Semsarai API ${res.status}: ${await res.text()}`);
+      if (!res.ok) {
+        if (res.status >= 500 && attempt < 3) {
+          await new Promise((r) => setTimeout(r, attempt * 800));
+          continue;
+        }
+        throw new Error(`Semsarai API ${res.status}: ${await res.text()}`);
+      }
+
+      const data = (await res.json()) as { json: SemsaraiPropertiesResponse };
+      return data.json;
+    } catch (err) {
+      lastError = err;
+      if (attempt < 3) {
+        await new Promise((r) => setTimeout(r, attempt * 800));
+        continue;
+      }
+    }
   }
-
-  const data = (await res.json()) as { json: SemsaraiPropertiesResponse };
-  return data.json;
+  throw lastError;
 }
 
 export async function fetchSemsaraiProperties(

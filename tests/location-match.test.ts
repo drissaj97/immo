@@ -17,6 +17,14 @@ describe("location-match", () => {
     expect(cityMatches("Kénitra", "Kenitra")).toBe(true);
   });
 
+  it("matche commune listée comme quartier (ex. Bouskoura/Casablanca)", () => {
+    expect(
+      cityMatches("Bouskoura", {
+        location: { city: "Casablanca", neighborhood: "Bouskoura" },
+      }),
+    ).toBe(true);
+  });
+
   it("matche quartier via titre si quartier API différent", () => {
     const listing = {
       location: { neighborhood: "Tabriquet", city: "Salé" },
