@@ -1,9 +1,11 @@
 import { ListingCard } from "@/components/listings/listing-card";
 import { PropertyMap } from "@/components/maps/property-map";
 import { searchListings } from "@/server/repositories/listings";
+import { getAggregationStats } from "@/lib/aggregation/sync";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { ListingFilters } from "@/components/listings/listing-filters";
+import Link from "next/link";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -35,17 +37,25 @@ export default async function BiensPage({
     bedrooms: sp.bedrooms ? Number(sp.bedrooms) : undefined,
     hasPool: sp.hasPool === "true" ? true : undefined,
     isVerified: sp.isVerified === "true" ? true : undefined,
+    source: sp.source as SearchFilters["source"],
     sort: (sp.sort as SearchFilters["sort"]) ?? "recent",
     page: sp.page ? Number(sp.page) : 1,
   };
 
   const { items, total } = await searchListings(filters);
+  const aggStats = await getAggregationStats();
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
       <div className="mb-8">
         <h1 className="font-serif text-3xl">Biens immobiliers</h1>
-        <p className="mt-2 text-charcoal/60">{total} résultat{total > 1 ? "s" : ""} (données démo)</p>
+        <p className="mt-2 text-charcoal/60">
+          {total} résultat{total > 1 ? "s" : ""} · {aggStats.published} annonces agrégées
+          {" · "}
+          <Link href={`/${locale}/agregateur`} className="text-deep-green hover:underline">
+            Sources ({Object.keys(aggStats.bySource).length})
+          </Link>
+        </p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-[280px_1fr]">

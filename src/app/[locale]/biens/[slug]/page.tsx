@@ -9,6 +9,7 @@ import { getListingBySlug } from "@/server/repositories/listings";
 import { buildMetadata, listingJsonLd } from "@/lib/seo/metadata";
 import { formatPrice } from "@/lib/utils";
 import { FavoriteButton } from "@/components/listings/favorite-button";
+import { ExternalListingBanner, SourceBadge } from "@/components/listings/source-badge";
 import { InvestmentScoreCard } from "@/components/investment/investment-score-card";
 import { PriceHistoryChart } from "@/components/investment/price-history-chart";
 import { GenerateReportButton } from "@/components/investment/generate-report-button";
@@ -72,9 +73,14 @@ export default async function ListingDetailPage({
           </div>
           <div>
             <div className="flex flex-wrap gap-2">
-              <Badge variant="demo">Donnée démo</Badge>
-              {listing.isVerified && <Badge variant="verified">Annonce vérifiée</Badge>}
+              {!listing.isDemo && !listing.isExternal && (
+                <Badge variant="verified">Annonce DarBladi</Badge>
+              )}
+              {listing.isDemo && !listing.isExternal && <Badge variant="demo">Donnée démo</Badge>}
+              {listing.isVerified && <Badge variant="verified">Vérifiée</Badge>}
+              <SourceBadge listing={listing} />
             </div>
+            <ExternalListingBanner listing={listing} />
             <h1 className="mt-4 font-serif text-3xl">{listing.title}</h1>
             <p className="mt-2 flex items-center gap-1 text-charcoal/60">
               <MapPin className="h-4 w-4" />
@@ -149,6 +155,16 @@ export default async function ListingDetailPage({
               <h3 className="font-medium flex items-center gap-2"><Shield className="h-4 w-4" /> Provenance</h3>
               <dl className="mt-3 space-y-2 text-sm">
                 <div><dt className="text-charcoal/50">Source</dt><dd>{listing.sourceName}</dd></div>
+                {listing.sourceUrl && (
+                  <div>
+                    <dt className="text-charcoal/50">Lien original</dt>
+                    <dd>
+                      <a href={listing.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-deep-green hover:underline">
+                        Voir l&apos;annonce source →
+                      </a>
+                    </dd>
+                  </div>
+                )}
                 <div><dt className="text-charcoal/50">Type</dt><dd>{listing.sourceType}</dd></div>
                 <div><dt className="text-charcoal/50">Complétude</dt><dd>{listing.completenessScore} %</dd></div>
                 <div><dt className="text-charcoal/50">Fraîcheur</dt><dd>{listing.freshnessScore} %</dd></div>

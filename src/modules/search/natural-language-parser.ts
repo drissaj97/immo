@@ -16,6 +16,7 @@ export const searchFiltersSchema = z.object({
   isVerified: z.boolean().optional(),
   isNew: z.boolean().optional(),
   sort: z.enum(["recent", "price_asc", "price_desc", "area_desc"]).optional(),
+  source: z.enum(["darbladi", "holding-immo", "avito", "mubawab", "sarouty"]).optional(),
   page: z.number().optional(),
   limit: z.number().optional(),
 });

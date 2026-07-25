@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
 import type { ListingWithLocation } from "@/server/repositories/listings";
 import { convertPrice } from "@/server/repositories/listings";
+import { SourceBadge } from "@/components/listings/source-badge";
 
 export function ListingCard({
   listing,
@@ -40,9 +41,10 @@ export function ListingCard({
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width:768px) 100vw, 33vw"
         />
-        <div className="absolute left-3 top-3 flex gap-2">
+        <div className="absolute left-3 top-3 flex flex-wrap gap-2">
           <Badge>{transactionLabel}</Badge>
           {listing.isVerified && <Badge variant="verified">Vérifié</Badge>}
+          <SourceBadge listing={listing} />
         </div>
       </div>
       <div className="p-4">
@@ -72,7 +74,10 @@ export function ListingCard({
             </span>
           )}
         </div>
-        <p className="mt-2 text-xs text-charcoal/40">Réf. {listing.reference}</p>
+        <p className="mt-2 text-xs text-charcoal/40">
+          Réf. {listing.reference}
+          {listing.sourceName && ` · ${listing.sourceName}`}
+        </p>
       </div>
     </Link>
   );

@@ -1,0 +1,97 @@
+# DarBladi — Agrégation multi-sources
+
+> Vision : **Toutes les annonces immobilières du Maroc, en un seul endroit.**
+
+## Principe
+
+DarBladi est un **index agrégé**, pas un scrapeur. Chaque annonce affiche :
+
+- Sa **source** (Avito, Mubawab, Holding IMMO, DarBladi…)
+- Un **lien vers l'annonce originale**
+- Son **statut de licence** (first-party, contrat partenaire, API licenciée)
+
+## Sources supportées
+
+| Source | Statut actuel | Activation |
+|--------|---------------|------------|
+| Holding IMMO | ✅ Actif (50 annonces) | Import JSON-LD first-party |
+| DarBladi | ✅ Actif | Publications plateforme |
+| Avito.ma | ⏳ Partenariat requis | Voir ci-dessous |
+| Mubawab.ma | ⏳ Partenariat requis | Voir ci-dessous |
+| Sarouty.ma | ⏳ Partenariat requis | Contrat à négocier |
+
+## ⚠️ Pas de scraping
+
+Les CGU d'Avito et Mubawab **interdisent l'extraction automatisée** sans autorisation.
+DarBladi **n'implémente pas de scraper** pour ces portails.
+
+## Voies conformes pour Avito & Mubawab
+
+### 1. Partenariat commercial (recommandé)
+
+- **Avito** : contacter l'équipe Boutiques Immo / partenariats B2B
+- **Mubawab** : contacter Dubizzle Group (EMPG) pour un flux XML/JSON partenaire
+
+Une fois le contrat signé :
+
+```bash
+# Option A — URL flux sécurisé
+AVITO_PARTNER_FEED_URL=https://partner.avito.ma/feed/darbladi.json
+MUBAWAB_PARTNER_FEED_URL=https://...
+
+# Option B — fichier local
+cp export-avito.json data/feeds/avito.json
+pnpm aggregation:sync
+```
+
+### 2. PropAPIS (agrégateur licencié)
+
+Service tiers avec accès API licencié aux portails MENA :
+
+```env
+PROPAPIS_API_KEY=your_key
+PROPAPIS_CITIES=casablanca,rabat,marrakech,tanger,agadir,fes,kenitra
+```
+
+### 3. Import manuel partenaire
+
+Format JSON documenté dans `data/feeds/README.md`.
+
+## Architecture technique
+
+```
+src/lib/aggregation/
+├── types.ts           # Types normalisés
+├── normalizer.ts      # Mapping → DemoListing
+├── dedupe.ts          # Déduplication cross-source
+├── sync.ts            # Orchestration
+└── sources/
+    ├── holding-source.ts
+    ├── partner-feed.ts
+    ├── propapis-source.ts
+    └── registry.ts
+```
+
+## Commandes
+
+```bash
+pnpm aggregation:sync          # Sync toutes les sources
+pnpm import:holding             # Re-import Holding IMMO
+curl /api/v1/aggregation/status # Stats JSON
+POST /api/v1/cron/aggregation   # Cron (CRON_SECRET)
+```
+
+## Déduplication
+
+Priorité en cas de doublon :
+
+1. First-party (Holding IMMO, DarBladi)
+2. Contrat partenaire
+3. API licenciée
+
+## Prochaines étapes
+
+- [ ] Signature partenariat Avito Group
+- [ ] Signature partenariat Dubizzle Group / Mubawab
+- [ ] Index pgvector sur catalogue agrégé
+- [ ] Alertes cross-sources (« même bien moins cher sur… »)

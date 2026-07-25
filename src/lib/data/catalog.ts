@@ -1,24 +1,20 @@
-import { DEMO_LISTINGS, type DemoListing } from "@/lib/data/demo-data";
-import { HOLDING_LISTINGS, HOLDING_IMPORT_META } from "@/lib/data/holding-listings";
+import { getAggregatedListings, getAggregationStats, resetAggregationCache, syncAggregatedCatalog } from "@/lib/aggregation/sync";
+import { HOLDING_IMPORT_META } from "@/lib/data/holding-listings";
 
-/** Unified catalog — Holding IMMO (first-party) + demo seed listings */
-export function getCatalogListings(): DemoListing[] {
-  const demoOnly = DEMO_LISTINGS.filter((l) => !l.id.startsWith("hi-"));
-  const holdingSlugs = new Set(HOLDING_LISTINGS.map((l) => l.slug));
-  const uniqueDemo = demoOnly.filter((l) => !holdingSlugs.has(l.slug));
-  return [...HOLDING_LISTINGS, ...uniqueDemo];
-}
-
-export function getListingCatalogStats() {
-  const catalog = getCatalogListings();
-  const published = catalog.filter((l) => l.status === "published");
-  const cities = new Set(published.map((l) => l.location.city));
+export async function getListingCatalogStats() {
+  const stats = await getAggregationStats();
   return {
-    total: catalog.length,
-    published: published.length,
-    holdingImmo: HOLDING_LISTINGS.length,
-    demoSeed: catalog.length - HOLDING_LISTINGS.length,
-    cities: cities.size,
+    total: stats.total,
+    published: stats.published,
+    holdingImmo: stats.bySource["holding-immo"] ?? 0,
+    demoSeed: stats.bySource["darbladi"] ?? 0,
+    avito: stats.bySource["avito"] ?? 0,
+    mubawab: stats.bySource["mubawab"] ?? 0,
+    cities: stats.cities,
+    bySource: stats.bySource,
     holdingMeta: HOLDING_IMPORT_META,
+    aggregation: stats,
   };
 }
+
+export { getAggregatedListings, getAggregationStats, resetAggregationCache, syncAggregatedCatalog };

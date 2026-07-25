@@ -4,8 +4,8 @@ import { checkOpenAIHealth, MockLLMProvider, ResilientLLMProvider, OpenAILLMProv
 import { OpenAIQuotaError } from "@/modules/ai/openai-fetch";
 
 describe("Catalog Holding IMMO", () => {
-  it("contient 50+ annonces Holding IMMO importées", () => {
-    const stats = getListingCatalogStats();
+  it("contient 50+ annonces Holding IMMO importées", async () => {
+    const stats = await getListingCatalogStats();
     expect(stats.holdingImmo).toBeGreaterThanOrEqual(50);
     expect(stats.published).toBeGreaterThanOrEqual(60);
     expect(stats.holdingMeta.isFirstParty).toBe(true);

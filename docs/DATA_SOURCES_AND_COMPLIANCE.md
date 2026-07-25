@@ -21,8 +21,8 @@
 | **MapLibre demo tiles** | Tuiles cartographiques | **Autorisée** | Carte `/carte` | Remplacer par provider production |
 | **Unsplash** | Photos placeholder | **Autorisée** | Images démo | Licence Unsplash, pas de biens réels |
 | **OpenStreetMap / données ouvertes** | Géocodage, POI | **Autorisée** | Futur enrichissement | Respect licence ODbL |
-| **Avito.ma** | Portail annonces | **Interdite** (scraping) | — | CGU interdisent extraction automatisée |
-| **Mubawab.ma** | Portail annonces | **Interdite** (scraping) | — | Idem |
+| **Avito.ma** | Portail annonces | **À vérifier** (partenariat) | Flux partenaire / PropAPIS | Scraping interdit — contrat B2B requis |
+| **Mubawab.ma** | Portail annonces | **À vérifier** (partenariat) | Flux partenaire / PropAPIS | Scraping interdit — contrat Dubizzle Group |
 | **Sarouty.ma** | Portail annonces | **Interdite** (scraping) | — | Idem |
 | **Holding IMMO / agences tierces** | Sites concurrents | **Interdite** (scraping) | — | Audit public uniquement, pas de reprise contenu |
 | **Réseaux sociaux** | Posts, groupes FB | **Interdite** | — | Pas de collecte sans consentement |

@@ -1,13 +1,22 @@
-import { getCatalogListings } from "@/lib/data/catalog";
+import { getAggregatedListings } from "@/lib/aggregation/sync";
 import { DEMO_LISTINGS, EXCHANGE_RATES, type DemoListing } from "@/lib/data/demo-data";
+import type { AggregatedListing } from "@/lib/aggregation/types";
 import { useDatabase } from "@/lib/db/repository";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import * as dbRepo from "@/server/repositories/listings-db";
 
-export type ListingWithLocation = DemoListing;
+export type ListingWithLocation = DemoListing & {
+  aggregationSource?: AggregatedListing["aggregationSource"];
+  isExternal?: boolean;
+  licenseStatus?: AggregatedListing["licenseStatus"];
+};
 
-function matchesFilters(listing: DemoListing, filters: SearchFilters): boolean {
+function matchesFilters(listing: ListingWithLocation, filters: SearchFilters): boolean {
   if (listing.status !== "published" && !filters.query?.includes("admin")) return false;
+  if (filters.source && "aggregationSource" in listing) {
+    const src = (listing as AggregatedListing).aggregationSource;
+    if (src !== filters.source) return false;
+  }
   if (filters.transactionType && listing.transactionType !== filters.transactionType) return false;
   if (filters.listingType && listing.listingType !== filters.listingType) return false;
   if (filters.city && listing.location.city.toLowerCase() !== filters.city.toLowerCase()) return false;
@@ -29,7 +38,7 @@ function matchesFilters(listing: DemoListing, filters: SearchFilters): boolean {
   return true;
 }
 
-function sortListings(listings: DemoListing[], sort?: SearchFilters["sort"]): DemoListing[] {
+function sortListings(listings: ListingWithLocation[], sort?: SearchFilters["sort"]): ListingWithLocation[] {
   const copy = [...listings];
   switch (sort) {
     case "price_asc":
@@ -43,14 +52,10 @@ function sortListings(listings: DemoListing[], sort?: SearchFilters["sort"]): De
   }
 }
 
-function getAllListings(): DemoListing[] {
-  return getCatalogListings();
-}
-
-function demoSearchListings(filters: SearchFilters = {}) {
+async function demoSearchListings(filters: SearchFilters = {}) {
   const page = filters.page ?? 1;
   const limit = filters.limit ?? 12;
-  const all = getAllListings();
+  const all = await getAggregatedListings();
   const filtered = sortListings(
     all.filter((l) => matchesFilters(l, filters)),
     filters.sort,
@@ -83,7 +88,8 @@ export async function getListingBySlug(slug: string): Promise<ListingWithLocatio
     const listing = await dbRepo.dbGetListingBySlug(slug);
     if (listing) return listing;
   }
-  return getAllListings().find((l) => l.slug === slug) ?? null;
+  const all = await getAggregatedListings();
+  return all.find((l) => l.slug === slug) ?? null;
 }
 
 export async function getListingById(id: string): Promise<ListingWithLocation | null> {
@@ -91,7 +97,8 @@ export async function getListingById(id: string): Promise<ListingWithLocation | 
     const listing = await dbRepo.dbGetListingById(id);
     if (listing) return listing;
   }
-  return getAllListings().find((l) => l.id === id) ?? null;
+  const all = await getAggregatedListings();
+  return all.find((l) => l.id === id) ?? null;
 }
 
 export async function getFeaturedListings(limit = 6): Promise<ListingWithLocation[]> {
@@ -99,7 +106,8 @@ export async function getFeaturedListings(limit = 6): Promise<ListingWithLocatio
     const items = await dbRepo.dbGetFeaturedListings(limit);
     if (items.length > 0) return items;
   }
-  return getAllListings()
+  const all = await getAggregatedListings();
+  return all
     .filter((l) => l.status === "published")
     .sort((a, b) => b.completenessScore - a.completenessScore)
     .slice(0, limit);
@@ -110,7 +118,7 @@ export async function getPendingListings(): Promise<ListingWithLocation[]> {
     const items = await dbRepo.dbGetPendingListings();
     if (items.length > 0) return items;
   }
-  return getAllListings().filter((l) => l.status === "pending_review" || l.status === "draft");
+  return DEMO_LISTINGS.filter((l) => l.status === "pending_review" || l.status === "draft");
 }
 
 export async function getCities(): Promise<Array<{ city: string; count: number }>> {
@@ -119,7 +127,8 @@ export async function getCities(): Promise<Array<{ city: string; count: number }
     if (cities.length > 0) return cities;
   }
   const map = new Map<string, number>();
-  for (const l of getAllListings().filter((x) => x.status === "published")) {
+  const all = await getAggregatedListings();
+  for (const l of all.filter((x) => x.status === "published")) {
     map.set(l.location.city, (map.get(l.location.city) ?? 0) + 1);
   }
   return Array.from(map.entries()).map(([city, count]) => ({ city, count }));

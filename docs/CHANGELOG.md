@@ -7,6 +7,27 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [1.3.0] — 2026-07-25
+
+### Agrégation multi-sources — « Toutes les annonces du Maroc »
+
+**Plateforme d'agrégation conforme**
+- Module `src/lib/aggregation/` — normalisation, déduplication, sync
+- Sources : Holding IMMO, DarBladi, Avito*, Mubawab* (*partenariat requis)
+- Page `/agregateur` — stats par source
+- Filtre `?source=avito` sur `/biens`
+- Badge source sur chaque annonce + lien original
+
+**Activation Avito/Mubawab (sans scraping)**
+- Flux partenaire JSON : `data/feeds/avito.json`, `mubawab.json`
+- PropAPIS licencié : `PROPAPIS_API_KEY`
+- URL flux : `AVITO_PARTNER_FEED_URL`, `MUBAWAB_PARTNER_FEED_URL`
+- Cron `POST /api/v1/cron/aggregation`
+
+**Documentation** : `docs/AGGREGATION.md`
+
+---
+
 ## [1.2.0] — 2026-07-25
 
 ### Quota OpenAI + catalogue Holding IMMO

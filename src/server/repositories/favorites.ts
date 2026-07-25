@@ -1,5 +1,5 @@
 import { and, eq, or } from "drizzle-orm";
-import { getCatalogListings } from "@/lib/data/catalog";
+import { getAggregatedListings } from "@/lib/aggregation/sync";
 import { DEMO_LISTINGS } from "@/lib/data/demo-data";
 import { getDb } from "@/lib/db";
 import { useDatabase } from "@/lib/db/repository";
@@ -53,7 +53,8 @@ export async function addFavorite(userId: string, listingId: string): Promise<bo
       return true;
     }
   }
-  if (!getCatalogListings().some((l) => l.id === listingId)) return false;
+  const all = await getAggregatedListings();
+  if (!all.some((l) => l.id === listingId)) return false;
   const set = demoFavorites.get(userId) ?? new Set<string>();
   set.add(listingId);
   demoFavorites.set(userId, set);

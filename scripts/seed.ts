@@ -9,8 +9,8 @@ import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "../src/lib/db/schema";
-import { getCatalogListings } from "../src/lib/data/catalog";
-import { DEMO_LISTINGS, DEMO_LOCATIONS, DEMO_USERS, EXCHANGE_RATES } from "../src/lib/data/demo-data";
+import { getAggregatedListings } from "../src/lib/aggregation/sync";
+import { DEMO_LOCATIONS, DEMO_USERS, EXCHANGE_RATES } from "../src/lib/data/demo-data";
 import {
   DEMO_ORGANIZATIONS,
   DEMO_PROJECTS,
@@ -79,7 +79,7 @@ async function main() {
   }
 
   console.log("Seeding listings...");
-  const catalogListings = getCatalogListings();
+  const catalogListings = await getAggregatedListings();
   for (const listing of catalogListings) {
     const locationId = locationIdBySlug.get(listing.location.slug);
     const [inserted] = await db
