@@ -14,7 +14,7 @@ Samsar IA est un **index agrégé**, pas un scrapeur. Chaque annonce affiche :
 
 | Source | Statut actuel | Activation |
 |--------|---------------|------------|
-| Holding IMMO | ✅ Actif (50 annonces) | Import JSON-LD first-party |
+| Holding IMMO | ✅ Actif (50 annonces, ~21 photos/annonce) | Import JSON-LD + HTML + téléchargement photos |
 | Samsar IA | ✅ Actif | Publications plateforme |
 | Avito.ma | ⏳ Partenariat requis | Voir ci-dessous |
 | Mubawab.ma | ⏳ Partenariat requis | Voir ci-dessous |
@@ -76,10 +76,23 @@ src/lib/aggregation/
 
 ```bash
 pnpm aggregation:sync          # Sync toutes les sources
-pnpm import:holding             # Re-import Holding IMMO
+pnpm import:holding            # Re-import Holding IMMO + téléchargement photos
+pnpm import:holding -- --no-download  # Métadonnées seulement (URLs distantes)
 curl /api/v1/aggregation/status # Stats JSON
 POST /api/v1/cron/aggregation   # Cron (CRON_SECRET)
 ```
+
+### Import photos Holding IMMO (first-party)
+
+Le script `scripts/import-holding-immo.ts` :
+
+1. Parse le sitemap + JSON-LD de chaque fiche
+2. **Extrait toutes les photos** depuis le HTML (`/storage/uploads/`, `/storage/properties/`)
+3. **Télécharge** les fichiers dans `public/media/holding/{reference}/`
+4. Met à jour `src/lib/data/holding-listings.ts` avec les chemins locaux (`/media/holding/...`)
+5. Génère un manifeste audit : `data/media/holding-manifest.json`
+
+Après un clone du repo, relancer `pnpm import:holding` pour récupérer les photos (~800 Mo).
 
 ## Déduplication
 

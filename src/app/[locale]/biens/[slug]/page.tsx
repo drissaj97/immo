@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { ListingGallery } from "@/components/listings/listing-gallery";
 import { notFound } from "next/navigation";
 import { Bed, Bath, Maximize, MapPin, Shield, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -68,9 +68,7 @@ export default async function ListingDetailPage({
         </Link>
 
         <div className="mt-6 grid gap-8 lg:grid-cols-2">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-sand">
-            <Image src={listing.images[0]} alt={listing.title} fill className="object-cover" priority />
-          </div>
+          <ListingGallery images={listing.images} title={listing.title} />
           <div>
             <div className="flex flex-wrap gap-2">
               {!listing.isDemo && !listing.isExternal && (

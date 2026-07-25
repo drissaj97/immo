@@ -7,6 +7,18 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [1.4.1] — 2026-07-25
+
+### Scraping photos Holding IMMO
+
+- Import enrichi : extraction HTML (galerie complète, pas seulement JSON-LD)
+- Téléchargement local dans `public/media/holding/{reference}/`
+- Galerie multi-photos sur la fiche bien (`ListingGallery`)
+- Manifeste audit `data/media/holding-manifest.json`
+- ~1057 photos pour 50 annonces (~21 photos/annonce)
+
+---
+
 ## [1.4.0] — 2026-07-25
 
 ### Rebranding Samsar IA
