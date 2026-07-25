@@ -6,7 +6,7 @@ import { getListingCatalogStats } from "@/lib/data/catalog";
 export async function GET() {
   const openai = await checkOpenAIHealth();
   const embeddings = createEmbeddingProvider();
-  const catalog = getListingCatalogStats();
+  const catalog = await getListingCatalogStats();
 
   return NextResponse.json({
     openai,

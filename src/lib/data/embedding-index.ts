@@ -1,5 +1,6 @@
 import { buildCatalogNeighborhoods } from "@/lib/aggregation/catalog-analytics";
-import { getStaticCatalogListings, listingEmbeddingText } from "@/lib/aggregation/catalog";
+import { getStaticCatalogListings } from "@/lib/aggregation/catalog";
+import { listingEmbeddingText } from "@/lib/aggregation/listing-embedding-text";
 import { createEmbeddingProvider } from "@/modules/ai/embeddings-provider";
 import {
   buildEmbeddingDocuments,

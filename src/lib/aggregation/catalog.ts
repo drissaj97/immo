@@ -1,6 +1,9 @@
 import type { DemoListing } from "@/lib/data/demo-data";
 import { HOLDING_LISTINGS } from "@/lib/data/holding-listings";
+import { listingEmbeddingText } from "@/lib/aggregation/listing-embedding-text";
 import { SEMSARAI_LISTINGS } from "@/lib/data/semsarai-listings";
+
+export { listingEmbeddingText };
 
 let cachedListings: DemoListing[] | null = null;
 
@@ -16,8 +19,4 @@ export function getStaticCatalogListings(): DemoListing[] {
 
 export function resetStaticCatalogCache(): void {
   cachedListings = null;
-}
-
-export function listingEmbeddingText(listing: DemoListing): string {
-  return `${listing.title} ${listing.description} ${listing.location.city} ${listing.location.neighborhood} ${listing.listingType} ${listing.transactionType}`;
 }

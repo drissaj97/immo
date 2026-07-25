@@ -1,5 +1,5 @@
 import type { DemoListing } from "@/lib/data/demo-data";
-import { listingEmbeddingText } from "@/lib/aggregation/catalog";
+import { listingEmbeddingText } from "@/lib/aggregation/listing-embedding-text";
 import { createEmbeddingProvider } from "@/modules/ai/embeddings-provider";
 
 /** Indexe ou met à jour l'embedding pgvector d'une annonce publiée. */

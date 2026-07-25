@@ -1,5 +1,8 @@
 import { fetchHoldingListings } from "@/lib/aggregation/sources/holding-source";
-import { fetchPartnerFeed, resetPartnerFeedCache } from "@/lib/aggregation/sources/partner-feed";
+import {
+  fetchPartnerFeedForCity,
+  resetPartnerFeedCache,
+} from "@/lib/aggregation/sources/partner-feed";
 import { loadSemsaraiListings } from "@/lib/data/static-catalog-loader";
 import { normalizeSemsaraiListing } from "@/lib/semsarai/normalizer";
 import type { AggregatedListing, AggregationSourceId } from "@/lib/aggregation/types";
@@ -10,7 +13,7 @@ import { hasNeighborhoodCatalog } from "@/lib/search/neighborhood-catalog";
 const PARTNER_SOURCES: AggregationSourceId[] = ["avito", "mubawab", "sarouty"];
 
 let catalogPromise: Promise<AggregatedListing[]> | null = null;
-let partnerPromise: Promise<AggregatedListing[]> | null = null;
+const partnerByCity = new Map<string, Promise<AggregatedListing[]>>();
 
 async function getSearchCatalog(): Promise<AggregatedListing[]> {
   if (!catalogPromise) {
@@ -22,13 +25,16 @@ async function getSearchCatalog(): Promise<AggregatedListing[]> {
   return catalogPromise;
 }
 
-async function getPartnerCatalog(): Promise<AggregatedListing[]> {
-  if (!partnerPromise) {
-    partnerPromise = Promise.all(PARTNER_SOURCES.map((source) => fetchPartnerFeed(source))).then(
-      (groups) => groups.flat(),
-    );
+async function getPartnerCatalog(city?: string): Promise<AggregatedListing[]> {
+  const key = (city ?? "").trim().toLowerCase() || "*";
+  let pending = partnerByCity.get(key);
+  if (!pending) {
+    pending = Promise.all(
+      PARTNER_SOURCES.map((source) => fetchPartnerFeedForCity(source, city)),
+    ).then((groups) => groups.flat());
+    partnerByCity.set(key, pending);
   }
-  return partnerPromise;
+  return pending;
 }
 
 function pushMatches(
@@ -53,7 +59,7 @@ export async function searchLocalCatalog(filters: SearchFilters = {}): Promise<A
   const useNeighborhoodCache =
     Boolean(filters.city && filters.neighborhood && hasNeighborhoodCatalog(filters.city));
 
-  const partner = await getPartnerCatalog();
+  const partner = await getPartnerCatalog(filters.city);
   pushMatches(matched, partner, filters);
 
   if (useNeighborhoodCache) {
@@ -82,6 +88,6 @@ export function mergeListingsById(...groups: AggregatedListing[][]): AggregatedL
 
 export function resetLocalCatalogCache(): void {
   catalogPromise = null;
-  partnerPromise = null;
+  partnerByCity.clear();
   resetPartnerFeedCache();
 }

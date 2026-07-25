@@ -1,4 +1,4 @@
-import { readFileSync, existsSync } from "fs";
+import { closeSync, existsSync, openSync, readFileSync, readSync, statSync } from "fs";
 import path from "path";
 import type { AggregatedListing, AggregationSourceId, PartnerFeedFile, RawPartnerListing } from "../types";
 import { normalizePartnerListing } from "../normalizer";
@@ -7,6 +7,7 @@ const FEED_DIR = path.join(process.cwd(), "data/feeds");
 const MAX_FEED_LISTINGS = Number(process.env.PARTNER_FEED_MAX_LISTINGS ?? "3000");
 
 const feedCache = new Map<AggregationSourceId, AggregatedListing[]>();
+const cityFeedCache = new Map<string, AggregatedListing[]>();
 
 function slimRaw(raw: RawPartnerListing): RawPartnerListing {
   return {
@@ -14,6 +15,17 @@ function slimRaw(raw: RawPartnerListing): RawPartnerListing {
     description: (raw.description ?? raw.title ?? "").slice(0, 280),
     images: (raw.images ?? []).slice(0, 2),
   };
+}
+
+function readFileHead(filePath: string, bytes = 2048): string {
+  const fd = openSync(filePath, "r");
+  try {
+    const buf = Buffer.alloc(bytes);
+    const n = readSync(fd, buf, 0, bytes, 0);
+    return buf.subarray(0, n).toString("utf-8");
+  } finally {
+    closeSync(fd);
+  }
 }
 
 function loadFeedFile(source: AggregationSourceId): PartnerFeedFile | null {
@@ -64,15 +76,41 @@ export async function fetchPartnerFeed(source: AggregationSourceId): Promise<Agg
   return listings;
 }
 
+/** Détection légère — ne parse pas le JSON complet (évite ~9 Mo au boot). */
 export function hasLocalPartnerFeed(source: AggregationSourceId): boolean {
-  const feed = loadFeedFile(source);
-  return Boolean(feed && feed.listings.length > 0 && feed.licenseStatus !== "disabled");
+  const filePath = path.join(FEED_DIR, `${source}.json`);
+  if (!existsSync(filePath)) return false;
+  try {
+    if (statSync(filePath).size < 80) return false;
+    const head = readFileHead(filePath);
+    if (/["']licenseStatus["']\s*:\s*["']disabled["']/.test(head)) return false;
+    return /["']listings["']\s*:\s*\[\s*\{/.test(head);
+  } catch {
+    return false;
+  }
 }
 
 export function getPartnerFeedPath(source: AggregationSourceId): string {
   return path.join(FEED_DIR, `${source}.json`);
 }
 
+/** Sous-ensemble filtré par ville (cache séparé pour limiter le travail de matching). */
+export async function fetchPartnerFeedForCity(
+  source: AggregationSourceId,
+  city?: string,
+): Promise<AggregatedListing[]> {
+  const all = await fetchPartnerFeed(source);
+  if (!city?.trim()) return all;
+  const key = `${source}:${city.trim().toLowerCase()}`;
+  const cached = cityFeedCache.get(key);
+  if (cached) return cached;
+  const needle = city.trim().toLowerCase();
+  const filtered = all.filter((l) => (l.location.city ?? "").toLowerCase().includes(needle));
+  cityFeedCache.set(key, filtered);
+  return filtered;
+}
+
 export function resetPartnerFeedCache(): void {
   feedCache.clear();
+  cityFeedCache.clear();
 }

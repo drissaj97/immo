@@ -4,7 +4,6 @@ import type { AggregatedListing } from "@/lib/aggregation/types";
 import { useDatabase } from "@/lib/db/repository";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import * as dbRepo from "@/server/repositories/listings-db";
-import { syncListingEmbedding } from "@/server/repositories/embedding-sync";
 import { searchSemsaraiLive } from "@/lib/semsarai/live-search";
 import {
   buildFallbackFromListings,
@@ -280,7 +279,9 @@ export async function approveListing(id: string): Promise<boolean> {
   if (!listing) return false;
   listing.status = "published";
   listing.publishedAt = new Date().toISOString();
-  void syncListingEmbedding(listing);
+  void import("@/server/repositories/embedding-sync").then(({ syncListingEmbedding }) =>
+    syncListingEmbedding(listing),
+  );
   return true;
 }
 

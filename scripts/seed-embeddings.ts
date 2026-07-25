@@ -6,7 +6,8 @@
  */
 import "dotenv/config";
 import { config } from "dotenv";
-import { getStaticCatalogListings, listingEmbeddingText } from "../src/lib/aggregation/catalog";
+import { getStaticCatalogListings } from "../src/lib/aggregation/catalog";
+import { listingEmbeddingText } from "../src/lib/aggregation/listing-embedding-text";
 import { buildCatalogNeighborhoods } from "../src/lib/aggregation/catalog-analytics";
 import { createEmbeddingProvider } from "../src/modules/ai/embeddings-provider";
 
