@@ -1,5 +1,6 @@
 import { parseNaturalLanguageQuery, type SearchFilters } from "@/modules/search/natural-language-parser";
 import { searchListings, getListingById } from "@/server/repositories/listings";
+import { hasCompleteLocation, enrichSearchFilters } from "@/lib/search/location-gate";
 import { getListingInvestmentScore } from "@/server/repositories/investment";
 import { calculateInvestment } from "@/modules/investment/calculations";
 import { findMarketMetric } from "@/modules/investment/valuation";
@@ -14,9 +15,20 @@ export async function toolSearchListings(
   filters: Record<string, unknown>,
   _ctx: ToolContext,
 ): Promise<ControlledToolResult> {
-  const { items, total } = await searchListings({
-    ...(filters as SearchFilters),
-  });
+  const normalized = enrichSearchFilters(filters as SearchFilters);
+  if (!hasCompleteLocation(normalized)) {
+    return {
+      tool: "searchListings",
+      source: "DarBladi — catalogue agrégé",
+      data: {
+        items: [],
+        total: 0,
+        message: "Précisez un quartier pour lancer la recherche (ex. Sala El Jadida, Guéliz, Bettana).",
+      },
+    };
+  }
+
+  const { items, total } = await searchListings(normalized);
   return {
     tool: "searchListings",
     source: "DarBladi — catalogue agrégé",
@@ -157,8 +169,21 @@ export async function executeFromNaturalLanguage(
   const parsed = parseNaturalLanguageQuery(query);
   const toolResults: ControlledToolResult[] = [];
 
-  const searchResult = await toolSearchListings(parsed.filters, ctx);
-  toolResults.push(searchResult);
+  const locationReady = hasCompleteLocation(parsed.filters);
+  if (locationReady) {
+    const searchResult = await toolSearchListings(enrichSearchFilters(parsed.filters), ctx);
+    toolResults.push(searchResult);
+  } else {
+    toolResults.push({
+      tool: "searchListings",
+      source: "DarBladi — catalogue agrégé",
+      data: {
+        items: [],
+        total: 0,
+        message: "Indiquez un quartier précis pour afficher des annonces (ex. F3 à Sala El Jadida).",
+      },
+    });
+  }
 
   if (parsed.filters.city && parsed.filters.neighborhood) {
     toolResults.push(

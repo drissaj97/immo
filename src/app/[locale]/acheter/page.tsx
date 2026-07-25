@@ -3,6 +3,7 @@ import { PropertySearch } from "@/components/search/property-search";
 import { searchListings } from "@/server/repositories/listings";
 import { getGeographySearchTree } from "@/lib/geography/index";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
+import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-gate";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const revalidate = 300;
@@ -39,7 +40,7 @@ export default async function AcheterPage({
     limit: 24,
   };
 
-  const hasLocation = Boolean(filters.region && filters.city);
+  const hasLocation = hasCompleteLocation(filters);
   const { items } = hasLocation ? await searchListings(filters) : { items: [] };
 
   return (
@@ -76,9 +77,7 @@ export default async function AcheterPage({
           ))}
         </div>
       ) : (
-        <p className="mt-12 text-center text-charcoal/60">
-          Exemple : Rabat-Salé-Kénitra → Salé → Bouknadel
-        </p>
+        <p className="mt-12 text-center text-charcoal/60">{locationGateMessage()}</p>
       )}
 
       {hasLocation && items.length === 0 && (

@@ -13,17 +13,18 @@ describe("rate limit", () => {
 describe("DarBladi assistant", () => {
   it("returns structured response in mock mode", async () => {
     const result = await runAssistant(
-      "Je cherche un F3 à Salé pour moins de 1 300 000 DH",
+      "Je cherche un F3 à Sala El Jadida pour moins de 1 300 000 DH",
       { locale: "fr" },
     );
     expect(result.reply).toBeTruthy();
     expect(result.mode).toBe("mock");
-    expect(result.listings?.length).toBeGreaterThan(0);
+    expect(result.filters?.neighborhood).toBe("Sala El Jadida");
     expect(result.citations?.length).toBeGreaterThan(0);
   });
 
   it("includes filters from parser", async () => {
     const result = await runAssistant("Appartement à Marrakech Guéliz", { locale: "fr" });
-    expect(result.filters?.city ?? result.filters?.neighborhood).toBeTruthy();
+    expect(result.filters?.city).toBe("Marrakech");
+    expect(result.filters?.neighborhood).toBe("Guéliz");
   });
 });

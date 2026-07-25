@@ -15,7 +15,8 @@ import {
 import { DEMO_LISTINGS, type DemoListing } from "@/lib/data/demo-data";
 import { resolveMoroccoRegion } from "@/lib/geography/morocco-regions";
 import { cityMatches, neighborhoodMatches } from "@/lib/search/location-match";
-export { convertPrice } from "@/lib/currency";
+import { enrichSearchFilters, hasCompleteLocation } from "@/lib/search/location-gate";
+import { fetchHoldingListings } from "@/lib/aggregation/sources/holding-source";
 
 const USE_LIVE_SEARCH = process.env.SEMSARAI_LIVE_SEARCH !== "false";
 
@@ -132,14 +133,19 @@ export async function searchListings(filters: SearchFilters = {}): Promise<{
   totalPages: number;
   totalAvailable?: number;
 }> {
+  const enriched = enrichSearchFilters(filters);
+  if (!hasCompleteLocation(enriched)) {
+    return { items: [], total: 0, page: enriched.page ?? 1, totalPages: 1, totalAvailable: 0 };
+  }
+
   if (useDatabase()) {
-    const result = await dbRepo.dbSearchListings(filters);
+    const result = await dbRepo.dbSearchListings(enriched);
     if (result) return result;
   }
   if (USE_LIVE_SEARCH) {
-    return liveSearchListings(filters);
+    return liveSearchListings(enriched);
   }
-  return demoSearchListings(filters);
+  return demoSearchListings(enriched);
 }
 
 export async function getListingBySlug(slug: string): Promise<ListingWithLocation | null> {
@@ -176,19 +182,16 @@ export async function getFeaturedListings(limit = 6): Promise<ListingWithLocatio
     const items = await dbRepo.dbGetFeaturedListings(limit);
     if (items.length > 0) return items;
   }
-  if (USE_LIVE_SEARCH) {
-    const { items } = await searchSemsaraiLive({ limit, page: 1 });
-    return items.slice(0, limit) as ListingWithLocation[];
-  }
-  const all = await getAggregatedListingsLazy();
-  return all
+
+  const holding = fetchHoldingListings().slice(0, limit) as ListingWithLocation[];
+  if (holding.length >= limit) return holding;
+
+  const semsarai = await loadSemsaraiListings();
+  const extras = semsarai
     .filter((l) => l.status === "published" && !l.isDemo)
-    .sort(
-      (a, b) =>
-        listingPriority(b) - listingPriority(a) ||
-        b.completenessScore - a.completenessScore,
-    )
-    .slice(0, limit);
+    .slice(0, limit - holding.length) as ListingWithLocation[];
+
+  return [...holding, ...extras].slice(0, limit);
 }
 
 export async function getPendingListings(): Promise<ListingWithLocation[]> {

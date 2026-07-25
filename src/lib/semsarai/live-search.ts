@@ -5,6 +5,7 @@ import { SEMSARAI_API_TOTAL } from "@/lib/data/semsarai-meta";
 import type { AggregatedListing } from "@/lib/aggregation/types";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { hasActiveFilters, listingMatchesFilters } from "@/lib/search/listing-filters-match";
+import { hasCompleteLocation } from "@/lib/search/location-gate";
 import { mergeListingsById, searchLocalCatalog } from "@/lib/search/local-catalog-search";
 
 const API_PAGE_SIZE = Number(process.env.SEMSARAI_PAGE_SIZE ?? "50");
@@ -27,14 +28,10 @@ function sortListings(listings: AggregatedListing[], sort?: SearchFilters["sort"
 }
 
 function scanPageLimit(filters: SearchFilters): number {
-  if (filters.neighborhood) return 15;
-  if (filters.city) return 12;
-  if (filters.region) return 18;
+  if (filters.neighborhood) return 3;
+  if (filters.city) return 5;
+  if (filters.region) return 8;
   return Math.min(MAX_SCAN_PAGES, 10);
-}
-
-function hasLocationFilters(filters: SearchFilters): boolean {
-  return Boolean(filters.region || filters.city || filters.neighborhood);
 }
 
 /** Recherche live API + catalogue local embarqué (résultats quartier fiables). */
@@ -48,11 +45,23 @@ export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
 }> {
   const page = filters.page ?? 1;
   const limit = filters.limit ?? 48;
+
+  if (!hasCompleteLocation(filters)) {
+    return {
+      items: [],
+      total: 0,
+      totalAvailable: 0,
+      page,
+      totalPages: 1,
+      scannedPages: 0,
+    };
+  }
+
   const activeFilters = hasActiveFilters(filters);
 
   if (!activeFilters) {
     const batch = await fetchSemsaraiProperties({ page, limit: API_PAGE_SIZE });
-    const localFirst = searchLocalCatalog(filters);
+    const localFirst = await searchLocalCatalog(filters);
     const apiItems = batch.properties.map((p) =>
       normalizeSemsaraiListing(semsaraiPropertyToListing(p)),
     );
@@ -69,20 +78,18 @@ export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
     };
   }
 
-  const localMatches = searchLocalCatalog(filters);
+  const localMatches = await searchLocalCatalog(filters);
   const matched: AggregatedListing[] = [...localMatches];
   const seen = new Set(localMatches.map((l) => l.id));
 
   let apiPage = 1;
   let scannedPages = 0;
-  let apiTotalCount: number = SEMSARAI_API_TOTAL;
   const targetMatches = page * limit;
-  const maxPages = hasLocationFilters(filters) ? scanPageLimit(filters) : Math.min(MAX_SCAN_PAGES, 10);
+  const maxPages = scanPageLimit(filters);
 
   while (apiPage <= maxPages) {
     const batch = await fetchSemsaraiProperties({ page: apiPage, limit: API_PAGE_SIZE });
     scannedPages += 1;
-    if (apiPage === 1) apiTotalCount = batch.totalCount;
 
     if (!batch.properties.length) break;
 

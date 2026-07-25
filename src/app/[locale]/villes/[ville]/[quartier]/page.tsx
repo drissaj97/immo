@@ -33,6 +33,7 @@ export default async function QuartierPage({
   if (!knowledge) notFound();
 
   const { items, total } = await searchListings({
+    region: knowledge.region,
     city: knowledge.city,
     neighborhood: knowledge.neighborhood,
     limit: 6,
@@ -114,7 +115,7 @@ export default async function QuartierPage({
           </ul>
         )}
         <Link
-          href={`/${locale}/biens?city=${encodeURIComponent(knowledge.city)}&neighborhood=${encodeURIComponent(knowledge.neighborhood)}`}
+          href={`/${locale}/biens?region=${encodeURIComponent(knowledge.region)}&city=${encodeURIComponent(knowledge.city)}&neighborhood=${encodeURIComponent(knowledge.neighborhood)}`}
           className="mt-4 inline-block text-sm text-deep-green hover:underline"
         >
           Voir toutes les annonces →

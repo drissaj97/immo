@@ -1,5 +1,6 @@
 import { resetCatalogAnalyticsCache } from "./catalog-analytics";
 import { resetStaticCatalogCache } from "./catalog";
+import { resetLocalCatalogCache } from "@/lib/search/local-catalog-search";
 import type { AggregatedListing, AggregationStats, AggregationSyncResult } from "./types";
 import { dedupeAggregatedListings } from "./dedupe";
 import { fetchHoldingListings } from "./sources/holding-source";
@@ -88,5 +89,6 @@ export function resetAggregationCache(): void {
   resetSemsaraiLiveCache();
   clearSemsaraiApiCache();
   resetStaticCatalogCache();
+  resetLocalCatalogCache();
   resetCatalogAnalyticsCache();
 }

@@ -7,6 +7,29 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [1.10.1] — 2026-07-25
+
+### Recherche quartier obligatoire + corrections chat
+
+- Recherche bloquée sans **région + ville + quartier** (formulaire, `/biens`, chat)
+- Parser NL : Sala El Jadida, Guéliz, Bettana… + région auto
+- Chat DarBladi : plus de résultats Marrakech pour une requête Salé
+- Performance : catalogue lazy, homepage sans scan API, max 3 pages API par quartier
+- Faux positifs location-match corrigés (Sala ≠ Sala El Jadida)
+
+---
+
+## [1.10.0] — 2026-07-25
+
+### Scraping direct Avito, Mubawab, Sarouty
+
+- **`pnpm scrape:portals`** — collecte Sarouty (API), Mubawab (JSON-LD), Avito (Playwright)
+- Flux locaux `data/feeds/{avito,mubawab,sarouty}.json` avec `licenseStatus: "scraped"`
+- Activation via `SCRAPING_ENABLED=true` + `pnpm aggregation:sync`
+- Proxy images Sarouty/Avito
+
+---
+
 ## [1.8.0] — 2026-07-25
 
 ### Catalogue complet + recherche type semsarai.ma

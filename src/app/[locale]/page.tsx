@@ -23,7 +23,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   const geography = getGeographySearchTree();
   const cities = geography.regions.flatMap((r) =>
-    r.cities.map((c) => ({ city: c.name, count: c.count, region: r.name })),
+    r.cities.map((c) => ({ city: c.name, count: c.count, region: r.name, slug: c.slug })),
   );
   const [featured] = await Promise.all([getFeaturedListings(6)]);
   const apiTotal = SEMSARAI_API_TOTAL;
@@ -95,14 +95,16 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             </Link>
           </div>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-            {cities.slice(0, 12).map(({ city, count }) => (
+            {cities.slice(0, 12).map(({ city, count, region, slug }) => (
               <Link
                 key={city}
-                href={`/${locale}/biens?city=${encodeURIComponent(city)}`}
+                href={`/${locale}/villes/${slug}`}
                 className="rounded-lg border border-charcoal/10 bg-ivory p-6 transition hover:border-deep-green/30"
               >
                 <p className="font-serif text-xl">{city}</p>
-                <p className="mt-1 text-sm text-charcoal/60">{count.toLocaleString("fr-MA")} annonces</p>
+                <p className="mt-1 text-sm text-charcoal/60">
+                  {count.toLocaleString("fr-MA")} annonces · {region}
+                </p>
               </Link>
             ))}
           </div>

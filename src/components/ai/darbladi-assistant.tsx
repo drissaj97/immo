@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import type { LLMMessage } from "@/modules/ai/types";
+import { enrichSearchFilters } from "@/lib/search/location-gate";
+import type { SearchFilters } from "@/modules/search/natural-language-parser";
 
 type ChatMessage = LLMMessage & {
   citations?: Array<{ source: string; type: string; label: string }>;
@@ -66,8 +68,11 @@ export function DarBladiAssistant({ locale }: { locale: string }) {
 
   function applySearch(filters?: Record<string, unknown>) {
     if (!filters) return;
+    const enriched = enrichSearchFilters(filters as SearchFilters);
+    if (!enriched.region || !enriched.city || !enriched.neighborhood) return;
+
     const params = new URLSearchParams();
-    Object.entries(filters).forEach(([k, v]) => {
+    Object.entries(enriched).forEach(([k, v]) => {
       if (v !== undefined && v !== null) params.set(k, String(v));
     });
     router.push(`/${locale}/biens?${params.toString()}`);

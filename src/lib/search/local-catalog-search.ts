@@ -1,17 +1,25 @@
-import { getStaticCatalogListings } from "@/lib/aggregation/catalog";
 import { fetchHoldingListings } from "@/lib/aggregation/sources/holding-source";
+import { loadSemsaraiListings } from "@/lib/data/static-catalog-loader";
 import { normalizeSemsaraiListing } from "@/lib/semsarai/normalizer";
 import type { AggregatedListing } from "@/lib/aggregation/types";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { listingMatchesFilters } from "@/lib/search/listing-filters-match";
 
-/** Recherche instantanée dans le catalogue embarqué (~5050 annonces). */
-export function searchLocalCatalog(filters: SearchFilters = {}): AggregatedListing[] {
-  const listings = [
-    ...fetchHoldingListings(),
-    ...getStaticCatalogListings().map(normalizeSemsaraiListing),
-  ];
+let catalogPromise: Promise<AggregatedListing[]> | null = null;
 
+async function getSearchCatalog(): Promise<AggregatedListing[]> {
+  if (!catalogPromise) {
+    catalogPromise = loadSemsaraiListings().then((semsarai) => [
+      ...fetchHoldingListings(),
+      ...semsarai.map(normalizeSemsaraiListing),
+    ]);
+  }
+  return catalogPromise;
+}
+
+/** Recherche dans le catalogue embarqué (~5050 annonces), chargement lazy. */
+export async function searchLocalCatalog(filters: SearchFilters = {}): Promise<AggregatedListing[]> {
+  const listings = await getSearchCatalog();
   return listings.filter((l) => l.status === "published" && listingMatchesFilters(l, filters));
 }
 
@@ -26,4 +34,8 @@ export function mergeListingsById(...groups: AggregatedListing[][]): AggregatedL
     }
   }
   return merged;
+}
+
+export function resetLocalCatalogCache(): void {
+  catalogPromise = null;
 }

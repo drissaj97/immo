@@ -25,7 +25,7 @@ type PropertySearchProps = {
   defaultTransaction?: "sale" | "long_term_rent";
   initial?: Partial<SavedSearch>;
   geography?: GeographySearchTree;
-  /** Exiger région + ville avant recherche (réponse serveur rapide). */
+  /** Exiger région + ville + quartier avant recherche. */
   requireLocation?: boolean;
   /** Page de résultats (défaut: /biens). */
   searchPath?: string;
@@ -93,7 +93,7 @@ export function PropertySearch({
 
   function handleSearch(e?: React.FormEvent) {
     e?.preventDefault();
-    if (requireLocation && (!region || !city)) return;
+    if (requireLocation && (!region || !city || !neighborhood)) return;
 
     const params = buildParams();
     const saved: SavedSearch = {
@@ -147,7 +147,7 @@ export function PropertySearch({
     }
   }
 
-  const canSearch = !requireLocation || (Boolean(region) && Boolean(city));
+  const canSearch = !requireLocation || (Boolean(region) && Boolean(city) && Boolean(neighborhood));
   const isHero = variant === "hero";
 
   return (
@@ -261,9 +261,10 @@ export function PropertySearch({
             onChange={(e) => setNeighborhood(e.target.value)}
             disabled={!city}
             className={selectClassName}
+            required={requireLocation}
           >
             <option value="">
-              {city ? "Tous les quartiers" : "Sélectionnez d'abord une ville"}
+              {city ? "Choisir un quartier" : "Sélectionnez d'abord une ville"}
             </option>
             {neighborhoods.map((n) => (
               <option key={n.slug} value={n.name}>
@@ -323,11 +324,15 @@ export function PropertySearch({
             <Search className="h-5 w-5" />
             {canSearch
               ? "Rechercher les annonces"
-              : "Choisissez une région et une ville"}
+              : !region
+                ? "Choisissez une région"
+                : !city
+                  ? "Choisissez une ville"
+                  : "Choisissez un quartier"}
           </Button>
           {requireLocation && (
             <p className="mt-2 text-center text-xs text-charcoal/50">
-              Filtrage par région → ville → quartier pour une réponse serveur rapide
+              Région → ville → quartier obligatoires pour lancer la recherche
             </p>
           )}
         </div>

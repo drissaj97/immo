@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { resolveMoroccoRegion } from "@/lib/geography/morocco-regions";
 
 export const searchFiltersSchema = z.object({
   query: z.string().optional(),
@@ -26,23 +27,44 @@ export const searchFiltersSchema = z.object({
 
 export type SearchFilters = z.infer<typeof searchFiltersSchema>;
 
-const CITY_ALIASES: Record<string, string> = {
-  marrakech: "Marrakech",
-  rabat: "Rabat",
-  casablanca: "Casablanca",
-  casa: "Casablanca",
-  sale: "Salé",
-  salé: "Salé",
-  tanger: "Tanger",
-  kenitra: "Kénitra",
-  kénitra: "Kénitra",
-  bouznika: "Bouznika",
-  gueliz: "Guéliz",
-  guéliz: "Guéliz",
-  "hay riad": "Hay Riad",
-  technopolis: "Technopolis",
-  amelkis: "Amelkis",
+type LocationAlias = {
+  city: string;
+  region: string;
+  neighborhood?: string;
 };
+
+/** Alias triés du plus long au plus court pour éviter les matches partiels. */
+const LOCATION_ALIAS_ENTRIES: Array<[string, LocationAlias]> = [
+  ["sala el jadida", { city: "Salé", region: "Rabat-Salé-Kénitra", neighborhood: "Sala El Jadida" }],
+  ["sale el jadida", { city: "Salé", region: "Rabat-Salé-Kénitra", neighborhood: "Sala El Jadida" }],
+  ["sala al jadida", { city: "Salé", region: "Rabat-Salé-Kénitra", neighborhood: "Sala El Jadida" }],
+  ["hay riad", { city: "Rabat", region: "Rabat-Salé-Kénitra", neighborhood: "Hay Riad" }],
+  ["technopolis", { city: "Salé", region: "Rabat-Salé-Kénitra", neighborhood: "Technopolis" }],
+  ["bouknadel", { city: "Salé", region: "Rabat-Salé-Kénitra", neighborhood: "Bouknadel" }],
+  ["bettana", { city: "Salé", region: "Rabat-Salé-Kénitra", neighborhood: "Bettana" }],
+  ["tabriquet", { city: "Salé", region: "Rabat-Salé-Kénitra", neighborhood: "Tabriquet" }],
+  ["gueliz", { city: "Marrakech", region: "Marrakech-Safi", neighborhood: "Guéliz" }],
+  ["guéliz", { city: "Marrakech", region: "Marrakech-Safi", neighborhood: "Guéliz" }],
+  ["amelkis", { city: "Marrakech", region: "Marrakech-Safi", neighborhood: "Amelkis" }],
+  ["hivernage", { city: "Marrakech", region: "Marrakech-Safi", neighborhood: "Hivernage" }],
+  ["maarif", { city: "Casablanca", region: "Casablanca-Settat", neighborhood: "Maarif" }],
+  ["anfa", { city: "Casablanca", region: "Casablanca-Settat", neighborhood: "Anfa" }],
+  ["marrakech", { city: "Marrakech", region: "Marrakech-Safi" }],
+  ["rabat", { city: "Rabat", region: "Rabat-Salé-Kénitra" }],
+  ["casablanca", { city: "Casablanca", region: "Casablanca-Settat" }],
+  ["casa", { city: "Casablanca", region: "Casablanca-Settat" }],
+  ["sale", { city: "Salé", region: "Rabat-Salé-Kénitra" }],
+  ["salé", { city: "Salé", region: "Rabat-Salé-Kénitra" }],
+  ["tanger", { city: "Tanger", region: "Tanger-Tétouan-Al Hoceïma" }],
+  ["kenitra", { city: "Kénitra", region: "Rabat-Salé-Kénitra" }],
+  ["kénitra", { city: "Kénitra", region: "Rabat-Salé-Kénitra" }],
+  ["bouznika", { city: "Bouznika", region: "Rabat-Salé-Kénitra" }],
+  ["agadir", { city: "Agadir", region: "Souss-Massa" }],
+  ["fes", { city: "Fès", region: "Fès-Meknès" }],
+  ["fès", { city: "Fès", region: "Fès-Meknès" }],
+];
+
+const LOCATION_ALIASES = [...LOCATION_ALIAS_ENTRIES].sort((a, b) => b[0].length - a[0].length);
 
 const TYPE_PATTERNS: Array<{ pattern: RegExp; type: SearchFilters["listingType"] }> = [
   { pattern: /\b(f\d|appartement|studio|t\d)\b/i, type: "apartment" },
@@ -51,6 +73,17 @@ const TYPE_PATTERNS: Array<{ pattern: RegExp; type: SearchFilters["listingType"]
   { pattern: /\b(terrain)\b/i, type: "land" },
   { pattern: /\b(commerce|local)\b/i, type: "commercial" },
 ];
+
+function applyLocationAlias(filters: SearchFilters, alias: LocationAlias, label: string, assumptions: string[]) {
+  filters.city = alias.city;
+  filters.region = alias.region;
+  if (alias.neighborhood) {
+    filters.neighborhood = alias.neighborhood;
+    assumptions.push(`Quartier identifié : ${alias.neighborhood} (${alias.city})`);
+  } else {
+    assumptions.push(`Ville identifiée : ${alias.city}`);
+  }
+}
 
 /** Parseur simple sans LLM — mode démonstration */
 export function parseNaturalLanguageQuery(text: string): {
@@ -76,19 +109,31 @@ export function parseNaturalLanguageQuery(text: string): {
     filters.transactionType = "sale";
   }
 
-  for (const [alias, city] of Object.entries(CITY_ALIASES)) {
-    if (lower.includes(alias)) {
-      if (["Gueliz", "Amelkis", "Hay Riad", "Technopolis"].includes(city)) {
-        filters.neighborhood = city;
-        assumptions.push(`Quartier identifié : ${city}`);
-      } else if (!filters.city) {
-        filters.city = city;
+  for (const [alias, location] of LOCATION_ALIASES) {
+    if (lower.includes(alias) && location.neighborhood) {
+      applyLocationAlias(filters, location, alias, assumptions);
+      break;
+    }
+  }
+
+  if (!filters.city) {
+    for (const [alias, location] of LOCATION_ALIASES) {
+      if (lower.includes(alias) && !location.neighborhood) {
+        applyLocationAlias(filters, location, alias, assumptions);
+        break;
       }
     }
   }
 
-  if (!filters.city && !filters.neighborhood) {
-    missing.push("Ville ou quartier");
+  if (filters.city && !filters.region) {
+    filters.region = String(resolveMoroccoRegion(filters.city));
+  }
+
+  if (!filters.neighborhood) {
+    missing.push("Quartier");
+  }
+  if (!filters.city) {
+    missing.push("Ville");
   }
 
   for (const { pattern, type } of TYPE_PATTERNS) {

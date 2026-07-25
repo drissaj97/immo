@@ -48,12 +48,9 @@ export default async function VillePage({
         </p>
       )}
       <p className="mt-2 text-charcoal/60">{count.toLocaleString("fr-MA")} annonces indexées</p>
-      <Link
-        href={`/${locale}/biens?city=${encodeURIComponent(cityName)}`}
-        className="mt-6 inline-block text-deep-green hover:underline"
-      >
-        Voir les annonces →
-      </Link>
+      <p className="mt-6 text-sm text-charcoal/60">
+        Choisissez un quartier ci-dessous pour lancer une recherche ciblée.
+      </p>
 
       {geoNeighborhoods.length > 0 && (
         <section className="mt-12">

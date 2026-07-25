@@ -7,6 +7,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { PropertySearch } from "@/components/search/property-search";
 import { getGeographySearchTree } from "@/lib/geography/index";
 import Link from "next/link";
+import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-gate";
 
 export const revalidate = 300;
 
@@ -48,7 +49,7 @@ export default async function BiensPage({
     limit: 48,
   };
 
-  const hasLocation = Boolean(filters.region && filters.city);
+  const hasLocation = hasCompleteLocation(filters);
   const searchResult = hasLocation
     ? await searchListings(filters)
     : { items: [], total: 0, totalPages: 1, totalAvailable: 0, page: 1 };
@@ -69,7 +70,7 @@ export default async function BiensPage({
               {filters.neighborhood && ` · ${filters.neighborhood}`}
             </>
           ) : (
-            <>Sélectionnez une région et une ville pour afficher les annonces</>
+            <>Sélectionnez une région, une ville et un quartier pour afficher les annonces</>
           )}
           {" · "}
           <Link href={`/${locale}/agregateur`} className="text-deep-green hover:underline">
@@ -111,12 +112,9 @@ export default async function BiensPage({
         </div>
       ) : (
         <div className="rounded-xl border border-dashed border-charcoal/20 bg-sand/20 py-16 text-center">
-          <p className="text-charcoal/70">
-            Choisissez <strong>Acheter</strong> ou <strong>Louer</strong>, puis une région, une ville et
-            éventuellement un quartier.
-          </p>
+          <p className="text-charcoal/70">{locationGateMessage()}</p>
           <p className="mt-2 text-sm text-charcoal/50">
-            Exemple : Rabat-Salé-Kénitra → Salé → Bouknadel
+            Exemple : Rabat-Salé-Kénitra → Salé → Sala El Jadida
           </p>
         </div>
       )}
