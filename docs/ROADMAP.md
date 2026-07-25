@@ -1,86 +1,40 @@
 # DarBladi — Roadmap produit
 
-> Phases alignées sur la vision marketplace immobilière intelligente au Maroc.  
-> État actuel : **Phase 6 complétée** (v0.8.0).
+> État actuel : **Phase 7 complétée** (v0.9.0).
 
 ---
 
-## Phase 0 — Fondations (✅ Terminée)
+## Phases 0–6 (✅ Terminées)
+
+MVP → Investissement → IA + RAG → PostgreSQL → Multi-acteurs → Monétisation (v0.8.0).
+
+---
+
+## Phase 7 — Production & croissance (✅ Terminée — v0.9.0)
 
 | Livrable | Statut |
 |----------|--------|
-| Next.js 16 App Router + TypeScript | ✅ |
-| Schéma Drizzle PostgreSQL + PostGIS | ✅ |
-| Docker Compose PostgreSQL local | ✅ |
-| i18n FR/EN/AR + middleware locale | ✅ |
-| Design system de base (Tailwind 4) | ✅ |
+| Stripe webhooks `/api/v1/webhooks/stripe` | ✅ |
+| Upload média (mock + Supabase Storage) | ✅ |
+| Embeddings pgvector mock + RAG hybride | ✅ |
+| Expansion 14 villes / quartiers | ✅ |
+| Programme affiliation agents | ✅ |
+| Migration SQL pgvector | ✅ |
+| Application mobile React Native | 📋 Phase 8 |
+
+**Critère de sortie :** Upload photo annonce, recherche sémantique, parrainage agent tracé.
 
 ---
 
-## Phase 1 — MVP public (✅ Terminée — v0.1.0)
-
-Catalogue, recherche, auth JWT, admin, i18n, tests.
-
----
-
-## Phase 2 — Investissement (✅ Terminée — v0.2.0)
-
-Score, historique prix, estimation, rapports, simulations.
-
----
-
-## Phase 3 — Intelligence artificielle (✅ Terminée — v0.3.0)
-
-Assistant DarBladi, LLM mock/OpenAI, outils contrôlés, rate limiting.
-
----
-
-## Phase 3.1 — RAG quartiers (✅ Terminée — v0.6.0)
-
-Base connaissance, RAG mock, pages SEO quartiers, citations IA.
-
----
-
-## Phase 4 — Production data & auth (✅ Terminée — v0.4.0)
-
-PostgreSQL, auth abstraction, favoris DB, CI, RLS, seed enrichi.
-
----
-
-## Phase 5 — Marketplace multi-acteurs (✅ Terminée — v0.5.0)
-
-Professionnels, promoteurs, CRM leads, import CSV, alertes.
-
----
-
-## Phase 6 — Scale & monétisation (✅ Terminée — v0.8.0)
-
-| Livrable | Statut |
-|----------|--------|
-| Analytics investisseur | ✅ |
-| Espace agence multi-agents | ✅ |
-| API publique partenaires v1 | ✅ |
-| Conformité CNDP + cookie consent | ✅ |
-| PWA manifest + offline (service worker) | ✅ |
-| Email transactionnel (mock + Resend) | ✅ |
-| Paiement en ligne (acompte + abonnements) | ✅ |
-| Facturation agences `/dashboard/facturation` | ✅ |
-| Upload média Supabase Storage | 📋 Phase 7 |
-
-**Critère de sortie :** Parcours monétisation démo end-to-end (acompte bien + abonnement pro).
-
----
-
-## Phase 7 — Production & croissance (📋 Vision)
+## Phase 8 — Mobile & scale (📋 Vision)
 
 | Livrable | Priorité |
 |----------|----------|
-| Stripe production + webhooks | P0 |
-| Upload média Supabase Storage | P1 |
-| pgvector embeddings réels | P1 |
-| Application mobile React Native | P2 |
-| Expansion 10+ villes | P1 |
-| Programme affiliation agents | P2 |
+| App React Native / Expo | P1 |
+| Stripe Checkout production | P0 |
+| OpenAI embeddings + pgvector réel | P1 |
+| 20+ villes couverture | P1 |
+| Facturation MRR automatisée | P2 |
 
 ---
 
@@ -88,19 +42,10 @@ Professionnels, promoteurs, CRM leads, import CSV, alertes.
 
 ```mermaid
 flowchart LR
-    P0[Phase 0] --> P1[Phase 1 MVP]
-    P1 --> P2[Phase 2 Investissement]
-    P2 --> P3[Phase 3 IA]
-    P3 --> P4[Phase 4 Production]
-    P4 --> P5[Phase 5 Marketplace]
-    P5 --> P6[Phase 6 Monétisation]
-    P6 --> P7[Phase 7 Scale prod]
+    P6[Phase 6 Monétisation] --> P7[Phase 7 Production]
+    P7 --> P8[Phase 8 Mobile]
 ```
 
 ## Principes transverses
 
-- **Conformité d'abord** : aucune source interdite
-- **Provenance explicite** : `sourceName`, `isDemo`, audit trail
-- **SEO dès le départ** : sitemap, SSR
-- **Tests sur logique métier**
-- **Documentation à jour**
+- Conformité d'abord · Provenance explicite · SEO · Tests · Documentation à jour

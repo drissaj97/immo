@@ -389,6 +389,31 @@ export const subscriptions = pgTable("subscriptions", {
   isDemo: boolean("is_demo").default(true),
 });
 
+export const listingEmbeddings = pgTable("listing_embeddings", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  listingId: uuid("listing_id").references(() => listings.id, { onDelete: "cascade" }),
+  content: text("content").notNull(),
+  embedding: jsonb("embedding").notNull(),
+  isDemo: boolean("is_demo").default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const affiliateReferrals = pgTable(
+  "affiliate_referrals",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    affiliateCode: varchar("affiliate_code", { length: 32 }).notNull(),
+    agentName: varchar("agent_name", { length: 255 }),
+    visitorId: varchar("visitor_id", { length: 128 }),
+    userId: uuid("user_id").references(() => users.id),
+    event: varchar("event", { length: 32 }).notNull(),
+    metadata: jsonb("metadata"),
+    isDemo: boolean("is_demo").default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [index("affiliate_code_idx").on(table.affiliateCode)],
+);
+
 export type User = typeof users.$inferSelect;
 export type Listing = typeof listings.$inferSelect;
 export type Location = typeof locations.$inferSelect;

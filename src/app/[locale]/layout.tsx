@@ -5,6 +5,8 @@ import { Footer } from "@/components/layout/footer";
 import { DemoBanner } from "@/components/layout/footer";
 import { CookieConsent } from "@/components/layout/cookie-consent";
 import { PwaRegister } from "@/components/layout/pwa-register";
+import { ReferralCapture } from "@/components/affiliates/referral-capture";
+import { Suspense } from "react";
 import { getSession } from "@/lib/auth/session";
 import { getMessages, isRtl, locales, type Locale } from "@/lib/i18n/config";
 import "../globals.css";
@@ -54,6 +56,9 @@ export default async function LocaleLayout({
         <Footer messages={messages} locale={locale} />
         <CookieConsent locale={locale} />
         <PwaRegister />
+        <Suspense fallback={null}>
+          <ReferralCapture locale={locale} />
+        </Suspense>
       </body>
     </html>
   );

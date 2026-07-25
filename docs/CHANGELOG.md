@@ -7,6 +7,33 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [0.9.0] — 2026-07-25
+
+### Phase 7 — Production & croissance
+
+**Stripe & webhooks**
+- Endpoint `POST /api/v1/webhooks/stripe` (signature stub, events checkout/payment_intent)
+
+**Upload média**
+- `StorageProvider` mock + Supabase Storage
+- API `POST /api/upload/media` + upload photo sur création annonce
+
+**Embeddings & RAG hybride**
+- Module embeddings 64D (mock pgvector)
+- Index listings + quartiers, recherche sémantique
+- Migration SQL `002_pgvector_embeddings.sql`
+
+**Expansion géographique**
+- +5 villes : Essaouira, Tétouan, Meknès, Oujda, El Jadida
+- +3 annonces publiées (15 total)
+
+**Programme affiliation**
+- Codes parrainage (`?ref=CODE`), tracking visites
+- Pages `/affiliation`, `/dashboard/affiliation`
+- 40 tests passent
+
+---
+
 ## [0.8.0] — 2026-07-25
 
 ### Phase 6 complétée — Paiements, abonnements, PWA offline

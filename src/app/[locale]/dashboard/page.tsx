@@ -34,6 +34,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
       { href: `/${locale}/dashboard/annonces/nouveau`, label: "Créer une annonce" },
       { href: `/${locale}/dashboard/leads`, label: "Leads CRM" },
       { href: `/${locale}/dashboard/import`, label: "Import partenaires" },
+      { href: `/${locale}/dashboard/affiliation`, label: "Affiliation" },
     );
   }
   if (user.role === "admin") {

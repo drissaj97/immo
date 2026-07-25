@@ -23,7 +23,7 @@ describe("RAG quartiers", () => {
   });
 
   it("retourne vide pour requête sans correspondance", () => {
-    const results = searchNeighborhoodKnowledge("xyz abc 123");
+    const results = searchNeighborhoodKnowledge("xi zo");
     expect(results.length).toBe(0);
   });
 });

@@ -4,6 +4,7 @@ import {
   getNeighborhoodBySlug,
   type NeighborhoodKnowledge,
 } from "@/lib/data/neighborhood-knowledge";
+import { searchNeighborhoodsByEmbedding } from "@/lib/data/embedding-index";
 
 export type RagMatch = {
   knowledge: NeighborhoodKnowledge;
@@ -38,31 +39,62 @@ function scoreMatch(query: string, knowledge: NeighborhoodKnowledge): RagMatch {
 
   for (const term of terms) {
     if (knowledge.city.toLowerCase().includes(term)) score += 3;
-    if (knowledge.neighborhood.toLowerCase().includes(term)) score += 4;
+    if (knowledge.neighborhood.toLowerCase().includes(term)) score += 6;
     if (corpus.includes(term)) {
       score += 2;
       matchedTerms.push(term);
     }
   }
 
-  // Direct slug/city+neighborhood match boost
-  const slugHint = `${knowledge.city}/${knowledge.neighborhood}`.toLowerCase();
-  if (query.toLowerCase().includes(knowledge.neighborhood.toLowerCase())) score += 5;
-  if (query.toLowerCase().includes(knowledge.city.toLowerCase())) score += 3;
-  if (query.toLowerCase().includes(slugHint.replace(/\s+/g, ""))) score += 6;
+  const qLower = query.toLowerCase();
+  if (qLower.includes(knowledge.neighborhood.toLowerCase())) score += 10;
+  if (qLower.includes(knowledge.city.toLowerCase())) score += 5;
 
   return { knowledge: enrichWithMetrics(knowledge), score, matchedTerms };
 }
 
 /**
- * Mock RAG search — keyword scoring over neighborhood knowledge base.
- * Replace with pgvector embeddings when DATABASE_URL + pgvector configured.
+ * Hybrid RAG — keyword scoring + embedding similarity (mock pgvector).
  */
 export function searchNeighborhoodKnowledge(query: string, limit = 3): RagMatch[] {
   if (!query.trim()) return [];
 
-  return NEIGHBORHOOD_KNOWLEDGE.map((k) => scoreMatch(query, k))
-    .filter((m) => m.score > 0)
+  const terms = tokenize(query);
+  if (terms.length === 0) return [];
+
+  const keywordResults = NEIGHBORHOOD_KNOWLEDGE.map((k) => scoreMatch(query, k))
+    .filter((m) => m.score > 0);
+
+  const embeddingResults = searchNeighborhoodsByEmbedding(query, limit);
+  const maxEmbScore = embeddingResults[0]?.score ?? 0;
+  if (keywordResults.length === 0 && maxEmbScore < 0.25) {
+    return [];
+  }
+
+  const merged = new Map<string, RagMatch>();
+
+  for (const m of keywordResults) {
+    merged.set(m.knowledge.slug, m);
+  }
+
+  for (const e of embeddingResults) {
+    const k = NEIGHBORHOOD_KNOWLEDGE.find((n) => n.slug === e.id);
+    if (!k || e.score < 0.15) continue;
+    const existing = merged.get(k.slug);
+    const embScore = Math.round(e.score * 50);
+    if (existing) {
+      existing.score += embScore * 0.3;
+    } else if (embScore >= 8) {
+      merged.set(k.slug, {
+        knowledge: enrichWithMetrics(k),
+        score: embScore,
+        matchedTerms: ["embedding"],
+      });
+    }
+  }
+
+  return Array.from(merged.values())
+    .filter((m) => m.score >= 8)
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
 }

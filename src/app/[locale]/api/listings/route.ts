@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     latitude: 33.5,
     longitude: -7.5,
     reference: `SA-${Date.now().toString(36).toUpperCase()}`,
-    images: ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80"],
+    images: [body.imageUrl as string || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80"],
     sourceType: "first_party",
     sourceName: user.fullName,
     completenessScore: 65,
