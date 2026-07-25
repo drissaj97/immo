@@ -105,6 +105,13 @@ export default async function BiensPage({
           <PropertyMapLazy
             points={mapData.points}
             nearbyPoisByKey={mapData.nearbyPoisByKey}
+            nearbyPois={mapData.nearbyPois}
+            locale={locale}
+            neighborhoodLabel={
+              filters.neighborhood && filters.city
+                ? `${filters.neighborhood}, ${filters.city}`
+                : undefined
+            }
           />
         </div>
       )}

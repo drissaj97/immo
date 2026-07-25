@@ -35,3 +35,111 @@ body {
 [dir="rtl"] .rtl-flip {
   transform: scaleX(-1);
 }
+
+/* Carte interactive MapLibre */
+.map-listing-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--ivory);
+  border-radius: 9999px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+}
+
+.map-listing-marker:hover,
+.map-listing-marker--active {
+  transform: scale(1.08);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+  z-index: 2;
+}
+
+.map-listing-marker--exact {
+  background: var(--deep-green);
+  color: var(--ivory);
+}
+
+.map-listing-marker--approx {
+  background: var(--bronze);
+  color: var(--ivory);
+}
+
+.map-poi-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  border: 2px solid var(--ivory);
+  background: #4a7c59;
+  color: var(--ivory);
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.map-poi-marker:hover {
+  background: var(--deep-green);
+}
+
+.map-popup .maplibregl-popup-content {
+  padding: 12px 14px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.map-popup-body {
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.map-popup-category {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--deep-green);
+  margin-bottom: 2px;
+}
+
+.map-popup-meta {
+  font-size: 11px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.map-popup-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--deep-green);
+  margin: 4px 0;
+}
+
+.map-popup-link {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: var(--deep-green);
+  color: var(--ivory) !important;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.map-popup-link:hover {
+  background: #143d32;
+}
+
+.maplibregl-ctrl-attrib {
+  font-size: 10px;
+  background: rgba(250, 248, 245, 0.85) !important;
+}

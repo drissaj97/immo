@@ -131,6 +131,9 @@ export default async function ListingDetailPage({
                 <PropertyMapLazy
                   points={mapData.points}
                   nearbyPoisByKey={mapData.nearbyPoisByKey}
+                  nearbyPois={mapData.nearbyPois}
+                  locale={locale}
+                  neighborhoodLabel={`${listing.location.neighborhood}, ${listing.location.city}`}
                   zoom={14}
                 />
               </div>

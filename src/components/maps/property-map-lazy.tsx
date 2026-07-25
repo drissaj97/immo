@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import type { MapListingPoint } from "@/lib/map/listing-map-points";
+import type { MapPoiPoint } from "@/lib/map/map-poi-types";
 
 const PropertyMap = dynamic(
   () => import("@/components/maps/property-map").then((m) => m.PropertyMap),
@@ -15,20 +16,32 @@ const PropertyMap = dynamic(
   },
 );
 
-type PoiPayload = { name: string; category: string; distanceM: number };
-
 export function PropertyMapLazy({
   points,
   nearbyPoisByKey = {},
+  nearbyPois = [],
   center,
   zoom,
+  locale = "fr",
+  neighborhoodLabel,
 }: {
   points: MapListingPoint[];
-  nearbyPoisByKey?: Record<string, PoiPayload[]>;
+  nearbyPoisByKey?: Record<string, MapPoiPoint[]>;
+  nearbyPois?: MapPoiPoint[];
   center?: [number, number];
   zoom?: number;
+  locale?: string;
+  neighborhoodLabel?: string;
 }) {
   return (
-    <PropertyMap points={points} nearbyPoisByKey={nearbyPoisByKey} center={center} zoom={zoom} />
+    <PropertyMap
+      points={points}
+      nearbyPoisByKey={nearbyPoisByKey}
+      nearbyPois={nearbyPois}
+      center={center}
+      zoom={zoom}
+      locale={locale}
+      neighborhoodLabel={neighborhoodLabel}
+    />
   );
 }

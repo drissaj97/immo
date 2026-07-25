@@ -44,7 +44,12 @@ export default async function CartePage({
   const { items } = hasLocation ? await searchListings(filters) : { items: [] };
   const mapData = hasLocation
     ? await prepareMapPageData(items)
-    : { points: [], nearbyPoisByKey: {}, mapCount: 0, listings: [] };
+    : { points: [], nearbyPoisByKey: {}, nearbyPois: [], mapCount: 0, listings: [] };
+
+  const neighborhoodLabel =
+    filters.neighborhood && filters.city
+      ? `${filters.neighborhood}, ${filters.city}`
+      : undefined;
 
   const scrapedCount = items.filter((l) =>
     ["avito", "mubawab", "sarouty"].includes(l.aggregationSource ?? ""),
@@ -85,6 +90,9 @@ export default async function CartePage({
         <PropertyMapLazy
           points={mapData.points}
           nearbyPoisByKey={mapData.nearbyPoisByKey}
+          nearbyPois={mapData.nearbyPois}
+          locale={locale}
+          neighborhoodLabel={neighborhoodLabel}
         />
       </div>
 
