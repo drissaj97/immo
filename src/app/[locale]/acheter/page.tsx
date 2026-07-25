@@ -100,7 +100,10 @@ export default async function AcheterPage({
           <p className="mt-12 text-center text-charcoal/60">Aucune annonce de vente pour ces critères.</p>
         )
       ) : (
-        <p className="mt-12 text-center text-charcoal/60">{locationGateMessage()}</p>
+        <div className="mt-12 space-y-4 text-center">
+          <p className="text-charcoal/60">{locationGateMessage()}</p>
+          <PopularSearchLinks locale={locale} path="acheter" />
+        </div>
       )}
     </div>
   );

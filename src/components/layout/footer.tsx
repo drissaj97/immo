@@ -1,4 +1,5 @@
 import type { Messages } from "@/lib/i18n/config";
+import { defaultCatalogHref } from "@/lib/search/popular-searches";
 
 export function DemoBanner({ message }: { message: string }) {
   if (process.env.DEMO_MODE === "false") return null;
@@ -23,7 +24,7 @@ export function Footer({ messages, locale }: { messages: Messages; locale: strin
           <ul className="space-y-2 text-sm">
             <li><a href={`${prefix}/acheter`} className="hover:text-bronze">{messages.nav.buy}</a></li>
             <li><a href={`${prefix}/investir`} className="hover:text-bronze">{messages.nav.invest}</a></li>
-            <li><a href={`${prefix}/biens`} className="hover:text-bronze">Catalogue</a></li>
+            <li><a href={defaultCatalogHref(locale)} className="hover:text-bronze">Catalogue</a></li>
             <li><a href={`${prefix}/agregateur`} className="hover:text-bronze">Agrégateur Maroc</a></li>
             <li><a href={`${prefix}/darbladi`} className="hover:text-bronze">{messages.nav.ai}</a></li>
           </ul>

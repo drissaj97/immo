@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { PropertySearch } from "@/components/search/property-search";
+import { PopularSearchLinks } from "@/components/search/popular-search-links";
 import { ListingCard } from "@/components/listings/listing-card";
 import { getFeaturedListings } from "@/server/repositories/listings";
 import { SEMSARAI_API_TOTAL } from "@/lib/data/semsarai-meta";
 import { getGeographySearchTree } from "@/lib/geography/index";
+import { defaultCatalogHref } from "@/lib/search/popular-searches";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { Button } from "@/components/ui/button";
 
@@ -54,13 +56,19 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <div className="mt-10 text-left">
             <PropertySearch locale={locale} variant="hero" geography={geography} requireLocation />
           </div>
+          <div className="mt-5">
+            <p className="mb-2 text-center text-xs uppercase tracking-wide text-ivory/70">
+              Accès rapide
+            </p>
+            <PopularSearchLinks locale={locale} path="biens" />
+          </div>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Link href={`/${locale}/darbladi`}>
-              <Button variant="bronze">Essayer DarBladi</Button>
+            <Link href={defaultCatalogHref(locale)}>
+              <Button variant="bronze">Voir Victoria · Bouskoura</Button>
             </Link>
-            <Link href={`/${locale}/simulateur-rentabilite`}>
+            <Link href={`/${locale}/darbladi`}>
               <Button variant="outline" className="border-ivory/30 text-ivory hover:bg-ivory/10">
-                Simulateur rentabilité
+                Essayer DarBladi
               </Button>
             </Link>
           </div>
@@ -75,7 +83,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               Biens indexés depuis semsarai.ma, Holding IMMO et partenaires agréés
             </p>
           </div>
-          <Link href={`/${locale}/biens`} className="text-sm text-deep-green hover:underline">
+          <Link href={defaultCatalogHref(locale)} className="text-sm text-deep-green hover:underline">
             Voir tout →
           </Link>
         </div>

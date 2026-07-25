@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { ListingsFeed } from "@/components/listings/listings-feed";
+import { ListingCard } from "@/components/listings/listing-card";
 import { PropertyMapLazy } from "@/components/maps/property-map-lazy";
-import { searchListings } from "@/server/repositories/listings";
+import { getFeaturedListings, searchListings } from "@/server/repositories/listings";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { PropertySearch } from "@/components/search/property-search";
+import { PopularSearchLinks } from "@/components/search/popular-search-links";
 import { getGeographySearchTree } from "@/lib/geography/index";
 import { prepareMapPageData } from "@/lib/map/prepare-map-page";
 import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-gate";
@@ -56,6 +58,7 @@ export default async function BiensPage({
     : { items: [], total: 0, totalPages: 1, totalAvailable: 0, page: 1 };
 
   const { items, total, totalPages } = searchResult;
+  const featured = hasLocation ? [] : await getFeaturedListings(6);
   const mapData = hasLocation && items.length > 0 ? await prepareMapPageData(items) : null;
 
   return (
@@ -143,11 +146,21 @@ export default async function BiensPage({
           </p>
         )
       ) : (
-        <div className="rounded-xl border border-dashed border-charcoal/20 bg-sand/20 py-16 text-center">
-          <p className="text-charcoal/70">{locationGateMessage()}</p>
-          <p className="mt-2 text-sm text-charcoal/50">
-            Exemple : Rabat-Salé-Kénitra → Salé → Sala El Jadida
-          </p>
+        <div className="space-y-10">
+          <div className="rounded-xl border border-dashed border-charcoal/20 bg-sand/20 px-4 py-10 text-center">
+            <p className="text-charcoal/70">{locationGateMessage()}</p>
+            <PopularSearchLinks locale={locale} path="biens" className="mt-5" />
+          </div>
+          {featured.length > 0 && (
+            <div>
+              <h2 className="mb-4 font-serif text-2xl">Annonces en avant</h2>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {featured.map((listing) => (
+                  <ListingCard key={listing.id} listing={listing} locale={locale} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

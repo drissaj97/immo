@@ -149,6 +149,7 @@ export function PropertySearch({
 
   const canSearch = !requireLocation || (Boolean(region) && Boolean(city) && Boolean(neighborhood));
   const isHero = variant === "hero";
+  const geographyMissing = regions.length === 0;
 
   return (
     <div
@@ -158,6 +159,12 @@ export function PropertySearch({
           : "rounded-xl border border-charcoal/10 bg-ivory p-4"
       }`}
     >
+      {geographyMissing && (
+        <p className="mb-4 rounded-lg border border-bronze/30 bg-bronze/10 px-3 py-2 text-sm text-charcoal">
+          Données géographiques indisponibles — utilisez les raccourcis sous le formulaire, ou lancez{" "}
+          <code className="rounded bg-charcoal/5 px-1">pnpm geography:build</code>.
+        </p>
+      )}
       <div className="mb-6 flex flex-wrap gap-2 border-b border-charcoal/10 pb-4">
         <button
           type="button"

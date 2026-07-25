@@ -21,6 +21,17 @@ describe("natural language parser", () => {
     expect(result.missing).not.toContain("Quartier");
   });
 
+  it("parses Victoria / Bouskoura", () => {
+    const result = parseNaturalLanguageQuery(
+      "Je cherche un appartement à Victoria Bouskoura",
+    );
+    expect(result.filters.city).toBe("Bouskoura");
+    expect(result.filters.neighborhood).toBe("Victoria");
+    expect(result.filters.region).toBe("Casablanca-Settat");
+    expect(result.missing).not.toContain("Quartier");
+    expect(result.missing).not.toContain("Ville");
+  });
+
   it("detects seasonal rent intent", () => {
     const result = parseNaturalLanguageQuery(
       "Appartement Airbnb rentable à Marrakech",

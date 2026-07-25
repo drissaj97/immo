@@ -22,5 +22,5 @@ export function enrichSearchFilters(filters: SearchFilters): SearchFilters {
 }
 
 export function locationGateMessage(): string {
-  return "Choisissez une région, une ville et un quartier pour lancer la recherche.";
+  return "Choisissez une région, une ville et un quartier — ou cliquez un raccourci ci-dessous.";
 }

@@ -31,6 +31,19 @@ describe("resolve-coordinates", () => {
     expect(isPlaceholderCoordinate(33.5, -7.5)).toBe(true);
     expect(isPlaceholderCoordinate(34.04, -6.81)).toBe(false);
   });
+
+  it("résout Victoria / Bouskoura (plus de carte vide)", () => {
+    const coords = resolveListingCoordinates({
+      city: "Bouskoura",
+      neighborhood: "Victoria",
+      latitude: 33.5,
+      longitude: -7.5,
+    });
+    expect(coords.source).toBe("neighborhood");
+    expect(coords.latitude).toBeGreaterThan(33.4);
+    expect(coords.latitude).toBeLessThan(33.5);
+    expect(coords.longitude).toBeLessThan(-7.6);
+  });
 });
 
 describe("prepareMapListings", () => {

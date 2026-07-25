@@ -1,10 +1,12 @@
 import { PropertyMapLazy } from "@/components/maps/property-map-lazy";
 import { PropertySearch } from "@/components/search/property-search";
+import { PopularSearchLinks } from "@/components/search/popular-search-links";
 import { searchListings } from "@/server/repositories/listings";
 import { getGeographySearchTree } from "@/lib/geography/index";
 import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-gate";
 import { prepareMapPageData } from "@/lib/map/prepare-map-page";
 import { MAP_PAGE_SIZE } from "@/lib/search/page-size";
+import { defaultCatalogHref } from "@/lib/search/popular-searches";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { buildMetadata } from "@/lib/seo/metadata";
 import Link from "next/link";
@@ -98,15 +100,16 @@ export default async function CartePage({
       </div>
 
       {!hasLocation && (
-        <p className="mt-4 text-center text-sm text-charcoal/50">
-          Exemple :{" "}
-          <Link
-            href={`/${locale}/carte?region=${encodeURIComponent("Rabat-Salé-Kénitra")}&city=${encodeURIComponent("Salé")}&neighborhood=${encodeURIComponent("Sala El Jadida")}`}
-            className="text-deep-green hover:underline"
-          >
-            Salé · Sala El Jadida
-          </Link>
-        </p>
+        <div className="mt-6 space-y-3 text-center">
+          <p className="text-sm text-charcoal/60">{locationGateMessage()}</p>
+          <PopularSearchLinks locale={locale} path="carte" />
+          <p className="text-sm text-charcoal/50">
+            Ou ouvrir le{" "}
+            <Link href={defaultCatalogHref(locale, "carte")} className="text-deep-green hover:underline">
+              quartier Victoria (Bouskoura)
+            </Link>
+          </p>
+        </div>
       )}
     </div>
   );
