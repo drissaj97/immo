@@ -19,17 +19,21 @@ export async function POST(request: Request) {
     return NextResponse.json({ plan, message: "Plan gratuit — aucun paiement requis" });
   }
 
-  const { payment, subscription } = await createSubscriptionPayment(
+  const { payment, subscription, checkoutUrl } = await createSubscriptionPayment(
     user.id,
     plan.id,
     plan.name,
     plan.priceMonthly,
+    user.email,
   );
 
   return NextResponse.json({
     payment,
     subscription,
-    disclaimer: "Paiement simulé — aucun prélèvement réel en mode démo.",
+    checkoutUrl,
+    disclaimer: checkoutUrl
+      ? "Redirection vers Stripe Checkout pour paiement sécurisé."
+      : "Paiement simulé — aucun prélèvement réel en mode démo.",
   });
 }
 

@@ -34,6 +34,11 @@ export function SubscribeButton({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ planId }),
       });
+      const data = await res.json();
+      if (res.ok && data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+        return;
+      }
       if (res.ok) {
         router.push(`/${locale}/dashboard/facturation?subscribed=${planId}`);
       } else if (res.status === 401) {

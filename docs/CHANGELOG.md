@@ -7,6 +7,33 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [1.0.0] — 2026-07-25
+
+### Phase 8 — Mobile & scale
+
+**Stripe Checkout production**
+- Client REST Stripe (`createCheckoutSession`, vérification webhook HMAC)
+- Redirection Checkout depuis `/api/billing/subscribe` et `SubscribeButton`
+- Webhook `checkout.session.completed` → activation abonnement
+
+**OpenAI embeddings + pgvector**
+- Provider `mock` (64D) et `openai` (text-embedding-3-small, 1536D)
+- Repository pgvector avec fallback in-memory
+- Variable `EMBEDDING_PROVIDER=openai`
+
+**Expansion géographique 20+**
+- +8 villes : Nador, Safi, Mohammedia, Settat, Beni Mellal, Khouribga, Laâyoune, Dakhla
+- 23 quartiers, 22 villes, 18 annonces publiées
+
+**Facturation MRR**
+- Cron `POST /api/v1/cron/billing` — renouvellements automatiques mock/Stripe
+
+**App mobile Expo**
+- `mobile/` — liste biens + détail via API partenaires v1
+- 50 tests passent
+
+---
+
 ## [0.9.0] — 2026-07-25
 
 ### Phase 7 — Production & croissance

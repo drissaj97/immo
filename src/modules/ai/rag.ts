@@ -47,8 +47,14 @@ function scoreMatch(query: string, knowledge: NeighborhoodKnowledge): RagMatch {
   }
 
   const qLower = query.toLowerCase();
-  if (qLower.includes(knowledge.neighborhood.toLowerCase())) score += 10;
-  if (qLower.includes(knowledge.city.toLowerCase())) score += 5;
+  const qNorm = qLower.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const hoodNorm = knowledge.neighborhood
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+  if (qNorm.includes(hoodNorm)) score += 30;
+  if (qNorm.includes(knowledge.city.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))) score += 8;
 
   return { knowledge: enrichWithMetrics(knowledge), score, matchedTerms };
 }
@@ -84,7 +90,7 @@ export function searchNeighborhoodKnowledge(query: string, limit = 3): RagMatch[
     const embScore = Math.round(e.score * 50);
     if (existing) {
       existing.score += embScore * 0.3;
-    } else if (embScore >= 8) {
+    } else if (embScore >= 12) {
       merged.set(k.slug, {
         knowledge: enrichWithMetrics(k),
         score: embScore,

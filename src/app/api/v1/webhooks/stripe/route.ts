@@ -1,35 +1,45 @@
 import { NextResponse } from "next/server";
-import { listAllPayments } from "@/server/repositories/payments";
-
-type StripeEvent = {
-  type: string;
-  data: { object: { id: string; payment_status?: string; status?: string; metadata?: Record<string, string> } };
-};
+import { verifyStripeWebhook } from "@/lib/payment/stripe-client";
+import {
+  completePaymentFromWebhook,
+  listAllPayments,
+} from "@/server/repositories/payments";
 
 export async function POST(request: Request) {
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
   const body = await request.text();
+  const sig = request.headers.get("stripe-signature");
 
-  if (secret) {
-    const sig = request.headers.get("stripe-signature");
-    if (!sig) {
-      return NextResponse.json({ error: "Missing stripe-signature" }, { status: 400 });
+  let event: { type: string; data: { object: Record<string, unknown> } };
+
+  if (secret && sig) {
+    const verified = verifyStripeWebhook(body, sig, secret);
+    if (!verified) {
+      return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
     }
-    // Production: verify with stripe.webhooks.constructEvent(body, sig, secret)
-    console.info("[stripe:webhook] Signature present — verification stub (wire stripe SDK in prod)");
-  }
-
-  let event: StripeEvent;
-  try {
-    event = JSON.parse(body) as StripeEvent;
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    event = verified;
+  } else {
+    try {
+      event = JSON.parse(body) as typeof event;
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    }
   }
 
   const handled: string[] = [];
 
   switch (event.type) {
-    case "checkout.session.completed":
+    case "checkout.session.completed": {
+      const obj = event.data.object;
+      const sessionId = String(obj.id ?? "");
+      const metadata = (obj.metadata ?? {}) as Record<string, string>;
+      console.info(`[stripe:webhook] Checkout completed: ${sessionId}`, metadata);
+      if (sessionId) {
+        completePaymentFromWebhook(sessionId, metadata);
+      }
+      handled.push(event.type);
+      break;
+    }
     case "payment_intent.succeeded": {
       const obj = event.data.object;
       console.info(`[stripe:webhook] Payment succeeded: ${obj.id}`, obj.metadata);
