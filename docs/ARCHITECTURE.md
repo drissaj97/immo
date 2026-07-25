@@ -1,4 +1,4 @@
-# Samsar IA — Architecture technique
+# DarBladi — Architecture technique
 
 ## Stack
 

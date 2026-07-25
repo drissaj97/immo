@@ -1,4 +1,4 @@
-# Samsar IA — Roadmap produit
+# DarBladi — Roadmap produit
 
 > Phases alignées sur la vision marketplace immobilière intelligente au Maroc.  
 > État actuel : **Phase 1 complétée** (MVP v0.1.0).

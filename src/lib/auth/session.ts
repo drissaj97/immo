@@ -10,7 +10,7 @@ export type SessionUser = {
   fullName: string;
 };
 
-const COOKIE_NAME = "samsar_session";
+const COOKIE_NAME = "darbladi_session";
 
 function getSecret() {
   return new TextEncoder().encode(

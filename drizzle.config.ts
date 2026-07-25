@@ -6,6 +6,6 @@ export default defineConfig({
   out: "./supabase/migrations",
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URL ?? "postgresql://samsar:samsar_dev@localhost:5432/samsar_ia",
+    url: process.env.DATABASE_URL ?? "postgresql://darbladi:darbladi_dev@localhost:5432/darbladi",
   },
 });

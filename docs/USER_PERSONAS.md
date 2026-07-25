@@ -1,4 +1,4 @@
-# Samsar IA — Personas utilisateur
+# DarBladi — Personas utilisateur
 
 > Personas cibles pour le MVP v0.1.0. Les comptes démo correspondent aux rôles implémentés dans `src/lib/data/demo-data.ts`.
 
@@ -30,7 +30,7 @@
 
 ---
 
-## 3. Youssef — Utilisateur Samsar IA
+## 3. Youssef — Utilisateur DarBladi
 
 | Attribut | Détail |
 |----------|--------|
@@ -38,7 +38,7 @@
 | **Objectif** | Formuler sa recherche en une phrase et obtenir des résultats pertinents |
 | **Frustrations** | Formulaires complexes, jargon immobilier |
 | **Comportement** | Utilise l'assistant conversationnel, accepte les suggestions de filtres |
-| **Fonctionnalités clés** | `/samsar-ia`, API `/api/search/conversational` |
+| **Fonctionnalités clés** | `/darbladi`, API `/api/search/conversational` |
 | **Citation** | *« F3 à Salé proche Technopolis pour moins de 1 300 000 DH »* |
 
 ---
@@ -53,7 +53,7 @@
 | **Comportement** | Publie via dashboard, suit statuts validation, exige traçabilité source |
 | **Rôle système** | `agency_admin` ou `agent` |
 | **Fonctionnalités clés** | `/dashboard/annonces/nouveau`, modération admin |
-| **Compte démo** | `agent@samsar-ia.demo` |
+| **Compte démo** | `agent@darbladi.demo` |
 | **Citation** | *« Mes annonces doivent refléter notre image haut de gamme. »* |
 
 ---
@@ -96,7 +96,7 @@
 | **Comportement** | File d'attente modération, approve/reject, audit |
 | **Rôle système** | `admin` |
 | **Fonctionnalités clés** | `/admin`, API approve/reject, `audit_logs` |
-| **Compte démo** | `admin@samsar-ia.demo` |
+| **Compte démo** | `admin@darbladi.demo` |
 | **Citation** | *« Aucune annonce sans source identifiable ne passe en production. »* |
 
 ---
@@ -119,10 +119,10 @@
 | Persona | Rôle DB | Auth MVP |
 |---------|---------|----------|
 | Karim | `investor` | À venir (simulateur public) |
-| Salma | `buyer` | `acheteur@samsar-ia.demo` |
+| Salma | `buyer` | `acheteur@darbladi.demo` |
 | Youssef | — | Public |
 | Nadia | `agency_admin` | Via `agent` démo |
-| Mehdi | `agent` | `agent@samsar-ia.demo` |
+| Mehdi | `agent` | `agent@darbladi.demo` |
 | Amine | `developer` | À venir |
-| Fatima | `admin` | `admin@samsar-ia.demo` |
+| Fatima | `admin` | `admin@darbladi.demo` |
 | Visiteur | `visitor` | Non connecté |

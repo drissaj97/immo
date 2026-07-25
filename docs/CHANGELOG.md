@@ -1,9 +1,31 @@
 # Changelog
 
-Toutes les modifications notables du projet Samsar IA sont documentées dans ce fichier.
+Toutes les modifications notables du projet DarBladi sont documentées dans ce fichier.
 
 Format basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).  
 Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
+
+---
+
+## [0.3.0] — 2026-07-25
+
+### Rebranding DarBladi + Phase 3 — Intelligence artificielle
+
+**Rebranding complet** : Samsar IA → **DarBladi** (marque, routes, cookies, emails démo, base PostgreSQL)
+
+- Route assistant : `/darbladi` (redirect legacy `/samsar-ia`)
+- Package npm : `darbladi`
+- Comptes démo : `@darbladi.demo`
+
+**Phase 3 — Assistant IA**
+
+- Abstraction `LLMProvider` (Mock + OpenAI)
+- Outils contrôlés : `searchListings`, `getListing`, `compareListings`, `calculateInvestment`, `getMarketMetrics`
+- Service `runAssistant` avec citations (fact / calculation / estimate / hypothesis)
+- API chat `/api/darbladi/chat` + rate limiting
+- UI conversationnelle multi-tours (`DarBladiAssistant`)
+- Fallback mock sans clé API ; activer OpenAI via `AI_PROVIDER=openai` + `OPENAI_API_KEY`
+- 19 tests passent
 
 ---
 
@@ -24,7 +46,7 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ### 🎉 Release initiale MVP
 
-Première version publique de démonstration de la plateforme immobilière intelligente Samsar IA, ciblant le marché marocain.
+Première version publique de démonstration de la plateforme immobilière intelligente DarBladi, ciblant le marché marocain.
 
 ### Ajouté
 
@@ -35,7 +57,7 @@ Première version publique de démonstration de la plateforme immobilière intel
 - Comparateur multi-biens (jusqu'à 3)
 - Carte interactive MapLibre `/carte`
 - Section investissement `/investir` et simulateur `/simulateur-rentabilite`
-- Assistant Samsar IA `/samsar-ia` (recherche en langage naturel)
+- Assistant DarBladi `/darbladi` (recherche en langage naturel)
 
 #### Données
 - 15+ annonces fictives couvrant Marrakech, Rabat, Casablanca, Salé, Tanger, Kénitra, Bouznika
@@ -97,9 +119,9 @@ Première version publique de démonstration de la plateforme immobilière intel
 
 | Email | Mot de passe | Rôle |
 |-------|--------------|------|
-| `admin@samsar-ia.demo` | `Admin123!` | admin |
-| `agent@samsar-ia.demo` | `Agent123!` | agent |
-| `acheteur@samsar-ia.demo` | `Acheteur123!` | buyer |
+| `admin@darbladi.demo` | `Admin123!` | admin |
+| `agent@darbladi.demo` | `Agent123!` | agent |
+| `acheteur@darbladi.demo` | `Acheteur123!` | buyer |
 
 ---
 
@@ -114,4 +136,4 @@ Première version publique de démonstration de la plateforme immobilière intel
 
 ---
 
-[0.1.0]: https://github.com/samsar-ia/samsar-ia/releases/tag/v0.1.0
+[0.1.0]: https://github.com/darbladi/darbladi/releases/tag/v0.1.0

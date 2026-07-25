@@ -1,4 +1,4 @@
-# Samsar IA — Calculs d'investissement
+# DarBladi — Calculs d'investissement
 
 > Implémentation : [`src/modules/investment/calculations.ts`](../src/modules/investment/calculations.ts)  
 > Tests : [`tests/investment.test.ts`](../tests/investment.test.ts)  

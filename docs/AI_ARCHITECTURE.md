@@ -1,4 +1,4 @@
-# Samsar IA — Architecture intelligence artificielle
+# DarBladi — Architecture intelligence artificielle
 
 ## Objectif
 
@@ -125,7 +125,7 @@ Le LLM ne pourra invoquer **que** ces outils — pas d'accès DB direct, pas de 
 ## Prompt système (esquisse)
 
 ```
-Tu es l'assistant Samsar IA pour l'immobilier au Maroc.
+Tu es l'assistant DarBladi pour l'immobilier au Maroc.
 Règles :
 - Ne jamais inventer d'annonces ; utiliser search_listings uniquement.
 - Toujours mentionner si une hypothèse est faite (ville, budget, type).

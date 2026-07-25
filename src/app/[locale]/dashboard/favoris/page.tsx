@@ -8,7 +8,7 @@ import { ListingCard } from "@/components/listings/listing-card";
 
 function readFavoriteListings() {
   if (typeof window === "undefined") return [];
-  const ids = JSON.parse(localStorage.getItem("samsar_favorites") ?? "[]") as string[];
+  const ids = JSON.parse(localStorage.getItem("darbladi_favorites") ?? "[]") as string[];
   return DEMO_LISTINGS.filter((l) => ids.includes(l.id));
 }
 

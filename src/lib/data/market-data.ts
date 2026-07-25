@@ -70,12 +70,12 @@ export const DEMO_PRICE_HISTORY: Record<string, PriceHistoryPoint[]> = {
 };
 
 export const DEMO_MARKET_METRICS: MarketMetric[] = [
-  { city: "Marrakech", neighborhood: "Guéliz", listingType: "apartment", avgPricePerSqm: 19500, avgRentPerSqm: 850, avgYield: 4.1, sampleSize: 42, updatedAt: "2026-07-01", source: "Samsar IA — agrégat démo", isDemo: true },
-  { city: "Marrakech", neighborhood: "Amelkis", listingType: "villa", avgPricePerSqm: 28000, avgRentPerSqm: 620, avgYield: 3.2, sampleSize: 28, updatedAt: "2026-07-01", source: "Samsar IA — agrégat démo", isDemo: true },
-  { city: "Rabat", neighborhood: "Hay Riad", listingType: "apartment", avgPricePerSqm: 16800, avgRentPerSqm: 780, avgYield: 4.5, sampleSize: 55, updatedAt: "2026-07-01", source: "Samsar IA — agrégat démo", isDemo: true },
-  { city: "Salé", neighborhood: "Technopolis", listingType: "apartment", avgPricePerSqm: 14200, avgRentPerSqm: 920, avgYield: 5.6, sampleSize: 31, updatedAt: "2026-07-01", source: "Samsar IA — agrégat démo", isDemo: true },
-  { city: "Casablanca", neighborhood: "Anfa", listingType: "apartment", avgPricePerSqm: 24500, avgRentPerSqm: 950, avgYield: 3.9, sampleSize: 38, updatedAt: "2026-07-01", source: "Samsar IA — agrégat démo", isDemo: true },
-  { city: "Bouznika", neighborhood: "Front de mer", listingType: "apartment", avgPricePerSqm: 18500, avgRentPerSqm: 1100, avgYield: 6.8, sampleSize: 18, updatedAt: "2026-07-01", source: "Samsar IA — agrégat démo", isDemo: true },
+  { city: "Marrakech", neighborhood: "Guéliz", listingType: "apartment", avgPricePerSqm: 19500, avgRentPerSqm: 850, avgYield: 4.1, sampleSize: 42, updatedAt: "2026-07-01", source: "DarBladi — agrégat démo", isDemo: true },
+  { city: "Marrakech", neighborhood: "Amelkis", listingType: "villa", avgPricePerSqm: 28000, avgRentPerSqm: 620, avgYield: 3.2, sampleSize: 28, updatedAt: "2026-07-01", source: "DarBladi — agrégat démo", isDemo: true },
+  { city: "Rabat", neighborhood: "Hay Riad", listingType: "apartment", avgPricePerSqm: 16800, avgRentPerSqm: 780, avgYield: 4.5, sampleSize: 55, updatedAt: "2026-07-01", source: "DarBladi — agrégat démo", isDemo: true },
+  { city: "Salé", neighborhood: "Technopolis", listingType: "apartment", avgPricePerSqm: 14200, avgRentPerSqm: 920, avgYield: 5.6, sampleSize: 31, updatedAt: "2026-07-01", source: "DarBladi — agrégat démo", isDemo: true },
+  { city: "Casablanca", neighborhood: "Anfa", listingType: "apartment", avgPricePerSqm: 24500, avgRentPerSqm: 950, avgYield: 3.9, sampleSize: 38, updatedAt: "2026-07-01", source: "DarBladi — agrégat démo", isDemo: true },
+  { city: "Bouznika", neighborhood: "Front de mer", listingType: "apartment", avgPricePerSqm: 18500, avgRentPerSqm: 1100, avgYield: 6.8, sampleSize: 18, updatedAt: "2026-07-01", source: "DarBladi — agrégat démo", isDemo: true },
 ];
 
 export const DEMO_COMPARABLES: Comparable[] = [

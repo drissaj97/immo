@@ -2,7 +2,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  return buildMetadata({ title: "Mentions légales", description: "Mentions légales Samsar IA.", path: "/mentions-legales", locale });
+  return buildMetadata({ title: "Mentions légales", description: "Mentions légales DarBladi.", path: "/mentions-legales", locale });
 }
 
 export default function MentionsLegalesPage() {

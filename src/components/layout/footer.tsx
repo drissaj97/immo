@@ -23,7 +23,7 @@ export function Footer({ messages, locale }: { messages: Messages; locale: strin
           <ul className="space-y-2 text-sm">
             <li><a href={`${prefix}/acheter`} className="hover:text-bronze">{messages.nav.buy}</a></li>
             <li><a href={`${prefix}/investir`} className="hover:text-bronze">{messages.nav.invest}</a></li>
-            <li><a href={`${prefix}/samsar-ia`} className="hover:text-bronze">{messages.nav.ai}</a></li>
+            <li><a href={`${prefix}/darbladi`} className="hover:text-bronze">{messages.nav.ai}</a></li>
           </ul>
         </div>
         <div>
@@ -36,7 +36,7 @@ export function Footer({ messages, locale }: { messages: Messages; locale: strin
         </div>
         <div>
           <p className="mb-3 text-sm font-medium uppercase tracking-wider text-ivory/50">Contact</p>
-          <p className="text-sm text-ivory/70">contact@samsar-ia.demo</p>
+          <p className="text-sm text-ivory/70">contact@darbladi.demo</p>
           <p className="mt-2 text-xs text-ivory/50">Données fictives — MVP démonstration</p>
         </div>
       </div>
