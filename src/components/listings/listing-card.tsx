@@ -41,7 +41,7 @@ export function ListingCard({
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width:768px) 100vw, 33vw"
         />
-        <div className="absolute left-3 top-3 flex flex-wrap gap-2">
+        <div className="absolute left-3 top-3 z-10 flex flex-wrap gap-2">
           <Badge>{transactionLabel}</Badge>
           {listing.isVerified && <Badge variant="verified">Vérifié</Badge>}
           <SourceBadge listing={listing} />

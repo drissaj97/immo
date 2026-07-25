@@ -1,19 +1,24 @@
-const CACHE_NAME = "darbladi-v1";
+/* DarBladi SW — ne met PAS en cache le HTML (évite CSS hash obsolète = site sans styles). */
+const CACHE_NAME = "darbladi-v3-assets";
 const OFFLINE_URL = "/fr/offline";
-
-const PRECACHE = ["/fr", "/fr/biens", "/fr/offline", "/manifest.webmanifest", "/icons/icon-192.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE)).then(() => self.skipWaiting()),
+    caches
+      .open(CACHE_NAME)
+      .then((cache) => cache.addAll([OFFLINE_URL, "/manifest.webmanifest", "/icons/icon-192.png"]))
+      .then(() => self.skipWaiting()),
   );
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))),
-    ).then(() => self.clients.claim()),
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))),
+      )
+      .then(() => self.clients.claim()),
   );
 });
 
@@ -24,23 +29,42 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return;
   if (url.pathname.startsWith("/api/")) return;
 
-  event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        if (response.ok && url.pathname.startsWith("/fr")) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-        }
-        return response;
-      })
-      .catch(async () => {
-        const cached = await caches.match(event.request);
-        if (cached) return cached;
-        if (event.request.mode === "navigate") {
-          const offline = await caches.match(OFFLINE_URL);
-          if (offline) return offline;
-        }
-        return new Response("Hors ligne", { status: 503, statusText: "Offline" });
+  // HTML / navigation : toujours réseau — jamais de cache (sinon CSS cassé après rebuild)
+  const isDocument =
+    event.request.mode === "navigate" ||
+    (event.request.headers.get("accept") || "").includes("text/html");
+
+  if (isDocument) {
+    event.respondWith(
+      fetch(event.request).catch(async () => {
+        const offline = await caches.match(OFFLINE_URL);
+        return offline || new Response("Hors ligne", { status: 503, statusText: "Offline" });
       }),
+    );
+    return;
+  }
+
+  // Assets Next hashés : réseau d'abord, cache seulement en secours
+  if (url.pathname.startsWith("/_next/static/")) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request).then((c) => c || Response.error())),
+    );
+    return;
+  }
+
+  event.respondWith(
+    fetch(event.request).catch(() =>
+      caches.match(event.request).then(
+        (c) => c || new Response("Hors ligne", { status: 503, statusText: "Offline" }),
+      ),
+    ),
   );
 });
