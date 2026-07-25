@@ -351,6 +351,44 @@ export const messages = pgTable("messages", {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
+export const paymentStatusEnum = pgEnum("payment_status", [
+  "pending",
+  "completed",
+  "failed",
+  "refunded",
+]);
+
+export const payments = pgTable(
+  "payments",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").references(() => users.id),
+    type: varchar("type", { length: 32 }).notNull(),
+    amount: integer("amount").notNull(),
+    currency: currencyEnum("currency").notNull().default("MAD"),
+    status: paymentStatusEnum("status").notNull().default("pending"),
+    listingId: uuid("listing_id").references(() => listings.id),
+    planId: varchar("plan_id", { length: 32 }),
+    externalPaymentId: varchar("external_payment_id", { length: 128 }),
+    provider: varchar("provider", { length: 32 }),
+    isDemo: boolean("is_demo").default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [index("payments_user_idx").on(table.userId)],
+);
+
+export const subscriptions = pgTable("subscriptions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  planId: varchar("plan_id", { length: 32 }).notNull(),
+  status: varchar("status", { length: 32 }).notNull().default("active"),
+  startedAt: timestamp("started_at", { withTimezone: true }).defaultNow().notNull(),
+  renewsAt: timestamp("renews_at", { withTimezone: true }),
+  isDemo: boolean("is_demo").default(true),
+});
+
 export type User = typeof users.$inferSelect;
 export type Listing = typeof listings.$inferSelect;
 export type Location = typeof locations.$inferSelect;

@@ -4,6 +4,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { DemoBanner } from "@/components/layout/footer";
 import { CookieConsent } from "@/components/layout/cookie-consent";
+import { PwaRegister } from "@/components/layout/pwa-register";
 import { getSession } from "@/lib/auth/session";
 import { getMessages, isRtl, locales, type Locale } from "@/lib/i18n/config";
 import "../globals.css";
@@ -52,6 +53,7 @@ export default async function LocaleLayout({
         <main className="flex-1">{children}</main>
         <Footer messages={messages} locale={locale} />
         <CookieConsent locale={locale} />
+        <PwaRegister />
       </body>
     </html>
   );

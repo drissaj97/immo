@@ -23,6 +23,7 @@ export function Footer({ messages, locale }: { messages: Messages; locale: strin
           <ul className="space-y-2 text-sm">
             <li><a href={`${prefix}/acheter`} className="hover:text-bronze">{messages.nav.buy}</a></li>
             <li><a href={`${prefix}/investir`} className="hover:text-bronze">{messages.nav.invest}</a></li>
+            <li><a href={`${prefix}/tarifs`} className="hover:text-bronze">Tarifs</a></li>
             <li><a href={`${prefix}/darbladi`} className="hover:text-bronze">{messages.nav.ai}</a></li>
           </ul>
         </div>

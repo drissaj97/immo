@@ -7,6 +7,27 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [0.8.0] — 2026-07-25
+
+### Phase 6 complétée — Paiements, abonnements, PWA offline
+
+**Paiement en ligne (démo)**
+- Module `PaymentProvider` (mock + stub Stripe)
+- Acompte réservation sur fiches bien (5 % min 5 000 MAD)
+- API `/api/payments/deposit`, page `/dashboard/reservations`
+
+**Facturation agences**
+- 4 plans tarifaires (`/tarifs`) : Gratuit, Investisseur, Pro, Enterprise
+- API `/api/billing/subscribe`, dashboard `/dashboard/facturation`
+- Schéma DB `payments`, `subscriptions`
+
+**PWA offline**
+- Service worker `/sw.js` avec cache pages FR
+- Page `/offline`, enregistrement automatique
+- 35 tests passent
+
+---
+
 ## [0.7.0] — 2026-07-25
 
 ### Phase 6 — API partenaires, CNDP, PWA, emails
