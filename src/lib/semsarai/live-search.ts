@@ -1,11 +1,11 @@
 import { fetchSemsaraiProperties } from "@/lib/semsarai/client";
 import { semsaraiPropertyToListing } from "@/lib/semsarai/normalizer";
 import { normalizeSemsaraiListing } from "@/lib/semsarai/normalizer";
-import { fetchHoldingListings } from "@/lib/aggregation/sources/holding-source";
 import { SEMSARAI_API_TOTAL } from "@/lib/data/semsarai-meta";
 import type { AggregatedListing } from "@/lib/aggregation/types";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { hasActiveFilters, listingMatchesFilters } from "@/lib/search/listing-filters-match";
+import { mergeListingsById, searchLocalCatalog } from "@/lib/search/local-catalog-search";
 
 const API_PAGE_SIZE = Number(process.env.SEMSARAI_PAGE_SIZE ?? "50");
 const MAX_SCAN_PAGES = Number(process.env.SEMSARAI_SEARCH_SCAN_PAGES ?? "25");
@@ -26,18 +26,18 @@ function sortListings(listings: AggregatedListing[], sort?: SearchFilters["sort"
   }
 }
 
-function holdingMatches(filters: SearchFilters): AggregatedListing[] {
-  return fetchHoldingListings().filter((l) => listingMatchesFilters(l, filters));
-}
-
 function scanPageLimit(filters: SearchFilters): number {
-  if (filters.neighborhood) return 8;
+  if (filters.neighborhood) return 15;
   if (filters.city) return 12;
   if (filters.region) return 18;
   return Math.min(MAX_SCAN_PAGES, 10);
 }
 
-/** Recherche ciblée — scan limité quand région/ville/quartier sont définis. */
+function hasLocationFilters(filters: SearchFilters): boolean {
+  return Boolean(filters.region || filters.city || filters.neighborhood);
+}
+
+/** Recherche live API + catalogue local embarqué (résultats quartier fiables). */
 export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
   items: AggregatedListing[];
   total: number;
@@ -48,17 +48,17 @@ export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
 }> {
   const page = filters.page ?? 1;
   const limit = filters.limit ?? 48;
-  const holding = holdingMatches(filters);
   const activeFilters = hasActiveFilters(filters);
 
   if (!activeFilters) {
     const batch = await fetchSemsaraiProperties({ page, limit: API_PAGE_SIZE });
+    const localFirst = searchLocalCatalog(filters);
     const apiItems = batch.properties.map((p) =>
       normalizeSemsaraiListing(semsaraiPropertyToListing(p)),
     );
-    const items =
-      page === 1 ? [...holding, ...apiItems].slice(0, limit) : apiItems.slice(0, limit);
-    const totalAvailable = batch.totalCount + holding.length;
+    const merged = mergeListingsById(localFirst, apiItems);
+    const items = merged.slice(0, limit);
+    const totalAvailable = batch.totalCount + localFirst.length;
     return {
       items,
       total: totalAvailable,
@@ -69,12 +69,15 @@ export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
     };
   }
 
-  const matched: AggregatedListing[] = [...holding];
+  const localMatches = searchLocalCatalog(filters);
+  const matched: AggregatedListing[] = [...localMatches];
+  const seen = new Set(localMatches.map((l) => l.id));
+
   let apiPage = 1;
   let scannedPages = 0;
   let apiTotalCount: number = SEMSARAI_API_TOTAL;
   const targetMatches = page * limit;
-  const maxPages = scanPageLimit(filters);
+  const maxPages = hasLocationFilters(filters) ? scanPageLimit(filters) : Math.min(MAX_SCAN_PAGES, 10);
 
   while (apiPage <= maxPages) {
     const batch = await fetchSemsaraiProperties({ page: apiPage, limit: API_PAGE_SIZE });
@@ -85,9 +88,9 @@ export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
 
     for (const property of batch.properties) {
       const listing = normalizeSemsaraiListing(semsaraiPropertyToListing(property));
-      if (listingMatchesFilters(listing, filters)) {
-        matched.push(listing);
-      }
+      if (!listingMatchesFilters(listing, filters) || seen.has(listing.id)) continue;
+      seen.add(listing.id);
+      matched.push(listing);
     }
 
     if (batch.properties.length < API_PAGE_SIZE) break;
@@ -98,12 +101,11 @@ export async function searchSemsaraiLive(filters: SearchFilters = {}): Promise<{
   const sorted = sortListings(matched, filters.sort);
   const start = (page - 1) * limit;
   const items = sorted.slice(start, start + limit);
-  const totalAvailable = apiTotalCount + holding.length;
 
   return {
     items,
     total: sorted.length,
-    totalAvailable,
+    totalAvailable: sorted.length,
     page,
     totalPages: Math.max(1, Math.ceil(sorted.length / limit)),
     scannedPages,

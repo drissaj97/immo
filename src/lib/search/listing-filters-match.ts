@@ -2,6 +2,7 @@ import type { DemoListing } from "@/lib/data/demo-data";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import type { AggregatedListing } from "@/lib/aggregation/types";
 import { resolveMoroccoRegion } from "@/lib/geography/morocco-regions";
+import { cityMatches, neighborhoodMatches } from "@/lib/search/location-match";
 
 function listingRegion(listing: DemoListing | AggregatedListing): string {
   const city = listing.location.city;
@@ -18,13 +19,8 @@ export function listingMatchesFilters(
   if (filters.region && listingRegion(listing).toLowerCase() !== filters.region.toLowerCase()) {
     return false;
   }
-  if (filters.city && listing.location.city.toLowerCase() !== filters.city.toLowerCase()) return false;
-  if (
-    filters.neighborhood &&
-    listing.location.neighborhood.toLowerCase() !== filters.neighborhood.toLowerCase()
-  ) {
-    return false;
-  }
+  if (filters.city && !cityMatches(filters.city, listing.location.city)) return false;
+  if (filters.neighborhood && !neighborhoodMatches(filters.neighborhood, listing)) return false;
   if (filters.minPrice && listing.price < filters.minPrice) return false;
   if (filters.maxPrice && listing.price > filters.maxPrice) return false;
   if (filters.minArea && (listing.livingArea ?? 0) < filters.minArea) return false;

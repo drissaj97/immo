@@ -123,7 +123,14 @@ export default async function BiensPage({
 
       {hasLocation && items.length === 0 && (
         <p className="py-12 text-center text-charcoal/60">
-          Aucun bien ne correspond à vos critères. Essayez un quartier voisin ou élargissez le budget.
+          Aucun bien ne correspond à vos critères.
+          {filters.neighborhood && filters.transactionType === "sale" && (
+            <> Essayez l&apos;onglet <strong>Louer</strong> — certains quartiers ont surtout des locations.</>
+          )}
+          {filters.neighborhood && filters.transactionType !== "sale" && (
+            <> Essayez un quartier voisin ou élargissez le budget.</>
+          )}
+          {!filters.neighborhood && <> Essayez un quartier voisin ou élargissez le budget.</>}
         </p>
       )}
 
