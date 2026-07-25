@@ -7,7 +7,20 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
-## [0.1.0] — 2026-07-25
+## [0.2.0] — 2026-07-25
+
+### Phase 2 — Investissement
+
+- Score d'investissement transparent /100 avec 10 dimensions pondérées
+- Historique de prix fictif sur les fiches biens (graphique + événements)
+- Estimation par comparables de vente (`/estimation`)
+- Rapport d'investissement imprimable/PDF (`/dashboard/rapports/[id]`)
+- Comparateur enrichi avec scores et cash-flow
+- Simulations sauvegardées (`/dashboard/simulations`) — auth requise
+- Métriques sectorielles et comparables de démonstration
+- Schéma DB : `listing_price_history`, `market_metrics`, `investment_scenarios`, `investment_reports`
+- Tests : score, valuation, rapport
+
 
 ### 🎉 Release initiale MVP
 

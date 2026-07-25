@@ -171,6 +171,58 @@ export const exchangeRates = pgTable("exchange_rates", {
   rateDate: timestamp("rate_date", { withTimezone: true }).notNull(),
 });
 
+export const listingPriceHistory = pgTable(
+  "listing_price_history",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    listingId: uuid("listing_id")
+      .notNull()
+      .references(() => listings.id, { onDelete: "cascade" }),
+    price: integer("price").notNull(),
+    currency: currencyEnum("currency").notNull().default("MAD"),
+    recordedAt: timestamp("recorded_at", { withTimezone: true }).notNull(),
+    event: varchar("event", { length: 32 }),
+    isDemo: boolean("is_demo").default(true),
+  },
+  (table) => [index("price_history_listing_idx").on(table.listingId)],
+);
+
+export const marketMetrics = pgTable("market_metrics", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  city: varchar("city", { length: 128 }).notNull(),
+  neighborhood: varchar("neighborhood", { length: 128 }),
+  listingType: listingTypeEnum("listing_type").notNull(),
+  avgPricePerSqm: integer("avg_price_per_sqm").notNull(),
+  avgRentPerSqm: integer("avg_rent_per_sqm"),
+  avgYield: decimal("avg_yield", { precision: 5, scale: 2 }),
+  sampleSize: integer("sample_size").default(0),
+  source: varchar("source", { length: 128 }),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+  isDemo: boolean("is_demo").default(true),
+});
+
+export const investmentScenarios = pgTable("investment_scenarios", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
+  listingId: uuid("listing_id").references(() => listings.id),
+  name: varchar("name", { length: 255 }).notNull(),
+  scenario: varchar("scenario", { length: 16 }).notNull(),
+  inputs: jsonb("inputs").notNull(),
+  results: jsonb("results").notNull(),
+  isDemo: boolean("is_demo").default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const investmentReports = pgTable("investment_reports", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => users.id),
+  listingId: uuid("listing_id").references(() => listings.id),
+  scoreOverall: integer("score_overall"),
+  reportData: jsonb("report_data").notNull(),
+  isDemo: boolean("is_demo").default(true),
+  generatedAt: timestamp("generated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
 export const auditLogs = pgTable("audit_logs", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: uuid("user_id"),

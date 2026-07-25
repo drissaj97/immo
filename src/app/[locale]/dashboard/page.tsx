@@ -16,7 +16,10 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const links = [
     { href: `/${locale}/dashboard/favoris`, label: "Favoris" },
     { href: `/${locale}/comparer`, label: "Comparateur" },
-    { href: `/${locale}/simulateur-rentabilite`, label: "Simulations" },
+    { href: `/${locale}/dashboard/simulations`, label: "Simulations & rapports" },
+    { href: `/${locale}/simulateur-rentabilite`, label: "Simulateur" },
+    { href: `/${locale}/estimation`, label: "Estimation" },
+    { href: `/${locale}/investir`, label: "Hub investisseur" },
     { href: `/${locale}/samsar-ia`, label: "Conversations IA" },
   ];
 

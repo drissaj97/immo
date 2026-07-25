@@ -9,6 +9,14 @@ import { getListingBySlug } from "@/server/repositories/listings";
 import { buildMetadata, listingJsonLd } from "@/lib/seo/metadata";
 import { formatPrice } from "@/lib/utils";
 import { FavoriteButton } from "@/components/listings/favorite-button";
+import { InvestmentScoreCard } from "@/components/investment/investment-score-card";
+import { PriceHistoryChart } from "@/components/investment/price-history-chart";
+import { GenerateReportButton } from "@/components/investment/generate-report-button";
+import {
+  getListingInvestmentScore,
+  getPriceHistory,
+  getListingValuation,
+} from "@/server/repositories/investment";
 
 export async function generateMetadata({
   params,
@@ -34,6 +42,10 @@ export default async function ListingDetailPage({
   const { locale, slug } = await params;
   const listing = await getListingBySlug(slug);
   if (!listing) notFound();
+
+  const score = getListingInvestmentScore(listing);
+  const priceHistory = getPriceHistory(listing);
+  const valuation = getListingValuation(listing);
 
   const jsonLd = listingJsonLd({
     title: listing.title,
@@ -81,14 +93,15 @@ export default async function ListingDetailPage({
                 <span className="flex items-center gap-1"><Maximize className="h-4 w-4" /> {listing.livingArea} m²</span>
               )}
             </div>
-            <div className="mt-6 flex gap-3">
+            <div className="mt-6 flex flex-wrap gap-3">
               <FavoriteButton listingId={listing.id} locale={locale} />
               <Link href={`/${locale}/comparer?a=${listing.id}`}>
                 <Button variant="outline">Comparer</Button>
               </Link>
-              <Link href={`/${locale}/simulateur-rentabilite?price=${listing.price}`}>
+              <Link href={`/${locale}/simulateur-rentabilite?price=${listing.price}&listingId=${listing.id}`}>
                 <Button variant="secondary">Simuler rentabilité</Button>
               </Link>
+              <GenerateReportButton listingId={listing.id} locale={locale} />
             </div>
           </div>
         </div>
@@ -100,6 +113,12 @@ export default async function ListingDetailPage({
               <p className="mt-4 leading-relaxed text-charcoal/80">{listing.description}</p>
             </section>
             <section>
+              <h2 className="font-serif text-2xl">Historique de prix</h2>
+              <div className="mt-4 rounded-lg border border-charcoal/10 p-4">
+                <PriceHistoryChart history={priceHistory} currentPrice={listing.price} />
+              </div>
+            </section>
+            <section>
               <h2 className="font-serif text-2xl">Localisation approximative</h2>
               <div className="mt-4 h-80 overflow-hidden rounded-lg border border-charcoal/10">
                 <PropertyMap listings={[listing]} center={[listing.longitude, listing.latitude]} zoom={13} />
@@ -107,6 +126,16 @@ export default async function ListingDetailPage({
             </section>
           </div>
           <aside className="space-y-4">
+            <InvestmentScoreCard score={score} />
+            {valuation && (
+              <div className="rounded-lg border border-charcoal/10 p-4">
+                <p className="text-sm text-charcoal/60">Estimation par comparables (démo)</p>
+                <p className="mt-1 font-medium text-deep-green">
+                  {formatPrice(valuation.estimatedMin, "MAD")} — {formatPrice(valuation.estimatedMax, "MAD")}
+                </p>
+                <p className="mt-1 text-xs text-charcoal/50">{valuation.comparablesUsed.length} comparable(s) · {valuation.methodology}</p>
+              </div>
+            )}
             <div className="rounded-lg border border-charcoal/10 p-4">
               <h3 className="font-medium flex items-center gap-2"><Shield className="h-4 w-4" /> Provenance</h3>
               <dl className="mt-3 space-y-2 text-sm">

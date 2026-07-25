@@ -46,7 +46,27 @@
 
 ---
 
-## Phase 2 — Production data & auth (🔜 Prochaine)
+## Phase 2 — Investissement (✅ Terminée — v0.2.0)
+
+**Objectif :** Outils d'aide à la décision pour investisseurs avec transparence et traçabilité.
+
+| Livrable | Statut |
+|----------|--------|
+| Score investissement /100 (10 dimensions) | ✅ |
+| Historique de prix sur fiches biens | ✅ |
+| Estimation par comparables | ✅ |
+| Rapport investissement imprimable | ✅ |
+| Comparateur enrichi (score + cash-flow) | ✅ |
+| Simulations sauvegardées | ✅ |
+| Métriques sectorielles démo | ✅ |
+| Schéma DB investissement | ✅ |
+| Tests score, valuation, rapport | ✅ |
+
+**Critère de sortie :** Investisseur peut scorer, comparer, estimer, simuler et générer un rapport depuis une fiche bien.
+
+---
+
+## Phase 3 — Production data & auth (🔜 Prochaine)
 
 **Objectif :** Passer du mode démo à une base PostgreSQL durable avec authentification robuste.
 

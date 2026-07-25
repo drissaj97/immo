@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/badge";
 
+import { SaveSimulationButton } from "@/components/investment/save-simulation-button";
+
 const defaultInputs: InvestmentInputs = {
   purchasePrice: 1280000,
   acquisitionFeesRate: 6,
@@ -23,7 +25,15 @@ const defaultInputs: InvestmentInputs = {
   taxRate: 0,
 };
 
-export function InvestmentSimulator({ initialPrice = 1280000 }: { initialPrice?: number }) {
+export function InvestmentSimulator({
+  initialPrice = 1280000,
+  locale = "fr",
+  listingId,
+}: {
+  initialPrice?: number;
+  locale?: string;
+  listingId?: string;
+}) {
   const [inputs, setInputs] = useState<InvestmentInputs>({ ...defaultInputs, purchasePrice: initialPrice });
   const [scenario, setScenario] = useState<"prudent" | "central" | "optimistic">("central");
 
@@ -87,6 +97,9 @@ export function InvestmentSimulator({ initialPrice = 1280000 }: { initialPrice?:
           <p className="mt-4 text-xs text-charcoal/50">
             Calculs déterministes — simulations indicatives, non garanties. Paramètres fiscaux configurables.
           </p>
+          <div className="mt-4 pt-4 border-t border-charcoal/10">
+            <SaveSimulationButton locale={locale} inputs={scenarioInputs} listingId={listingId} />
+          </div>
         </CardContent>
       </Card>
     </div>
