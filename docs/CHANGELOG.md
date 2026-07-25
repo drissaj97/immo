@@ -7,6 +7,19 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [1.8.0] — 2026-07-25
+
+### Catalogue complet + recherche type semsarai.ma
+
+- **Recherche live API** : accès aux ~73 000 annonces semsarai.ma sans limite statique (`SEMSARAI_LIVE_SEARCH=true`)
+- **Proxy images** `/api/v1/media/image` — photos Mubawab/Yakeey/Agenz avec Referer correct
+- **Fallback photo** si image cassée (placeholder)
+- **PropertySearch** : onglets Acheter/Louer, budget min/max, reprendre ma recherche (localStorage)
+- **Pagination** catalogue 48 annonces/page sur `/biens`
+- Homepage hero alignée sur la promesse « tout le Maroc »
+
+---
+
 ## [1.7.1] — 2026-07-25
 
 ### Fix démarrage site

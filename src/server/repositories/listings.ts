@@ -1,10 +1,15 @@
 import { getAggregatedListings } from "@/lib/aggregation/sync";
 import { DEMO_LISTINGS, EXCHANGE_RATES, type DemoListing } from "@/lib/data/demo-data";
+import { SEMSARAI_LISTINGS } from "@/lib/data/semsarai-listings";
+import { HOLDING_LISTINGS } from "@/lib/data/holding-listings";
 import type { AggregatedListing } from "@/lib/aggregation/types";
 import { useDatabase } from "@/lib/db/repository";
 import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import * as dbRepo from "@/server/repositories/listings-db";
 import { syncListingEmbedding } from "@/server/repositories/embedding-sync";
+import { searchSemsaraiLive } from "@/lib/semsarai/live-search";
+
+const USE_LIVE_SEARCH = process.env.SEMSARAI_LIVE_SEARCH !== "false";
 
 export type ListingWithLocation = DemoListing & {
   aggregationSource?: AggregatedListing["aggregationSource"];
@@ -69,6 +74,19 @@ function sortListings(listings: ListingWithLocation[], sort?: SearchFilters["sor
   }
 }
 
+async function liveSearchListings(filters: SearchFilters = {}) {
+  const page = filters.page ?? 1;
+  const limit = filters.limit ?? 48;
+  const result = await searchSemsaraiLive({ ...filters, page, limit });
+  return {
+    items: result.items as ListingWithLocation[],
+    total: result.total,
+    totalAvailable: result.totalAvailable,
+    page: result.page,
+    totalPages: result.totalPages,
+  };
+}
+
 async function demoSearchListings(filters: SearchFilters = {}) {
   const page = filters.page ?? 1;
   const limit = filters.limit ?? 12;
@@ -92,10 +110,14 @@ export async function searchListings(filters: SearchFilters = {}): Promise<{
   total: number;
   page: number;
   totalPages: number;
+  totalAvailable?: number;
 }> {
   if (useDatabase()) {
     const result = await dbRepo.dbSearchListings(filters);
     if (result) return result;
+  }
+  if (USE_LIVE_SEARCH) {
+    return liveSearchListings(filters);
   }
   return demoSearchListings(filters);
 }
@@ -105,6 +127,11 @@ export async function getListingBySlug(slug: string): Promise<ListingWithLocatio
     const listing = await dbRepo.dbGetListingBySlug(slug);
     if (listing) return listing;
   }
+  const staticHit =
+    HOLDING_LISTINGS.find((l) => l.slug === slug) ??
+    SEMSARAI_LISTINGS.find((l) => l.slug === slug);
+  if (staticHit) return staticHit as ListingWithLocation;
+
   const all = await getAggregatedListings();
   return all.find((l) => l.slug === slug) ?? null;
 }
@@ -122,6 +149,10 @@ export async function getFeaturedListings(limit = 6): Promise<ListingWithLocatio
   if (useDatabase()) {
     const items = await dbRepo.dbGetFeaturedListings(limit);
     if (items.length > 0) return items;
+  }
+  if (USE_LIVE_SEARCH) {
+    const { items } = await searchSemsaraiLive({ limit, page: 1 });
+    return items.slice(0, limit) as ListingWithLocation[];
   }
   const all = await getAggregatedListings();
   return all

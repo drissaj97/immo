@@ -1,7 +1,8 @@
-import Link from "next/link";
-import { SearchBar } from "@/components/search/search-bar";
+import { PropertySearch } from "@/components/search/property-search";
 import { ListingCard } from "@/components/listings/listing-card";
 import { getFeaturedListings, getCities } from "@/server/repositories/listings";
+import { getSemsaraiTotalCount } from "@/lib/semsarai/live-search";
+import Link from "next/link";
 import { getMessages, type Locale } from "@/lib/i18n/config";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const messages = getMessages(locale as Locale);
   const featured = await getFeaturedListings(6);
   const cities = await getCities();
+  const apiTotal = await getSemsaraiTotalCount().catch(() => null);
 
   return (
     <>
@@ -33,16 +35,20 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           }}
         />
         <div className="relative z-10 mx-auto max-w-4xl px-4 py-24 text-center text-ivory">
-          <p className="mb-4 text-sm uppercase tracking-[0.2em] text-ivory/80">Maroc · Données · Intelligence</p>
+          <p className="mb-4 text-sm uppercase tracking-[0.2em] text-ivory/80">
+            {apiTotal
+              ? `${apiTotal.toLocaleString("fr-MA")}+ annonces · Tout le Maroc`
+              : "Maroc · Données · Intelligence"}
+          </p>
           <h1 className="font-serif text-4xl font-medium leading-tight md:text-6xl">
-            {messages.tagline}
+            Toutes les annonces immobilières du Maroc, en un seul endroit.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-ivory/85">
-            Marketplace premium, comparateur d&apos;investissement et assistant conversationnel pour acheteurs,
-            investisseurs et professionnels.
+            DarBladi agrège les biens de semsarai.ma, Holding IMMO et partenaires agréés — recherche,
+            investissement et assistant intelligent.
           </p>
-          <div className="mt-10">
-            <SearchBar locale={locale} placeholder={messages.search.placeholder} />
+          <div className="mt-10 text-left">
+            <PropertySearch locale={locale} variant="hero" />
           </div>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link href={`/${locale}/darbladi`}>

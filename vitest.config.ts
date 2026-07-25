@@ -13,6 +13,7 @@ export default defineConfig({
       EMBEDDING_PROVIDER: "mock",
       OPENAI_API_KEY: "",
       SEMSARAI_LIVE_SYNC: "false",
+      SEMSARAI_LIVE_SEARCH: "false",
       VITEST: "true",
     },
   },
