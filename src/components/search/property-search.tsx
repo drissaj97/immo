@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MapPin, Home, Search, RotateCcw, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Input, Select } from "@/components/ui/input";
 import type { GeographySearchTree } from "@/lib/geography/search-tree";
 
 const STORAGE_KEY = "darbladi-last-search";
@@ -32,7 +32,7 @@ type PropertySearchProps = {
 };
 
 const selectClassName =
-  "flex h-11 w-full rounded-md border border-charcoal/15 bg-ivory px-3 text-sm disabled:cursor-not-allowed disabled:opacity-50";
+  "h-11 text-charcoal disabled:text-charcoal/40";
 
 export function PropertySearch({
   locale,
@@ -152,11 +152,11 @@ export function PropertySearch({
 
   return (
     <div
-      className={
+      className={`text-charcoal ${
         isHero
           ? "rounded-2xl border border-charcoal/10 bg-ivory p-6 shadow-xl md:p-8"
           : "rounded-xl border border-charcoal/10 bg-ivory p-4"
-      }
+      }`}
     >
       <div className="mb-6 flex flex-wrap gap-2 border-b border-charcoal/10 pb-4">
         <button
@@ -210,7 +210,7 @@ export function PropertySearch({
           <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-charcoal/60">
             1. Région
           </label>
-          <select
+          <Select
             value={region}
             onChange={(e) => {
               setRegion(e.target.value);
@@ -226,14 +226,14 @@ export function PropertySearch({
                 {r.name} ({r.count.toLocaleString("fr-MA")})
               </option>
             ))}
-          </select>
+          </Select>
         </div>
 
         <div>
           <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-charcoal/60">
             2. Ville
           </label>
-          <select
+          <Select
             value={city}
             onChange={(e) => {
               setCity(e.target.value);
@@ -249,14 +249,14 @@ export function PropertySearch({
                 {c.name} ({c.count.toLocaleString("fr-MA")})
               </option>
             ))}
-          </select>
+          </Select>
         </div>
 
         <div>
           <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-charcoal/60">
             3. Quartier
           </label>
-          <select
+          <Select
             value={neighborhood}
             onChange={(e) => setNeighborhood(e.target.value)}
             disabled={!city}
@@ -270,14 +270,14 @@ export function PropertySearch({
                 {n.name} ({n.count.toLocaleString("fr-MA")})
               </option>
             ))}
-          </select>
+          </Select>
         </div>
 
         <div>
           <label className="mb-1.5 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-charcoal/60">
             Type de bien
           </label>
-          <select
+          <Select
             value={listingType}
             onChange={(e) => setListingType(e.target.value)}
             className={selectClassName}
@@ -288,7 +288,7 @@ export function PropertySearch({
             <option value="riad">Riad</option>
             <option value="land">Terrain</option>
             <option value="commercial">Commercial</option>
-          </select>
+          </Select>
         </div>
 
         <div className="md:col-span-2">
