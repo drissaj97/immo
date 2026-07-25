@@ -6,8 +6,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return buildMetadata({ title: "Estimation immobilière", description: "Estimez la valeur de votre bien par comparables.", path: "/estimation", locale });
 }
 
-export default async function EstimationPage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
+export default async function EstimationPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 lg:px-8">
       <h1 className="font-serif text-3xl">Estimation immobilière</h1>

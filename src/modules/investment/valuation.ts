@@ -50,10 +50,9 @@ export function findComparables(
   }
 
   if (livingArea) {
-    comps = comps
-      .map((c) => ({ ...c, areaDiff: Math.abs(c.livingArea - livingArea) }))
-      .sort((a, b) => (a as Comparable & { areaDiff: number }).areaDiff - (b as Comparable & { areaDiff: number }).areaDiff)
-      .map(({ areaDiff, ...c }) => c);
+    comps = [...comps].sort(
+      (a, b) => Math.abs(a.livingArea - livingArea) - Math.abs(b.livingArea - livingArea),
+    );
   }
 
   return comps.slice(0, limit);
