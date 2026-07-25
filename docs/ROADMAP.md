@@ -1,7 +1,7 @@
 # DarBladi — Roadmap produit
 
 > Phases alignées sur la vision marketplace immobilière intelligente au Maroc.  
-> État actuel : **Phase 5 complétée** (v0.5.0).
+> État actuel : **Phase 6 démarrée** (v0.6.0).
 
 ---
 
@@ -70,7 +70,7 @@
 | API chat `/api/darbladi/chat` | ✅ |
 | UI assistant multi-tours | ✅ |
 | Rate limiting IA | ✅ |
-| pgvector / RAG quartiers | 📋 Phase 3.1 |
+| pgvector / RAG quartiers | ✅ Phase 3.1 |
 
 ---
 
@@ -114,16 +114,29 @@
 
 ---
 
-## Phase 6 — Scale & monétisation (📋 Vision)
+## Phase 3.1 — RAG quartiers (✅ Terminée — v0.6.0)
 
-| Livrable | Priorité |
-|----------|----------|
-| Application mobile / PWA | P2 |
-| Analytics investisseur avancés | P1 |
-| Expansion villes | P1 |
-| Paiement en ligne | P2 |
-| API publique partenaires | P2 |
-| Conformité CNDP formalisée | P1 |
+| Livrable | Statut |
+|----------|--------|
+| Base connaissance quartiers | ✅ |
+| Recherche RAG mock (keyword scoring) | ✅ |
+| Outil IA `getNeighborhoodContext` | ✅ |
+| Pages SEO `/villes/[ville]/[quartier]` | ✅ |
+| Citations RAG dans assistant | ✅ |
+
+---
+
+## Phase 6 — Scale & monétisation (🔜 En cours)
+
+| Livrable | Statut |
+|----------|--------|
+| Analytics investisseur `/dashboard/analytics` | ✅ |
+| Espace agence multi-agents `/dashboard/agence` | ✅ |
+| Expansion pages quartiers SEO | ✅ |
+| Application mobile / PWA | 📋 P2 |
+| Paiement en ligne | 📋 P2 |
+| API publique partenaires | 📋 P2 |
+| Conformité CNDP formalisée | 📋 P1 |
 
 ---
 

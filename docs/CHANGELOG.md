@@ -7,6 +7,26 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [0.6.0] — 2026-07-25
+
+### Phase 3.1 — RAG quartiers + début Phase 6
+
+**RAG quartiers**
+- Base connaissance 8 quartiers (`neighborhood-knowledge.ts`)
+- Module RAG mock avec scoring keyword (`modules/ai/rag.ts`)
+- Outil IA `getNeighborhoodContext` intégré à l'assistant
+- Citations contexte quartier dans les réponses DarBladi
+- Pages SEO `/villes/[ville]/[quartier]` enrichies
+- 4 tests RAG
+
+**Phase 6 (démarrage)**
+- Dashboard analytics investisseur (`/dashboard/analytics`)
+- Espace agence multi-agents (`/dashboard/agence`)
+- Layout dashboard avec auth obligatoire
+- Sitemap étendu (quartiers, professionnels, promoteurs)
+
+---
+
 ## [0.5.0] — 2026-07-25
 
 ### Phase 5 — Marketplace multi-acteurs

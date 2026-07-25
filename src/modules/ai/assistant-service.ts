@@ -20,6 +20,7 @@ export async function runAssistant(
   const { parsed, toolResults } = await executeFromNaturalLanguage(userMessage, ctx);
 
   const searchData = toolResults.find((t) => t.tool === "searchListings");
+  const ragData = toolResults.find((t) => t.tool === "getNeighborhoodContext");
   const listings =
     (searchData?.data as { items?: Array<{ id: string; title: string; price: number; city: string; slug: string }> })
       ?.items ?? [];
@@ -55,6 +56,13 @@ export async function runAssistant(
         type: "fact" as const,
         label: `${listings.length} bien(s) correspondant(s)`,
       },
+      ...(ragData?.data && typeof ragData.data === "object" && "neighborhood" in (ragData.data as object)
+        ? [{
+            source: "DarBladi — RAG quartiers",
+            type: "fact" as const,
+            label: `Contexte ${(ragData.data as { neighborhood: string; city: string }).neighborhood}, ${(ragData.data as { city: string }).city}`,
+          }]
+        : []),
     ],
     mode: provider.name,
     toolResults,

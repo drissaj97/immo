@@ -16,6 +16,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const links = [
     { href: `/${locale}/dashboard/favoris`, label: "Favoris" },
     { href: `/${locale}/dashboard/alertes`, label: "Alertes" },
+    { href: `/${locale}/dashboard/analytics`, label: "Analytics investisseur" },
     { href: `/${locale}/comparer`, label: "Comparateur" },
     { href: `/${locale}/dashboard/simulations`, label: "Simulations & rapports" },
     { href: `/${locale}/simulateur-rentabilite`, label: "Simulateur" },
@@ -26,6 +27,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
 
   if (user.role === "agent" || user.role === "admin" || user.role === "agency_admin") {
     links.push(
+      { href: `/${locale}/dashboard/agence`, label: "Espace agence" },
       { href: `/${locale}/dashboard/annonces/nouveau`, label: "Créer une annonce" },
       { href: `/${locale}/dashboard/leads`, label: "Leads CRM" },
       { href: `/${locale}/dashboard/import`, label: "Import partenaires" },

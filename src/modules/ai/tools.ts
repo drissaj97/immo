@@ -3,6 +3,11 @@ import { searchListings, getListingById } from "@/server/repositories/listings";
 import { getListingInvestmentScore } from "@/server/repositories/investment";
 import { calculateInvestment } from "@/modules/investment/calculations";
 import { findMarketMetric } from "@/modules/investment/valuation";
+import {
+  formatKnowledgeForLLM,
+  getNeighborhoodContext,
+  searchNeighborhoodKnowledge,
+} from "@/modules/ai/rag";
 import type { ControlledToolResult, ToolContext } from "./types";
 
 export async function toolSearchListings(
@@ -104,6 +109,42 @@ export async function toolGetMarketMetrics(
   };
 }
 
+export async function toolGetNeighborhoodContext(
+  params: { query?: string; city?: string; neighborhood?: string },
+  _ctx: ToolContext,
+): Promise<ControlledToolResult> {
+  let knowledge = getNeighborhoodContext(params.city, params.neighborhood);
+
+  if (!knowledge && params.query) {
+    const matches = searchNeighborhoodKnowledge(params.query, 1);
+    knowledge = matches[0]?.knowledge ?? null;
+  }
+
+  if (!knowledge) {
+    return {
+      tool: "getNeighborhoodContext",
+      source: "DarBladi — RAG quartiers (démo)",
+      data: { message: "Aucun contexte quartier trouvé pour cette requête." },
+    };
+  }
+
+  return {
+    tool: "getNeighborhoodContext",
+    source: "DarBladi — base connaissance quartiers (fictive)",
+    data: {
+      slug: knowledge.slug,
+      city: knowledge.city,
+      neighborhood: knowledge.neighborhood,
+      summary: knowledge.summary,
+      highlights: knowledge.highlights,
+      investmentNotes: knowledge.investmentNotes,
+      avgPricePerSqm: knowledge.avgPricePerSqm,
+      avgYield: knowledge.avgYield,
+      contextText: formatKnowledgeForLLM(knowledge),
+    },
+  };
+}
+
 export async function executeFromNaturalLanguage(
   query: string,
   ctx: ToolContext,
@@ -125,6 +166,24 @@ export async function executeFromNaturalLanguage(
         listingType: parsed.filters.listingType ?? "apartment",
       }, ctx),
     );
+    toolResults.push(
+      await toolGetNeighborhoodContext({
+        city: parsed.filters.city,
+        neighborhood: parsed.filters.neighborhood,
+        query,
+      }, ctx),
+    );
+  } else if (parsed.filters.city) {
+    toolResults.push(
+      await toolGetNeighborhoodContext({ city: parsed.filters.city, query }, ctx),
+    );
+  } else {
+    const ragMatches = searchNeighborhoodKnowledge(query, 1);
+    if (ragMatches.length > 0) {
+      toolResults.push(
+        await toolGetNeighborhoodContext({ query }, ctx),
+      );
+    }
   }
 
   return { parsed, toolResults };
