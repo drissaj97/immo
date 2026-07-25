@@ -1,0 +1,456 @@
+{
+  "builtAt": "2026-07-25T20:13:30.031Z",
+  "entries": [
+    {
+      "city": "Casablanca",
+      "latitude": 33.5731104,
+      "longitude": -7.5898434
+    },
+    {
+      "city": "Casablanca",
+      "neighborhood": "Ancienne Medina Casablanca",
+      "latitude": 33.6022285,
+      "longitude": -7.6209108
+    },
+    {
+      "city": "Casablanca",
+      "neighborhood": "Casablanca Finance City",
+      "latitude": 33.5635756,
+      "longitude": -7.6609114
+    },
+    {
+      "city": "Casablanca",
+      "neighborhood": "Centre Ville Casablanca",
+      "latitude": 33.5731104,
+      "longitude": -7.5898434
+    },
+    {
+      "city": "Casablanca",
+      "neighborhood": "Marina Casablanca",
+      "latitude": 33.604106,
+      "longitude": -7.619337
+    },
+    {
+      "city": "Khouribga",
+      "neighborhood": "Quartier Rue De Casablanca",
+      "latitude": 32.880222,
+      "longitude": -6.914193
+    },
+    {
+      "city": "Marrakech",
+      "neighborhood": "Route de Casablanca",
+      "latitude": 31.7804582,
+      "longitude": -7.9780842
+    },
+    {
+      "city": "Casablanca",
+      "neighborhood": "Zone Industrielle Casablanca",
+      "latitude": 33.628264,
+      "longitude": -7.508341
+    },
+    {
+      "city": "Rabat",
+      "latitude": 34.015049,
+      "longitude": -6.83272
+    },
+    {
+      "city": "Rabat",
+      "neighborhood": "Médina de Rabat",
+      "latitude": 34.0259072,
+      "longitude": -6.8364399
+    },
+    {
+      "city": "Rabat",
+      "neighborhood": "rabat",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Rabat",
+      "neighborhood": "Rabat-Salé",
+      "latitude": 34.0336969,
+      "longitude": -6.7708138
+    },
+    {
+      "city": "Tanger",
+      "neighborhood": "Route de Rabat",
+      "latitude": 35.763128,
+      "longitude": -5.815771
+    },
+    {
+      "city": "Agadir",
+      "neighborhood": "Sidi Rabat",
+      "latitude": 30.08482518334,
+      "longitude": -9.66314680866
+    },
+    {
+      "city": "Fquih Ben Saleh",
+      "latitude": 32.5,
+      "longitude": -6.7
+    },
+    {
+      "city": "Sale",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Marrakech",
+      "neighborhood": "Ben Saleh",
+      "latitude": 31.6283458,
+      "longitude": -7.9821064
+    },
+    {
+      "city": "Sidi Yahia El Gharb",
+      "neighborhood": "Dar SALEM",
+      "latitude": 34.304738,
+      "longitude": -6.318238
+    },
+    {
+      "city": "Berkane",
+      "neighborhood": "Hay Salem",
+      "latitude": 34.92636,
+      "longitude": -2.320808
+    },
+    {
+      "city": "Sale",
+      "neighborhood": "La Marina Salé",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Fes",
+      "neighborhood": "Rue Abessalem Serghini",
+      "latitude": 34.058198,
+      "longitude": -4.982165
+    },
+    {
+      "city": "Sale",
+      "neighborhood": "Salé",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Sale",
+      "neighborhood": "Salé Médina",
+      "latitude": 34.04018589742,
+      "longitude": -6.82313203812
+    },
+    {
+      "city": "Sale",
+      "neighborhood": "Salé Médina",
+      "latitude": 34.036704,
+      "longitude": -6.8244714
+    },
+    {
+      "city": "Marrakech",
+      "latitude": 31.63,
+      "longitude": -8.008889
+    },
+    {
+      "city": "Marrakech",
+      "neighborhood": "Centre Ville Marrakech",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Mohammedia",
+      "neighborhood": "Derb Marrakech",
+      "latitude": 33.6871746,
+      "longitude": -7.3932275
+    },
+    {
+      "city": "Marrakech",
+      "neighborhood": "Kasbah Marrakech",
+      "latitude": 31.6162939,
+      "longitude": -7.9878977
+    },
+    {
+      "city": "Marrakech",
+      "neighborhood": "Marrakech Golf City",
+      "latitude": 31.59876,
+      "longitude": -8.004783
+    },
+    {
+      "city": "Agadir",
+      "neighborhood": "Route de Marrakech",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Essaouira",
+      "neighborhood": "Route de Marrakech",
+      "latitude": 31.513067,
+      "longitude": -9.7707156
+    },
+    {
+      "city": "El Jadida",
+      "neighborhood": "ROUTE DE MARRAKECH",
+      "latitude": 33.21448,
+      "longitude": -8.492905
+    },
+    {
+      "city": "Marrakech",
+      "neighborhood": "Zone Industrielle Marrakech",
+      "latitude": 31.672434,
+      "longitude": -8.036806
+    },
+    {
+      "city": "Tanger",
+      "latitude": 35.76896116196,
+      "longitude": -5.81591527909
+    },
+    {
+      "city": "Sidi Kacem",
+      "neighborhood": "Lotissement Route De Tanger",
+      "latitude": 34.233762,
+      "longitude": -5.712074
+    },
+    {
+      "city": "Tanger",
+      "neighborhood": "Quartier Tanger Al Majd",
+      "latitude": 35.740921,
+      "longitude": -5.79737
+    },
+    {
+      "city": "Tanger",
+      "neighborhood": "Tanger Free Zone",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Agadir",
+      "latitude": 30.4277547,
+      "longitude": -9.5981072
+    },
+    {
+      "city": "Agadir",
+      "neighborhood": "Agadir",
+      "latitude": 30.4277547,
+      "longitude": -9.5981072
+    },
+    {
+      "city": "Agadir",
+      "neighborhood": "Plage d'Agadir",
+      "latitude": 30.4099011,
+      "longitude": -9.6031698
+    },
+    {
+      "city": "Essaouira",
+      "neighborhood": "Route d'agadir",
+      "latitude": 31.5125172,
+      "longitude": -9.7675863
+    },
+    {
+      "city": "Marrakech",
+      "neighborhood": "Route d'agadir",
+      "latitude": 31.6287063,
+      "longitude": -8.1079286
+    },
+    {
+      "city": "Agadir",
+      "neighborhood": "Tagadirt",
+      "latitude": 30.38623316799,
+      "longitude": -9.45032894611
+    },
+    {
+      "city": "Agadir",
+      "neighborhood": "Bensergao",
+      "latitude": 30.3878232,
+      "longitude": -9.5687388
+    },
+    {
+      "city": "Fes",
+      "latitude": 34.033333,
+      "longitude": -5
+    },
+    {
+      "city": "Kenitra",
+      "neighborhood": "Bab Fès",
+      "latitude": 34.26788,
+      "longitude": -6.562508
+    },
+    {
+      "city": "Fes",
+      "neighborhood": "Fès",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Fes",
+      "neighborhood": "Fès City Center",
+      "latitude": 34.03362,
+      "longitude": -5.011645
+    },
+    {
+      "city": "Fes",
+      "neighborhood": "Fes Médina",
+      "latitude": 34.033333,
+      "longitude": -5
+    },
+    {
+      "city": "Fes",
+      "neighborhood": "Oued Fès",
+      "latitude": 34.05921234678,
+      "longitude": -4.99414980412
+    },
+    {
+      "city": "Marrakech",
+      "neighborhood": "Route de Fès",
+      "latitude": 31.6479443,
+      "longitude": -7.937983
+    },
+    {
+      "city": "Kenitra",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Kenitra",
+      "neighborhood": "Kenitra",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Kenitra",
+      "neighborhood": "kénitra centre ville",
+      "latitude": 34.2576021,
+      "longitude": -6.5854521
+    },
+    {
+      "city": "Sale",
+      "neighborhood": "Quartier Industriel Route Kenitra",
+      "latitude": 34.063264,
+      "longitude": -6.796882
+    },
+    {
+      "city": "Mohammedia",
+      "latitude": 33.6835086,
+      "longitude": -7.3848547
+    },
+    {
+      "city": "Mohammedia",
+      "neighborhood": "Mohammedia",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Temara",
+      "latitude": 33.9278354,
+      "longitude": -6.9051819
+    },
+    {
+      "city": "Rabat",
+      "neighborhood": "Temara",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Temara",
+      "neighborhood": "Temara",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Temara",
+      "neighborhood": "Temara Plage",
+      "latitude": 33.93086809067,
+      "longitude": -6.95447713137
+    },
+    {
+      "city": "Bouznika",
+      "latitude": 33.789722,
+      "longitude": -7.1575
+    },
+    {
+      "city": "Bouznika",
+      "neighborhood": "Bouznika",
+      "latitude": 33.79326207851,
+      "longitude": -7.20257369271
+    },
+    {
+      "city": "Bouznika",
+      "neighborhood": "Bouznika Bay",
+      "latitude": 33.81908916394,
+      "longitude": -7.15680956841
+    },
+    {
+      "city": "Nador",
+      "latitude": 35.166667,
+      "longitude": -2.933333
+    },
+    {
+      "city": "Nador",
+      "neighborhood": "Nador El Jadid",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Ain Taoujdate",
+      "latitude": 33.9401493,
+      "longitude": -5.2269831
+    },
+    {
+      "city": "Oujda",
+      "latitude": 34.686667,
+      "longitude": -1.911389
+    },
+    {
+      "city": "Ain Taoujdate",
+      "neighborhood": "Ain Taoujdate",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Meknes",
+      "latitude": 33.895,
+      "longitude": -5.554722
+    },
+    {
+      "city": "Mohammedia",
+      "neighborhood": "Derb Meknes",
+      "latitude": 33.6801794,
+      "longitude": -7.3681047
+    },
+    {
+      "city": "Agadir",
+      "neighborhood": "Rue Meknes",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Essaouira",
+      "latitude": 31.50840811867,
+      "longitude": -9.75968956947
+    },
+    {
+      "city": "Essaouira",
+      "neighborhood": "Alentours d'essaouira",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Essaouira",
+      "neighborhood": "Essaouira eljadida",
+      "latitude": 31.5084926,
+      "longitude": -9.7595041
+    },
+    {
+      "city": "Agadir",
+      "neighborhood": "Route d'Essaouira",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Agadir",
+      "neighborhood": "Route d'Essaouira Bord du Mer",
+      "latitude": 0,
+      "longitude": 0
+    },
+    {
+      "city": "Oujda",
+      "neighborhood": "Rue Essaouira",
+      "latitude": 34.688219,
+      "longitude": -1.908642
+    }
+  ]
+}

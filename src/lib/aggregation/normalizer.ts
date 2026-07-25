@@ -5,6 +5,7 @@ import type {
   AggregationSourceId,
   RawPartnerListing,
 } from "./types";
+import { resolveListingCoordinates } from "@/lib/geography/resolve-coordinates";
 
 function slugify(text: string): string {
   return text
@@ -24,6 +25,12 @@ export function normalizePartnerListing(
   const slug = `${source}-${slugify(raw.externalId || raw.title)}`;
   const neighborhood = raw.neighborhood ?? raw.city;
   const region = raw.region ?? "Maroc";
+  const coords = resolveListingCoordinates({
+    city: raw.city,
+    neighborhood,
+    latitude: raw.latitude,
+    longitude: raw.longitude,
+  });
 
   const base: DemoListing = {
     id: `${source}-${raw.externalId}`,
@@ -45,11 +52,11 @@ export function normalizePartnerListing(
       neighborhood,
       region,
       slug: `${slugify(raw.city)}/${slugify(neighborhood)}`,
-      latitude: raw.latitude ?? 33.5,
-      longitude: raw.longitude ?? -7.5,
+      latitude: coords.latitude,
+      longitude: coords.longitude,
     },
-    latitude: raw.latitude ?? 33.5,
-    longitude: raw.longitude ?? -7.5,
+    latitude: coords.latitude,
+    longitude: coords.longitude,
     reference: raw.externalId,
     images: raw.images?.length
       ? raw.images

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ListingCard } from "@/components/listings/listing-card";
 import { ListingPagination } from "@/components/listings/listing-pagination";
 import { PropertyMapLazy } from "@/components/maps/property-map-lazy";
@@ -6,7 +7,7 @@ import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { PropertySearch } from "@/components/search/property-search";
 import { getGeographySearchTree } from "@/lib/geography/index";
-import Link from "next/link";
+import { prepareMapPageData } from "@/lib/map/prepare-map-page";
 import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-gate";
 
 export const revalidate = 300;
@@ -56,6 +57,7 @@ export default async function BiensPage({
 
   const { items, total, totalPages, totalAvailable } = searchResult;
   const catalogTotal = totalAvailable ?? total;
+  const mapData = hasLocation && items.length > 0 ? await prepareMapPageData(items) : null;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
@@ -98,9 +100,12 @@ export default async function BiensPage({
         />
       </div>
 
-      {hasLocation && items.length > 0 && (
-        <div className="mb-6 h-64 overflow-hidden rounded-lg border border-charcoal/10 lg:hidden">
-          <PropertyMapLazy listings={items} />
+      {mapData && mapData.mapCount > 0 && (
+        <div className="mb-8 h-72 overflow-hidden rounded-lg border border-charcoal/10 lg:h-96">
+          <PropertyMapLazy
+            points={mapData.points}
+            nearbyPoisByKey={mapData.nearbyPoisByKey}
+          />
         </div>
       )}
 

@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { Bed, Bath, Maximize, MapPin, Shield, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { PropertyMap } from "@/components/maps/property-map";
+import { PropertyMapLazy } from "@/components/maps/property-map-lazy";
+import { prepareMapPageData } from "@/lib/map/prepare-map-page";
 import { getListingBySlug } from "@/server/repositories/listings";
 import { buildMetadata, listingJsonLd } from "@/lib/seo/metadata";
 import { formatPrice } from "@/lib/utils";
@@ -48,6 +49,7 @@ export default async function ListingDetailPage({
   const score = getListingInvestmentScore(listing);
   const priceHistory = getPriceHistory(listing);
   const valuation = getListingValuation(listing);
+  const mapData = await prepareMapPageData([listing]);
 
   const jsonLd = listingJsonLd({
     title: listing.title,
@@ -124,9 +126,13 @@ export default async function ListingDetailPage({
               </div>
             </section>
             <section>
-              <h2 className="font-serif text-2xl">Localisation approximative</h2>
+              <h2 className="font-serif text-2xl">Localisation</h2>
               <div className="mt-4 h-80 overflow-hidden rounded-lg border border-charcoal/10">
-                <PropertyMap listings={[listing]} center={[listing.longitude, listing.latitude]} zoom={13} />
+                <PropertyMapLazy
+                  points={mapData.points}
+                  nearbyPoisByKey={mapData.nearbyPoisByKey}
+                  zoom={14}
+                />
               </div>
             </section>
           </div>
