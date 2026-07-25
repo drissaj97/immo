@@ -1,4 +1,4 @@
--- DarBladi — migration initiale
+-- Samsar IA — migration initiale
 -- Extensions requises : postgis, vector (optionnel phase 3)
 
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";

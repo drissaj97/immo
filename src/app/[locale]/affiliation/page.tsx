@@ -6,7 +6,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   return buildMetadata({
     title: "Programme d'affiliation",
-    description: "Parrainez des clients et percevez une commission sur DarBladi.",
+    description: "Parrainez des clients et percevez une commission sur Samsar IA.",
     path: "/affiliation",
     locale,
   });
@@ -17,7 +17,7 @@ export default async function AffiliationPage({ params }: { params: Promise<{ lo
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 lg:px-8">
-      <h1 className="font-serif text-3xl">Programme d&apos;affiliation DarBladi</h1>
+      <h1 className="font-serif text-3xl">Programme d&apos;affiliation Samsar IA</h1>
       <p className="mt-4 text-charcoal/70">
         Agents et partenaires : partagez votre lien de parrainage et suivez vos conversions. Données fictives.
       </p>
@@ -26,7 +26,7 @@ export default async function AffiliationPage({ params }: { params: Promise<{ lo
         <h2 className="font-serif text-xl">Comment ça marche</h2>
         <ol className="mt-4 list-inside list-decimal space-y-2 text-sm text-charcoal/80">
           <li>Obtenez votre code affilié unique</li>
-          <li>Partagez : <code className="rounded bg-sand px-1">{process.env.NEXT_PUBLIC_APP_URL ?? "https://darbladi.demo"}/fr?ref=VOTRE_CODE</code></li>
+          <li>Partagez : <code className="rounded bg-sand px-1">{process.env.NEXT_PUBLIC_APP_URL ?? "https://samsar.demo"}/fr?ref=VOTRE_CODE</code></li>
           <li>Suivez visites, inscriptions et leads dans votre dashboard</li>
           <li>Commission sur acomptes et abonnements (démo)</li>
         </ol>

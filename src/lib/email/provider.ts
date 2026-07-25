@@ -30,7 +30,7 @@ class ResendEmailProvider implements EmailProvider {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        from: process.env.EMAIL_FROM ?? "DarBladi <noreply@darbladi.demo>",
+        from: process.env.EMAIL_FROM ?? "Samsar IA <noreply@samsar.demo>",
         to: payload.to,
         subject: payload.subject,
         text: payload.body,
@@ -54,8 +54,8 @@ export async function sendAlertEmail(to: string, searchName: string, matchCount:
   const provider = createEmailProvider();
   return provider.send({
     to,
-    subject: `[DarBladi] Alerte : ${matchCount} nouveau(x) bien(s) — ${searchName}`,
-    body: `Bonjour,\n\nVotre alerte "${searchName}" a trouvé ${matchCount} bien(s) correspondant(s).\n\nConnectez-vous à DarBladi pour voir les résultats.\n\n— DarBladi (démo)`,
+    subject: `[Samsar IA] Alerte : ${matchCount} nouveau(x) bien(s) — ${searchName}`,
+    body: `Bonjour,\n\nVotre alerte "${searchName}" a trouvé ${matchCount} bien(s) correspondant(s).\n\nConnectez-vous à Samsar IA pour voir les résultats.\n\n— Samsar IA (démo)`,
     metadata: { type: "saved_search_alert" },
   });
 }
@@ -64,8 +64,8 @@ export async function sendLeadNotification(to: string, contactName: string) {
   const provider = createEmailProvider();
   return provider.send({
     to,
-    subject: `[DarBladi] Nouveau lead — ${contactName}`,
-    body: `Un nouveau lead a été reçu de ${contactName}.\n\nConsultez votre CRM DarBladi.\n\n— DarBladi (démo)`,
+    subject: `[Samsar IA] Nouveau lead — ${contactName}`,
+    body: `Un nouveau lead a été reçu de ${contactName}.\n\nConsultez votre CRM Samsar IA.\n\n— Samsar IA (démo)`,
     metadata: { type: "lead_notification" },
   });
 }

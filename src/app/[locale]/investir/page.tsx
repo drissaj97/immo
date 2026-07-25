@@ -15,7 +15,7 @@ export default async function InvestirPage({ params }: { params: Promise<{ local
     { href: `/${locale}/estimation`, title: "Estimation", desc: "Estimez un bien par comparables de vente récents (données démo)." },
     { href: `/${locale}/dashboard/simulations`, title: "Mes simulations", desc: "Retrouvez vos simulations et rapports générés." },
     { href: `/${locale}/dashboard/analytics`, title: "Analytics", desc: "Métriques sectorielles par ville et quartier (démo)." },
-    { href: `/${locale}/darbladi`, title: "DarBladi", desc: "Recherche conversationnelle orientée investissement avec contexte quartiers." },
+    { href: `/${locale}/samsar-ia`, title: "Samsar IA", desc: "Recherche conversationnelle orientée investissement avec contexte quartiers." },
   ];
 
   return (

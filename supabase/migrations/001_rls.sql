@@ -1,4 +1,4 @@
--- DarBladi RLS policies (Supabase-compatible)
+-- Samsar IA RLS policies (Supabase-compatible)
 -- Apply after drizzle push when using Supabase or PostgreSQL with RLS enabled.
 
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;

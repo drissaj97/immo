@@ -4,7 +4,7 @@ import { normalizePartnerListing } from "@/lib/aggregation/normalizer";
 import { syncAggregatedCatalog } from "@/lib/aggregation/sync";
 
 describe("Aggregation platform", () => {
-  it("sync inclut Holding IMMO + DarBladi", async () => {
+  it("sync inclut Holding IMMO + Samsar IA", async () => {
     const { listings, results } = await syncAggregatedCatalog();
     expect(listings.length).toBeGreaterThanOrEqual(60);
     const holding = results.find((r) => r.source === "holding-immo");

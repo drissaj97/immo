@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return buildMetadata({
     title: "Plateforme immobilière intelligente au Maroc",
     description:
-      "Recherchez, comparez et investissez dans l'immobilier marocain avec des données fiables et l'assistant DarBladi.",
+      "Recherchez, comparez et investissez dans l'immobilier marocain avec des données fiables et l'assistant Samsar IA.",
     locale,
   });
 }
@@ -45,8 +45,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             <SearchBar locale={locale} placeholder={messages.search.placeholder} />
           </div>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Link href={`/${locale}/darbladi`}>
-              <Button variant="bronze">Essayer DarBladi</Button>
+            <Link href={`/${locale}/samsar-ia`}>
+              <Button variant="bronze">Essayer Samsar IA</Button>
             </Link>
             <Link href={`/${locale}/simulateur-rentabilite`}>
               <Button variant="outline" className="border-ivory/30 text-ivory hover:bg-ivory/10">
@@ -95,7 +95,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <div className="grid gap-8 md:grid-cols-3">
           {[
-            { title: "Recherche intelligente", desc: "Filtres classiques ou langage naturel via DarBladi." },
+            { title: "Recherche intelligente", desc: "Filtres classiques ou langage naturel via Samsar IA." },
             { title: "Investissement", desc: "Simulateur de rentabilité, comparateur et scores transparents." },
             { title: "Professionnels", desc: "Publication, CRM et validation pour agences et promoteurs." },
           ].map((item) => (

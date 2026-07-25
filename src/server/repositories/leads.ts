@@ -36,7 +36,7 @@ const demoLeads: LeadRecord[] = [
     contactEmail: "sophie.demo@example.com",
     message: "Demande d'informations sur la fiscalité.",
     status: "contacted",
-    source: "darbladi",
+    source: "samsar-ia",
     createdAt: "2026-07-18T14:30:00Z",
     isDemo: true,
   },

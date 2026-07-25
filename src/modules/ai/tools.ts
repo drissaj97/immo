@@ -17,7 +17,7 @@ export async function toolSearchListings(
   const { items, total } = await searchListings(filters as Parameters<typeof searchListings>[0]);
   return {
     tool: "searchListings",
-    source: "DarBladi — catalogue démo",
+    source: "Samsar IA — catalogue démo",
     data: { items: items.slice(0, 5).map((l) => ({
       id: l.id,
       title: l.title,
@@ -61,7 +61,7 @@ export async function toolCompareListings(
   }));
   return {
     tool: "compareListings",
-    source: "DarBladi — calculs investissement",
+    source: "Samsar IA — calculs investissement",
     data: { comparison },
   };
 }
@@ -88,7 +88,7 @@ export async function toolCalculateInvestment(
   });
   return {
     tool: "calculateInvestment",
-    source: "DarBladi — moteur de calcul (déterministe)",
+    source: "Samsar IA — moteur de calcul (déterministe)",
     data: {
       netYield: results.netYield,
       monthlyCashFlow: results.monthlyCashFlow,
@@ -104,7 +104,7 @@ export async function toolGetMarketMetrics(
   const metric = findMarketMetric(params.city, params.neighborhood, params.listingType);
   return {
     tool: "getMarketMetrics",
-    source: metric?.source ?? "DarBladi — métriques démo",
+    source: metric?.source ?? "Samsar IA — métriques démo",
     data: metric ?? { message: "Aucune métrique pour ce secteur" },
   };
 }
@@ -123,14 +123,14 @@ export async function toolGetNeighborhoodContext(
   if (!knowledge) {
     return {
       tool: "getNeighborhoodContext",
-      source: "DarBladi — RAG quartiers (démo)",
+      source: "Samsar IA — RAG quartiers (démo)",
       data: { message: "Aucun contexte quartier trouvé pour cette requête." },
     };
   }
 
   return {
     tool: "getNeighborhoodContext",
-    source: "DarBladi — base connaissance quartiers (fictive)",
+    source: "Samsar IA — base connaissance quartiers (fictive)",
     data: {
       slug: knowledge.slug,
       city: knowledge.city,

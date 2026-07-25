@@ -1,4 +1,4 @@
-# DarBladi — Déploiement
+# Samsar IA — Déploiement
 
 ## Environnements
 
@@ -36,7 +36,7 @@ docker compose up -d
 
 # 2. Variables d'environnement
 cp .env.example .env.local
-# DATABASE_URL=postgresql://darbladi:darbladi_dev@localhost:5432/darbladi
+# DATABASE_URL=postgresql://samsar:samsar_dev@localhost:5432/samsar
 
 # 3. Appliquer le schéma
 pnpm db:push
@@ -58,9 +58,9 @@ services:
     image: postgis/postgis:16-3.4
     ports: ["5432:5432"]
     environment:
-      POSTGRES_USER: darbladi
-      POSTGRES_PASSWORD: darbladi_dev
-      POSTGRES_DB: darbladi
+      POSTGRES_USER: samsar
+      POSTGRES_PASSWORD: samsar_dev
+      POSTGRES_DB: samsar
 ```
 
 Commandes utiles :
@@ -101,7 +101,7 @@ Ou via dashboard Vercel → Import Git Repository.
 
 | Variable | Requis | Exemple |
 |----------|--------|---------|
-| `NEXT_PUBLIC_APP_URL` | ✓ | `https://darbladi.ma` |
+| `NEXT_PUBLIC_APP_URL` | ✓ | `https://samsar.ma` |
 | `DATABASE_URL` | ✓ | `postgresql://...@db.supabase.co:5432/postgres` |
 | `AUTH_SECRET` | ✓ | `<random-32+>` |
 | `DEMO_MODE` | ✓ | `false` |
@@ -202,9 +202,9 @@ jobs:
 
 ```bash
 # Health checks
-curl -I https://darbladi.ma/fr
-curl https://darbladi.ma/sitemap.xml
-curl https://darbladi.ma/robots.txt
+curl -I https://samsar.ma/fr
+curl https://samsar.ma/sitemap.xml
+curl https://samsar.ma/robots.txt
 
 # DB connectivity (depuis machine autorisée)
 DATABASE_URL="..." pnpm db:seed

@@ -1,4 +1,4 @@
-# DarBladi — Sécurité et conformité
+# Samsar IA — Sécurité et conformité
 
 ## Cadre réglementaire
 
@@ -29,7 +29,7 @@ Fichier : `src/lib/auth/session.ts`
 |--------|--------|
 | Hash mot de passe | bcrypt, cost factor 10 |
 | Token | JWT HS256 via `jose`, expiration 7 jours |
-| Cookie | `darbladi_session`, HttpOnly, Secure en production, SameSite=Lax |
+| Cookie | `samsar_session`, HttpOnly, Secure en production, SameSite=Lax |
 | Secret | `AUTH_SECRET` ≥ 32 caractères (obligatoire prod) |
 
 **Comptes démo** : mots de passe en clair dans `demo-data.ts` — **uniquement développement**.
@@ -151,7 +151,7 @@ Table `audit_logs` :
 
 ### Docker local
 
-- Mot de passe dev faible (`darbladi_dev`) — **local uniquement**
+- Mot de passe dev faible (`samsar_dev`) — **local uniquement**
 - Port 5432 non exposé en production
 
 ## Incident response

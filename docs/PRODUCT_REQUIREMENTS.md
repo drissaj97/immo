@@ -1,18 +1,18 @@
-# DarBladi — Exigences produit (MVP v0.1.0)
+# Samsar IA — Exigences produit (MVP v0.1.0)
 
 ## Vision
 
-DarBladi est une plateforme immobilière premium au Maroc qui combine recherche de biens, analyse d'investissement et assistant conversationnel. Elle se distingue des agences mono-marque par une approche **marketplace multi-acteurs**, une **provenance explicite des données** et des outils d'aide à la décision pour investisseurs et acheteurs.
+Samsar IA est une plateforme immobilière premium au Maroc qui combine recherche de biens, analyse d'investissement et assistant conversationnel. Elle se distingue des agences mono-marque par une approche **marketplace multi-acteurs**, une **provenance explicite des données** et des outils d'aide à la décision pour investisseurs et acheteurs.
 
 **Tagline :** *Rechercher, comprendre et sécuriser votre décision immobilière.*
 
 ## Proposition de valeur par persona
 
-| Persona | Besoin principal | Valeur DarBladi |
+| Persona | Besoin principal | Valeur Samsar IA |
 |---------|------------------|------------------|
 | **Investisseur** | Rendement, cash-flow, scénarios | Simulateur de rentabilité, filtres investissement, comparaison multi-biens, assistant IA orienté rendement |
 | **Acheteur** | Trouver le bon bien, rassurance | Recherche avancée, fiches détaillées, carte, favoris, multidevise (MAD/EUR/USD) |
-| **DarBladi (utilisateur assistant)** | Recherche en langage naturel | Parseur conversationnel → filtres structurés, transparence sur hypothèses et champs manquants |
+| **Samsar IA (utilisateur assistant)** | Recherche en langage naturel | Parseur conversationnel → filtres structurés, transparence sur hypothèses et champs manquants |
 | **Agence / Agent** | Diffuser des annonces qualifiées | Publication soumise à validation, références SA-*, dashboard professionnel |
 | **Promoteur** | Vendre du neuf, programmes | Section « Neuf », badge programme, champs `isNew` |
 | **Admin** | Modération, conformité | Back-office validation/rejet, traçabilité `audit_logs`, contrôle `is_demo` |

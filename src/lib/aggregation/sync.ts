@@ -1,6 +1,6 @@
 import type { AggregatedListing, AggregationStats, AggregationSyncResult } from "./types";
 import { dedupeAggregatedListings } from "./dedupe";
-import { fetchDarbladiListings, fetchHoldingListings } from "./sources/holding-source";
+import { fetchSamsarListings, fetchHoldingListings } from "./sources/holding-source";
 import { fetchPartnerFeed } from "./sources/partner-feed";
 import { fetchPropAPISListings } from "./sources/propapis-source";
 import { AGGREGATION_SOURCES } from "./sources/registry";
@@ -17,7 +17,7 @@ export async function syncAggregatedCatalog(): Promise<{
 
   const sources: Array<{ name: string; fn: () => Promise<AggregatedListing[]> | AggregatedListing[] }> = [
     { name: "holding-immo", fn: fetchHoldingListings },
-    { name: "darbladi", fn: fetchDarbladiListings },
+    { name: "samsar-ia", fn: fetchSamsarListings },
     { name: "avito", fn: () => fetchPartnerFeed("avito") },
     { name: "mubawab", fn: () => fetchPartnerFeed("mubawab") },
     { name: "sarouty", fn: () => fetchPartnerFeed("sarouty") },

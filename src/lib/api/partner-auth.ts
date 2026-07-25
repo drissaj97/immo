@@ -4,7 +4,8 @@ export type PartnerIdentity = {
 };
 
 const DEMO_KEYS: Record<string, PartnerIdentity> = {
-  "darbladi-demo-partner-key": { keyId: "demo", partnerName: "Partenaire Démo" },
+  "samsar-demo-partner-key": { keyId: "demo", partnerName: "Partenaire Démo" },
+  "darbladi-demo-partner-key": { keyId: "legacy", partnerName: "Partenaire Démo (legacy)" },
 };
 
 function loadPartnerKeys(): Record<string, PartnerIdentity> {

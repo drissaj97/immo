@@ -18,15 +18,15 @@ export default async function ConformitePage({ params }: { params: Promise<{ loc
     <div className="mx-auto max-w-3xl px-4 py-12 lg:px-8">
       <h1 className="font-serif text-3xl">Conformité CNDP — Loi 09-08</h1>
       <p className="mt-4 text-charcoal/70">
-        DarBladi s&apos;engage à respecter la loi marocaine n° 09-08 relative à la protection des personnes
+        Samsar IA s&apos;engage à respecter la loi marocaine n° 09-08 relative à la protection des personnes
         physiques à l&apos;égard du traitement des données à caractère personnel.
       </p>
 
       <section className="mt-10 space-y-8 text-sm text-charcoal/80">
         <div>
           <h2 className="font-serif text-lg text-charcoal">Responsable du traitement</h2>
-          <p className="mt-2">DarBladi — démo MVP (éditeur fictif pour démonstration)</p>
-          <p>Contact DPO : dpo@darbladi.demo</p>
+          <p className="mt-2">Samsar IA — démo MVP (éditeur fictif pour démonstration)</p>
+          <p>Contact DPO : dpo@samsar.demo</p>
         </div>
 
         <div>

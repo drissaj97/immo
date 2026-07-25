@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-const STORAGE_KEY = "darbladi_cookie_consent";
+const STORAGE_KEY = "samsar_cookie_consent";
 
 export function CookieConsent({ locale }: { locale: string }) {
   const [visible, setVisible] = useState(false);

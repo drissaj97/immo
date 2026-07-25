@@ -97,7 +97,7 @@ export function buildInvestmentReport(listing: DemoListing): InvestmentReport {
     sources: [
       listing.sourceName,
       market?.source ?? "Métriques sectorielles indisponibles",
-      "Calculs DarBladi v0.2",
+      "Calculs Samsar IA v0.2",
     ],
   };
 }

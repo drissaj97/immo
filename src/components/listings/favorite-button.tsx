@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 function readLocalFavorites(): string[] {
   if (typeof window === "undefined") return [];
-  return JSON.parse(localStorage.getItem("darbladi_favorites") ?? "[]") as string[];
+  return JSON.parse(localStorage.getItem("samsar_favorites") ?? "[]") as string[];
 }
 
 export function FavoriteButton({ listingId, locale }: { listingId: string; locale: string }) {
@@ -50,7 +50,7 @@ export function FavoriteButton({ listingId, locale }: { listingId: string; local
 
     const favs = readLocalFavorites();
     const next = active ? favs.filter((id) => id !== listingId) : [...favs, listingId];
-    localStorage.setItem("darbladi_favorites", JSON.stringify(next));
+    localStorage.setItem("samsar_favorites", JSON.stringify(next));
     setActive(!active);
     setLoading(false);
   }

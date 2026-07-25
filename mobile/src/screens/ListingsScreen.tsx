@@ -33,7 +33,7 @@ export function ListingsScreen({ onSelect }: { onSelect: (listing: ListingSummar
     return (
       <View style={styles.center}>
         <Text style={styles.error}>Erreur : {error}</Text>
-        <Text style={styles.hint}>Vérifiez que l'API DarBladi tourne sur localhost:3000</Text>
+        <Text style={styles.hint}>Vérifiez que l'API Samsar IA tourne sur localhost:3000</Text>
       </View>
     );
   }
@@ -45,7 +45,7 @@ export function ListingsScreen({ onSelect }: { onSelect: (listing: ListingSummar
       contentContainerStyle={styles.list}
       ListHeaderComponent={
         <View style={styles.header}>
-          <Text style={styles.title}>DarBladi</Text>
+          <Text style={styles.title}>Samsar IA</Text>
           <Text style={styles.subtitle}>{listings.length} biens disponibles</Text>
         </View>
       }

@@ -2,14 +2,15 @@ import type { ListingWithLocation } from "@/server/repositories/listings";
 
 const SOURCE_LABELS: Record<string, { label: string; color: string }> = {
   "holding-immo": { label: "Holding IMMO", color: "bg-emerald-100 text-emerald-800" },
-  darbladi: { label: "DarBladi", color: "bg-teal-100 text-teal-800" },
+  "samsar-ia": { label: "Samsar IA", color: "bg-teal-100 text-teal-800" },
+  darbladi: { label: "Samsar IA", color: "bg-teal-100 text-teal-800" },
   avito: { label: "Avito.ma", color: "bg-orange-100 text-orange-800" },
   mubawab: { label: "Mubawab", color: "bg-blue-100 text-blue-800" },
   sarouty: { label: "Sarouty", color: "bg-purple-100 text-purple-800" },
 };
 
 export function SourceBadge({ listing }: { listing: ListingWithLocation }) {
-  const source = listing.aggregationSource ?? "darbladi";
+  const source = listing.aggregationSource ?? "samsar-ia";
   const config = SOURCE_LABELS[source] ?? { label: listing.sourceName, color: "bg-gray-100 text-gray-700" };
 
   return (

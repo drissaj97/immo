@@ -10,9 +10,9 @@ export const AGGREGATION_SOURCES: AggregationSourceConfig[] = [
     description: "Agence sœur — import JSON-LD autorisé",
   },
   {
-    id: "darbladi",
-    name: "DarBladi",
-    website: "https://darbladi.ma",
+    id: "samsar-ia",
+    name: "Samsar IA",
+    website: "https://samsar.ma",
     licenseStatus: "first_party",
     enabled: true,
     description: "Annonces publiées directement sur la plateforme",

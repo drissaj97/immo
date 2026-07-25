@@ -1,12 +1,12 @@
-# DarBladi — Agrégation multi-sources
+# Samsar IA — Agrégation multi-sources
 
 > Vision : **Toutes les annonces immobilières du Maroc, en un seul endroit.**
 
 ## Principe
 
-DarBladi est un **index agrégé**, pas un scrapeur. Chaque annonce affiche :
+Samsar IA est un **index agrégé**, pas un scrapeur. Chaque annonce affiche :
 
-- Sa **source** (Avito, Mubawab, Holding IMMO, DarBladi…)
+- Sa **source** (Avito, Mubawab, Holding IMMO, Samsar IA…)
 - Un **lien vers l'annonce originale**
 - Son **statut de licence** (first-party, contrat partenaire, API licenciée)
 
@@ -15,7 +15,7 @@ DarBladi est un **index agrégé**, pas un scrapeur. Chaque annonce affiche :
 | Source | Statut actuel | Activation |
 |--------|---------------|------------|
 | Holding IMMO | ✅ Actif (50 annonces) | Import JSON-LD first-party |
-| DarBladi | ✅ Actif | Publications plateforme |
+| Samsar IA | ✅ Actif | Publications plateforme |
 | Avito.ma | ⏳ Partenariat requis | Voir ci-dessous |
 | Mubawab.ma | ⏳ Partenariat requis | Voir ci-dessous |
 | Sarouty.ma | ⏳ Partenariat requis | Contrat à négocier |
@@ -23,7 +23,7 @@ DarBladi est un **index agrégé**, pas un scrapeur. Chaque annonce affiche :
 ## ⚠️ Pas de scraping
 
 Les CGU d'Avito et Mubawab **interdisent l'extraction automatisée** sans autorisation.
-DarBladi **n'implémente pas de scraper** pour ces portails.
+Samsar IA **n'implémente pas de scraper** pour ces portails.
 
 ## Voies conformes pour Avito & Mubawab
 
@@ -36,7 +36,7 @@ Une fois le contrat signé :
 
 ```bash
 # Option A — URL flux sécurisé
-AVITO_PARTNER_FEED_URL=https://partner.avito.ma/feed/darbladi.json
+AVITO_PARTNER_FEED_URL=https://partner.avito.ma/feed/samsar-ia.json
 MUBAWAB_PARTNER_FEED_URL=https://...
 
 # Option B — fichier local
@@ -85,7 +85,7 @@ POST /api/v1/cron/aggregation   # Cron (CRON_SECRET)
 
 Priorité en cas de doublon :
 
-1. First-party (Holding IMMO, DarBladi)
+1. First-party (Holding IMMO, Samsar IA)
 2. Contrat partenaire
 3. API licenciée
 

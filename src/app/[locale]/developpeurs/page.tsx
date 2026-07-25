@@ -4,7 +4,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   return buildMetadata({
     title: "API partenaires",
-    description: "Documentation API publique DarBladi pour agences et intégrateurs.",
+    description: "Documentation API publique Samsar IA pour agences et intégrateurs.",
     path: "/developpeurs",
     locale,
   });
@@ -16,7 +16,7 @@ export default async function DeveloppeursPage({ params }: { params: Promise<{ l
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 lg:px-8">
-      <h1 className="font-serif text-3xl">API partenaires DarBladi</h1>
+      <h1 className="font-serif text-3xl">API partenaires Samsar IA</h1>
       <p className="mt-4 text-charcoal/70">
         API REST v1 pour intégrer le catalogue et les métriques sectorielles. Données de démonstration.
       </p>
@@ -25,8 +25,8 @@ export default async function DeveloppeursPage({ params }: { params: Promise<{ l
         <div>
           <h2 className="font-serif text-xl">Authentification</h2>
           <p className="mt-2 text-sm text-charcoal/70">
-            Header <code className="rounded bg-sand px-1">X-API-Key: darbladi-demo-partner-key</code> ou{" "}
-            <code className="rounded bg-sand px-1">Authorization: Bearer darbladi-demo-partner-key</code>
+            Header <code className="rounded bg-sand px-1">X-API-Key: samsar-demo-partner-key</code> ou{" "}
+            <code className="rounded bg-sand px-1">Authorization: Bearer samsar-demo-partner-key</code>
           </p>
         </div>
 
@@ -57,7 +57,7 @@ export default async function DeveloppeursPage({ params }: { params: Promise<{ l
         <div>
           <h2 className="font-serif text-xl">Exemple cURL</h2>
           <pre className="mt-3 overflow-x-auto rounded-lg bg-charcoal p-4 text-xs text-ivory">
-{`curl -H "X-API-Key: darbladi-demo-partner-key" \\
+{`curl -H "X-API-Key: samsar-demo-partner-key" \\
   "${baseUrl}/api/v1/listings?city=Marrakech&limit=5"`}
           </pre>
         </div>

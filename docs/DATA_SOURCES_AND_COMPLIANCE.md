@@ -1,4 +1,4 @@
-# DarBladi — Sources de données et conformité
+# Samsar IA — Sources de données et conformité
 
 ## Principes directeurs
 

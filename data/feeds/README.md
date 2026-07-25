@@ -1,4 +1,4 @@
-# Flux partenaires — agrégation DarBladi
+# Flux partenaires — agrégation Samsar IA
 
 Déposez ici les exports JSON **autorisés par contrat** depuis Avito, Mubawab ou autres portails.
 

@@ -91,7 +91,7 @@ export default async function QuartierPage({
               <p className="text-xl font-medium text-deep-green">{knowledge.avgYield}%</p>
             </div>
           )}
-          <p className="w-full text-xs text-charcoal/40">Données fictives — DarBladi démo</p>
+          <p className="w-full text-xs text-charcoal/40">Données fictives — Samsar IA démo</p>
         </div>
       )}
 

@@ -1,4 +1,4 @@
-# DarBladi — Modèle de données
+# Samsar IA — Modèle de données
 
 > Schéma source de vérité : [`src/lib/db/schema.ts`](../src/lib/db/schema.ts)  
 > Migration SQL initiale : [`supabase/migrations/0000_init.sql`](../supabase/migrations/0000_init.sql)

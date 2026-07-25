@@ -7,7 +7,7 @@ export async function getListingCatalogStats() {
     total: stats.total,
     published: stats.published,
     holdingImmo: stats.bySource["holding-immo"] ?? 0,
-    demoSeed: stats.bySource["darbladi"] ?? 0,
+    demoSeed: stats.bySource["samsar-ia"] ?? 0,
     avito: stats.bySource["avito"] ?? 0,
     mubawab: stats.bySource["mubawab"] ?? 0,
     cities: stats.cities,

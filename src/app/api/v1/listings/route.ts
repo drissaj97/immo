@@ -61,7 +61,7 @@ export async function GET(request: Request) {
         page: result.page,
         totalPages: result.totalPages,
         partner: partner.partnerName,
-        disclaimer: "Données de démonstration — usage partenaire soumis aux CGU DarBladi.",
+        disclaimer: "Données de démonstration — usage partenaire soumis aux CGU Samsar IA.",
       },
     },
     { headers: rateLimitHeaders(rl) },

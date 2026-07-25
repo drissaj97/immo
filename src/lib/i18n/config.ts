@@ -11,7 +11,7 @@ export function isRtl(locale: Locale): boolean {
 
 export const messages = {
   fr: {
-    brand: "DarBladi",
+    brand: "Samsar IA",
     tagline: "Rechercher, comprendre et sécuriser votre décision immobilière",
     nav: {
       buy: "Acheter",
@@ -19,7 +19,7 @@ export const messages = {
       new: "Neuf",
       map: "Carte",
       invest: "Investir",
-      ai: "DarBladi",
+      ai: "Samsar IA",
       professionals: "Professionnels",
     },
     search: {
@@ -34,7 +34,7 @@ export const messages = {
     footer: { about: "À propos", contact: "Contact", legal: "Mentions légales" },
   },
   en: {
-    brand: "DarBladi",
+    brand: "Samsar IA",
     tagline: "Search, understand and secure your real estate decision",
     nav: {
       buy: "Buy",
@@ -42,7 +42,7 @@ export const messages = {
       new: "New builds",
       map: "Map",
       invest: "Invest",
-      ai: "DarBladi",
+      ai: "Samsar IA",
       professionals: "Professionals",
     },
     search: {
@@ -57,7 +57,7 @@ export const messages = {
     footer: { about: "About", contact: "Contact", legal: "Legal notice" },
   },
   ar: {
-    brand: "DarBladi",
+    brand: "Samsar IA",
     tagline: "ابحث، افهم وقرّر بثقة في سوقك العقاري",
     nav: {
       buy: "شراء",
@@ -65,7 +65,7 @@ export const messages = {
       new: "جديد",
       map: "خريطة",
       invest: "استثمار",
-      ai: "DarBladi",
+      ai: "Samsar IA",
       professionals: "محترفون",
     },
     search: {

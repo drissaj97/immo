@@ -3,7 +3,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  return buildMetadata({ title: "Connexion", description: "Connectez-vous à DarBladi.", path: "/connexion", locale });
+  return buildMetadata({ title: "Connexion", description: "Connectez-vous à Samsar IA.", path: "/connexion", locale });
 }
 
 export default async function ConnexionPage({ params }: { params: Promise<{ locale: string }> }) {

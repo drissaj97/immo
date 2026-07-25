@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "DarBladi — Immobilier Maroc",
-    short_name: "DarBladi",
+    name: "Samsar IA — Immobilier Maroc",
+    short_name: "Samsar IA",
     description: "Marketplace immobilière intelligente au Maroc",
     start_url: "/fr",
     display: "standalone",

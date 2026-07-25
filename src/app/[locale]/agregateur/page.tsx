@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return buildMetadata({
     title: "Agrégateur immobilier — Toutes les annonces du Maroc",
     description:
-      "DarBladi agrège les annonces immobilières du Maroc depuis des sources autorisées : agences partenaires, Avito, Mubawab.",
+      "Samsar IA agrège les annonces immobilières du Maroc depuis des sources autorisées : agences partenaires, Avito, Mubawab.",
     path: "/agregateur",
     locale,
   });
@@ -31,7 +31,7 @@ export default async function AgregateurPage({ params }: { params: Promise<{ loc
     <div className="mx-auto max-w-4xl px-4 py-12 lg:px-8">
       <h1 className="font-serif text-4xl">Toutes les annonces du Maroc</h1>
       <p className="mt-4 text-lg text-charcoal/70">
-        DarBladi agrège les biens immobiliers depuis plusieurs sources — avec provenance explicite et liens vers
+        Samsar IA agrège les biens immobiliers depuis plusieurs sources — avec provenance explicite et liens vers
         l&apos;annonce originale.
       </p>
 

@@ -115,7 +115,7 @@ export const listings = pgTable(
     longitude: decimal("longitude", { precision: 10, scale: 7 }),
     reference: varchar("reference", { length: 32 }),
     sourceType: varchar("source_type", { length: 64 }).default("first_party"),
-    sourceName: varchar("source_name", { length: 128 }).default("DarBladi Demo"),
+    sourceName: varchar("source_name", { length: 128 }).default("Samsar IA Demo"),
     sourceUrl: text("source_url"),
     externalId: varchar("external_id", { length: 128 }),
     firstSeenAt: timestamp("first_seen_at", { withTimezone: true }),

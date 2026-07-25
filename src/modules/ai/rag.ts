@@ -136,7 +136,7 @@ export function formatKnowledgeForLLM(knowledge: NeighborhoodKnowledge): string 
     `Notes investissement: ${knowledge.investmentNotes.join("; ")}`,
     knowledge.avgPricePerSqm ? `Prix moyen indicatif: ${knowledge.avgPricePerSqm} MAD/m² (démo)` : "",
     knowledge.avgYield ? `Rendement moyen indicatif: ${knowledge.avgYield}% (démo)` : "",
-    "Source: DarBladi — base connaissance quartiers (données fictives)",
+    "Source: Samsar IA — base connaissance quartiers (données fictives)",
   ]
     .filter(Boolean)
     .join("\n");

@@ -25,7 +25,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
     { href: `/${locale}/simulateur-rentabilite`, label: "Simulateur" },
     { href: `/${locale}/estimation`, label: "Estimation" },
     { href: `/${locale}/investir`, label: "Hub investisseur" },
-    { href: `/${locale}/darbladi`, label: "Conversations IA" },
+    { href: `/${locale}/samsar-ia`, label: "Conversations IA" },
   ];
 
   if (user.role === "agent" || user.role === "admin" || user.role === "agency_admin") {

@@ -49,7 +49,7 @@ export class MockLLMProvider implements LLMProvider {
       missing: parsed.missing,
       citations: [
         {
-          source: this.fallbackReason ? "DarBladi parseur local (fallback quota OpenAI)" : "DarBladi parseur local",
+          source: this.fallbackReason ? "Samsar IA parseur local (fallback quota OpenAI)" : "Samsar IA parseur local",
           type: "fact" as const,
           label: "Critères extraits de votre message",
         },

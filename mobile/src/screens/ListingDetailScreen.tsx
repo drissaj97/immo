@@ -47,12 +47,12 @@ export function ListingDetailScreen({
 
       {listing.isVerified && (
         <View style={styles.verified}>
-          <Text style={styles.verifiedText}>✓ Annonce vérifiée DarBladi</Text>
+          <Text style={styles.verifiedText}>✓ Annonce vérifiée Samsar IA</Text>
         </View>
       )}
 
       <Text style={styles.disclaimer}>
-        Données de démonstration — voir le détail complet sur darbladi.ma
+        Données de démonstration — voir le détail complet sur samsar.ma
       </Text>
     </ScrollView>
   );

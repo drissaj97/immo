@@ -1,11 +1,11 @@
-# DarBladi — Parcours utilisateur clés
+# Samsar IA — Parcours utilisateur clés
 
 ## Vue d'ensemble
 
 ```mermaid
 flowchart LR
     A[Accueil] --> B[Recherche]
-    A --> C[DarBladi]
+    A --> C[Samsar IA]
     B --> D[Liste biens]
     C --> D
     D --> E[Fiche bien]
@@ -106,7 +106,7 @@ sequenceDiagram
 
 ### Étapes
 
-1. Connexion compte `admin@darbladi.demo`
+1. Connexion compte `admin@samsar.demo`
 2. Liste annonces `draft` ou `pending_review`
 3. Action **Approuver** → POST `/api/admin/listings/[id]/approve` → `published` + `publishedAt`
 4. Action **Rejeter** → POST `/api/admin/listings/[id]/reject` → `rejected`
@@ -118,10 +118,10 @@ sequenceDiagram
 
 ---
 
-## 5. Recherche IA (DarBladi)
+## 5. Recherche IA (Samsar IA)
 
 **Acteur :** Utilisateur assistant (tous)  
-**Point d'entrée :** `/[locale]/darbladi`
+**Point d'entrée :** `/[locale]/samsar-ia`
 
 ### Étapes
 
@@ -183,7 +183,7 @@ Voir [`INVESTMENT_CALCULATIONS.md`](./INVESTMENT_CALCULATIONS.md).
 
 1. Email + mot de passe
 2. Vérification contre `DEMO_USERS` (MVP)
-3. JWT signé (jose) → cookie `darbladi_session` HttpOnly, 7 jours
+3. JWT signé (jose) → cookie `samsar_session` HttpOnly, 7 jours
 4. Redirection dashboard ou page d'origine
 
 ### Flux inscription
@@ -216,6 +216,6 @@ Voir [`INVESTMENT_CALCULATIONS.md`](./INVESTMENT_CALCULATIONS.md).
 | `/[locale]/biens` | ✓ | — |
 | `/[locale]/biens/[slug]` | ✓ | — |
 | `/[locale]/comparer` | ✓ | — |
-| `/[locale]/darbladi` | ✓ | — |
+| `/[locale]/samsar-ia` | ✓ | — |
 | `/[locale]/admin` | ✓ | admin |
 | `/[locale]/dashboard/*` | ✓ | connecté |

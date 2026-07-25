@@ -63,7 +63,7 @@ function mapListing(
     reference: listing.reference ?? listing.id.slice(0, 8),
     images: images.length > 0 ? images : ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80"],
     sourceType: listing.sourceType ?? "first_party",
-    sourceName: listing.sourceName ?? "DarBladi",
+    sourceName: listing.sourceName ?? "Samsar IA",
     completenessScore: listing.completenessScore ?? 0,
     freshnessScore: listing.freshnessScore ?? 0,
     isVerified: listing.isVerified ?? false,

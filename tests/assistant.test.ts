@@ -10,7 +10,7 @@ describe("rate limit", () => {
   });
 });
 
-describe("DarBladi assistant", () => {
+describe("Samsar IA assistant", () => {
   it("returns structured response in mock mode", async () => {
     const result = await runAssistant(
       "Je cherche un F3 à Salé pour moins de 1 300 000 DH",

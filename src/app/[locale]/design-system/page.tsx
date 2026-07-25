@@ -11,7 +11,7 @@ export default function DesignSystemPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 lg:px-8 space-y-12">
       <div>
-        <h1 className="font-serif text-4xl">Design System — DarBladi</h1>
+        <h1 className="font-serif text-4xl">Design System — Samsar IA</h1>
         <Badge variant="demo" className="mt-2">Dev only</Badge>
       </div>
 

@@ -1,12 +1,12 @@
-# DarBladi Mobile (Expo)
+# Samsar IA Mobile (Expo)
 
-Application React Native consommant l'API partenaires DarBladi v1.
+Application React Native consommant l'API partenaires Samsar IA v1.
 
 ## Prérequis
 
 - Node.js 20+
 - Expo CLI (`npx expo`)
-- API DarBladi en cours d'exécution (`pnpm dev` à la racine du monorepo)
+- API Samsar IA en cours d'exécution (`pnpm dev` à la racine du monorepo)
 
 ## Configuration
 
@@ -15,7 +15,7 @@ Variables d'environnement (`.env` ou `app.config.js`) :
 | Variable | Description | Défaut |
 |----------|-------------|--------|
 | `EXPO_PUBLIC_API_URL` | URL de l'API | `http://localhost:3000` |
-| `EXPO_PUBLIC_PARTNER_API_KEY` | Clé partenaire | `darbladi-demo-partner-key` |
+| `EXPO_PUBLIC_PARTNER_API_KEY` | Clé partenaire | `samsar-demo-partner-key` |
 
 ## Lancement
 
