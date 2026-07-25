@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { getAgencies, DEMO_PROFESSIONALS } from "@/lib/data/marketplace-data";
+import { getAgencies } from "@/lib/data/marketplace-data";
+import { getAggregationStats } from "@/lib/aggregation/sync";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return buildMetadata({
     title: "Professionnels immobiliers",
-    description: "Agences et agents vérifiés au Maroc.",
+    description: "Agences et partenaires indexés sur DarBladi — annonces réelles au Maroc.",
     path: "/professionnels",
     locale,
   });
@@ -16,16 +17,18 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function ProfessionnelsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const agencies = getAgencies();
+  const stats = await getAggregationStats();
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
       <h1 className="font-serif text-3xl">Professionnels immobiliers</h1>
       <p className="mt-2 max-w-2xl text-charcoal/70">
-        Agences et agents partenaires DarBladi. Données fictives à des fins de démonstration.
+        Partenaires et sources agrégées sur DarBladi — {stats.published.toLocaleString("fr-MA")} annonces
+        réelles indexées au Maroc.
       </p>
 
       <section className="mt-10">
-        <h2 className="font-serif text-xl">Agences</h2>
+        <h2 className="font-serif text-xl">Sources partenaires</h2>
         <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {agencies.map((org) => (
             <Link
@@ -39,30 +42,21 @@ export default async function ProfessionnelsPage({ params }: { params: Promise<{
               </div>
               <p className="mt-2 text-sm text-charcoal/60">{org.city}</p>
               <p className="mt-3 line-clamp-3 text-sm text-charcoal/70">{org.description}</p>
-              <p className="mt-4 text-xs text-charcoal/40">{org.listingCount} annonces actives</p>
+              <p className="mt-4 text-xs text-deep-green">{org.listingCount} annonces indexées</p>
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="mt-12">
-        <h2 className="font-serif text-xl">Agents</h2>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {DEMO_PROFESSIONALS.map((pro) => (
-            <Link
-              key={pro.id}
-              href={`/${locale}/professionnels/agent/${pro.slug}`}
-              className="rounded-lg border border-charcoal/10 p-5 hover:border-deep-green/30"
-            >
-              <div className="flex items-center gap-2">
-                <p className="font-medium">{pro.displayName}</p>
-                {pro.isVerified && <Badge variant="verified">Vérifié</Badge>}
-              </div>
-              <p className="mt-1 text-sm text-charcoal/60">{pro.organizationName} · {pro.city}</p>
-              <p className="mt-2 line-clamp-2 text-sm text-charcoal/70">{pro.bio}</p>
-            </Link>
-          ))}
-        </div>
+      <section className="mt-12 rounded-lg border border-charcoal/10 bg-sand/30 p-6">
+        <h2 className="font-serif text-xl">Rejoindre l&apos;agrégateur</h2>
+        <p className="mt-2 text-sm text-charcoal/70">
+          Agences, promoteurs et portails partenaires : publiez votre flux via l&apos;API DarBladi ou un contrat
+          partenaire Avito / Mubawab.
+        </p>
+        <Link href={`/${locale}/developpeurs`} className="mt-4 inline-block text-sm text-deep-green hover:underline">
+          Documentation API partenaires →
+        </Link>
       </section>
     </div>
   );

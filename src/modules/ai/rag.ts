@@ -4,6 +4,7 @@ import {
   getNeighborhoodBySlug,
   type NeighborhoodKnowledge,
 } from "@/lib/data/neighborhood-knowledge";
+import { buildCatalogNeighborhoods } from "@/lib/aggregation/catalog-analytics";
 import { searchNeighborhoodsByEmbedding } from "@/lib/data/embedding-index";
 
 export type RagMatch = {
@@ -11,6 +12,15 @@ export type RagMatch = {
   score: number;
   matchedTerms: string[];
 };
+
+function allNeighborhoods(): NeighborhoodKnowledge[] {
+  const catalog = buildCatalogNeighborhoods();
+  const catalogSlugs = new Set(catalog.map((n) => n.slug));
+  const editorial = NEIGHBORHOOD_KNOWLEDGE.filter((n) => !catalogSlugs.has(n.slug)).map(
+    enrichWithMetrics,
+  );
+  return [...catalog, ...editorial];
+}
 
 function tokenize(text: string): string[] {
   return text
@@ -59,17 +69,14 @@ function scoreMatch(query: string, knowledge: NeighborhoodKnowledge): RagMatch {
   return { knowledge: enrichWithMetrics(knowledge), score, matchedTerms };
 }
 
-/**
- * Hybrid RAG — keyword scoring + embedding similarity (mock pgvector).
- */
 export function searchNeighborhoodKnowledge(query: string, limit = 3): RagMatch[] {
   if (!query.trim()) return [];
 
   const terms = tokenize(query);
   if (terms.length === 0) return [];
 
-  const keywordResults = NEIGHBORHOOD_KNOWLEDGE.map((k) => scoreMatch(query, k))
-    .filter((m) => m.score > 0);
+  const neighborhoods = allNeighborhoods();
+  const keywordResults = neighborhoods.map((k) => scoreMatch(query, k)).filter((m) => m.score > 0);
 
   const embeddingResults = searchNeighborhoodsByEmbedding(query, limit);
   const maxEmbScore = embeddingResults[0]?.score ?? 0;
@@ -84,7 +91,7 @@ export function searchNeighborhoodKnowledge(query: string, limit = 3): RagMatch[
   }
 
   for (const e of embeddingResults) {
-    const k = NEIGHBORHOOD_KNOWLEDGE.find((n) => n.slug === e.id);
+    const k = neighborhoods.find((n) => n.slug === e.id);
     if (!k || e.score < 0.15) continue;
     const existing = merged.get(k.slug);
     const embScore = Math.round(e.score * 50);
@@ -111,7 +118,8 @@ export function getNeighborhoodContext(
 ): NeighborhoodKnowledge | null {
   if (!city && !neighborhood) return null;
 
-  const match = NEIGHBORHOOD_KNOWLEDGE.find((k) => {
+  const neighborhoods = allNeighborhoods();
+  const match = neighborhoods.find((k) => {
     const cityOk = !city || k.city.toLowerCase() === city.toLowerCase();
     const hoodOk =
       !neighborhood ||
@@ -134,9 +142,11 @@ export function formatKnowledgeForLLM(knowledge: NeighborhoodKnowledge): string 
     `Résumé: ${knowledge.summary}`,
     `Points clés: ${knowledge.highlights.join("; ")}`,
     `Notes investissement: ${knowledge.investmentNotes.join("; ")}`,
-    knowledge.avgPricePerSqm ? `Prix moyen indicatif: ${knowledge.avgPricePerSqm} MAD/m² (démo)` : "",
-    knowledge.avgYield ? `Rendement moyen indicatif: ${knowledge.avgYield}% (démo)` : "",
-    "Source: DarBladi — base connaissance quartiers (données fictives)",
+    knowledge.avgPricePerSqm
+      ? `Prix moyen indicatif: ${knowledge.avgPricePerSqm} MAD/m² (catalogue agrégé)`
+      : "",
+    knowledge.avgYield ? `Rendement moyen indicatif: ${knowledge.avgYield}%` : "",
+    `Source: DarBladi — ${knowledge.listingCount ?? "plusieurs"} annonces indexées`,
   ]
     .filter(Boolean)
     .join("\n");

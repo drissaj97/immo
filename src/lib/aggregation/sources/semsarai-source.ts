@@ -4,8 +4,9 @@ import { semsaraiPropertyToListing } from "@/lib/semsarai/normalizer";
 import type { AggregatedListing } from "../types";
 import { normalizeSemsaraiListing } from "@/lib/semsarai/normalizer";
 
-const LIVE_SYNC = process.env.SEMSARAI_LIVE_SYNC === "true";
-const LIVE_LIMIT = Number(process.env.SEMSARAI_LIVE_LIMIT ?? "150");
+const LIVE_SYNC =
+  process.env.SEMSARAI_LIVE_SYNC !== "false" && process.env.VITEST !== "true";
+const LIVE_LIMIT = Number(process.env.SEMSARAI_LIVE_LIMIT ?? "1000");
 const PAGE_SIZE = Number(process.env.SEMSARAI_PAGE_SIZE ?? "50");
 
 let liveCache: { listings: AggregatedListing[]; fetchedAt: number } | null = null;

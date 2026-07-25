@@ -1,4 +1,9 @@
-import { DEMO_MARKET_METRICS } from "@/lib/data/market-data";
+import {
+  buildCatalogNeighborhoods,
+  findCatalogMarketMetric,
+  getCatalogNeighborhoodBySlug,
+  getCatalogNeighborhoodsByCity,
+} from "@/lib/aggregation/catalog-analytics";
 
 export type NeighborhoodKnowledge = {
   slug: string;
@@ -11,7 +16,8 @@ export type NeighborhoodKnowledge = {
   avgPricePerSqm?: number;
   avgYield?: number;
   tags: string[];
-  isDemo: true;
+  isDemo: boolean;
+  listingCount?: number;
 };
 
 export const NEIGHBORHOOD_KNOWLEDGE: NeighborhoodKnowledge[] = [
@@ -303,30 +309,38 @@ export const NEIGHBORHOOD_KNOWLEDGE: NeighborhoodKnowledge[] = [
 ];
 
 export function getNeighborhoodBySlug(slug: string): NeighborhoodKnowledge | undefined {
-  return NEIGHBORHOOD_KNOWLEDGE.find((n) => n.slug === slug);
+  const catalog = getCatalogNeighborhoodBySlug(slug);
+  if (catalog) return catalog;
+  const editorial = NEIGHBORHOOD_KNOWLEDGE.find((n) => n.slug === slug);
+  return editorial ? enrichWithMetrics(editorial) : undefined;
 }
 
 export function getNeighborhoodsByCity(city: string): NeighborhoodKnowledge[] {
+  const catalog = getCatalogNeighborhoodsByCity(city);
+  if (catalog.length > 0) return catalog;
   return NEIGHBORHOOD_KNOWLEDGE.filter(
     (n) => n.city.toLowerCase() === city.toLowerCase(),
-  );
+  ).map(enrichWithMetrics);
 }
 
 export function getAllNeighborhoodSlugs(): string[] {
-  return NEIGHBORHOOD_KNOWLEDGE.map((n) => n.slug);
+  const catalogSlugs = buildCatalogNeighborhoods().map((n) => n.slug);
+  const editorialSlugs = NEIGHBORHOOD_KNOWLEDGE.map((n) => n.slug);
+  return [...new Set([...catalogSlugs, ...editorialSlugs])];
 }
 
-/** Enrich knowledge with live market metrics when available */
+/** Enrich knowledge with live market metrics from aggregated catalog */
 export function enrichWithMetrics(knowledge: NeighborhoodKnowledge): NeighborhoodKnowledge {
-  const metric = DEMO_MARKET_METRICS.find(
-    (m) =>
-      m.city.toLowerCase() === knowledge.city.toLowerCase() &&
-      m.neighborhood.toLowerCase() === knowledge.neighborhood.toLowerCase(),
+  const metric = findCatalogMarketMetric(
+    knowledge.city,
+    knowledge.neighborhood,
+    "apartment",
   );
   if (!metric) return knowledge;
   return {
     ...knowledge,
     avgPricePerSqm: metric.avgPricePerSqm,
     avgYield: metric.avgYield,
+    isDemo: false,
   };
 }

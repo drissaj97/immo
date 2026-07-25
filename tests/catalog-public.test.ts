@@ -5,7 +5,7 @@ describe("catalogue public", () => {
   it("n'affiche que des annonces réelles scrapées/importées", async () => {
     const { items, total } = await searchListings({ limit: 200 });
     expect(items.every((l) => !l.isDemo)).toBe(true);
-    expect(total).toBeGreaterThanOrEqual(150);
+    expect(total).toBeGreaterThanOrEqual(5000);
   });
 
   it("priorise les sources agrégées (semsarai, holding-immo)", async () => {

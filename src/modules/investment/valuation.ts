@@ -1,5 +1,9 @@
 import type { Comparable, MarketMetric } from "@/lib/data/market-data";
-import { DEMO_COMPARABLES, DEMO_MARKET_METRICS } from "@/lib/data/market-data";
+import {
+  computeMarketMetrics,
+  findCatalogComparables,
+  findCatalogMarketMetric,
+} from "@/lib/aggregation/catalog-analytics";
 
 export type ValuationResult = {
   estimatedMin: number;
@@ -9,7 +13,7 @@ export type ValuationResult = {
   comparablesUsed: Comparable[];
   methodology: string;
   confidence: "low" | "medium" | "high";
-  isDemo: true;
+  isDemo: boolean;
   calculatedAt: string;
 };
 
@@ -18,18 +22,7 @@ export function findMarketMetric(
   neighborhood: string,
   listingType: string,
 ): MarketMetric | null {
-  return (
-    DEMO_MARKET_METRICS.find(
-      (m) =>
-        m.city.toLowerCase() === city.toLowerCase() &&
-        m.neighborhood.toLowerCase() === neighborhood.toLowerCase() &&
-        m.listingType === listingType,
-    ) ??
-    DEMO_MARKET_METRICS.find(
-      (m) => m.city.toLowerCase() === city.toLowerCase() && m.listingType === listingType,
-    ) ??
-    null
-  );
+  return findCatalogMarketMetric(city, neighborhood, listingType);
 }
 
 export function findComparables(
@@ -38,24 +31,7 @@ export function findComparables(
   livingArea?: number,
   limit = 5,
 ): Comparable[] {
-  let comps = DEMO_COMPARABLES.filter(
-    (c) =>
-      c.city.toLowerCase() === city.toLowerCase() &&
-      (c.neighborhood.toLowerCase() === neighborhood.toLowerCase() ||
-        neighborhood.toLowerCase().includes(c.neighborhood.toLowerCase())),
-  );
-
-  if (comps.length === 0) {
-    comps = DEMO_COMPARABLES.filter((c) => c.city.toLowerCase() === city.toLowerCase());
-  }
-
-  if (livingArea) {
-    comps = [...comps].sort(
-      (a, b) => Math.abs(a.livingArea - livingArea) - Math.abs(b.livingArea - livingArea),
-    );
-  }
-
-  return comps.slice(0, limit);
+  return findCatalogComparables(city, neighborhood, livingArea, limit);
 }
 
 export function estimateFromComparables(
@@ -87,10 +63,14 @@ export function estimateFromComparables(
     comparablesUsed: comparables,
     methodology:
       comparables.length >= 2
-        ? "Moyenne des prix au m² de comparables de vente récents (données fictives)"
-        : "Estimation par moyenne sectorielle faute de comparables directs",
+        ? `Moyenne de ${comparables.length} annonces comparables du catalogue DarBladi`
+        : market
+          ? `Estimation basée sur ${market.sampleSize} annonces agrégées (${market.source})`
+          : "Estimation sectorielle — échantillon insuffisant dans ce quartier",
     confidence: comparables.length >= 3 ? "high" : comparables.length >= 1 ? "medium" : "low",
-    isDemo: true,
+    isDemo: false,
     calculatedAt: new Date().toISOString(),
   };
 }
+
+export { computeMarketMetrics as getLiveMarketMetrics };

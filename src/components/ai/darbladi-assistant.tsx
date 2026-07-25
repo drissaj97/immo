@@ -21,7 +21,7 @@ export function DarBladiAssistant({ locale }: { locale: string }) {
     {
       role: "assistant",
       content:
-        "Bonjour, je suis DarBladi, votre assistant immobilier. Décrivez votre projet : achat, location, investissement locatif… Je m'appuie sur des données vérifiables (démo).",
+        "Bonjour, je suis DarBladi, votre assistant immobilier. Décrivez votre projet : achat, location, investissement locatif… Je m'appuie sur le catalogue agrégé DarBladi.",
     },
   ]);
   const [input, setInput] = useState("");

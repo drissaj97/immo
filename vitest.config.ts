@@ -7,10 +7,13 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     include: ["tests/**/*.test.ts", "tests/**/*.test.tsx"],
+    testTimeout: 15000,
     env: {
       AI_PROVIDER: "mock",
       EMBEDDING_PROVIDER: "mock",
       OPENAI_API_KEY: "",
+      SEMSARAI_LIVE_SYNC: "false",
+      VITEST: "true",
     },
   },
   resolve: {

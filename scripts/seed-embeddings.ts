@@ -7,7 +7,7 @@
 import "dotenv/config";
 import { config } from "dotenv";
 import { getStaticCatalogListings, listingEmbeddingText } from "../src/lib/aggregation/catalog";
-import { NEIGHBORHOOD_KNOWLEDGE } from "../src/lib/data/neighborhood-knowledge";
+import { buildCatalogNeighborhoods } from "../src/lib/aggregation/catalog-analytics";
 import { createEmbeddingProvider } from "../src/modules/ai/embeddings-provider";
 
 config({ path: ".env.local" });
@@ -29,7 +29,7 @@ async function main() {
   const postgres = (await import("postgres")).default;
   const sql = postgres(dbUrl);
 
-  const neighborhoodItems = NEIGHBORHOOD_KNOWLEDGE.map((k) => ({
+  const neighborhoodItems = buildCatalogNeighborhoods().slice(0, 300).map((k) => ({
     id: k.slug,
     text: `${k.city} ${k.neighborhood} ${k.summary} ${k.highlights.join(" ")} ${k.investmentNotes.join(" ")} ${k.tags.join(" ")}`,
     metadata: { city: k.city, neighborhood: k.neighborhood, type: "neighborhood" },

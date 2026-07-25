@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAggregatedListings } from "@/lib/aggregation/sync";
-import { NEIGHBORHOOD_KNOWLEDGE } from "@/lib/data/neighborhood-knowledge";
-import { DEMO_ORGANIZATIONS } from "@/lib/data/marketplace-data";
+import { buildCatalogNeighborhoods } from "@/lib/aggregation/catalog-analytics";
+import { PARTNER_ORGANIZATIONS } from "@/lib/data/marketplace-data";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
@@ -49,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
 
-    for (const n of NEIGHBORHOOD_KNOWLEDGE) {
+    for (const n of buildCatalogNeighborhoods()) {
       const [ville, quartier] = n.slug.split("/");
       entries.push({
         url: `${baseUrl}/${locale}/villes/${ville}/${quartier}`,
@@ -59,7 +59,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
 
-    for (const org of DEMO_ORGANIZATIONS) {
+    for (const org of PARTNER_ORGANIZATIONS) {
       const base = org.type === "developer" ? "promoteurs" : "professionnels";
       entries.push({
         url: `${baseUrl}/${locale}/${base}/${org.slug}`,

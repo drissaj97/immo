@@ -48,7 +48,7 @@ export default async function QuartierPage({
         <h1 className="font-serif text-3xl">{knowledge.neighborhood}</h1>
         <Badge>{knowledge.region}</Badge>
         {knowledge.tags.map((tag) => (
-          <Badge key={tag} variant="demo">
+          <Badge key={tag} variant="default">
             {tag}
           </Badge>
         ))}
@@ -91,7 +91,10 @@ export default async function QuartierPage({
               <p className="text-xl font-medium text-deep-green">{knowledge.avgYield}%</p>
             </div>
           )}
-          <p className="w-full text-xs text-charcoal/40">Données fictives — DarBladi démo</p>
+          <p className="w-full text-xs text-charcoal/40">
+            Données calculées sur le catalogue agrégé DarBladi
+            {knowledge.listingCount ? ` · ${knowledge.listingCount} annonces` : ""}
+          </p>
         </div>
       )}
 

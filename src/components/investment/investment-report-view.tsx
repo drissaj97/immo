@@ -19,7 +19,7 @@ export function InvestmentReportView({
     <div className="mx-auto max-w-4xl px-4 py-8 print:py-4">
       <div className="flex flex-wrap items-start justify-between gap-4 print:hidden">
         <div>
-          <Badge variant="demo">Rapport démo</Badge>
+          {!report.isDemo && <Badge variant="verified">Catalogue agrégé</Badge>}
           <h1 className="mt-2 font-serif text-3xl">Rapport d&apos;investissement</h1>
           <p className="text-charcoal/60">{listing.title}</p>
         </div>

@@ -106,7 +106,7 @@ export async function toolGetMarketMetrics(
   const metric = findMarketMetric(params.city, params.neighborhood, params.listingType);
   return {
     tool: "getMarketMetrics",
-    source: metric?.source ?? "DarBladi — métriques démo",
+    source: metric?.source ?? "DarBladi — catalogue agrégé",
     data: metric ?? { message: "Aucune métrique pour ce secteur" },
   };
 }
@@ -125,14 +125,14 @@ export async function toolGetNeighborhoodContext(
   if (!knowledge) {
     return {
       tool: "getNeighborhoodContext",
-      source: "DarBladi — RAG quartiers (démo)",
+      source: "DarBladi — RAG quartiers (catalogue agrégé)",
       data: { message: "Aucun contexte quartier trouvé pour cette requête." },
     };
   }
 
   return {
     tool: "getNeighborhoodContext",
-    source: "DarBladi — base connaissance quartiers (fictive)",
+    source: "DarBladi — base connaissance quartiers (catalogue agrégé)",
     data: {
       slug: knowledge.slug,
       city: knowledge.city,

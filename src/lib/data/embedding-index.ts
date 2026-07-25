@@ -1,5 +1,5 @@
+import { buildCatalogNeighborhoods } from "@/lib/aggregation/catalog-analytics";
 import { getStaticCatalogListings, listingEmbeddingText } from "@/lib/aggregation/catalog";
-import { NEIGHBORHOOD_KNOWLEDGE } from "@/lib/data/neighborhood-knowledge";
 import { createEmbeddingProvider } from "@/modules/ai/embeddings-provider";
 import { buildEmbeddingDocuments, searchByEmbedding } from "@/modules/ai/embeddings";
 import { getVectorSearchMode } from "@/server/repositories/embeddings-pgvector";
@@ -7,7 +7,7 @@ import { getVectorSearchMode } from "@/server/repositories/embeddings-pgvector";
 const provider = createEmbeddingProvider();
 
 const neighborhoodDocs = buildEmbeddingDocuments(
-  NEIGHBORHOOD_KNOWLEDGE.map((k) => ({
+  buildCatalogNeighborhoods().slice(0, 200).map((k) => ({
     id: k.slug,
     text: `${k.city} ${k.neighborhood} ${k.summary} ${k.highlights.join(" ")} ${k.investmentNotes.join(" ")} ${k.tags.join(" ")}`,
     metadata: { city: k.city, neighborhood: k.neighborhood, type: "neighborhood" },
@@ -42,9 +42,9 @@ export function getEmbeddingIndexStats() {
 }
 
 export function getNeighborhoodCount(): number {
-  return NEIGHBORHOOD_KNOWLEDGE.length;
+  return buildCatalogNeighborhoods().length;
 }
 
 export function getUniqueCityCount(): number {
-  return new Set(NEIGHBORHOOD_KNOWLEDGE.map((n) => n.city)).size;
+  return new Set(getStaticCatalogListings().map((l) => l.location.city)).size;
 }

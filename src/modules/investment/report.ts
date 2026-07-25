@@ -19,7 +19,7 @@ export type InvestmentReport = {
     livingArea?: number;
   };
   generatedAt: string;
-  isDemo: true;
+  isDemo: boolean;
   disclaimer: string;
   score: InvestmentScore;
   scenarios: {
@@ -83,9 +83,9 @@ export function buildInvestmentReport(listing: DemoListing): InvestmentReport {
       livingArea: listing.livingArea,
     },
     generatedAt: new Date().toISOString(),
-    isDemo: true,
+    isDemo: false,
     disclaimer:
-      "Rapport indicatif basé sur des données de démonstration. Ne constitue pas un conseil en investissement, une expertise juridique ou une garantie de rendement.",
+      "Rapport indicatif basé sur le catalogue agrégé DarBladi. Ne constitue pas un conseil en investissement, une expertise juridique ou une garantie de rendement.",
     score: calculateInvestmentScore(listing, market, inputs),
     scenarios: {
       prudent: calculateInvestment(applyScenarioMultiplier(inputs, "prudent"), listing.livingArea),

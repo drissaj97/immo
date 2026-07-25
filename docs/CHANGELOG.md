@@ -7,6 +7,20 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [1.7.0] — 2026-07-25
+
+### Référence immobilière Maroc — 5050 annonces réelles
+
+- Import SEMSAR AI porté à **5000 annonces** (+ 50 Holding IMMO = 5050 total)
+- Sync live API activée par défaut (+1000 annonces dynamiques)
+- **DEMO_LISTINGS vidé** — zéro annonce fictive dans le codebase public
+- Métriques marché, comparables et quartiers calculés depuis le catalogue agrégé
+- Pages villes/quartiers basées sur données réelles (prix/m², rendement, compteurs)
+- Professionnels/promoteurs : partenaires réels uniquement (Holding IMMO, SEMSAR AI)
+- Rapports investissement et estimations sans label « démo »
+
+---
+
 ## [1.6.0] — 2026-07-25
 
 ### Catalogue 100 % réel — Phase 10

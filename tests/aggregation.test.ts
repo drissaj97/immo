@@ -4,11 +4,14 @@ import { normalizePartnerListing } from "@/lib/aggregation/normalizer";
 import { syncAggregatedCatalog } from "@/lib/aggregation/sync";
 
 describe("Aggregation platform", () => {
-  it("sync inclut Holding IMMO + DarBladi", async () => {
+  it("sync inclut Holding IMMO + SEMSAR AI (5050+ annonces)", async () => {
     const { listings, results } = await syncAggregatedCatalog();
-    expect(listings.length).toBeGreaterThanOrEqual(60);
+    expect(listings.length).toBeGreaterThanOrEqual(5000);
     const holding = results.find((r) => r.source === "holding-immo");
+    const semsarai = results.find((r) => r.source === "semsarai");
     expect(holding?.imported).toBeGreaterThanOrEqual(50);
+    expect(semsarai?.imported).toBeGreaterThanOrEqual(5000);
+    expect(listings.every((l) => !l.isDemo)).toBe(true);
   });
 
   it("normalise une annonce partenaire Avito", () => {

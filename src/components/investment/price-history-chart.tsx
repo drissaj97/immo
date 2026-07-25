@@ -54,7 +54,7 @@ export function PriceHistoryChart({
           </li>
         ))}
       </ul>
-      <p className="mt-2 text-xs text-charcoal/40">Données fictives de démonstration</p>
+      <p className="mt-2 text-xs text-charcoal/40">Historique indicatif basé sur la date de publication</p>
     </div>
   );
 }

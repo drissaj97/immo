@@ -60,8 +60,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <div className="mb-8 flex items-end justify-between">
           <div>
-            <h2 className="font-serif text-3xl text-charcoal">Annonces SEMSAR AI</h2>
-            <p className="mt-2 text-charcoal/60">Biens agrégés depuis semsarai.ma — photos réelles du Maroc</p>
+            <h2 className="font-serif text-3xl text-charcoal">Annonces immobilières au Maroc</h2>
+            <p className="mt-2 text-charcoal/60">
+              Biens indexés depuis semsarai.ma, Holding IMMO et partenaires agréés
+            </p>
           </div>
           <Link href={`/${locale}/biens`} className="text-sm text-deep-green hover:underline">
             Voir tout →
@@ -85,7 +87,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 className="rounded-lg border border-charcoal/10 bg-ivory p-6 transition hover:border-deep-green/30"
               >
                 <p className="font-serif text-xl">{city}</p>
-                <p className="mt-1 text-sm text-charcoal/60">{count} biens (démo)</p>
+                <p className="mt-1 text-sm text-charcoal/60">{count} annonces</p>
               </Link>
             ))}
           </div>

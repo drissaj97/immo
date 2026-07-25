@@ -1,4 +1,7 @@
-export type DemoOrganization = {
+import { HOLDING_IMPORT_META } from "@/lib/data/holding-listings";
+import { SEMSARAI_IMPORT_META } from "@/lib/data/semsarai-listings";
+
+export type PartnerOrganization = {
   id: string;
   name: string;
   slug: string;
@@ -7,10 +10,11 @@ export type DemoOrganization = {
   city: string;
   isVerified: boolean;
   listingCount: number;
+  website?: string;
   logoUrl?: string;
 };
 
-export type DemoProject = {
+export type PartnerProject = {
   id: string;
   organizationId: string;
   slug: string;
@@ -22,7 +26,7 @@ export type DemoProject = {
   deliveryDate?: string;
 };
 
-export type DemoProfessional = {
+export type PartnerProfessional = {
   id: string;
   slug: string;
   displayName: string;
@@ -33,144 +37,63 @@ export type DemoProfessional = {
   isVerified: boolean;
 };
 
-export const DEMO_ORGANIZATIONS: DemoOrganization[] = [
+/** Partenaires réels indexés par DarBladi — aucune donnée fictive. */
+export const PARTNER_ORGANIZATIONS: PartnerOrganization[] = [
   {
-    id: "org-atlas-premium",
-    name: "Atlas Premium Immobilier",
-    slug: "atlas-premium-immobilier",
+    id: "org-holding-immo",
+    name: "Holding IMMO",
+    slug: "holding-immo",
     type: "agency",
-    description: "Agence haut de gamme spécialisée Marrakech et littoral atlantique. Données fictives.",
-    city: "Marrakech",
+    description: "Agence immobilière first-party — annonces importées avec autorisation et photos locales.",
+    city: "Maroc",
     isVerified: true,
-    listingCount: 4,
+    listingCount: HOLDING_IMPORT_META.count,
+    website: "https://holdingimmo.com",
   },
   {
-    id: "org-capital-homes",
-    name: "Capital Homes Rabat",
-    slug: "capital-homes-rabat",
-    type: "agency",
-    description: "Résidences et appartements neufs à Rabat-Salé-Kénitra. Données fictives.",
-    city: "Rabat",
+    id: "org-semsarai",
+    name: "SEMSAR AI",
+    slug: "semsar-ai",
+    type: "partner",
+    description: `Agrégateur semsarai.ma — ${SEMSARAI_IMPORT_META.apiTotalCount.toLocaleString("fr-MA")} annonces disponibles, ${SEMSARAI_IMPORT_META.count} indexées sur DarBladi.`,
+    city: "Maroc",
     isVerified: true,
-    listingCount: 3,
-  },
-  {
-    id: "org-anfa-living",
-    name: "Anfa Living",
-    slug: "anfa-living",
-    type: "agency",
-    description: "Biens d'exception à Casablanca, quartiers Anfa et Ain Diab. Données fictives.",
-    city: "Casablanca",
-    isVerified: false,
-    listingCount: 2,
-  },
-  {
-    id: "org-palm-promotion",
-    name: "Palm Promotion",
-    slug: "palm-promotion",
-    type: "developer",
-    description: "Promoteur de programmes neufs résidentiels et mixtes. Données fictives.",
-    city: "Marrakech",
-    isVerified: true,
-    listingCount: 0,
-  },
-  {
-    id: "org-riviera-dev",
-    name: "Riviera Développement",
-    slug: "riviera-developpement",
-    type: "developer",
-    description: "Programmes front de mer Bouznika et littoral nord. Données fictives.",
-    city: "Bouznika",
-    isVerified: true,
-    listingCount: 0,
+    listingCount: SEMSARAI_IMPORT_META.count,
+    website: "https://www.semsarai.ma",
   },
 ];
 
-export const DEMO_PROJECTS: DemoProject[] = [
-  {
-    id: "proj-residence-gueliz",
-    organizationId: "org-palm-promotion",
-    slug: "residence-gueliz-gardens",
-    name: "Résidence Guéliz Gardens",
-    description: "Programme neuf 48 appartements F2 à F4, parking et rooftop. Livraison T4 2027. Fictif.",
-    city: "Marrakech",
-    neighborhood: "Guéliz",
-    status: "selling",
-    deliveryDate: "2027-06-01",
-  },
-  {
-    id: "proj-hay-riad-park",
-    organizationId: "org-palm-promotion",
-    slug: "hay-riad-park",
-    name: "Hay Riad Park",
-    description: "Villas jumelées et appartements standing, résidence sécurisée. Fictif.",
-    city: "Rabat",
-    neighborhood: "Hay Riad",
-    status: "selling",
-    deliveryDate: "2026-12-01",
-  },
-  {
-    id: "proj-bouznika-marina",
-    organizationId: "org-riviera-dev",
-    slug: "bouznika-marina-view",
-    name: "Bouznika Marina View",
-    description: "Appartements vue mer, commerces en RDC. Fictif.",
-    city: "Bouznika",
-    neighborhood: "Front de mer",
-    status: "presale",
-    deliveryDate: "2028-03-01",
-  },
-];
+export const PARTNER_PROJECTS: PartnerProject[] = [];
 
-export const DEMO_PROFESSIONALS: DemoProfessional[] = [
-  {
-    id: "pro-yasmine-el-amrani",
-    slug: "yasmine-el-amrani",
-    displayName: "Yasmine El Amrani",
-    bio: "Consultante investissement locatif — Marrakech & littoral. Donnée fictive.",
-    city: "Marrakech",
-    organizationId: "org-atlas-premium",
-    organizationName: "Atlas Premium Immobilier",
-    isVerified: true,
-  },
-  {
-    id: "pro-omar-benjelloun",
-    slug: "omar-benjelloun",
-    displayName: "Omar Benjelloun",
-    bio: "Agent senior résidentiel Rabat. Donnée fictive.",
-    city: "Rabat",
-    organizationId: "org-capital-homes",
-    organizationName: "Capital Homes Rabat",
-    isVerified: true,
-  },
-  {
-    id: "pro-laila-chraibi",
-    slug: "laila-chraibi",
-    displayName: "Laila Chraibi",
-    bio: "Spécialiste programmes neufs Casablanca. Donnée fictive.",
-    city: "Casablanca",
-    organizationId: "org-anfa-living",
-    organizationName: "Anfa Living",
-    isVerified: false,
-  },
-];
+export const PARTNER_PROFESSIONALS: PartnerProfessional[] = [];
 
-export function getAgencies(): DemoOrganization[] {
-  return DEMO_ORGANIZATIONS.filter((o) => o.type === "agency");
+/** @deprecated Utiliser PARTNER_ORGANIZATIONS */
+export const DEMO_ORGANIZATIONS = PARTNER_ORGANIZATIONS;
+/** @deprecated */
+export const DEMO_PROJECTS = PARTNER_PROJECTS;
+/** @deprecated */
+export const DEMO_PROFESSIONALS = PARTNER_PROFESSIONALS;
+
+export type DemoOrganization = PartnerOrganization;
+export type DemoProject = PartnerProject;
+export type DemoProfessional = PartnerProfessional;
+
+export function getAgencies(): PartnerOrganization[] {
+  return PARTNER_ORGANIZATIONS.filter((o) => o.type === "agency" || o.type === "partner");
 }
 
-export function getDevelopers(): DemoOrganization[] {
-  return DEMO_ORGANIZATIONS.filter((o) => o.type === "developer");
+export function getDevelopers(): PartnerOrganization[] {
+  return PARTNER_ORGANIZATIONS.filter((o) => o.type === "developer");
 }
 
-export function getOrganizationBySlug(slug: string): DemoOrganization | undefined {
-  return DEMO_ORGANIZATIONS.find((o) => o.slug === slug);
+export function getOrganizationBySlug(slug: string): PartnerOrganization | undefined {
+  return PARTNER_ORGANIZATIONS.find((o) => o.slug === slug);
 }
 
-export function getProjectsByOrganization(orgId: string): DemoProject[] {
-  return DEMO_PROJECTS.filter((p) => p.organizationId === orgId);
+export function getProjectsByOrganization(_orgId: string): PartnerProject[] {
+  return [];
 }
 
-export function getProfessionalBySlug(slug: string): DemoProfessional | undefined {
-  return DEMO_PROFESSIONALS.find((p) => p.slug === slug);
+export function getProfessionalBySlug(_slug: string): PartnerProfessional | undefined {
+  return undefined;
 }

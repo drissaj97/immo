@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { DEMO_LISTINGS } from "@/lib/data/demo-data";
+import { HOLDING_LISTINGS } from "@/lib/data/holding-listings";
 import { calculateInvestmentScore } from "@/modules/investment/score";
 import { findMarketMetric } from "@/modules/investment/valuation";
 
 describe("investment score", () => {
-  const listing = DEMO_LISTINGS.find((l) => l.reference === "SA-D005")!;
+  const listing = HOLDING_LISTINGS.find((l) => l.livingArea && l.livingArea > 0)!;
 
   it("returns score between 0 and 100", () => {
     const market = findMarketMetric(listing.location.city, listing.location.neighborhood, listing.listingType);

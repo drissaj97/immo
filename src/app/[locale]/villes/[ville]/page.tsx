@@ -31,7 +31,7 @@ export default async function VillePage({
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
       <h1 className="font-serif text-3xl">Immobilier à {cityName}</h1>
-      <p className="mt-2 text-charcoal/60">{count} biens de démonstration</p>
+      <p className="mt-2 text-charcoal/60">{count} annonces indexées</p>
       <Link href={`/${locale}/biens?city=${encodeURIComponent(cityName)}`} className="mt-6 inline-block text-deep-green hover:underline">
         Voir les annonces →
       </Link>

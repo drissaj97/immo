@@ -14,7 +14,7 @@ export type MarketMetric = {
   sampleSize: number;
   updatedAt: string;
   source: string;
-  isDemo: true;
+  isDemo: boolean;
 };
 
 export type Comparable = {
@@ -28,7 +28,7 @@ export type Comparable = {
   pricePerSqm: number;
   soldAt?: string;
   distanceKm?: number;
-  isDemo: true;
+  isDemo: boolean;
 };
 
 /** Historique fictif par référence annonce */
@@ -86,9 +86,11 @@ export const DEMO_COMPARABLES: Comparable[] = [
   { id: "comp-005", title: "Studio Bouznika mer (fictif)", city: "Bouznika", neighborhood: "Front de mer", price: 820000, livingArea: 42, pricePerSqm: 19524, soldAt: "2026-07-01", distanceKm: 0.3, isDemo: true },
 ];
 
-export function getDefaultPriceHistory(reference: string, currentPrice: number): PriceHistoryPoint[] {
-  return DEMO_PRICE_HISTORY[reference] ?? [
-    { date: new Date(Date.now() - 90 * 86400000).toISOString().slice(0, 10), price: Math.round(currentPrice * 1.03), event: "listed" },
+export function getDefaultPriceHistory(_reference: string, currentPrice: number): PriceHistoryPoint[] {
+  const listedAt = new Date();
+  listedAt.setMonth(listedAt.getMonth() - 2);
+  return [
+    { date: listedAt.toISOString().slice(0, 10), price: Math.round(currentPrice * 1.02), event: "listed" },
     { date: new Date().toISOString().slice(0, 10), price: currentPrice, event: "verified" },
   ];
 }
