@@ -51,6 +51,13 @@ export async function POST(request: Request) {
       handled.push(event.type);
       break;
     }
+    case "invoice.paid":
+    case "customer.subscription.updated": {
+      const obj = event.data.object;
+      console.info(`[stripe:webhook] Subscription event: ${event.type}`, obj.id, obj.metadata);
+      handled.push(event.type);
+      break;
+    }
     default:
       handled.push(`ignored:${event.type}`);
   }

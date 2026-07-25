@@ -58,3 +58,25 @@ export function formatPrice(price: number, currency: string): string {
     maximumFractionDigits: 0,
   }).format(price);
 }
+
+export async function toggleFavorite(listingId: string): Promise<boolean> {
+  const { authHeaders } = await import("./auth");
+  const headers = await authHeaders();
+  const res = await fetch(`${API_BASE}/api/v1/favorites`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...headers },
+    body: JSON.stringify({ listingId }),
+  });
+  if (!res.ok) throw new Error("Favori — connexion requise");
+  const data = (await res.json()) as { active: boolean };
+  return data.active;
+}
+
+export async function listFavorites(): Promise<string[]> {
+  const { authHeaders } = await import("./auth");
+  const headers = await authHeaders();
+  const res = await fetch(`${API_BASE}/api/v1/favorites`, { headers });
+  if (!res.ok) return [];
+  const data = (await res.json()) as { favorites: string[] };
+  return data.favorites;
+}

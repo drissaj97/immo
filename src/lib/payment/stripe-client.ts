@@ -10,6 +10,13 @@ export type StripeCheckoutParams = {
   cancelUrl: string;
   metadata?: Record<string, string>;
   customerEmail?: string;
+  mode?: "payment" | "subscription";
+  interval?: "month" | "year";
+};
+
+export type StripeBillingPortalParams = {
+  customerId: string;
+  returnUrl: string;
 };
 
 export type StripeCheckoutSession = {
@@ -38,8 +45,9 @@ export async function createCheckoutSession(
   const secret = stripeAuth();
   if (!secret) return null;
 
+  const mode = params.mode ?? "payment";
   const body = new URLSearchParams({
-    mode: "payment",
+    mode,
     success_url: params.successUrl,
     cancel_url: params.cancelUrl,
     "line_items[0][quantity]": "1",
@@ -49,6 +57,10 @@ export async function createCheckoutSession(
       toStripeAmount(params.amount, params.currency),
     ),
   });
+
+  if (mode === "subscription") {
+    body.set("line_items[0][price_data][recurring][interval]", params.interval ?? "month");
+  }
 
   if (params.customerEmail) {
     body.set("customer_email", params.customerEmail);
@@ -88,6 +100,58 @@ export async function retrieveCheckoutSession(sessionId: string): Promise<{ paid
   if (!res.ok) return { paid: false };
   const data = (await res.json()) as { payment_status: string };
   return { paid: data.payment_status === "paid" };
+}
+
+export async function createBillingPortalSession(
+  params: StripeBillingPortalParams,
+): Promise<{ url: string } | null> {
+  const secret = stripeAuth();
+  if (!secret) return null;
+
+  const body = new URLSearchParams({
+    customer: params.customerId,
+    return_url: params.returnUrl,
+  });
+
+  const res = await fetch("https://api.stripe.com/v1/billing_portal/sessions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${secret}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body,
+  });
+
+  if (!res.ok) {
+    console.error("[stripe] billing portal failed:", await res.text());
+    return null;
+  }
+
+  const data = (await res.json()) as { url: string };
+  return { url: data.url };
+}
+
+export async function createStripeCustomer(email: string, metadata?: Record<string, string>): Promise<string | null> {
+  const secret = stripeAuth();
+  if (!secret) return null;
+
+  const body = new URLSearchParams({ email });
+  for (const [key, value] of Object.entries(metadata ?? {})) {
+    body.set(`metadata[${key}]`, value);
+  }
+
+  const res = await fetch("https://api.stripe.com/v1/customers", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${secret}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body,
+  });
+
+  if (!res.ok) return null;
+  const data = (await res.json()) as { id: string };
+  return data.id;
 }
 
 /** Verify Stripe webhook signature (HMAC-SHA256). Returns parsed event or null. */

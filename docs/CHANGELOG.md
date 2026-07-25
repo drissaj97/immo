@@ -7,6 +7,35 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [1.1.0] — 2026-07-25
+
+### Phase 9 — Release
+
+**OpenAI production**
+- `AI_PROVIDER=openai` active LLM + embeddings (1536D)
+- Script `pnpm db:seed-embeddings` pour pgvector
+
+**Stripe Subscriptions**
+- Mode `STRIPE_SUBSCRIPTION_MODE=true` pour Checkout récurrent
+- Billing Portal `/api/billing/portal`
+- Webhooks `invoice.paid`, `customer.subscription.updated`
+
+**Mobile auth + favoris**
+- API `POST /api/v1/auth/login`, `GET /api/v1/auth/me`
+- API `GET/POST /api/v1/favorites` (Bearer JWT)
+- App Expo : login, favoris, déconnexion
+
+**Push notifications**
+- Provider mock + Expo Push API
+- Cron alertes envoie email + push
+- `POST /api/v1/push/register`
+
+**Release prep**
+- `mobile/eas.json` pour builds App Store / Play Store
+- 57 tests passent
+
+---
+
 ## [1.0.0] — 2026-07-25
 
 ### Phase 8 — Mobile & scale

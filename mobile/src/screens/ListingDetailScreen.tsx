@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
-import { formatPrice, type ListingSummary } from "../api/client";
+import { useState } from "react";
+import { Pressable, StyleSheet, Text, View, ScrollView } from "react-native";
+import { formatPrice, toggleFavorite, type ListingSummary } from "../api/client";
 
 export function ListingDetailScreen({
   listing,
@@ -8,6 +9,21 @@ export function ListingDetailScreen({
   listing: ListingSummary;
   onBack: () => void;
 }) {
+  const [favorite, setFavorite] = useState(false);
+  const [favLoading, setFavLoading] = useState(false);
+
+  async function handleFavorite() {
+    setFavLoading(true);
+    try {
+      const active = await toggleFavorite(listing.id);
+      setFavorite(active);
+    } catch {
+      // ignore
+    } finally {
+      setFavLoading(false);
+    }
+  }
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Pressable onPress={onBack} style={styles.back}>
@@ -16,6 +32,10 @@ export function ListingDetailScreen({
 
       <Text style={styles.title}>{listing.title}</Text>
       <Text style={styles.price}>{formatPrice(listing.price, listing.currency)}</Text>
+
+      <Pressable style={styles.favButton} onPress={handleFavorite} disabled={favLoading}>
+        <Text style={styles.favText}>{favorite ? "★ Favori" : "☆ Ajouter aux favoris"}</Text>
+      </Pressable>
 
       <View style={styles.meta}>
         <Text style={styles.metaText}>📍 {listing.neighborhood}, {listing.city}</Text>
@@ -55,4 +75,12 @@ const styles = StyleSheet.create({
   },
   verifiedText: { color: "#059669", fontWeight: "600" },
   disclaimer: { marginTop: 24, fontSize: 12, color: "#94a3b8", fontStyle: "italic" },
+  favButton: {
+    marginTop: 16,
+    backgroundColor: "#fef3c7",
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  favText: { color: "#92400e", fontWeight: "600" },
 });

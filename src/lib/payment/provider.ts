@@ -55,6 +55,7 @@ class StripePaymentProvider implements PaymentProvider {
     }
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+    const useSubscription = process.env.STRIPE_SUBSCRIPTION_MODE === "true";
     const session = await createCheckoutSession({
       amount: intent.amount,
       currency: intent.currency,
@@ -63,6 +64,8 @@ class StripePaymentProvider implements PaymentProvider {
       cancelUrl: intent.cancelUrl ?? `${appUrl}/fr/tarifs?cancelled=1`,
       metadata: { ...intent.metadata, intentId: intent.id },
       customerEmail: intent.customerEmail,
+      mode: useSubscription && intent.metadata?.type === "subscription" ? "subscription" : "payment",
+      interval: "month",
     });
 
     if (!session) {

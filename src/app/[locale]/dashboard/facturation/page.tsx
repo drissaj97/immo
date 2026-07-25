@@ -5,6 +5,7 @@ import { getSession } from "@/lib/auth/session";
 import { SUBSCRIPTION_PLANS, getPlanById } from "@/lib/data/plans";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { getSubscription, listPayments } from "@/server/repositories/payments";
+import { BillingPortalButton } from "@/components/payment/billing-portal-button";
 import { formatPrice } from "@/lib/utils";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -58,6 +59,7 @@ export default async function FacturationPage({
               {formatPrice(activePlan.priceMonthly, "MAD")}/mois · Renouvellement{" "}
               {subscription?.renewsAt ? new Date(subscription.renewsAt).toLocaleDateString("fr-MA") : "—"}
             </p>
+            <BillingPortalButton locale={locale} />
           </div>
         ) : (
           <p className="mt-4 text-charcoal/60">

@@ -28,6 +28,15 @@ export type SubscriptionRecord = {
 
 const paymentStore: PaymentRecord[] = [];
 const subscriptionStore = new Map<string, SubscriptionRecord>();
+const stripeCustomerStore = new Map<string, string>();
+
+export function getStripeCustomerId(userId: string): string | undefined {
+  return stripeCustomerStore.get(userId);
+}
+
+export function setStripeCustomerId(userId: string, customerId: string): void {
+  stripeCustomerStore.set(userId, customerId);
+}
 
 export async function createDepositPayment(
   userId: string,

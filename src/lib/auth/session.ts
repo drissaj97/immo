@@ -34,11 +34,7 @@ export async function authenticateUser(
 }
 
 export async function createSession(user: SessionUser) {
-  const token = await new SignJWT({ ...user })
-    .setProtectedHeader({ alg: "HS256" })
-    .setExpirationTime("7d")
-    .sign(getSecret());
-
+  const token = await signToken(user);
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
@@ -47,6 +43,30 @@ export async function createSession(user: SessionUser) {
     path: "/",
     maxAge: 60 * 60 * 24 * 7,
   });
+}
+
+export async function signToken(user: SessionUser): Promise<string> {
+  return new SignJWT({ ...user })
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("7d")
+    .sign(getSecret());
+}
+
+export async function verifyToken(token: string): Promise<SessionUser | null> {
+  try {
+    const { payload } = await jwtVerify(token, getSecret());
+    return payload as unknown as SessionUser;
+  } catch {
+    return null;
+  }
+}
+
+export async function getSessionFromRequest(request: Request): Promise<SessionUser | null> {
+  const auth = request.headers.get("authorization");
+  if (auth?.startsWith("Bearer ")) {
+    return verifyToken(auth.slice(7));
+  }
+  return getSession();
 }
 
 export async function destroySession() {
@@ -58,12 +78,7 @@ export async function getSession(): Promise<SessionUser | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get(COOKIE_NAME)?.value;
   if (!token) return null;
-  try {
-    const { payload } = await jwtVerify(token, getSecret());
-    return payload as unknown as SessionUser;
-  } catch {
-    return null;
-  }
+  return verifyToken(token);
 }
 
 export function requireRole(user: SessionUser | null, roles: SessionUser["role"][]) {

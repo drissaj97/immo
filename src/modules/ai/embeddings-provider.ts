@@ -91,6 +91,8 @@ export function createEmbeddingProvider(): EmbeddingProvider {
 
   if (process.env.EMBEDDING_PROVIDER === "openai" && process.env.OPENAI_API_KEY) {
     cachedProvider = new OpenAIEmbeddingProvider();
+  } else if (process.env.AI_PROVIDER === "openai" && process.env.OPENAI_API_KEY) {
+    cachedProvider = new OpenAIEmbeddingProvider();
   } else {
     cachedProvider = new MockEmbeddingProvider();
   }
