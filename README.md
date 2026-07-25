@@ -143,6 +143,17 @@ pnpm db:seed
 Insère locations, listings et taux de change depuis `demo-data.ts`.  
 Sans `DATABASE_URL`, le seed s'arrête proprement (mode in-memory actif).
 
+### Photos réelles Holding IMMO
+
+Les annonces Holding IMMO utilisent des **photos scrapées** (pas Unsplash). Après un clone :
+
+```bash
+pnpm import:holding   # télécharge ~1057 photos → public/media/holding/
+```
+
+Sans cette étape, les fiches Holding IMMO affichent des images cassées.  
+Les annonces **démo** (Unsplash) sont masquées par défaut — lien « Afficher données démo » sur `/biens`.
+
 ---
 
 ## Développement

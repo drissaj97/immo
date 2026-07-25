@@ -1,4 +1,4 @@
-import { parseNaturalLanguageQuery } from "@/modules/search/natural-language-parser";
+import { parseNaturalLanguageQuery, type SearchFilters } from "@/modules/search/natural-language-parser";
 import { searchListings, getListingById } from "@/server/repositories/listings";
 import { getListingInvestmentScore } from "@/server/repositories/investment";
 import { calculateInvestment } from "@/modules/investment/calculations";
@@ -14,7 +14,10 @@ export async function toolSearchListings(
   filters: Record<string, unknown>,
   _ctx: ToolContext,
 ): Promise<ControlledToolResult> {
-  const { items, total } = await searchListings(filters as Parameters<typeof searchListings>[0]);
+  const { items, total } = await searchListings({
+    ...(filters as SearchFilters),
+    includeDemo: true,
+  });
   return {
     tool: "searchListings",
     source: "DarBladi — catalogue démo",

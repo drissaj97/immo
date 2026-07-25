@@ -13,6 +13,7 @@ export type ListingWithLocation = DemoListing & {
 
 function matchesFilters(listing: ListingWithLocation, filters: SearchFilters): boolean {
   if (listing.status !== "published" && !filters.query?.includes("admin")) return false;
+  if (filters.includeDemo !== true && listing.isDemo) return false;
   if (filters.source && "aggregationSource" in listing) {
     const src = (listing as AggregatedListing).aggregationSource;
     if (src !== filters.source) return false;
@@ -38,17 +39,31 @@ function matchesFilters(listing: ListingWithLocation, filters: SearchFilters): b
   return true;
 }
 
+function listingPriority(listing: ListingWithLocation): number {
+  if (listing.isDemo) return 0;
+  if (listing.aggregationSource === "holding-immo") return 3;
+  if (listing.isExternal) return 2;
+  return 1;
+}
+
 function sortListings(listings: ListingWithLocation[], sort?: SearchFilters["sort"]): ListingWithLocation[] {
   const copy = [...listings];
+  const byPriority = (a: ListingWithLocation, b: ListingWithLocation) =>
+    listingPriority(b) - listingPriority(a);
+
   switch (sort) {
     case "price_asc":
-      return copy.sort((a, b) => a.price - b.price);
+      return copy.sort((a, b) => a.price - b.price || byPriority(a, b));
     case "price_desc":
-      return copy.sort((a, b) => b.price - a.price);
+      return copy.sort((a, b) => b.price - a.price || byPriority(a, b));
     case "area_desc":
-      return copy.sort((a, b) => (b.livingArea ?? 0) - (a.livingArea ?? 0));
+      return copy.sort((a, b) => (b.livingArea ?? 0) - (a.livingArea ?? 0) || byPriority(a, b));
     default:
-      return copy.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+      return copy.sort(
+        (a, b) =>
+          byPriority(a, b) ||
+          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+      );
   }
 }
 
@@ -108,8 +123,12 @@ export async function getFeaturedListings(limit = 6): Promise<ListingWithLocatio
   }
   const all = await getAggregatedListings();
   return all
-    .filter((l) => l.status === "published")
-    .sort((a, b) => b.completenessScore - a.completenessScore)
+    .filter((l) => l.status === "published" && !l.isDemo)
+    .sort(
+      (a, b) =>
+        listingPriority(b) - listingPriority(a) ||
+        b.completenessScore - a.completenessScore,
+    )
     .slice(0, limit);
 }
 

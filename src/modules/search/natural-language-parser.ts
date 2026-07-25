@@ -17,6 +17,8 @@ export const searchFiltersSchema = z.object({
   isNew: z.boolean().optional(),
   sort: z.enum(["recent", "price_asc", "price_desc", "area_desc"]).optional(),
   source: z.enum(["darbladi", "holding-immo", "avito", "mubawab", "sarouty"]).optional(),
+  /** Inclure les annonces fictives (Unsplash). Défaut : false côté UI publique. */
+  includeDemo: z.boolean().optional(),
   page: z.number().optional(),
   limit: z.number().optional(),
 });

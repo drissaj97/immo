@@ -60,8 +60,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <div className="mb-8 flex items-end justify-between">
           <div>
-            <h2 className="font-serif text-3xl text-charcoal">Sélection premium</h2>
-            <p className="mt-2 text-charcoal/60">Biens fictifs de démonstration</p>
+            <h2 className="font-serif text-3xl text-charcoal">Annonces Holding IMMO</h2>
+            <p className="mt-2 text-charcoal/60">Photos réelles importées — villas et appartements à Marrakech</p>
           </div>
           <Link href={`/${locale}/biens`} className="text-sm text-deep-green hover:underline">
             Voir tout →

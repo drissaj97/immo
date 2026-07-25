@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   return buildMetadata({
     title: "Biens immobiliers",
-    description: "Parcourez les annonces immobilières de démonstration au Maroc.",
+    description: "Parcourez les annonces immobilières réelles (Holding IMMO) et agrégées au Maroc.",
     path: "/biens",
     locale,
   });
@@ -38,6 +38,7 @@ export default async function BiensPage({
     hasPool: sp.hasPool === "true" ? true : undefined,
     isVerified: sp.isVerified === "true" ? true : undefined,
     source: sp.source as SearchFilters["source"],
+    includeDemo: sp.demo === "1" || sp.includeDemo === "true" ? true : undefined,
     sort: (sp.sort as SearchFilters["sort"]) ?? "recent",
     page: sp.page ? Number(sp.page) : 1,
   };
@@ -55,6 +56,14 @@ export default async function BiensPage({
           <Link href={`/${locale}/agregateur`} className="text-deep-green hover:underline">
             Sources ({Object.keys(aggStats.bySource).length})
           </Link>
+          {!filters.includeDemo && (
+            <>
+              {" · "}
+              <Link href={`/${locale}/biens?demo=1`} className="text-charcoal/50 hover:text-deep-green">
+                Afficher données démo
+              </Link>
+            </>
+          )}
         </p>
       </div>
 
