@@ -4,8 +4,8 @@ import { semsaraiPropertyToListing } from "@/lib/semsarai/normalizer";
 import type { AggregatedListing } from "../types";
 import { normalizeSemsaraiListing } from "@/lib/semsarai/normalizer";
 
-const LIVE_SYNC =
-  process.env.SEMSARAI_LIVE_SYNC !== "false" && process.env.VITEST !== "true";
+/** Sync live API — opt-in only (évite blocage au démarrage/build). */
+const LIVE_SYNC = process.env.SEMSARAI_LIVE_SYNC === "true";
 const LIVE_LIMIT = Number(process.env.SEMSARAI_LIVE_LIMIT ?? "1000");
 const PAGE_SIZE = Number(process.env.SEMSARAI_PAGE_SIZE ?? "50");
 

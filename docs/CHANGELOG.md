@@ -7,6 +7,18 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [1.7.1] — 2026-07-25
+
+### Fix démarrage site
+
+- Sync live API désactivée par défaut (évite blocage 60s+ au build/démarrage)
+- Cache mémoire catalogue + analytics (5050 annonces)
+- Embeddings RAG lazy-load (300 annonces max en mémoire)
+- Images multi-sources : composant `ListingImage` + domaines Mubawab/Yakeey/Agenz
+- Timeout build statique porté à 180s
+
+---
+
 ## [1.7.0] — 2026-07-25
 
 ### Référence immobilière Maroc — 5050 annonces réelles

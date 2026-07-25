@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Bed, Bath, Maximize } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { ListingImage } from "@/components/listings/listing-image";
 import { formatPrice } from "@/lib/utils";
 import type { ListingWithLocation } from "@/server/repositories/listings";
 import { convertPrice } from "@/server/repositories/listings";
@@ -34,7 +34,7 @@ export function ListingCard({
       className="group block overflow-hidden rounded-lg border border-charcoal/10 bg-ivory transition-shadow hover:shadow-lg"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-sand">
-        <Image
+        <ListingImage
           src={listing.images[0]}
           alt={listing.title}
           fill

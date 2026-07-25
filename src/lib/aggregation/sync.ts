@@ -1,3 +1,5 @@
+import { resetCatalogAnalyticsCache } from "./catalog-analytics";
+import { resetStaticCatalogCache } from "./catalog";
 import type { AggregatedListing, AggregationStats, AggregationSyncResult } from "./types";
 import { dedupeAggregatedListings } from "./dedupe";
 import { fetchHoldingListings } from "./sources/holding-source";
@@ -83,4 +85,6 @@ export function resetAggregationCache(): void {
   cachedCatalog = null;
   lastSyncAt = null;
   resetSemsaraiLiveCache();
+  resetStaticCatalogCache();
+  resetCatalogAnalyticsCache();
 }

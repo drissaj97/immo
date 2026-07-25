@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+import { ListingImage } from "@/components/listings/listing-image";
 
 export function ListingGallery({ images, title }: { images: string[]; title: string }) {
   const [active, setActive] = useState(0);
@@ -12,12 +12,11 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
   return (
     <div className="space-y-3">
       <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-sand">
-        <Image
+        <ListingImage
           src={current}
           alt={`${title} — photo ${active + 1}`}
           fill
           className="object-cover"
-          priority={active === 0}
           sizes="(max-width: 1024px) 100vw, 50vw"
         />
         {safeImages.length > 1 && (
@@ -39,7 +38,7 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
               }`}
               aria-label={`Voir photo ${i + 1}`}
             >
-              <Image src={src} alt="" fill className="object-cover" sizes="96px" />
+              <ListingImage src={src} alt="" fill className="object-cover" sizes="96px" />
             </button>
           ))}
         </div>

@@ -12,6 +12,14 @@ function slugify(text: string): string {
     .replace(/^-|-$/g, "");
 }
 
+let metricsCache: MarketMetric[] | null = null;
+let neighborhoodsCache: NeighborhoodKnowledge[] | null = null;
+
+export function resetCatalogAnalyticsCache(): void {
+  metricsCache = null;
+  neighborhoodsCache = null;
+}
+
 export function getCatalogListings(): DemoListing[] {
   return getStaticCatalogListings();
 }
@@ -21,6 +29,8 @@ function groupKey(city: string, neighborhood: string, listingType?: string): str
 }
 
 export function computeMarketMetrics(): MarketMetric[] {
+  if (metricsCache) return metricsCache;
+
   const all = getCatalogListings();
   const saleListings = all.filter(
     (l) => l.transactionType === "sale" && (l.livingArea ?? 0) > 0,
@@ -28,6 +38,14 @@ export function computeMarketMetrics(): MarketMetric[] {
   const rentListings = all.filter(
     (l) => l.transactionType === "long_term_rent" && (l.livingArea ?? 0) > 0,
   );
+
+  const rentByHood = new Map<string, DemoListing[]>();
+  for (const r of rentListings) {
+    const key = groupKey(r.location.city, r.location.neighborhood, r.listingType);
+    const arr = rentByHood.get(key) ?? [];
+    arr.push(r);
+    rentByHood.set(key, arr);
+  }
 
   const saleGroups = new Map<string, DemoListing[]>();
   for (const l of saleListings) {
@@ -47,12 +65,8 @@ export function computeMarketMetrics(): MarketMetric[] {
       pricesPerSqm.reduce((a, b) => a + b, 0) / pricesPerSqm.length,
     );
 
-    const rents = rentListings.filter(
-      (r) =>
-        r.location.city.toLowerCase() === sample.location.city.toLowerCase() &&
-        r.location.neighborhood.toLowerCase() === sample.location.neighborhood.toLowerCase() &&
-        r.listingType === sample.listingType,
-    );
+    const rentKey = groupKey(sample.location.city, sample.location.neighborhood, sample.listingType);
+    const rents = rentByHood.get(rentKey) ?? [];
     const avgRentPerSqm =
       rents.length > 0
         ? Math.round(
@@ -78,7 +92,8 @@ export function computeMarketMetrics(): MarketMetric[] {
     });
   }
 
-  return metrics.sort((a, b) => b.sampleSize - a.sampleSize);
+  metricsCache = metrics.sort((a, b) => b.sampleSize - a.sampleSize);
+  return metricsCache;
 }
 
 export function findCatalogMarketMetric(
@@ -108,7 +123,8 @@ export function findCatalogComparables(
   livingArea?: number,
   limit = 5,
 ): Comparable[] {
-  let comps = getCatalogListings().filter(
+  const all = getCatalogListings();
+  let comps = all.filter(
     (l) =>
       l.transactionType === "sale" &&
       (l.livingArea ?? 0) > 0 &&
@@ -117,7 +133,7 @@ export function findCatalogComparables(
   );
 
   if (comps.length === 0) {
-    comps = getCatalogListings().filter(
+    comps = all.filter(
       (l) =>
         l.transactionType === "sale" &&
         (l.livingArea ?? 0) > 0 &&
@@ -146,6 +162,8 @@ export function findCatalogComparables(
 }
 
 export function buildCatalogNeighborhoods(): NeighborhoodKnowledge[] {
+  if (neighborhoodsCache) return neighborhoodsCache;
+
   const all = getCatalogListings();
   const groups = new Map<string, DemoListing[]>();
 
@@ -156,12 +174,14 @@ export function buildCatalogNeighborhoods(): NeighborhoodKnowledge[] {
     groups.set(key, arr);
   }
 
-  const metrics = computeMarketMetrics();
   const metricByHood = new Map(
-    metrics.map((m) => [`${m.city.toLowerCase()}|${m.neighborhood.toLowerCase()}`, m]),
+    computeMarketMetrics().map((m) => [
+      `${m.city.toLowerCase()}|${m.neighborhood.toLowerCase()}`,
+      m,
+    ]),
   );
 
-  return Array.from(groups.entries())
+  neighborhoodsCache = Array.from(groups.entries())
     .filter(([, items]) => items.length >= 2)
     .map(([key, items]) => {
       const [city, neighborhood] = key.split("|");
@@ -188,7 +208,9 @@ export function buildCatalogNeighborhoods(): NeighborhoodKnowledge[] {
         investmentNotes: metric
           ? [
               `Prix moyen ~${metric.avgPricePerSqm.toLocaleString("fr-MA")} MAD/m² (${metric.sampleSize} ventes)`,
-              metric.avgYield ? `Rendement locatif indicatif ~${metric.avgYield}%` : "Données locatives en cours d'agrégation",
+              metric.avgYield
+                ? `Rendement locatif indicatif ~${metric.avgYield}%`
+                : "Données locatives en cours d'agrégation",
             ]
           : ["Échantillon insuffisant pour une analyse investissement détaillée"],
         avgPricePerSqm: metric?.avgPricePerSqm,
@@ -198,7 +220,13 @@ export function buildCatalogNeighborhoods(): NeighborhoodKnowledge[] {
         listingCount: items.length,
       } as NeighborhoodKnowledge & { listingCount: number };
     })
-    .sort((a, b) => (b as NeighborhoodKnowledge & { listingCount: number }).listingCount - (a as NeighborhoodKnowledge & { listingCount: number }).listingCount);
+    .sort(
+      (a, b) =>
+        (b as NeighborhoodKnowledge & { listingCount: number }).listingCount -
+        (a as NeighborhoodKnowledge & { listingCount: number }).listingCount,
+    );
+
+  return neighborhoodsCache;
 }
 
 export function getCatalogNeighborhoodBySlug(slug: string): NeighborhoodKnowledge | undefined {
