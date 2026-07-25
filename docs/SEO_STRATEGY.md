@@ -1,4 +1,4 @@
-# Samsar IA — Stratégie SEO et GEO
+# DarBladi — Stratégie SEO et GEO
 
 ## Objectifs
 
@@ -25,7 +25,7 @@ buildMetadata({ title, description, path, locale })
 Fichier : `src/app/sitemap.ts`
 
 **Inclus :**
-- Pages statiques × 3 locales (fr, en, ar) : accueil, acheter, louer, neuf, biens, carte, investir, simulateur, samsar-ia, comparer
+- Pages statiques × 3 locales (fr, en, ar) : accueil, acheter, louer, neuf, biens, carte, investir, simulateur, darbladi, comparer
 - Fiches biens publiées (`status: published`) × 3 locales
 
 **Priorités :**
@@ -68,7 +68,7 @@ Helper `listingJsonLd()` génère Schema.org `RealEstateListing` :
 | `/fr/louer` | location longue durée Rabat | Transactionnel |
 | `/fr/investir` | investir immobilier Maroc | Informationnel + transactionnel |
 | `/fr/simulateur-rentabilite` | simulateur rendement locatif | Outil |
-| `/fr/samsar-ia` | recherche immobilière IA Maroc | Différenciation |
+| `/fr/darbladi` | recherche immobilière IA Maroc | Différenciation |
 | `/fr/a-propos` | marketplace immobilière Maroc | Confiance |
 
 ### Slugs biens
@@ -140,7 +140,7 @@ Marrakech, Rabat, Casablanca, Salé, Tanger, Kénitra, Bouznika
 
 ### Google Business Profile
 
-- Profil entreprise Samsar IA (Phase 2 marketing)
+- Profil entreprise DarBladi (Phase 2 marketing)
 - Lien vers site + pages ville
 
 ## Performance Core Web Vitals

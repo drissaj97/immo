@@ -1,8 +1,8 @@
-# Samsar IA — Architecture intelligence artificielle
+# DarBladi — Architecture intelligence artificielle
 
 ## Objectif
 
-Permettre la recherche immobilière en langage naturel via **Samsar IA**, l'assistant conversationnel, avec contrôle, transparence et conformité.
+Permettre la recherche immobilière en langage naturel via **DarBladi**, l'assistant conversationnel, avec contrôle, transparence et conformité.
 
 ## État v0.3.0
 
@@ -12,8 +12,8 @@ Permettre la recherche immobilière en langage naturel via **Samsar IA**, l'assi
 | `LLMProvider` Mock + OpenAI | ✅ |
 | `assistant-service.ts` | ✅ |
 | Outils contrôlés | ✅ |
-| API `/api/samsar-ia/chat` | ✅ |
-| UI `Samsar IAAssistant` | ✅ |
+| API `/api/darbladi/chat` | ✅ |
+| UI `DarBladiAssistant` | ✅ |
 | Rate limiting | ✅ |
 | pgvector + RAG | 📋 Phase 3.1 |
 
@@ -21,7 +21,7 @@ Permettre la recherche immobilière en langage naturel via **Samsar IA**, l'assi
 
 ```mermaid
 flowchart TB
-    UI[Samsar IAAssistant] --> API[POST /api/samsar-ia/chat]
+    UI[DarBladiAssistant] --> API[POST /api/darbladi/chat]
     API --> RL[rate-limit]
     RL --> AS[runAssistant]
     AS --> LLM{LLMProvider}
@@ -54,7 +54,7 @@ OPENAI_API_KEY=sk-...
 AI_RATE_LIMIT_PER_MINUTE=20
 ```
 
-Sans clé : mode mock Samsar IA (parseur local + outils).
+Sans clé : mode mock DarBladi (parseur local + outils).
 
 ## Citations
 

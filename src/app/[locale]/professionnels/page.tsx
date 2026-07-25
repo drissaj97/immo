@@ -21,7 +21,7 @@ export default async function ProfessionnelsPage({ params }: { params: Promise<{
     <div className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
       <h1 className="font-serif text-3xl">Professionnels immobiliers</h1>
       <p className="mt-2 max-w-2xl text-charcoal/70">
-        Agences et agents partenaires Samsar IA. Données fictives à des fins de démonstration.
+        Agences et agents partenaires DarBladi. Données fictives à des fins de démonstration.
       </p>
 
       <section className="mt-10">

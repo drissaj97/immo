@@ -1,28 +1,28 @@
 {
   "expo": {
-    "name": "Samsar IA",
-    "slug": "samsar-ia",
+    "name": "DarBladi",
+    "slug": "darbladi",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "samsar-ia",
+    "scheme": "darbladi",
     "userInterfaceStyle": "light",
     "splash": {
       "backgroundColor": "#0f766e"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "ma.samsar.app"
+      "bundleIdentifier": "ma.darbladi.app"
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#0f766e"
       },
-      "package": "ma.samsar.app"
+      "package": "ma.darbladi.app"
     },
     "extra": {
       "apiBaseUrl": "http://localhost:3000",
-      "partnerApiKey": "samsar-demo-partner-key"
+      "partnerApiKey": "darbladi-demo-partner-key"
     }
   }
 }

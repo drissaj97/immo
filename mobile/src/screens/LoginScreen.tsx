@@ -10,7 +10,7 @@ import {
 import { login, type AuthUser } from "../api/auth";
 
 export function LoginScreen({ onSuccess }: { onSuccess: (user: AuthUser) => void }) {
-  const [email, setEmail] = useState("acheteur@samsar.demo");
+  const [email, setEmail] = useState("acheteur@darbladi.demo");
   const [password, setPassword] = useState("Acheteur123!");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -30,7 +30,7 @@ export function LoginScreen({ onSuccess }: { onSuccess: (user: AuthUser) => void
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Samsar IA</Text>
+      <Text style={styles.title}>DarBladi</Text>
       <Text style={styles.subtitle}>Connexion mobile</Text>
 
       <TextInput
@@ -59,7 +59,7 @@ export function LoginScreen({ onSuccess }: { onSuccess: (user: AuthUser) => void
         )}
       </Pressable>
 
-      <Text style={styles.hint}>Compte démo : acheteur@samsar.demo / Acheteur123!</Text>
+      <Text style={styles.hint}>Compte démo : acheteur@darbladi.demo / Acheteur123!</Text>
     </View>
   );
 }

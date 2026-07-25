@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/carte",
     "/investir",
     "/simulateur-rentabilite",
-    "/samsar-ia",
+    "/darbladi",
     "/comparer",
     "/professionnels",
     "/promoteurs",

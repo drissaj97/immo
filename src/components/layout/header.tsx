@@ -31,7 +31,7 @@ export function Header({
     { href: `${prefix}/promoteurs`, label: "Promoteurs" },
     { href: `${prefix}/carte`, label: messages.nav.map },
     { href: `${prefix}/investir`, label: messages.nav.invest },
-    { href: `${prefix}/samsar-ia`, label: messages.nav.ai },
+    { href: `${prefix}/darbladi`, label: messages.nav.ai },
   ];
 
   return (

@@ -2,18 +2,18 @@ services:
   postgres:
     image: postgis/postgis:16-3.4
     environment:
-      POSTGRES_USER: samsar
-      POSTGRES_PASSWORD: samsar_dev
-      POSTGRES_DB: samsar
+      POSTGRES_USER: darbladi
+      POSTGRES_PASSWORD: darbladi_dev
+      POSTGRES_DB: darbladi
     ports:
       - "5432:5432"
     volumes:
-      - samsar_pg_data:/var/lib/postgresql/data
+      - darbladi_pg_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U samsar -d samsar"]
+      test: ["CMD-SHELL", "pg_isready -U darbladi -d darbladi"]
       interval: 5s
       timeout: 5s
       retries: 5
 
 volumes:
-  samsar_pg_data:
+  darbladi_pg_data:

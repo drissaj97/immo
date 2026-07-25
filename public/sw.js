@@ -1,4 +1,4 @@
-const CACHE_NAME = "samsar-v1";
+const CACHE_NAME = "darbladi-v1";
 const OFFLINE_URL = "/fr/offline";
 
 const PRECACHE = ["/fr", "/fr/biens", "/fr/offline", "/manifest.webmanifest", "/icons/icon-192.png"];

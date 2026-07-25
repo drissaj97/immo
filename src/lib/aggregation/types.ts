@@ -2,7 +2,7 @@ import type { DemoListing } from "@/lib/data/demo-data";
 
 /** Sources agrégées — activation via contrat partenaire ou API licenciée */
 export type AggregationSourceId =
-  | "samsar-ia"
+  | "darbladi"
   | "holding-immo"
   | "avito"
   | "mubawab"

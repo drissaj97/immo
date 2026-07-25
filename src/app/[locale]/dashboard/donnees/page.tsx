@@ -26,7 +26,7 @@ export default function DonneesPage() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "samsar-mes-donnees.json";
+      a.download = "darbladi-mes-donnees.json";
       a.click();
       URL.revokeObjectURL(url);
     }

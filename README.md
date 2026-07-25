@@ -1,4 +1,4 @@
-# Samsar IA
+# DarBladi
 
 **Plateforme immobilière intelligente au Maroc** — marketplace premium, simulateur d'investissement et assistant conversationnel pour acheteurs, investisseurs et professionnels.
 
@@ -12,7 +12,7 @@
 
 ## Description produit
 
-Samsar IA est une marketplace immobilière multi-acteurs orientée **premium** et **data-driven** :
+DarBladi est une marketplace immobilière multi-acteurs orientée **premium** et **data-driven** :
 
 - **Recherche avancée** : filtres classiques + assistant IA en langage naturel
 - **Investissement** : simulateur de rentabilité (rendement brut/net, cash-flow, scénarios)
@@ -117,7 +117,7 @@ docker compose ps
 Configurer dans `.env.local` :
 
 ```
-DATABASE_URL=postgresql://samsar:samsar_dev@localhost:5432/samsar
+DATABASE_URL=postgresql://darbladi:darbladi_dev@localhost:5432/darbladi
 ```
 
 ### Migrations
@@ -157,9 +157,9 @@ Ouvrir [http://localhost:3000](http://localhost:3000) — redirection automatiqu
 
 | Email | Mot de passe | Rôle |
 |-------|--------------|------|
-| `admin@samsar.demo` | `Admin123!` | Administrateur |
-| `agent@samsar.demo` | `Agent123!` | Agent immobilier |
-| `acheteur@samsar.demo` | `Acheteur123!` | Acheteur |
+| `admin@darbladi.demo` | `Admin123!` | Administrateur |
+| `agent@darbladi.demo` | `Agent123!` | Agent immobilier |
+| `acheteur@darbladi.demo` | `Acheteur123!` | Acheteur |
 
 ### Pages principales
 
@@ -167,7 +167,7 @@ Ouvrir [http://localhost:3000](http://localhost:3000) — redirection automatiqu
 |-------|-------------|
 | `/fr/` | Accueil |
 | `/fr/biens` | Catalogue |
-| `/fr/samsar-ia` | Recherche IA |
+| `/fr/darbladi` | Recherche IA |
 | `/fr/simulateur-rentabilite` | Simulateur investissement |
 | `/fr/comparer` | Comparateur |
 | `/fr/admin` | Modération (admin) |
@@ -281,7 +281,7 @@ docker compose down -v    # Reset complet (supprime les données)
 
 ## Licence
 
-Projet privé — tous droits réservés © Samsar IA 2026.
+Projet privé — tous droits réservés © DarBladi 2026.
 
 ---
 

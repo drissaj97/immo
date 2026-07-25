@@ -218,7 +218,7 @@ async function main() {
       contactEmail: "sophie.demo@example.com",
       message: "Demande d'informations sur la fiscalité.",
       status: "contacted",
-      source: "samsar-ia",
+      source: "darbladi",
       isDemo: true,
     },
   ]);

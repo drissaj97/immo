@@ -75,7 +75,7 @@ export function normalizePartnerListing(
 
 function sourceDisplayName(source: AggregationSourceId): string {
   const names: Record<AggregationSourceId, string> = {
-    "samsar-ia": "Samsar IA",
+    "darbladi": "DarBladi",
     "holding-immo": "Holding IMMO",
     avito: "Avito.ma",
     mubawab: "Mubawab.ma",
@@ -93,10 +93,10 @@ export function normalizeHoldingListing(listing: DemoListing): AggregatedListing
   };
 }
 
-export function normalizeSamsarListing(listing: DemoListing): AggregatedListing {
+export function normalizeDarbladiListing(listing: DemoListing): AggregatedListing {
   return {
     ...listing,
-    aggregationSource: "samsar-ia",
+    aggregationSource: "darbladi",
     isExternal: false,
     licenseStatus: "first_party",
   };

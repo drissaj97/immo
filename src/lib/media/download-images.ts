@@ -29,7 +29,7 @@ export async function downloadImageToFile(sourceUrl: string, destPath: string): 
   mkdirSync(path.dirname(destPath), { recursive: true });
 
   const res = await fetch(sourceUrl, {
-    headers: { "User-Agent": "Samsar-IA-Import/1.0 (+first-party migration)" },
+    headers: { "User-Agent": "DarBladi-Import/1.0 (+first-party migration)" },
   });
 
   if (!res.ok) {

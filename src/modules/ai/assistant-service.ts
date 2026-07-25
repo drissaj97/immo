@@ -2,7 +2,7 @@ import { assistantResponseSchema, type AssistantResponse, type LLMMessage, type 
 import { createLLMProvider, MockLLMProvider, OpenAILLMProvider, ResilientLLMProvider } from "./llm-provider";
 import { executeFromNaturalLanguage } from "./tools";
 
-const SYSTEM_PROMPT = `Tu es Samsar IA, l'assistant immobilier pour le Maroc.
+const SYSTEM_PROMPT = `Tu es DarBladi, l'assistant immobilier pour le Maroc.
 Règles strictes :
 - Ne jamais inventer prix, surface, équipements ou statut juridique.
 - Distinguer faits, calculs, estimations, hypothèses et recommandations.
@@ -67,13 +67,13 @@ export async function runAssistant(
     citations: [
       ...(response.citations ?? []),
       {
-        source: "Samsar IA catalogue",
+        source: "DarBladi catalogue",
         type: "fact" as const,
         label: `${listings.length} bien(s) correspondant(s)`,
       },
       ...(ragData?.data && typeof ragData.data === "object" && "neighborhood" in (ragData.data as object)
         ? [{
-            source: "Samsar IA — RAG quartiers",
+            source: "DarBladi — RAG quartiers",
             type: "fact" as const,
             label: `Contexte ${(ragData.data as { neighborhood: string; city: string }).neighborhood}, ${(ragData.data as { city: string }).city}`,
           }]

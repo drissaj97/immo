@@ -18,7 +18,7 @@ export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
     priceMonthly: 0,
     currency: "MAD",
     description: "Parcourir, comparer et simuler gratuitement.",
-    features: ["Catalogue complet", "Comparateur 3 biens", "Simulateur rentabilité", "Assistant Samsar IA (limité)"],
+    features: ["Catalogue complet", "Comparateur 3 biens", "Simulateur rentabilité", "Assistant DarBladi (limité)"],
     targetRole: "buyer",
     isDemo: true,
   },

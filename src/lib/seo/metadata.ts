@@ -15,7 +15,7 @@ export function buildMetadata({
   const url = `${baseUrl}/${locale}${path}`;
 
   return {
-    title: `${title} | Samsar IA`,
+    title: `${title} | DarBladi`,
     description,
     alternates: {
       canonical: url,
@@ -29,7 +29,7 @@ export function buildMetadata({
       title,
       description,
       url,
-      siteName: "Samsar IA",
+      siteName: "DarBladi",
       locale,
       type: "website",
     },

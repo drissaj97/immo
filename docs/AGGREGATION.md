@@ -1,12 +1,12 @@
-# Samsar IA — Agrégation multi-sources
+# DarBladi — Agrégation multi-sources
 
 > Vision : **Toutes les annonces immobilières du Maroc, en un seul endroit.**
 
 ## Principe
 
-Samsar IA est un **index agrégé**, pas un scrapeur. Chaque annonce affiche :
+DarBladi est un **index agrégé**, pas un scrapeur. Chaque annonce affiche :
 
-- Sa **source** (Avito, Mubawab, Holding IMMO, Samsar IA…)
+- Sa **source** (Avito, Mubawab, Holding IMMO, DarBladi…)
 - Un **lien vers l'annonce originale**
 - Son **statut de licence** (first-party, contrat partenaire, API licenciée)
 
@@ -15,7 +15,7 @@ Samsar IA est un **index agrégé**, pas un scrapeur. Chaque annonce affiche :
 | Source | Statut actuel | Activation |
 |--------|---------------|------------|
 | Holding IMMO | ✅ Actif (50 annonces, ~21 photos/annonce) | Import JSON-LD + HTML + téléchargement photos |
-| Samsar IA | ✅ Actif | Publications plateforme |
+| DarBladi | ✅ Actif | Publications plateforme |
 | Avito.ma | ⏳ Partenariat requis | Voir ci-dessous |
 | Mubawab.ma | ⏳ Partenariat requis | Voir ci-dessous |
 | Sarouty.ma | ⏳ Partenariat requis | Contrat à négocier |
@@ -23,7 +23,7 @@ Samsar IA est un **index agrégé**, pas un scrapeur. Chaque annonce affiche :
 ## ⚠️ Pas de scraping
 
 Les CGU d'Avito et Mubawab **interdisent l'extraction automatisée** sans autorisation.
-Samsar IA **n'implémente pas de scraper** pour ces portails.
+DarBladi **n'implémente pas de scraper** pour ces portails.
 
 ## Voies conformes pour Avito & Mubawab
 
@@ -36,7 +36,7 @@ Une fois le contrat signé :
 
 ```bash
 # Option A — URL flux sécurisé
-AVITO_PARTNER_FEED_URL=https://partner.avito.ma/feed/samsar-ia.json
+AVITO_PARTNER_FEED_URL=https://partner.avito.ma/feed/darbladi.json
 MUBAWAB_PARTNER_FEED_URL=https://...
 
 # Option B — fichier local
@@ -98,7 +98,7 @@ Après un clone du repo, relancer `pnpm import:holding` pour récupérer les pho
 
 Priorité en cas de doublon :
 
-1. First-party (Holding IMMO, Samsar IA)
+1. First-party (Holding IMMO, DarBladi)
 2. Contrat partenaire
 3. API licenciée
 

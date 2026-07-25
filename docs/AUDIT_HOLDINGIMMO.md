@@ -95,7 +95,7 @@
 - Palette exacte du site source
 - Contenus agents réels (ex. noms, téléphones observés)
 
-## Implications pour Samsar IA
+## Implications pour DarBladi
 
 1. **Différenciation** : marketplace multi-acteurs + IA + investissement, pas agence mono-marque
 2. **Données** : provenance explicite, `is_demo`, pas de scraping non autorisé

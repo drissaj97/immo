@@ -5,7 +5,7 @@ import { formatPrice } from "@/lib/utils";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  return buildMetadata({ title: "Tarifs", description: "Offres Samsar IA pour particuliers et professionnels.", path: "/tarifs", locale });
+  return buildMetadata({ title: "Tarifs", description: "Offres DarBladi pour particuliers et professionnels.", path: "/tarifs", locale });
 }
 
 export default async function TarifsPage({ params }: { params: Promise<{ locale: string }> }) {

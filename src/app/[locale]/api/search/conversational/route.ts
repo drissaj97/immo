@@ -31,7 +31,7 @@ export async function POST(
     mode: result.mode,
     note:
       result.mode === "openai"
-        ? "Assistant Samsar IA — OpenAI"
-        : "Mode démonstration — parseur local Samsar IA (définir OPENAI_API_KEY + AI_PROVIDER=openai pour le LLM)",
+        ? "Assistant DarBladi — OpenAI"
+        : "Mode démonstration — parseur local DarBladi (définir OPENAI_API_KEY + AI_PROVIDER=openai pour le LLM)",
   });
 }

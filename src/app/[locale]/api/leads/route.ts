@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     source: body.source ?? "website",
   });
 
-  void sendLeadNotification("agent@samsar.demo", lead.contactName ?? "Visiteur");
+  void sendLeadNotification("agent@darbladi.demo", lead.contactName ?? "Visiteur");
 
   return NextResponse.json({ lead }, { status: 201 });
 }

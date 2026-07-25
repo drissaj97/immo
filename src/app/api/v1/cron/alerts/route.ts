@@ -17,10 +17,10 @@ export async function POST(request: Request) {
   const searches = await listSavedSearches(demoUserId);
   for (const search of searches.filter((s) => s.alertEnabled)) {
     const { total } = await searchListings(search.filters);
-    await sendAlertEmail("acheteur@samsar.demo", search.name, total);
+    await sendAlertEmail("acheteur@darbladi.demo", search.name, total);
     const pushes = await sendPushToUser(
       demoUserId,
-      "Samsar IA — Alerte recherche",
+      "DarBladi — Alerte recherche",
       `${total} bien(s) pour « ${search.name} »`,
       { searchId: search.id },
     );

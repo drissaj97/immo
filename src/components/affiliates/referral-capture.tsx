@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
-const STORAGE_KEY = "samsar_ref";
+const STORAGE_KEY = "darbladi_ref";
 
 export function ReferralCapture({ locale }: { locale: string }) {
   const searchParams = useSearchParams();

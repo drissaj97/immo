@@ -16,12 +16,12 @@ type ChatMessage = LLMMessage & {
   mode?: string;
 };
 
-export function SamsarAssistant({ locale }: { locale: string }) {
+export function DarBladiAssistant({ locale }: { locale: string }) {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
       content:
-        "Bonjour, je suis Samsar IA, votre assistant immobilier. Décrivez votre projet : achat, location, investissement locatif… Je m'appuie sur des données vérifiables (démo).",
+        "Bonjour, je suis DarBladi, votre assistant immobilier. Décrivez votre projet : achat, location, investissement locatif… Je m'appuie sur des données vérifiables (démo).",
     },
   ]);
   const [input, setInput] = useState("");
@@ -42,7 +42,7 @@ export function SamsarAssistant({ locale }: { locale: string }) {
 
     try {
       const history = messages.filter((m) => m.role === "user" || m.role === "assistant");
-      const res = await fetch(`/${locale}/api/samsar-ia/chat`, {
+      const res = await fetch(`/${locale}/api/darbladi/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMsg.content, history }),
@@ -131,7 +131,7 @@ export function SamsarAssistant({ locale }: { locale: string }) {
 
               {msg.mode && msg.role === "assistant" && (
                 <Badge variant="demo" className="mt-2">
-                  {msg.mode === "openai" ? "OpenAI" : "Mode démo Samsar IA"}
+                  {msg.mode === "openai" ? "OpenAI" : "Mode démo DarBladi"}
                 </Badge>
               )}
             </div>
@@ -143,7 +143,7 @@ export function SamsarAssistant({ locale }: { locale: string }) {
           </div>
         ))}
         {loading && (
-          <p className="text-sm text-charcoal/50 animate-pulse">Samsar IA analyse votre demande…</p>
+          <p className="text-sm text-charcoal/50 animate-pulse">DarBladi analyse votre demande…</p>
         )}
         <div ref={bottomRef} />
       </div>

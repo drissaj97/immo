@@ -47,7 +47,7 @@ export default async function LocaleLayout({
         <meta name="theme-color" content="#1B4332" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-title" content="Samsar IA" />
+        <meta name="apple-mobile-web-app-title" content="DarBladi" />
       </head>
       <body className="min-h-full flex flex-col bg-ivory text-charcoal antialiased">
         <DemoBanner message={messages.demo} />

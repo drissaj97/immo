@@ -1,9 +1,19 @@
 # Changelog
 
-Toutes les modifications notables du projet Samsar IA sont documentées dans ce fichier.
+Toutes les modifications notables du projet DarBladi sont documentées dans ce fichier.
 
 Format basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).  
 Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
+
+---
+
+## [1.4.2] — 2026-07-25
+
+### Restauration marque DarBladi
+
+- Marque officielle **DarBladi** rétablie (annule le rebranding Samsar IA v1.4.0)
+- Route assistant : `/darbladi` (redirect legacy `/samsar-ia`)
+- Composant `DarBladiAssistant`, emails `@darbladi.demo`, package `darbladi`
 
 ---
 
@@ -21,15 +31,9 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ## [1.4.0] — 2026-07-25
 
-### Rebranding Samsar IA
+### Rebranding temporaire Samsar IA (annulé en v1.4.2)
 
-**Marque officielle** : DarBladi → **Samsar IA**
-- i18n, metadata, manifest PWA, emails démo (`@samsar.demo`)
-- Route assistant : `/samsar-ia` (redirect legacy `/darbladi`)
-- Composant `SamsarAssistant`, API `/api/samsar-ia/chat`
-- Package npm : `samsar-ia`
-- Source agrégation : `samsar-ia`
-- Clé partenaire démo : `samsar-demo-partner-key` (legacy `darbladi-demo-partner-key` acceptée)
+Tentative de rebranding DarBladi → Samsar IA, restaurée en v1.4.2 sur demande produit.
 
 ---
 
@@ -39,7 +43,7 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 **Plateforme d'agrégation conforme**
 - Module `src/lib/aggregation/` — normalisation, déduplication, sync
-- Sources : Holding IMMO, Samsar IA, Avito*, Mubawab* (*partenariat requis)
+- Sources : Holding IMMO, DarBladi, Avito*, Mubawab* (*partenariat requis)
 - Page `/agregateur` — stats par source
 - Filtre `?source=avito` sur `/biens`
 - Badge source sur chaque annonce + lien original
@@ -184,7 +188,7 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 - Endpoints `/api/v1/listings`, `/api/v1/listings/[id]`, `/api/v1/market-metrics`, `/api/v1/health`
 - Authentification par clé API + rate limiting (60 req/min)
 - Documentation `/developpeurs`
-- Clé démo : `samsar-demo-partner-key`
+- Clé démo : `darbladi-demo-partner-key`
 
 **Conformité CNDP**
 - Page `/conformite` (Loi 09-08)
@@ -212,7 +216,7 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 - Base connaissance 8 quartiers (`neighborhood-knowledge.ts`)
 - Module RAG mock avec scoring keyword (`modules/ai/rag.ts`)
 - Outil IA `getNeighborhoodContext` intégré à l'assistant
-- Citations contexte quartier dans les réponses Samsar IA
+- Citations contexte quartier dans les réponses DarBladi
 - Pages SEO `/villes/[ville]/[quartier]` enrichies
 - 4 tests RAG
 
@@ -256,21 +260,21 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ## [0.3.0] — 2026-07-25
 
-### Rebranding Samsar IA + Phase 3 — Intelligence artificielle
+### Rebranding DarBladi + Phase 3 — Intelligence artificielle
 
-**Rebranding complet** : Samsar IA → **Samsar IA** (marque, routes, cookies, emails démo, base PostgreSQL)
+**Rebranding complet** : DarBladi → **DarBladi** (marque, routes, cookies, emails démo, base PostgreSQL)
 
-- Route assistant : `/samsar-ia` (redirect legacy `/samsar-ia`)
+- Route assistant : `/darbladi` (redirect legacy `/darbladi`)
 - Package npm : `darbladi`
-- Comptes démo : `@samsar.demo`
+- Comptes démo : `@darbladi.demo`
 
 **Phase 3 — Assistant IA**
 
 - Abstraction `LLMProvider` (Mock + OpenAI)
 - Outils contrôlés : `searchListings`, `getListing`, `compareListings`, `calculateInvestment`, `getMarketMetrics`
 - Service `runAssistant` avec citations (fact / calculation / estimate / hypothesis)
-- API chat `/api/samsar-ia/chat` + rate limiting
-- UI conversationnelle multi-tours (`Samsar IAAssistant`)
+- API chat `/api/darbladi/chat` + rate limiting
+- UI conversationnelle multi-tours (`DarBladiAssistant`)
 - Fallback mock sans clé API ; activer OpenAI via `AI_PROVIDER=openai` + `OPENAI_API_KEY`
 - 19 tests passent
 
@@ -293,7 +297,7 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ### 🎉 Release initiale MVP
 
-Première version publique de démonstration de la plateforme immobilière intelligente Samsar IA, ciblant le marché marocain.
+Première version publique de démonstration de la plateforme immobilière intelligente DarBladi, ciblant le marché marocain.
 
 ### Ajouté
 
@@ -304,7 +308,7 @@ Première version publique de démonstration de la plateforme immobilière intel
 - Comparateur multi-biens (jusqu'à 3)
 - Carte interactive MapLibre `/carte`
 - Section investissement `/investir` et simulateur `/simulateur-rentabilite`
-- Assistant Samsar IA `/samsar-ia` (recherche en langage naturel)
+- Assistant DarBladi `/darbladi` (recherche en langage naturel)
 
 #### Données
 - 15+ annonces fictives couvrant Marrakech, Rabat, Casablanca, Salé, Tanger, Kénitra, Bouznika
@@ -366,9 +370,9 @@ Première version publique de démonstration de la plateforme immobilière intel
 
 | Email | Mot de passe | Rôle |
 |-------|--------------|------|
-| `admin@samsar.demo` | `Admin123!` | admin |
-| `agent@samsar.demo` | `Agent123!` | agent |
-| `acheteur@samsar.demo` | `Acheteur123!` | buyer |
+| `admin@darbladi.demo` | `Admin123!` | admin |
+| `agent@darbladi.demo` | `Agent123!` | agent |
+| `acheteur@darbladi.demo` | `Acheteur123!` | buyer |
 
 ---
 
@@ -383,4 +387,4 @@ Première version publique de démonstration de la plateforme immobilière intel
 
 ---
 
-[0.1.0]: https://github.com/samsar-ia/samsar-ia/releases/tag/v0.1.0
+[0.1.0]: https://github.com/darbladi/darbladi/releases/tag/v0.1.0

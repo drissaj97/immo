@@ -5,21 +5,21 @@ import { checkRateLimit } from "@/lib/api/rate-limit";
 describe("Partner API auth", () => {
   it("extrait la clé du header X-API-Key", () => {
     const req = new Request("http://localhost/api/v1/listings", {
-      headers: { "X-API-Key": "samsar-demo-partner-key" },
+      headers: { "X-API-Key": "darbladi-demo-partner-key" },
     });
-    expect(extractApiKey(req)).toBe("samsar-demo-partner-key");
+    expect(extractApiKey(req)).toBe("darbladi-demo-partner-key");
   });
 
   it("extrait la clé Bearer", () => {
     const req = new Request("http://localhost/api/v1/listings", {
-      headers: { Authorization: "Bearer samsar-demo-partner-key" },
+      headers: { Authorization: "Bearer darbladi-demo-partner-key" },
     });
-    expect(extractApiKey(req)).toBe("samsar-demo-partner-key");
+    expect(extractApiKey(req)).toBe("darbladi-demo-partner-key");
   });
 
   it("authentifie la clé démo", () => {
     const req = new Request("http://localhost/api/v1/listings", {
-      headers: { "X-API-Key": "samsar-demo-partner-key" },
+      headers: { "X-API-Key": "darbladi-demo-partner-key" },
     });
     const partner = authenticatePartner(req);
     expect(partner?.partnerName).toBe("Partenaire Démo");

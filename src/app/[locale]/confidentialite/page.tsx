@@ -13,7 +13,7 @@ export default async function ConfidentialitePage({ params }: { params: Promise<
     <div className="mx-auto max-w-3xl px-4 py-12 lg:px-8">
       <h1 className="font-serif text-3xl">Politique de confidentialité</h1>
       <p className="mt-4 text-sm text-charcoal/70">
-        Samsar IA applique les principes de minimisation des données, consentement éclairé et droits des personnes
+        DarBladi applique les principes de minimisation des données, consentement éclairé et droits des personnes
         conformément à la loi 09-08 (CNDP) et au RGPD pour les utilisateurs de l&apos;Union européenne.
       </p>
 

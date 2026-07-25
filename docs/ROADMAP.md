@@ -1,4 +1,4 @@
-# Samsar IA — Roadmap produit
+# DarBladi — Roadmap produit
 
 > État actuel : **Phase 9 complétée** (v1.1.0).
 

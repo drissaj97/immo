@@ -72,7 +72,7 @@ export default async function ListingDetailPage({
           <div>
             <div className="flex flex-wrap gap-2">
               {!listing.isDemo && !listing.isExternal && (
-                <Badge variant="verified">Annonce Samsar IA</Badge>
+                <Badge variant="verified">Annonce DarBladi</Badge>
               )}
               {listing.isDemo && !listing.isExternal && <Badge variant="demo">Donnée démo</Badge>}
               {listing.isVerified && <Badge variant="verified">Vérifiée</Badge>}

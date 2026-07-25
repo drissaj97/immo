@@ -31,7 +31,7 @@ export function LoginForm({ locale }: { locale: string }) {
       }}
     >
       <h1 className="font-serif text-2xl">Connexion</h1>
-      <p className="text-sm text-charcoal/60">Comptes démo : admin@samsar.demo / Admin123!</p>
+      <p className="text-sm text-charcoal/60">Comptes démo : admin@darbladi.demo / Admin123!</p>
       <Input name="email" type="email" placeholder="Email" required />
       <Input name="password" type="password" placeholder="Mot de passe" required />
       {error && <p className="text-sm text-red-600">{error}</p>}

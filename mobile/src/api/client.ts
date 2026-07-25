@@ -1,7 +1,7 @@
-/** Samsar IA Partner API client for mobile app */
+/** DarBladi Partner API client for mobile app */
 
 const API_BASE = process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:3000";
-const API_KEY = process.env.EXPO_PUBLIC_PARTNER_API_KEY ?? "samsar-demo-partner-key";
+const API_KEY = process.env.EXPO_PUBLIC_PARTNER_API_KEY ?? "darbladi-demo-partner-key";
 
 export type ListingSummary = {
   id: string;

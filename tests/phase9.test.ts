@@ -10,7 +10,7 @@ describe("Mobile auth JWT", () => {
   it("signe et vérifie un token", async () => {
     const user = {
       id: "user-test",
-      email: "test@samsar.demo",
+      email: "test@darbladi.demo",
       role: "buyer" as const,
       fullName: "Test User",
     };
@@ -28,7 +28,7 @@ describe("Push notifications", () => {
     const result = await provider.send({
       to: "ExponentPushToken[demo]",
       title: "Test",
-      body: "Alerte Samsar IA",
+      body: "Alerte DarBladi",
     });
     expect(result.success).toBe(true);
   });

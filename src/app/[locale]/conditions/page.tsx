@@ -2,7 +2,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  return buildMetadata({ title: "Conditions d'utilisation", description: "CGU Samsar IA.", path: "/conditions", locale });
+  return buildMetadata({ title: "Conditions d'utilisation", description: "CGU DarBladi.", path: "/conditions", locale });
 }
 
 export default function ConditionsPage() {
