@@ -46,14 +46,16 @@ body {
   background: var(--sand);
 }
 
-/* Scroll page prioritaire tant que la carte n'est pas engagée */
-.map-scroll-safe.leaflet-container {
+/* Scroll page prioritaire tant que la carte n'est pas engagée.
+   Classes sur le wrapper (pas sur le conteneur Leaflet) pour ne pas
+   écraser `leaflet-container` au re-render React. */
+.map-scroll-safe .leaflet-container {
   cursor: grab;
 }
-.map-engaged.leaflet-container {
+.map-engaged .leaflet-container {
   cursor: grab;
 }
-.map-engaged.leaflet-container:active {
+.map-engaged .leaflet-container:active {
   cursor: grabbing;
 }
 

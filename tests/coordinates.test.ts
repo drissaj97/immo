@@ -3,6 +3,7 @@ import {
   resolveListingCoordinates,
   isPlaceholderCoordinate,
   isValidMoroccoCoordinate,
+  distanceKm,
 } from "@/lib/geography/resolve-coordinates";
 import { prepareMapListings } from "@/lib/map/prepare-map-listings";
 import type { ListingWithLocation } from "@/server/repositories/listings";
@@ -73,6 +74,7 @@ describe("prepareMapListings", () => {
       title: "Test",
       price: 1000000,
       currency: "MAD",
+      description: "",
       location: { city: "Salé", neighborhood: "Sala El Jadida", region: "Rabat-Salé-Kénitra", id: "1", slug: "s" },
       latitude: 33.5,
       longitude: -7.5,
@@ -83,13 +85,14 @@ describe("prepareMapListings", () => {
     expect(points[0].coordinateSource).toBe("neighborhood");
   });
 
-  it("n'affiche pas un marqueur en océan (0,0) hors zone de recherche", () => {
+  it("place l'annonce dans le quartier recherché (pas en océan ni hors zone)", () => {
     const ocean = {
       id: "ocean",
       title: "Appartement 130m² A VENDRE à Sala AL JADIDA",
       price: 1200000,
       currency: "MAD",
       slug: "appart-sala",
+      description: "Sala al jadida",
       location: { city: "Salé", neighborhood: "Salé", region: "Rabat-Salé-Kénitra", id: "1", slug: "s" },
       latitude: 0,
       longitude: 0,
@@ -101,23 +104,33 @@ describe("prepareMapListings", () => {
       price: 530000,
       currency: "MAD",
       slug: "villa-agadir",
+      description: "Founty",
       location: { city: "Agadir", neighborhood: "Founty", region: "Souss-Massa", id: "2", slug: "a" },
       latitude: 30.41,
       longitude: -9.6,
     } as ListingWithLocation;
 
+    const search = resolveListingCoordinates({
+      city: "Salé",
+      neighborhood: "Sala El Jadida",
+    });
+
     const points = prepareMapListings([ocean, farAway], {
       searchCity: "Salé",
       searchNeighborhood: "Sala El Jadida",
-      maxDistanceKm: 18,
+      maxDistanceKm: 8,
     });
 
-    expect(points.every((p) => isValidMoroccoCoordinate(p.mapLatitude, p.mapLongitude))).toBe(true);
-    expect(points.some((p) => Math.abs(p.mapLatitude) < 0.1 && Math.abs(p.mapLongitude) < 0.1)).toBe(
-      false,
-    );
     expect(points.some((p) => p.id === "agadir")).toBe(false);
     expect(points.some((p) => p.id === "ocean")).toBe(true);
-    expect(points.find((p) => p.id === "ocean")!.mapLatitude).toBeGreaterThan(33.5);
+
+    const pin = points.find((p) => p.id === "ocean")!;
+    expect(isValidMoroccoCoordinate(pin.mapLatitude, pin.mapLongitude)).toBe(true);
+    expect(
+      distanceKm(
+        { lat: search.latitude, lng: search.longitude },
+        { lat: pin.mapLatitude, lng: pin.mapLongitude },
+      ),
+    ).toBeLessThan(8);
   });
 });

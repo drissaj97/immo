@@ -112,6 +112,8 @@ export default async function BiensPage({
             points={mapData.points}
             nearbyPoisByKey={mapData.nearbyPoisByKey}
             nearbyPois={mapData.nearbyPois}
+            center={mapData.mapCenter}
+            zoom={14}
             locale={locale}
             neighborhoodLabel={
               baseFilters.neighborhood && baseFilters.city

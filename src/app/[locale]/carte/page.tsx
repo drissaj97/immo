@@ -50,7 +50,14 @@ export default async function CartePage({
         searchCity: filters.city,
         searchNeighborhood: filters.neighborhood,
       })
-    : { points: [], nearbyPoisByKey: {}, nearbyPois: [], mapCount: 0, listings: [] };
+    : {
+        points: [],
+        nearbyPoisByKey: {},
+        nearbyPois: [],
+        mapCount: 0,
+        listings: [],
+        mapCenter: undefined as [number, number] | undefined,
+      };
 
   const neighborhoodLabel =
     filters.neighborhood && filters.city
@@ -92,6 +99,8 @@ export default async function CartePage({
           points={mapData.points}
           nearbyPoisByKey={mapData.nearbyPoisByKey}
           nearbyPois={mapData.nearbyPois}
+          center={mapData.mapCenter}
+          zoom={14}
           locale={locale}
           neighborhoodLabel={neighborhoodLabel}
         />

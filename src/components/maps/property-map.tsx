@@ -20,7 +20,7 @@ function formatPriceShort(price: number): string {
 
 function priceIcon(price: number, exact: boolean): L.DivIcon {
   return L.divIcon({
-    className: "",
+    className: "leaflet-div-icon",
     html: `<button type="button" class="map-listing-marker ${exact ? "map-listing-marker--exact" : "map-listing-marker--approx"}"><span>${formatPriceShort(price)}</span></button>`,
     iconSize: [54, 28],
     iconAnchor: [27, 28],
@@ -30,7 +30,7 @@ function priceIcon(price: number, exact: boolean): L.DivIcon {
 
 function poiDivIcon(category: string): L.DivIcon {
   return L.divIcon({
-    className: "",
+    className: "leaflet-div-icon",
     html: `<button type="button" class="map-poi-marker" title="${escapeHtml(category)}"><span>${poiIcon(category)}</span></button>`,
     iconSize: [26, 26],
     iconAnchor: [13, 13],
@@ -47,6 +47,7 @@ export function PropertyMap({
   neighborhoodLabel,
 }: {
   points: MapListingPoint[];
+  /** Centre [lng, lat] de la zone recherchée. */
   center?: [number, number];
   zoom?: number;
   nearbyPoisByKey?: Record<string, PoiPayload[]>;
@@ -57,6 +58,7 @@ export function PropertyMap({
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const layerRef = useRef<L.LayerGroup | null>(null);
+  const fittedKeyRef = useRef<string | null>(null);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   /** Carte « active » : molette / doigt ne bloquent plus le scroll de page tant que false. */
@@ -72,18 +74,20 @@ export function PropertyMap({
     let releaseMap: (() => void) | null = null;
 
     try {
-      const initial = center ?? computeCenter(points) ?? ([-7.62, 33.57] as [number, number]);
+      // center prop et computeCenter sont [lng, lat] → Leaflet attend [lat, lng]
+      const initialLngLat = center ?? computeCenter(points) ?? ([-6.812, 34.045] as [number, number]);
       const touch =
         typeof window !== "undefined" &&
         ("ontouchstart" in window || navigator.maxTouchPoints > 0);
 
-      // Leaflet uses [lat, lng]
-      // scrollWheelZoom off par défaut → le scroll page n'est pas capturé en passant sur la carte
       map = L.map(mapContainer.current, {
-        center: [initial[1], initial[0]],
-        zoom: points.length ? Math.max(zoom, 12) : 6,
+        center: [initialLngLat[1], initialLngLat[0]],
+        zoom: points.length ? Math.max(zoom, 13) : 6,
         scrollWheelZoom: false,
         dragging: !touch,
+        // Évite de partir dans l'océan / hors Maroc
+        maxBounds: L.latLngBounds([20.5, -17.5], [36.2, -0.8]),
+        maxBoundsViscosity: 0.85,
       });
 
       L.tileLayer(OSM_TILES, {
@@ -102,14 +106,11 @@ export function PropertyMap({
         setMapEngaged(false);
       };
 
-      // Clic → activer zoom molette & pan tactile
       map.on("click", engageMap);
 
-      // Quitter la carte → redonner le scroll à la page
       onLeave = () => releaseMap?.();
       map.getContainer().addEventListener("mouseleave", onLeave);
 
-      // Ctrl / ⌘ + molette : zoom sans clic préalable
       onWheel = (event: WheelEvent) => {
         if (!(event.ctrlKey || event.metaKey)) return;
         if (map && !map.scrollWheelZoom.enabled()) {
@@ -123,7 +124,6 @@ export function PropertyMap({
       mapRef.current = map;
       setReady(true);
 
-      // corrige tuiles grises si conteneur était hidden au mount
       requestAnimationFrame(() => map?.invalidateSize());
       setTimeout(() => map?.invalidateSize(), 200);
     } catch (err) {
@@ -140,6 +140,7 @@ export function PropertyMap({
       }
       mapRef.current = null;
       layerRef.current = null;
+      fittedKeyRef.current = null;
       setReady(false);
       setMapEngaged(false);
     };
@@ -154,6 +155,7 @@ export function PropertyMap({
     layer.clearLayers();
     const bounds = L.latLngBounds([]);
 
+    // POI uniquement s'ils sont proches des annonces (déjà filtrés serveur)
     for (const poi of nearbyPois) {
       const latLng: L.LatLngTuple = [poi.latitude, poi.longitude];
       const marker = L.marker(latLng, {
@@ -166,13 +168,12 @@ export function PropertyMap({
         </div>`,
       );
       marker.addTo(layer);
-      bounds.extend(latLng);
     }
 
     for (const point of points) {
       const isExact = point.coordinateSource === "exact";
       const poiKey = `${point.mapLatitude.toFixed(3)}|${point.mapLongitude.toFixed(3)}`;
-      const pois = nearbyPoisByKey[poiKey] ?? nearbyPois;
+      const pois = nearbyPoisByKey[poiKey] ?? [];
       const latLng: L.LatLngTuple = [point.mapLatitude, point.mapLongitude];
       const marker = L.marker(latLng, {
         icon: priceIcon(point.price, isExact),
@@ -181,24 +182,28 @@ export function PropertyMap({
       bounds.extend(latLng);
     }
 
-    if (bounds.isValid()) {
-      if (points.length + nearbyPois.length > 1) {
+    // fitBounds une seule fois par jeu de points — ne pas réinitialiser le zoom utilisateur
+    const fitKey = points.map((p) => p.id).join("|");
+    if (bounds.isValid() && fittedKeyRef.current !== fitKey) {
+      fittedKeyRef.current = fitKey;
+      if (points.length > 1) {
         map.fitBounds(bounds, { padding: [48, 48], maxZoom: 15 });
-      } else {
+      } else if (points.length === 1) {
         map.setView(bounds.getCenter(), Math.max(zoom, 14));
       }
+    } else if (!points.length && center) {
+      map.setView([center[1], center[0]], zoom);
     }
 
     map.invalidateSize();
-  }, [points, nearbyPoisByKey, nearbyPois, ready, locale, zoom]);
+  }, [points, nearbyPoisByKey, nearbyPois, ready, locale, zoom, center]);
 
   return (
-    <div className="relative h-full min-h-[400px] w-full">
-      <div
-        ref={mapContainer}
-        className={`h-full min-h-[400px] w-full rounded-lg ${mapEngaged ? "map-engaged" : "map-scroll-safe"}`}
-        style={{ zIndex: 0 }}
-      />
+    <div
+      className={`relative h-full min-h-[400px] w-full ${mapEngaged ? "map-engaged" : "map-scroll-safe"}`}
+    >
+      {/* Conteneur Leaflet : className stable — ne pas y mettre mapEngaged (écrase leaflet-container). */}
+      <div ref={mapContainer} className="h-full min-h-[400px] w-full rounded-lg" style={{ zIndex: 0 }} />
 
       {!ready && !error && (
         <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-sand/40">

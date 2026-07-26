@@ -6,7 +6,9 @@ import {
   isPlaceholderCoordinate,
   isValidMoroccoCoordinate,
   resolveListingCoordinates,
+  type CoordinateSource,
 } from "@/lib/geography/resolve-coordinates";
+import { cityMatches, neighborhoodMatches } from "@/lib/search/location-match";
 import type { MapListingPoint } from "@/lib/map/listing-map-points";
 
 export type MapListingsOptions = {
@@ -14,7 +16,7 @@ export type MapListingsOptions = {
   searchCity?: string;
   /** Quartier recherché — ancre le filtre géographique. */
   searchNeighborhood?: string;
-  /** Rayon max autour de la zone recherchée (km). Défaut 18. */
+  /** Rayon max autour de la zone recherchée (km). Défaut 8. */
   maxDistanceKm?: number;
 };
 
@@ -28,7 +30,7 @@ export function prepareMapListings(
 
   const searchCity = options.searchCity?.trim();
   const searchNeighborhood = options.searchNeighborhood?.trim();
-  const maxDistanceKm = options.maxDistanceKm ?? 18;
+  const maxDistanceKm = options.maxDistanceKm ?? 8;
 
   const searchAnchor =
     searchCity
@@ -43,27 +45,64 @@ export function prepareMapListings(
     isValidMoroccoCoordinate(searchAnchor.latitude, searchAnchor.longitude);
 
   for (const listing of listings) {
-    const resolved = resolveListingCoordinates({
+    if (searchCity && !cityMatches(searchCity, listing)) continue;
+    if (
+      searchNeighborhood &&
+      !neighborhoodMatches(searchNeighborhood, {
+        location: listing.location,
+        title: listing.title,
+        description: listing.description ?? "",
+      })
+    ) {
+      continue;
+    }
+
+    let resolved = resolveListingCoordinates({
       city: listing.location.city,
       neighborhood: listing.location.neighborhood,
       latitude: listing.latitude,
       longitude: listing.longitude,
     });
-    if (resolved.source === "unknown") continue;
-    if (!isValidMoroccoCoordinate(resolved.latitude, resolved.longitude)) continue;
 
+    // Annonce de la recherche mais coords foireuses / hors quartier → pin sur la zone cherchée
     if (hasSearchAnchor) {
-      const km = distanceKm(
-        { lat: searchAnchor.latitude, lng: searchAnchor.longitude },
-        { lat: resolved.latitude, lng: resolved.longitude },
-      );
-      if (km > maxDistanceKm) continue;
+      const outside =
+        !isValidMoroccoCoordinate(resolved.latitude, resolved.longitude) ||
+        resolved.source === "unknown" ||
+        distanceKm(
+          { lat: searchAnchor.latitude, lng: searchAnchor.longitude },
+          { lat: resolved.latitude, lng: resolved.longitude },
+        ) > maxDistanceKm;
+
+      if (outside) {
+        resolved = {
+          latitude: searchAnchor.latitude,
+          longitude: searchAnchor.longitude,
+          source: (searchNeighborhood ? "neighborhood" : "city") as CoordinateSource,
+        };
+      }
+    } else if (
+      resolved.source === "unknown" ||
+      !isValidMoroccoCoordinate(resolved.latitude, resolved.longitude)
+    ) {
+      continue;
     }
+
+    if (!isValidMoroccoCoordinate(resolved.latitude, resolved.longitude)) continue;
+    if (resolved.source === "unknown") continue;
 
     const bucketKey = `${resolved.latitude.toFixed(4)}|${resolved.longitude.toFixed(4)}`;
     const index = bucketCount.get(bucketKey) ?? 0;
     bucketCount.set(bucketKey, index + 1);
     const jitter = index > 0 ? spreadOffset(index) : { lat: 0, lng: 0 };
+
+    const hadUsableExact =
+      !isPlaceholderCoordinate(listing.latitude, listing.longitude) &&
+      isValidMoroccoCoordinate(listing.latitude, listing.longitude) &&
+      distanceKm(
+        { lat: listing.latitude, lng: listing.longitude },
+        { lat: searchAnchor?.latitude ?? listing.latitude, lng: searchAnchor?.longitude ?? listing.longitude },
+      ) <= maxDistanceKm;
 
     points.push({
       id: listing.id,
@@ -75,9 +114,7 @@ export function prepareMapListings(
       neighborhood: listing.location.neighborhood,
       mapLatitude: resolved.latitude + jitter.lat,
       mapLongitude: resolved.longitude + jitter.lng,
-      coordinateSource: isPlaceholderCoordinate(listing.latitude, listing.longitude)
-        ? resolved.source
-        : "exact",
+      coordinateSource: hadUsableExact ? "exact" : resolved.source,
     });
   }
 
@@ -86,7 +123,7 @@ export function prepareMapListings(
 
 function spreadOffset(index: number): { lat: number; lng: number } {
   const angle = (index * 137.5 * Math.PI) / 180;
-  const radius = 0.0015 * Math.min(index, 8);
+  const radius = 0.0012 * Math.min(index, 10);
   return {
     lat: Math.cos(angle) * radius,
     lng: Math.sin(angle) * radius,
