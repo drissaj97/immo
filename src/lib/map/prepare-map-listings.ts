@@ -25,7 +25,6 @@ export function prepareMapListings(
   listings: ListingWithLocation[],
   options: MapListingsOptions = {},
 ): MapListingPoint[] {
-  const bucketCount = new Map<string, number>();
   const points: MapListingPoint[] = [];
 
   const searchCity = options.searchCity?.trim();
@@ -110,11 +109,6 @@ export function prepareMapListings(
     if (!isValidMoroccoCoordinate(resolved.latitude, resolved.longitude)) continue;
     if (resolved.source === "unknown") continue;
 
-    const bucketKey = `${resolved.latitude.toFixed(4)}|${resolved.longitude.toFixed(4)}`;
-    const index = bucketCount.get(bucketKey) ?? 0;
-    bucketCount.set(bucketKey, index + 1);
-    const jitter = index > 0 ? spreadOffset(index) : { lat: 0, lng: 0 };
-
     const stillAtOriginalExact =
       originalWasExact &&
       isReasonableCoordinateForCity(
@@ -136,8 +130,8 @@ export function prepareMapListings(
       slug: listing.slug,
       city: listing.location.city,
       neighborhood: listing.location.neighborhood,
-      mapLatitude: resolved.latitude + jitter.lat,
-      mapLongitude: resolved.longitude + jitter.lng,
+      mapLatitude: resolved.latitude,
+      mapLongitude: resolved.longitude,
       coordinateSource: stillAtOriginalExact ? "exact" : resolved.source,
     });
   }
@@ -166,14 +160,38 @@ export function prepareMapListings(
     }
   }
 
-  return points;
+  // Écarter les pins superposés (sinon 9 annonces = 1 pastille visible).
+  return spiderfyStackedPoints(points);
 }
 
-function spreadOffset(index: number): { lat: number; lng: number } {
-  const angle = (index * 137.5 * Math.PI) / 180;
-  const radius = 0.0012 * Math.min(index, 10);
-  return {
-    lat: Math.cos(angle) * radius,
-    lng: Math.sin(angle) * radius,
-  };
+/** Répartit en cercle les annonces qui partagent quasiment les mêmes coords. */
+export function spiderfyStackedPoints(points: MapListingPoint[]): MapListingPoint[] {
+  if (points.length <= 1) return points;
+
+  const groups = new Map<string, number[]>();
+  points.forEach((point, idx) => {
+    const key = `${point.mapLatitude.toFixed(4)}|${point.mapLongitude.toFixed(4)}`;
+    const arr = groups.get(key) ?? [];
+    arr.push(idx);
+    groups.set(key, arr);
+  });
+
+  const out = points.map((p) => ({ ...p }));
+  for (const indices of groups.values()) {
+    if (indices.length < 2) continue;
+    const base = out[indices[0]!]!;
+    const n = indices.length;
+    // ~80–180 m de rayon selon le nombre — lisible au zoom quartier
+    const radius = 0.0009 + 0.00025 * Math.min(n, 12);
+    indices.forEach((pointIdx, i) => {
+      const angle = (2 * Math.PI * i) / n - Math.PI / 2;
+      const point = out[pointIdx]!;
+      point.mapLatitude = base.mapLatitude + Math.cos(angle) * radius;
+      point.mapLongitude = base.mapLongitude + Math.sin(angle) * radius;
+      if (point.coordinateSource === "exact") {
+        point.coordinateSource = "neighborhood";
+      }
+    });
+  }
+  return out;
 }

@@ -85,6 +85,36 @@ describe("prepareMapListings", () => {
     expect(points[0].coordinateSource).toBe("neighborhood");
   });
 
+  it("écarte les pins empilés après recentrage (pas un seul marqueur pour 9 annonces)", () => {
+    const listings = Array.from({ length: 5 }, (_, i) => ({
+      id: `stack-${i}`,
+      title: `Bien Wifak ${i}`,
+      price: 1_000_000 + i * 100_000,
+      currency: "MAD",
+      slug: `wifak-${i}`,
+      description: "Wifak Temara",
+      location: {
+        city: "Temara",
+        neighborhood: "Wifak",
+        region: "Rabat-Salé-Kénitra",
+        id: "1",
+        slug: "t",
+      },
+      latitude: -6.9,
+      longitude: -6.9,
+    })) as ListingWithLocation[];
+
+    const points = prepareMapListings(listings, {
+      searchCity: "Temara",
+      searchNeighborhood: "Wifak",
+      maxDistanceKm: 10,
+    });
+
+    expect(points).toHaveLength(5);
+    const keys = new Set(points.map((p) => `${p.mapLatitude.toFixed(5)}|${p.mapLongitude.toFixed(5)}`));
+    expect(keys.size).toBe(5);
+  });
+
   it("ramène un outlier océan (coords foireuses) au centre Temara", () => {
     const ocean = {
       id: "ocean-temara",

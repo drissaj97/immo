@@ -5,12 +5,13 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { coordinateSourceLabel, type MapListingPoint } from "@/lib/map/listing-map-points";
 import type { MapPoiPoint } from "@/lib/map/map-poi-types";
+import {
+  FALLBACK_MAP_TILES,
+  getMapTiles,
+  MAP_ATTRIBUTION,
+} from "@/lib/map/map-style";
 
 type PoiPayload = MapPoiPoint;
-
-const OSM_TILES = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-const OSM_ATTR =
-  '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>';
 
 function formatPriceShort(price: number): string {
   if (price >= 1_000_000) return `${(price / 1_000_000).toFixed(1).replace(/\.0$/, "")} M`;
@@ -61,7 +62,6 @@ export function PropertyMap({
   const fittedKeyRef = useRef<string | null>(null);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  /** Carte « active » : molette / doigt ne bloquent plus le scroll de page tant que false. */
   const [mapEngaged, setMapEngaged] = useState(false);
 
   useEffect(() => {
@@ -74,8 +74,7 @@ export function PropertyMap({
     let releaseMap: (() => void) | null = null;
 
     try {
-      // center prop et computeCenter sont [lng, lat] → Leaflet attend [lat, lng]
-      const initialLngLat = center ?? computeCenter(points) ?? ([-6.812, 34.045] as [number, number]);
+      const initialLngLat = center ?? computeCenter(points) ?? ([-6.91, 33.92] as [number, number]);
       const touch =
         typeof window !== "undefined" &&
         ("ontouchstart" in window || navigator.maxTouchPoints > 0);
@@ -85,15 +84,26 @@ export function PropertyMap({
         zoom: points.length ? Math.max(zoom, 13) : 6,
         scrollWheelZoom: false,
         dragging: !touch,
-        // Évite de partir dans l'océan / hors Maroc
-        maxBounds: L.latLngBounds([20.5, -17.5], [36.2, -0.8]),
-        maxBoundsViscosity: 0.85,
+        maxBounds: L.latLngBounds([21, -17.2], [36.0, -0.9]),
+        maxBoundsViscosity: 0.7,
+        minZoom: 5,
+        maxZoom: 18,
       });
 
-      L.tileLayer(OSM_TILES, {
-        attribution: OSM_ATTR,
+      const tiles = L.tileLayer(getMapTiles(), {
+        attribution: MAP_ATTRIBUTION,
         maxZoom: 19,
-      }).addTo(map);
+        subdomains: "abcd",
+        updateWhenIdle: true,
+        keepBuffer: 2,
+      });
+      tiles.on("tileerror", () => {
+        // Si Carto échoue, bascule OSM une fois
+        if ((tiles as L.TileLayer & { _fellBack?: boolean })._fellBack) return;
+        (tiles as L.TileLayer & { _fellBack?: boolean })._fellBack = true;
+        tiles.setUrl(FALLBACK_MAP_TILES);
+      });
+      tiles.addTo(map);
 
       engageMap = () => {
         map?.scrollWheelZoom.enable();
@@ -107,6 +117,9 @@ export function PropertyMap({
       };
 
       map.on("click", engageMap);
+      map.on("zoomend moveend", () => {
+        map?.invalidateSize({ pan: false });
+      });
 
       onLeave = () => releaseMap?.();
       map.getContainer().addEventListener("mouseleave", onLeave);
@@ -125,7 +138,8 @@ export function PropertyMap({
       setReady(true);
 
       requestAnimationFrame(() => map?.invalidateSize());
-      setTimeout(() => map?.invalidateSize(), 200);
+      setTimeout(() => map?.invalidateSize(), 150);
+      setTimeout(() => map?.invalidateSize(), 500);
     } catch (err) {
       console.warn("[map] init failed", err);
       setError("Impossible de charger la carte");
@@ -155,8 +169,7 @@ export function PropertyMap({
     layer.clearLayers();
     const bounds = L.latLngBounds([]);
 
-    // Filet client : ramener les outliers au centre de recherche (évite pins en océan).
-    const safePoints = snapOutliersToCenter(points, center);
+    const safePoints = spiderfyClient(snapOutliersToCenter(points, center));
 
     const anchorLatLng: L.LatLngTuple | null = center
       ? [center[1], center[0]]
@@ -167,23 +180,24 @@ export function PropertyMap({
           ]
         : null;
 
-    // POI uniquement s'ils sont proches de la zone
     for (const poi of nearbyPois) {
-      if (anchorLatLng && haversineKm(anchorLatLng[0], anchorLatLng[1], poi.latitude, poi.longitude) > 40) {
+      if (
+        anchorLatLng &&
+        haversineKm(anchorLatLng[0], anchorLatLng[1], poi.latitude, poi.longitude) > 40
+      ) {
         continue;
       }
       if (!isInMorocco(poi.latitude, poi.longitude)) continue;
       const latLng: L.LatLngTuple = [poi.latitude, poi.longitude];
-      const marker = L.marker(latLng, {
-        icon: poiDivIcon(poi.category),
-      }).bindPopup(
-        `<div class="map-popup-body">
+      L.marker(latLng, { icon: poiDivIcon(poi.category) })
+        .bindPopup(
+          `<div class="map-popup-body">
           <div class="map-popup-category">${escapeHtml(poi.category)}</div>
           <strong>${escapeHtml(poi.name)}</strong>
           <div class="map-popup-meta">${poi.distanceM} m du quartier</div>
         </div>`,
-      );
-      marker.addTo(layer);
+        )
+        .addTo(layer);
     }
 
     for (const point of safePoints) {
@@ -191,34 +205,37 @@ export function PropertyMap({
       const poiKey = `${point.mapLatitude.toFixed(3)}|${point.mapLongitude.toFixed(3)}`;
       const pois = nearbyPoisByKey[poiKey] ?? [];
       const latLng: L.LatLngTuple = [point.mapLatitude, point.mapLongitude];
-      const marker = L.marker(latLng, {
-        icon: priceIcon(point.price, isExact),
-      }).bindPopup(buildListingPopupHtml(point, pois, locale), { maxWidth: 300 });
-      marker.addTo(layer);
+      L.marker(latLng, { icon: priceIcon(point.price, isExact) })
+        .bindPopup(buildListingPopupHtml(point, pois, locale), { maxWidth: 300 })
+        .addTo(layer);
       bounds.extend(latLng);
     }
 
-    // fitBounds une seule fois par jeu de points — ne pas réinitialiser le zoom utilisateur
-    const fitKey = safePoints.map((p) => `${p.id}:${p.mapLatitude.toFixed(4)}`).join("|");
+    const fitKey = safePoints.map((p) => `${p.id}:${p.mapLatitude.toFixed(5)}`).join("|");
     if (bounds.isValid() && fittedKeyRef.current !== fitKey) {
       fittedKeyRef.current = fitKey;
-      if (safePoints.length > 1) {
-        map.fitBounds(bounds, { padding: [48, 48], maxZoom: 15 });
-      } else if (safePoints.length === 1) {
-        map.setView(bounds.getCenter(), Math.max(zoom, 14));
+      const ne = bounds.getNorthEast();
+      const sw = bounds.getSouthWest();
+      const spanKm = haversineKm(sw.lat, sw.lng, ne.lat, ne.lng);
+
+      // Points très proches → setView fixe (évite zoom max / tuiles grises)
+      if (safePoints.length === 1 || spanKm < 0.35) {
+        const c = bounds.getCenter();
+        map.setView(c, Math.min(Math.max(zoom, 14), 16));
+      } else {
+        map.fitBounds(bounds, { padding: [56, 56], maxZoom: 15 });
       }
     } else if (!safePoints.length && center) {
       map.setView([center[1], center[0]], zoom);
     }
 
-    map.invalidateSize();
+    map.invalidateSize({ pan: false });
   }, [points, nearbyPoisByKey, nearbyPois, ready, locale, zoom, center]);
 
   return (
     <div
       className={`relative h-full min-h-[400px] w-full ${mapEngaged ? "map-engaged" : "map-scroll-safe"}`}
     >
-      {/* Conteneur Leaflet : className stable — ne pas y mettre mapEngaged (écrase leaflet-container). */}
       <div ref={mapContainer} className="h-full min-h-[400px] w-full rounded-lg" style={{ zIndex: 0 }} />
 
       {!ready && !error && (
@@ -286,7 +303,6 @@ function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): nu
   return 6371 * 2 * Math.asin(Math.min(1, Math.sqrt(a)));
 }
 
-/** Ramène les pins hors Maroc / trop loin du centre vers le centre de recherche. */
 function snapOutliersToCenter(
   points: MapListingPoint[],
   center?: [number, number],
@@ -308,6 +324,33 @@ function snapOutliersToCenter(
       coordinateSource: point.coordinateSource === "exact" ? "neighborhood" : point.coordinateSource,
     };
   });
+}
+
+/** Écarte les pins encore empilés après snap client. */
+function spiderfyClient(points: MapListingPoint[]): MapListingPoint[] {
+  if (points.length <= 1) return points;
+  const groups = new Map<string, number[]>();
+  points.forEach((p, idx) => {
+    const key = `${p.mapLatitude.toFixed(4)}|${p.mapLongitude.toFixed(4)}`;
+    const arr = groups.get(key) ?? [];
+    arr.push(idx);
+    groups.set(key, arr);
+  });
+
+  const out = points.map((p) => ({ ...p }));
+  for (const indices of groups.values()) {
+    if (indices.length < 2) continue;
+    const base = out[indices[0]!]!;
+    const n = indices.length;
+    const radius = 0.0009 + 0.00025 * Math.min(n, 12);
+    indices.forEach((pointIdx, i) => {
+      const angle = (2 * Math.PI * i) / n - Math.PI / 2;
+      const point = out[pointIdx]!;
+      point.mapLatitude = base.mapLatitude + Math.cos(angle) * radius;
+      point.mapLongitude = base.mapLongitude + Math.sin(angle) * radius;
+    });
+  }
+  return out;
 }
 
 function poiIcon(category: string): string {
