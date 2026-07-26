@@ -6,6 +6,7 @@ import { formatPrice } from "@/lib/utils";
 import type { ListingWithLocation } from "@/server/repositories/listings";
 import { convertPrice } from "@/lib/currency";
 import { SourceBadge } from "@/components/listings/source-badge";
+import { effectiveTransactionType } from "@/lib/search/effective-transaction-type";
 
 export function ListingCard({
   listing,
@@ -24,12 +25,9 @@ export function ListingCard({
       ? listing.price
       : convertPrice(listing.price, listing.currency, currency).amount;
 
+  const tx = effectiveTransactionType(listing);
   const transactionLabel =
-    listing.transactionType === "sale"
-      ? "À vendre"
-      : listing.transactionType === "long_term_rent"
-        ? "Location"
-        : "Saisonnier";
+    tx === "sale" ? "À vendre" : tx === "long_term_rent" ? "Location" : "Saisonnier";
 
   return (
     <Link

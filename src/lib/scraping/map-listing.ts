@@ -1,6 +1,7 @@
 import type { RawPartnerListing } from "@/lib/aggregation/types";
 import { parsePrice } from "./parse-json-ld";
 import type { JsonLdRealEstateListing } from "./parse-json-ld";
+import { RENT_PRICE_CEILING_MAD } from "@/lib/search/effective-transaction-type";
 
 export function mapJsonLdToRawListing(
   jsonLd: JsonLdRealEstateListing,
@@ -17,6 +18,8 @@ export function mapJsonLdToRawListing(
   const neighborhood = item?.address?.addressRegion ?? city;
   const lat = toNumber(item?.geo?.latitude);
   const lng = toNumber(item?.geo?.longitude);
+  const listingType = inferListingType(item?.["@type"] as string | undefined, title);
+  const sourceUrl = jsonLd.url ?? fallbackUrl;
 
   return {
     externalId,
@@ -24,8 +27,8 @@ export function mapJsonLdToRawListing(
     description: jsonLd.description ?? title,
     price,
     currency: (jsonLd.offers?.priceCurrency as "MAD") ?? "MAD",
-    transactionType: inferTransactionType(title, jsonLd.url ?? fallbackUrl),
-    listingType: inferListingType(item?.["@type"] as string | undefined, title),
+    transactionType: inferTransactionType(title, sourceUrl, price, listingType),
+    listingType,
     city,
     neighborhood,
     livingArea: toNumber(item?.floorSize?.value),
@@ -34,7 +37,7 @@ export function mapJsonLdToRawListing(
     latitude: lat,
     longitude: lng,
     images,
-    sourceUrl: jsonLd.url ?? fallbackUrl,
+    sourceUrl,
     advertiserName: jsonLd.seller?.name,
   };
 }
@@ -50,7 +53,12 @@ function toNumber(value: number | string | undefined): number | undefined {
   return Number.isFinite(n) ? n : undefined;
 }
 
-function inferTransactionType(title: string, url: string): RawPartnerListing["transactionType"] {
+export function inferTransactionType(
+  title: string,
+  url: string,
+  price = 0,
+  listingType?: RawPartnerListing["listingType"],
+): RawPartnerListing["transactionType"] {
   const text = `${title} ${url}`.toLowerCase();
   // Vente prioritaire si signal clair (évite faux "location" dans une annonce à vendre).
   if (
@@ -63,6 +71,10 @@ function inferTransactionType(title: string, url: string): RawPartnerListing["tr
     text.includes("louer") ||
     text.includes("location")
   ) {
+    return "long_term_rent";
+  }
+  // Prix mensuel typique sans signal texte → location (sauf terrains).
+  if (listingType !== "land" && price > 0 && price < RENT_PRICE_CEILING_MAD) {
     return "long_term_rent";
   }
   return "sale";

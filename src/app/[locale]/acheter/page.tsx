@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { ListingsFeed } from "@/components/listings/listings-feed";
 import { PropertySearch } from "@/components/search/property-search";
 import { PopularSearchLinks } from "@/components/search/popular-search-links";
@@ -7,6 +8,7 @@ import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-gate";
 import { LISTINGS_PAGE_SIZE } from "@/lib/search/page-size";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { mismatchedTransactionRedirect } from "@/lib/search/transaction-page-redirect";
 
 export const revalidate = 60;
 
@@ -29,6 +31,9 @@ export default async function AcheterPage({
 }) {
   const { locale } = await params;
   const sp = await searchParams;
+  const rentRedirect = mismatchedTransactionRedirect("sale", sp, locale);
+  if (rentRedirect) redirect(rentRedirect);
+
   const geography = getGeographySearchTree();
 
   const filters: SearchFilters = {

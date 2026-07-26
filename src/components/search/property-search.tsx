@@ -110,6 +110,11 @@ export function PropertySearch({
     return params;
   }
 
+  function resultsPathForTab(nextTab: "sale" | "long_term_rent"): string {
+    // Acheter / Louer = pages dédiées (jamais rester sur /acheter avec onglet Louer).
+    return nextTab === "sale" ? `/${locale}/acheter` : `/${locale}/louer`;
+  }
+
   function navigateSearch(nextTab: "sale" | "long_term_rent" = tab) {
     if (requireLocation && (!region || !city || !neighborhood)) return;
 
@@ -130,11 +135,7 @@ export function PropertySearch({
       /* ignore */
     }
 
-    // Sur /louer ou /acheter, basculer vers la bonne page métier
-    let path = searchPath ?? `/${locale}/biens`;
-    if (path.endsWith("/louer") && nextTab === "sale") path = `/${locale}/acheter`;
-    if (path.endsWith("/acheter") && nextTab === "long_term_rent") path = `/${locale}/louer`;
-
+    const path = resultsPathForTab(nextTab);
     router.push(`${path}?${params.toString()}`);
   }
 
@@ -145,11 +146,13 @@ export function PropertySearch({
 
   function selectTab(nextTab: "sale" | "long_term_rent") {
     setTab(nextTab);
-    // Relance immédiatement la recherche si la zone est déjà choisie
-    // (évite onglet Louer + résultats À vendre encore affichés).
-    if (!requireLocation || (region && city && neighborhood)) {
+    // Toujours basculer vers /acheter ou /louer (évite onglet Louer + résultats vente).
+    if (region && city && neighborhood) {
       navigateSearch(nextTab);
+      return;
     }
+    const params = buildParams(nextTab);
+    router.push(`${resultsPathForTab(nextTab)}?${params.toString()}`);
   }
 
   function handleReset() {

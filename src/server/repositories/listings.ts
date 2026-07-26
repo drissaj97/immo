@@ -17,6 +17,7 @@ import { cityMatches, neighborhoodMatches } from "@/lib/search/location-match";
 import { enrichSearchFilters, hasCompleteLocation } from "@/lib/search/location-gate";
 import { fetchHoldingListings } from "@/lib/aggregation/sources/holding-source";
 import { LISTINGS_PAGE_SIZE } from "@/lib/search/page-size";
+import { matchesTransactionFilter } from "@/lib/search/effective-transaction-type";
 
 const USE_LIVE_SEARCH = process.env.SEMSARAI_LIVE_SEARCH !== "false";
 
@@ -34,21 +35,7 @@ function matchesFilters(listing: ListingWithLocation, filters: SearchFilters): b
     if (src !== filters.source) return false;
   }
   if (filters.transactionType) {
-    if (listing.transactionType !== filters.transactionType) return false;
-    const text = `${listing.title} ${listing.description ?? ""}`.toLowerCase();
-    if (
-      filters.transactionType === "long_term_rent" &&
-      /à vendre|a vendre|vente d['’ ]/.test(text)
-    ) {
-      return false;
-    }
-    if (
-      filters.transactionType === "sale" &&
-      /à louer|a louer|location d['’ ]/.test(text) &&
-      !/à vendre|a vendre|vente d['’ ]/.test(text)
-    ) {
-      return false;
-    }
+    if (!matchesTransactionFilter(listing, filters.transactionType)) return false;
   }
   if (filters.listingType && listing.listingType !== filters.listingType) return false;
   if (filters.region) {
