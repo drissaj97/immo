@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
 import { CurrencySwitcher } from "@/components/layout/currency-switcher";
+import { BrandLogo } from "@/components/layout/brand-logo";
 import type { Locale, Messages } from "@/lib/i18n/config";
 import type { SessionUser } from "@/lib/auth/session";
 
@@ -37,8 +38,12 @@ export function Header({
   return (
     <header className="sticky top-0 z-50 border-b border-charcoal/10 bg-ivory/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 lg:px-8">
-        <Link href={prefix} className="font-serif text-2xl tracking-tight text-charcoal">
-          {messages.brand}
+        <Link
+          href={prefix}
+          className="flex shrink-0 items-center"
+          aria-label={messages.brand}
+        >
+          <BrandLogo priority />
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex">

@@ -1,6 +1,7 @@
 import type { Messages } from "@/lib/i18n/config";
 import { defaultCatalogHref } from "@/lib/search/popular-searches";
 import { canAccessAdminTools } from "@/lib/auth/admin-access";
+import { BrandLogo } from "@/components/layout/brand-logo";
 
 export function DemoBanner({ message }: { message: string }) {
   if (process.env.DEMO_MODE === "false") return null;
@@ -19,8 +20,8 @@ export async function Footer({ messages, locale }: { messages: Messages; locale:
     <footer className="mt-auto border-t border-charcoal/10 bg-charcoal text-ivory/90">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 md:grid-cols-4 lg:px-8">
         <div>
-          <p className="font-serif text-xl">{messages.brand}</p>
-          <p className="mt-2 text-sm text-ivory/70">{messages.tagline}</p>
+          <BrandLogo tone="light" />
+          <p className="mt-3 text-sm text-ivory/70">{messages.tagline}</p>
         </div>
         <div>
           <p className="mb-3 text-sm font-medium uppercase tracking-wider text-ivory/50">Plateforme</p>
