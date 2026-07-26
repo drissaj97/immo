@@ -1,0 +1,346 @@
+import {
+  buildCatalogNeighborhoods,
+  findCatalogMarketMetric,
+  getCatalogNeighborhoodBySlug,
+  getCatalogNeighborhoodsByCity,
+} from "@/lib/aggregation/catalog-analytics";
+
+export type NeighborhoodKnowledge = {
+  slug: string;
+  city: string;
+  neighborhood: string;
+  region: string;
+  summary: string;
+  highlights: string[];
+  investmentNotes: string[];
+  avgPricePerSqm?: number;
+  avgYield?: number;
+  tags: string[];
+  isDemo: boolean;
+  listingCount?: number;
+};
+
+export const NEIGHBORHOOD_KNOWLEDGE: NeighborhoodKnowledge[] = [
+  {
+    slug: "marrakech/gueliz",
+    city: "Marrakech",
+    neighborhood: "Guéliz",
+    region: "Marrakech-Safi",
+    summary: "Quartier central de Marrakech, commerces, écoles internationales et forte demande locative expatriés.",
+    highlights: ["Centre-ville historique", "Proximité commerces", "Demande location longue durée"],
+    investmentNotes: ["Rendement locatif modéré", "Liquidité élevée à la revente", "Prix au m² en hausse tendancielle"],
+    avgPricePerSqm: 19500,
+    avgYield: 4.1,
+    tags: ["centre-ville", "expatriés", "appartements"],
+    isDemo: true,
+  },
+  {
+    slug: "marrakech/amelkis",
+    city: "Marrakech",
+    neighborhood: "Amelkis",
+    region: "Marrakech-Safi",
+    summary: "Zone golf et villas haut de gamme, résidentiel premium avec faible rotation locative.",
+    highlights: ["Golf Amelkis", "Villas prestige", "Sécurité et calme"],
+    investmentNotes: ["Rendement plus faible", "Plus-value patrimoniale", "Clientèle haut de gamme"],
+    avgPricePerSqm: 28000,
+    avgYield: 3.2,
+    tags: ["villas", "prestige", "golf"],
+    isDemo: true,
+  },
+  {
+    slug: "rabat/hay-riad",
+    city: "Rabat",
+    neighborhood: "Hay Riad",
+    region: "Rabat-Salé-Kénitra",
+    summary: "Quartier administratif et diplomatique, appartements standing et résidences sécurisées.",
+    highlights: ["Ambassades", "Administrations", "Résidences sécurisées"],
+    investmentNotes: ["Location longue durée stable", "Bon rendement net", "Demande fonctionnaires et expatriés"],
+    avgPricePerSqm: 16800,
+    avgYield: 4.5,
+    tags: ["standing", "location", "administrations"],
+    isDemo: true,
+  },
+  {
+    slug: "casablanca/anfa",
+    city: "Casablanca",
+    neighborhood: "Anfa",
+    region: "Casablanca-Settat",
+    summary: "Quartier résidentiel premium de Casablanca, proximité corniche et commerces haut de gamme.",
+    highlights: ["Corniche", "Commerces premium", "Résidences récentes"],
+    investmentNotes: ["Prix élevés", "Rendement modéré", "Marché mature"],
+    avgPricePerSqm: 24500,
+    avgYield: 3.9,
+    tags: ["premium", "corniche", "casablanca"],
+    isDemo: true,
+  },
+  {
+    slug: "sale/technopolis",
+    city: "Salé",
+    neighborhood: "Technopolis",
+    region: "Rabat-Salé-Kénitra",
+    summary: "Pôle technologique en croissance, appartements neufs et forte demande locative étudiants et jeunes actifs.",
+    highlights: ["Technopolis", "Prix accessibles", "Croissance démographique"],
+    investmentNotes: ["Rendement locatif élevé", "Marché locatif dynamique", "Programmes neufs"],
+    avgPricePerSqm: 14200,
+    avgYield: 5.6,
+    tags: ["rendement", "neuf", "technopolis"],
+    isDemo: true,
+  },
+  {
+    slug: "tanger/malabata",
+    city: "Tanger",
+    neighborhood: "Malabata",
+    region: "Tanger-Tétouan-Al Hoceïma",
+    summary: "Front de mer et résidences touristiques, mix location saisonnière et résidence principale.",
+    highlights: ["Vue mer", "Tourisme", "Port Tanger Med"],
+    investmentNotes: ["Saisonnier possible", "Double saisonnalité", "Diversification géographique"],
+    tags: ["mer", "tourisme", "tanger"],
+    isDemo: true,
+  },
+  {
+    slug: "kenitra/centre",
+    city: "Kénitra",
+    neighborhood: "Centre-ville",
+    region: "Rabat-Salé-Kénitra",
+    summary: "Ville industrielle en développement, prix d'entrée bas et potentiel rendement.",
+    highlights: ["Prix accessibles", "Industrie", "Proximité Rabat"],
+    investmentNotes: ["Entrée de gamme", "Rendement potentiel", "Marché moins liquide"],
+    tags: ["accessibilité", "industrie"],
+    isDemo: true,
+  },
+  {
+    slug: "bouznika/plage",
+    city: "Bouznika",
+    neighborhood: "Front de mer",
+    region: "Rabat-Salé-Kénitra",
+    summary: "Littoral atlantique entre Rabat et Casablanca, appartements vue mer et location vacances.",
+    highlights: ["Plage", "Résidences balnéaires", "Week-end Rabat-Casa"],
+    investmentNotes: ["Rendement locatif élevé en démo", "Saisonnier + longue durée", "Marché en expansion"],
+    avgPricePerSqm: 18500,
+    avgYield: 6.8,
+    tags: ["littoral", "mer", "rendement"],
+    isDemo: true,
+  },
+  {
+    slug: "agadir/founty",
+    city: "Agadir",
+    neighborhood: "Founty",
+    region: "Souss-Massa",
+    summary: "Station balnéaire au sud, appartements vue mer et investissement locatif saisonnier.",
+    highlights: ["Plage Founty", "Tourisme", "Climat ensoleillé"],
+    investmentNotes: ["Location saisonnière", "Marché touristique", "Prix modérés vs nord"],
+    tags: ["mer", "tourisme", "agadir"],
+    isDemo: true,
+  },
+  {
+    slug: "fes/medina",
+    city: "Fès",
+    neighborhood: "Médina",
+    region: "Fès-Meknès",
+    summary: "Patrimoine UNESCO, riads et biens de caractère pour résidence ou hébergement touristique.",
+    highlights: ["Patrimoine UNESCO", "Riads", "Tourisme culturel"],
+    investmentNotes: ["Niche tourisme", "Rénovation patrimoine", "Réglementation spécifique"],
+    tags: ["patrimoine", "riad", "culture"],
+    isDemo: true,
+  },
+  {
+    slug: "essaouira/medina",
+    city: "Essaouira",
+    neighborhood: "Médina",
+    region: "Marrakech-Safi",
+    summary: "Ville fortifiée atlantique, riads et investissement touristique saisonnier.",
+    highlights: ["UNESCO", "Plage", "Festival Gnaoua"],
+    investmentNotes: ["Location saisonnière", "Riads rénovés", "Forte demande été"],
+    avgPricePerSqm: 16000,
+    avgYield: 5.5,
+    tags: ["riad", "tourisme", "atlantique"],
+    isDemo: true,
+  },
+  {
+    slug: "tetouan/martil",
+    city: "Tétouan",
+    neighborhood: "Martil",
+    region: "Tanger-Tétouan-Al Hoceïma",
+    summary: "Station balnéaire méditerranéenne, appartements abordables vue mer.",
+    highlights: ["Plage Martil", "Université", "Prix accessibles"],
+    investmentNotes: ["Rendement locatif étudiant", "Tourisme familial", "Croissance modérée"],
+    avgPricePerSqm: 11000,
+    avgYield: 5.8,
+    tags: ["mer", "accessibilité", "location"],
+    isDemo: true,
+  },
+  {
+    slug: "meknes/hamria",
+    city: "Meknès",
+    neighborhood: "Hamria",
+    region: "Fès-Meknès",
+    summary: "Quartier résidentiel en expansion, villas et lotissements neufs.",
+    highlights: ["Villas neuves", "Prix attractifs", "Proximité Fès"],
+    investmentNotes: ["Marché émergent", "Rendement locatif correct", "Moins liquide que Casa/Rabat"],
+    tags: ["villas", "résidentiel", "émergent"],
+    isDemo: true,
+  },
+  {
+    slug: "oujda/centre",
+    city: "Oujda",
+    neighborhood: "Centre-ville",
+    region: "Oriental",
+    summary: "Capitale de l'Oriental, marché immobilier en développement frontière algérienne.",
+    highlights: ["Frontière", "Université", "Prix bas"],
+    investmentNotes: ["Entrée de gamme", "Potentiel long terme", "Marché local"],
+    tags: ["oriental", "accessibilité"],
+    isDemo: true,
+  },
+  {
+    slug: "el-jadida/port",
+    city: "El Jadida",
+    neighborhood: "Port",
+    region: "Casablanca-Settat",
+    summary: "Cité portugaise UNESCO, résidences balnéaires entre Casablanca et Safi.",
+    highlights: ["Patrimoine", "Plages", "Proximité Casa"],
+    investmentNotes: ["Résidence secondaire", "Location vacances", "Marché en croissance"],
+    tags: ["littoral", "patrimoine", "casa"],
+    isDemo: true,
+  },
+  {
+    slug: "nador/marchica",
+    city: "Nador",
+    neighborhood: "Marchica",
+    region: "Oriental",
+    summary: "Lagune de Marchica, résidences balnéaires et projets neufs au nord-est.",
+    highlights: ["Lagune", "Plages", "Frontière Melilla"],
+    investmentNotes: ["Marché émergent", "Résidence secondaire", "Tourisme en développement"],
+    avgPricePerSqm: 9500,
+    avgYield: 5.2,
+    tags: ["lagune", "mer", "oriental"],
+    isDemo: true,
+  },
+  {
+    slug: "safi/medina",
+    city: "Safi",
+    neighborhood: "Médina",
+    region: "Marrakech-Safi",
+    summary: "Ville côtière industrielle et artisanale, médina historique et port.",
+    highlights: ["Poterie", "Port", "Prix accessibles"],
+    investmentNotes: ["Entrée de gamme", "Marché local", "Potentiel rénovation"],
+    avgPricePerSqm: 8200,
+    avgYield: 5.5,
+    tags: ["côte", "patrimoine", "industrie"],
+    isDemo: true,
+  },
+  {
+    slug: "mohammedia/corniche",
+    city: "Mohammedia",
+    neighborhood: "Corniche",
+    region: "Casablanca-Settat",
+    summary: "Station balnéaire entre Casablanca et Rabat, résidences standing vue mer.",
+    highlights: ["Corniche", "Plages", "Proximité Casa-Rabat"],
+    investmentNotes: ["Résidence principale", "Location longue durée", "Liquidité correcte"],
+    avgPricePerSqm: 17500,
+    avgYield: 4.2,
+    tags: ["littoral", "standing", "casa"],
+    isDemo: true,
+  },
+  {
+    slug: "settat/centre",
+    city: "Settat",
+    neighborhood: "Centre-ville",
+    region: "Casablanca-Settat",
+    summary: "Carrefour autoroutier Casa-Marrakech, marché résidentiel en expansion.",
+    highlights: ["Autoroute", "Université", "Prix modérés"],
+    investmentNotes: ["Rendement locatif", "Marché étudiant", "Croissance périurbaine"],
+    avgPricePerSqm: 7800,
+    avgYield: 5.9,
+    tags: ["accessibilité", "location", "périurbain"],
+    isDemo: true,
+  },
+  {
+    slug: "beni-mellal/hay-mohammadi",
+    city: "Beni Mellal",
+    neighborhood: "Hay Mohammadi",
+    region: "Béni Mellal-Khénifra",
+    summary: "Ville du centre atlas, quartiers résidentiels en développement.",
+    highlights: ["Atlas", "Université", "Prix bas"],
+    investmentNotes: ["Marché local", "Rendement locatif", "Moins liquide"],
+    avgPricePerSqm: 6500,
+    avgYield: 6.1,
+    tags: ["atlas", "accessibilité", "résidentiel"],
+    isDemo: true,
+  },
+  {
+    slug: "khouribga/centre",
+    city: "Khouribga",
+    neighborhood: "Centre-ville",
+    region: "Béni Mellal-Khénifra",
+    summary: "Capitale du phosphate, marché immobilier abordable et locatif actif.",
+    highlights: ["Industrie", "Prix très accessibles", "Demande locative"],
+    investmentNotes: ["Entrée de gamme", "Rendement élevé", "Marché ouvrier"],
+    avgPricePerSqm: 5800,
+    avgYield: 6.5,
+    tags: ["industrie", "accessibilité", "rendement"],
+    isDemo: true,
+  },
+  {
+    slug: "laayoune/centre",
+    city: "Laâyoune",
+    neighborhood: "Centre-ville",
+    region: "Laâyoune-Sakia El Hamra",
+    summary: "Capitale du Sahara marocain, administration et logements fonction publique.",
+    highlights: ["Administration", "Infrastructures", "Subventions logement"],
+    investmentNotes: ["Marché régional", "Demande fonction publique", "Spécificités sud"],
+    avgPricePerSqm: 7200,
+    avgYield: 5.0,
+    tags: ["sahara", "administration", "régional"],
+    isDemo: true,
+  },
+  {
+    slug: "dakhla/lagune",
+    city: "Dakhla",
+    neighborhood: "Lagune",
+    region: "Dakhla-Oued Ed-Dahab",
+    summary: "Péninsule atlantique, kitesurf et résidences balnéaires premium.",
+    highlights: ["Kitesurf", "Lagune", "Tourisme international"],
+    investmentNotes: ["Niche tourisme", "Résidence secondaire", "Prix en hausse"],
+    avgPricePerSqm: 14000,
+    avgYield: 4.8,
+    tags: ["kitesurf", "tourisme", "atlantique"],
+    isDemo: true,
+  },
+];
+
+export function getNeighborhoodBySlug(slug: string): NeighborhoodKnowledge | undefined {
+  const catalog = getCatalogNeighborhoodBySlug(slug);
+  if (catalog) return catalog;
+  const editorial = NEIGHBORHOOD_KNOWLEDGE.find((n) => n.slug === slug);
+  return editorial ? enrichWithMetrics(editorial) : undefined;
+}
+
+export function getNeighborhoodsByCity(city: string): NeighborhoodKnowledge[] {
+  const catalog = getCatalogNeighborhoodsByCity(city);
+  if (catalog.length > 0) return catalog;
+  return NEIGHBORHOOD_KNOWLEDGE.filter(
+    (n) => n.city.toLowerCase() === city.toLowerCase(),
+  ).map(enrichWithMetrics);
+}
+
+export function getAllNeighborhoodSlugs(): string[] {
+  const catalogSlugs = buildCatalogNeighborhoods().map((n) => n.slug);
+  const editorialSlugs = NEIGHBORHOOD_KNOWLEDGE.map((n) => n.slug);
+  return [...new Set([...catalogSlugs, ...editorialSlugs])];
+}
+
+/** Enrich knowledge with live market metrics from aggregated catalog */
+export function enrichWithMetrics(knowledge: NeighborhoodKnowledge): NeighborhoodKnowledge {
+  const metric = findCatalogMarketMetric(
+    knowledge.city,
+    knowledge.neighborhood,
+    "apartment",
+  );
+  if (!metric) return knowledge;
+  return {
+    ...knowledge,
+    avgPricePerSqm: metric.avgPricePerSqm,
+    avgYield: metric.avgYield,
+    isDemo: false,
+  };
+}
