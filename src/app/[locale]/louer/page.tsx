@@ -9,6 +9,7 @@ import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-
 import { LISTINGS_PAGE_SIZE } from "@/lib/search/page-size";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { mismatchedTransactionRedirect } from "@/lib/search/transaction-page-redirect";
+import { SaveSearchAlertButton } from "@/components/search/save-search-alert-button";
 
 export const revalidate = 60;
 
@@ -84,7 +85,8 @@ export default async function LouerPage({
 
       {hasLocation ? (
         items.length > 0 ? (
-          <div className="mt-10">
+          <div className="mt-10 space-y-6">
+            <SaveSearchAlertButton locale={locale} filters={filters} matchCount={total} />
             <ListingsFeed
               locale={locale}
               initialItems={items}
@@ -103,7 +105,12 @@ export default async function LouerPage({
             />
           </div>
         ) : (
-          <p className="mt-12 text-center text-charcoal/60">Aucune annonce de location pour ces critères.</p>
+          <div className="mt-12 space-y-4 text-center">
+            <p className="text-charcoal/60">Aucune annonce de location pour ces critères.</p>
+            <div className="flex justify-center">
+              <SaveSearchAlertButton locale={locale} filters={filters} matchCount={0} />
+            </div>
+          </div>
         )
       ) : (
         <div className="mt-12 space-y-4 text-center">

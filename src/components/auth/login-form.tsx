@@ -1,14 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+function safeNextPath(raw: string | null, locale: string): string {
+  if (!raw) return `/${locale}/dashboard`;
+  if (!raw.startsWith("/") || raw.startsWith("//")) return `/${locale}/dashboard`;
+  return raw;
+}
+
 export function LoginForm({ locale }: { locale: string }) {
   const [error, setError] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   return (
     <form
@@ -26,7 +33,7 @@ export function LoginForm({ locale }: { locale: string }) {
           setError("Identifiants invalides");
           return;
         }
-        router.push(`/${locale}/dashboard`);
+        router.push(safeNextPath(searchParams.get("next"), locale));
         router.refresh();
       }}
     >
@@ -35,9 +42,13 @@ export function LoginForm({ locale }: { locale: string }) {
       <Input name="email" type="email" placeholder="Email" required />
       <Input name="password" type="password" placeholder="Mot de passe" required />
       {error && <p className="text-sm text-red-600">{error}</p>}
-      <Button type="submit" className="w-full">Se connecter</Button>
+      <Button type="submit" className="w-full">
+        Se connecter
+      </Button>
       <p className="text-sm text-center">
-        <Link href={`/${locale}/inscription`} className="text-deep-green hover:underline">Créer un compte</Link>
+        <Link href={`/${locale}/inscription`} className="text-deep-green hover:underline">
+          Créer un compte
+        </Link>
       </p>
     </form>
   );

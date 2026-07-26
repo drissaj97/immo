@@ -7,6 +7,18 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [1.12.0] — 2026-07-26
+
+### Phase 11 — Conversion & rétention
+
+- **Créer une alerte** depuis les résultats Acheter / Louer / Biens (filtres réels, pas démo Marrakech)
+- Dashboard **Alertes** : résumé des filtres, activer/couper, lien vers les résultats
+- **Contact sur fiche bien** → lead CRM (`listing_inquiry`)
+- Favoris : panneau localStorage si non connecté
+- Cron alertes : parcours des utilisateurs démo ayant des alertes actives
+
+---
+
 ## [1.10.1] — 2026-07-25
 
 ### Recherche quartier obligatoire + corrections chat

@@ -1,29 +1,46 @@
 # DarBladi — Roadmap produit
 
-> État actuel : **Phase 10 en cours** (v1.6.0).
+> État actuel : **Phase 11 en cours** (v1.12.0) — Conversion & rétention.
 
 ---
 
 ## Phases 0–9 (✅ Terminées)
 
-MVP → Monétisation → Production → Mobile & scale → Agrégation multi-sources (v1.6.0).
+MVP → Monétisation → Production → Mobile & scale → Agrégation multi-sources.
 
 ---
 
-## Phase 10 — Vision (🚧 En cours)
+## Phase 10 — Catalogue & recherche réelle (✅ Clôturée côté web)
 
 | Livrable | Priorité | Statut |
 |----------|----------|--------|
-| Catalogue 100 % réel (zéro démo publique) | P0 | ✅ v1.6.0 |
-| Import SEMSAR AI 500+ annonces | P0 | ✅ v1.6.0 |
-| Sync live API semsarai.ma | P1 | ✅ v1.6.0 |
-| Index pgvector auto-sync on publish | P1 | ✅ v1.6.0 |
-| Cron import + aggregation | P1 | ✅ v1.6.0 |
-| PropAPIS / feeds Avito-Mubawab | P1 | ⏳ clé partenaire requise |
-| Publication App Store / Play Store | P0 | 📋 |
-| Auth biométrique mobile | P2 | 📋 |
-| Favoris persistés AsyncStorage + offline | P2 | 📋 |
+| Catalogue 100 % réel (zéro démo publique) | P0 | ✅ |
+| Import SEMSAR AI + sync live | P0 | ✅ |
+| Scraping / feeds Avito · Mubawab · Sarouty | P0 | ✅ |
+| Recherche quartier obligatoire + Louer/Acheter | P0 | ✅ |
+| Carte (pins zone, tuiles, outliers) | P0 | ✅ |
+| Galeries photos originales | P0 | ✅ |
+| PropAPIS licencié | P1 | ⏳ clé partenaire |
+| Publication App Store / Play Store | P0 | 📋 (mobile) |
+| Auth biométrique + offline mobile | P2 | 📋 |
 | Stripe Billing Portal production testé | P1 | 📋 |
+
+---
+
+## Phase 11 — Conversion & rétention (🚧 En cours)
+
+Objectif : transformer la recherche en **leads** et **rétention** (alertes, favoris, contact).
+
+| Livrable | Priorité | Statut |
+|----------|----------|--------|
+| Alerte depuis la recherche réelle (Acheter / Louer / Biens) | P0 | ✅ v1.12.0 |
+| Dashboard alertes (filtres, toggle, lien résultats) | P0 | ✅ v1.12.0 |
+| Formulaire contact sur fiche bien → CRM leads | P0 | ✅ v1.12.0 |
+| Favoris locaux visibles sans compte + sync compte | P1 | ✅ v1.12.0 |
+| Cron alertes multi-utilisateurs (mémoire démo) | P1 | ✅ v1.12.0 |
+| Email transactionnel réel (Resend / SMTP) | P1 | 📋 |
+| Sync favoris local → compte à la connexion | P1 | 📋 |
+| Mobile : SecureStore + favoris offline | P2 | 📋 |
 
 ---
 

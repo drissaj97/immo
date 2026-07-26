@@ -12,6 +12,7 @@ import { prepareMapPageData } from "@/lib/map/prepare-map-page";
 import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-gate";
 import { parseListingSearchParams } from "@/lib/search/parse-search-params";
 import { LISTINGS_PAGE_SIZE } from "@/lib/search/page-size";
+import { SaveSearchAlertButton } from "@/components/search/save-search-alert-button";
 
 export const revalidate = 60;
 
@@ -117,24 +118,27 @@ export default async function BiensPage({
 
       {hasLocation ? (
         items.length > 0 ? (
-          <ListingsFeed
-            locale={locale}
-            initialItems={items}
-            total={total}
-            totalPages={totalPages}
-            revealSources={revealSources}
-            query={{
-              region: baseFilters.region,
-              city: baseFilters.city,
-              neighborhood: baseFilters.neighborhood,
-              transactionType: baseFilters.transactionType,
-              listingType: baseFilters.listingType,
-              minPrice: baseFilters.minPrice ? String(baseFilters.minPrice) : undefined,
-              maxPrice: baseFilters.maxPrice ? String(baseFilters.maxPrice) : undefined,
-              bedrooms: baseFilters.bedrooms ? String(baseFilters.bedrooms) : undefined,
-              sort: baseFilters.sort,
-            }}
-          />
+          <div className="space-y-6">
+            <SaveSearchAlertButton locale={locale} filters={baseFilters} matchCount={total} />
+            <ListingsFeed
+              locale={locale}
+              initialItems={items}
+              total={total}
+              totalPages={totalPages}
+              revealSources={revealSources}
+              query={{
+                region: baseFilters.region,
+                city: baseFilters.city,
+                neighborhood: baseFilters.neighborhood,
+                transactionType: baseFilters.transactionType,
+                listingType: baseFilters.listingType,
+                minPrice: baseFilters.minPrice ? String(baseFilters.minPrice) : undefined,
+                maxPrice: baseFilters.maxPrice ? String(baseFilters.maxPrice) : undefined,
+                bedrooms: baseFilters.bedrooms ? String(baseFilters.bedrooms) : undefined,
+                sort: baseFilters.sort,
+              }}
+            />
+          </div>
         ) : (
           <p className="py-12 text-center text-charcoal/60">
             Aucun bien ne correspond à vos critères.

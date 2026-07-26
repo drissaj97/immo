@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { LoginForm } from "@/components/auth/login-form";
 import { buildMetadata } from "@/lib/seo/metadata";
 
@@ -10,7 +11,9 @@ export default async function ConnexionPage({ params }: { params: Promise<{ loca
   const { locale } = await params;
   return (
     <div className="py-12">
-      <LoginForm locale={locale} />
+      <Suspense fallback={<p className="text-center text-charcoal/60">Chargement…</p>}>
+        <LoginForm locale={locale} />
+      </Suspense>
     </div>
   );
 }

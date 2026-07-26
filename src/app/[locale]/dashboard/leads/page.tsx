@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 
 type Lead = {
   id: string;
+  listingId?: string;
   contactName?: string;
   contactEmail?: string;
   message?: string;
@@ -57,7 +58,9 @@ export default function LeadsPage() {
       <Link href={`/${locale}/dashboard`} className="mt-2 inline-block text-sm text-deep-green hover:underline">
         ← Dashboard
       </Link>
-      <p className="mt-4 text-charcoal/60">Gestion des demandes de contact — données fictives.</p>
+      <p className="mt-4 text-charcoal/60">
+        Demandes de contact (fiche bien, formulaire contact). Les leads démo restent visibles.
+      </p>
 
       {loading ? (
         <p className="mt-8 text-charcoal/60">Chargement…</p>
@@ -69,6 +72,7 @@ export default function LeadsPage() {
             <thead>
               <tr className="border-b border-charcoal/10">
                 <th className="py-3 pr-4">Contact</th>
+                <th className="py-3 pr-4">Bien</th>
                 <th className="py-3 pr-4">Message</th>
                 <th className="py-3 pr-4">Source</th>
                 <th className="py-3 pr-4">Statut</th>
@@ -81,6 +85,9 @@ export default function LeadsPage() {
                   <td className="py-4 pr-4">
                     <p className="font-medium">{lead.contactName ?? "—"}</p>
                     <p className="text-charcoal/60">{lead.contactEmail}</p>
+                  </td>
+                  <td className="py-4 pr-4 font-mono text-xs text-charcoal/55">
+                    {lead.listingId ? lead.listingId.slice(0, 16) : "—"}
                   </td>
                   <td className="max-w-xs py-4 pr-4 truncate text-charcoal/70">{lead.message}</td>
                   <td className="py-4 pr-4">{lead.source}</td>

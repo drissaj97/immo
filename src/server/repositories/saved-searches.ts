@@ -1,4 +1,4 @@
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { getDb } from "@/lib/db";
 import { useDatabase } from "@/lib/db/repository";
 import { savedSearches } from "@/lib/db/schema";
@@ -88,4 +88,42 @@ export async function deleteSavedSearch(userId: string, id: string): Promise<boo
   const next = list.filter((s) => s.id !== id);
   demoSavedSearches.set(userId, next);
   return list.length !== next.length;
+}
+
+export async function setSavedSearchAlert(
+  userId: string,
+  id: string,
+  alertEnabled: boolean,
+): Promise<SavedSearchRecord | null> {
+  if (useDatabase()) {
+    const db = getDb();
+    if (db) {
+      const rows = await db
+        .update(savedSearches)
+        .set({ alertEnabled })
+        .where(and(eq(savedSearches.id, id), eq(savedSearches.userId, userId)))
+        .returning();
+      const row = rows[0];
+      if (!row) return null;
+      return {
+        id: row.id,
+        name: row.name,
+        filters: row.filters as SearchFilters,
+        alertEnabled: row.alertEnabled ?? false,
+        createdAt: row.createdAt.toISOString(),
+      };
+    }
+  }
+  const list = demoSavedSearches.get(userId) ?? [];
+  const item = list.find((s) => s.id === id);
+  if (!item) return null;
+  item.alertEnabled = alertEnabled;
+  return item;
+}
+
+/** Tous les userIds ayant au moins une alerte (mode démo mémoire). */
+export function listDemoUserIdsWithAlerts(): string[] {
+  return Array.from(demoSavedSearches.entries())
+    .filter(([, searches]) => searches.some((s) => s.alertEnabled))
+    .map(([userId]) => userId);
 }

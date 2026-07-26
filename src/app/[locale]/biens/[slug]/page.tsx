@@ -10,6 +10,7 @@ import { getListingBySlug } from "@/server/repositories/listings";
 import { buildMetadata, listingJsonLd } from "@/lib/seo/metadata";
 import { formatPrice } from "@/lib/utils";
 import { FavoriteButton } from "@/components/listings/favorite-button";
+import { ListingInquiryForm } from "@/components/listings/listing-inquiry-form";
 import { ExternalListingBanner, SourceBadge } from "@/components/listings/source-badge";
 import { resolveExternalSourceUrl } from "@/lib/listings/external-source-url";
 import { InvestmentScoreCard } from "@/components/investment/investment-score-card";
@@ -144,6 +145,11 @@ export default async function ListingDetailPage({
             </section>
           </div>
           <aside className="space-y-4">
+            <ListingInquiryForm
+              locale={locale}
+              listingId={listing.id}
+              listingTitle={listing.title}
+            />
             {listingAllowsDepositReservation(listing) && (
               <ReserveDepositButton
                 listingId={listing.id}
