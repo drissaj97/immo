@@ -45,6 +45,11 @@ export type DemoListing = {
   isDemo: true | false;
   publishedAt: string;
   estimatedYield?: number;
+  /**
+   * Opt-in promoteur : afficher « Réserver avec acompte ».
+   * Uniquement pour annonces first-party / promoteurs partenaires publics.
+   */
+  depositReservationEnabled?: boolean;
 };
 
 export const DEMO_LOCATIONS: DemoLocation[] = [

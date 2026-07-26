@@ -11,6 +11,8 @@ export type PartnerOrganization = {
   listingCount: number;
   website?: string;
   logoUrl?: string;
+  /** Si true, les annonces du promoteur peuvent activer la réservation avec acompte. */
+  depositReservationEnabled?: boolean;
 };
 
 export type PartnerProject = {

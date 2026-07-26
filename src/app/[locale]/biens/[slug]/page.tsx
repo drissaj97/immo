@@ -16,6 +16,7 @@ import { InvestmentScoreCard } from "@/components/investment/investment-score-ca
 import { PriceHistoryChart } from "@/components/investment/price-history-chart";
 import { GenerateReportButton } from "@/components/investment/generate-report-button";
 import { ReserveDepositButton } from "@/components/payment/reserve-deposit-button";
+import { listingAllowsDepositReservation } from "@/lib/listings/deposit-reservation";
 import {
   getListingInvestmentScore,
   getPriceHistory,
@@ -143,7 +144,7 @@ export default async function ListingDetailPage({
             </section>
           </div>
           <aside className="space-y-4">
-            {listing.transactionType === "sale" && (
+            {listingAllowsDepositReservation(listing) && (
               <ReserveDepositButton
                 listingId={listing.id}
                 listingTitle={listing.title}
