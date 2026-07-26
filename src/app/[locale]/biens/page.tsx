@@ -10,6 +10,7 @@ import { PopularSearchLinks } from "@/components/search/popular-search-links";
 import { getGeographySearchTree } from "@/lib/geography/index";
 import { prepareMapPageData } from "@/lib/map/prepare-map-page";
 import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-gate";
+import { parseListingSearchParams } from "@/lib/search/parse-search-params";
 import { LISTINGS_PAGE_SIZE } from "@/lib/search/page-size";
 
 export const revalidate = 60;
@@ -37,20 +38,10 @@ export default async function BiensPage({
   // Source originale (Mubawab / Avito…) — pas de marque Semsar AI
   const revealSources = true;
 
-  const baseFilters: SearchFilters = {
-    transactionType: (sp.transactionType as SearchFilters["transactionType"]) ?? undefined,
-    region: sp.region as string | undefined,
-    listingType: (sp.listingType as SearchFilters["listingType"]) ?? undefined,
-    city: sp.city as string | undefined,
-    neighborhood: sp.neighborhood as string | undefined,
-    minPrice: sp.minPrice ? Number(sp.minPrice) : undefined,
-    maxPrice: sp.maxPrice ? Number(sp.maxPrice) : undefined,
-    bedrooms: sp.bedrooms ? Number(sp.bedrooms) : undefined,
-    hasPool: sp.hasPool === "true" ? true : undefined,
-    isVerified: sp.isVerified === "true" ? true : undefined,
-    source: sp.source as SearchFilters["source"],
-    sort: (sp.sort as SearchFilters["sort"]) ?? "recent",
-  };
+  // Toujours un type de transaction (défaut vente) — évite le mélange Louer/À vendre.
+  const baseFilters: SearchFilters = parseListingSearchParams(sp, {
+    transactionType: "sale",
+  });
 
   const hasLocation = hasCompleteLocation(baseFilters);
 

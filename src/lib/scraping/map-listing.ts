@@ -52,7 +52,17 @@ function toNumber(value: number | string | undefined): number | undefined {
 
 function inferTransactionType(title: string, url: string): RawPartnerListing["transactionType"] {
   const text = `${title} ${url}`.toLowerCase();
-  if (text.includes("louer") || text.includes("location") || text.includes("à louer") || text.includes("a-louer")) {
+  // Vente prioritaire si signal clair (évite faux "location" dans une annonce à vendre).
+  if (
+    /à vendre|a vendre|vente d|immobilier-a-vendre|\/a-vendre|for sale/.test(text)
+  ) {
+    return "sale";
+  }
+  if (
+    /à louer|a louer|location d|immobilier-a-louer|\/a-louer|for rent|\brent\b/.test(text) ||
+    text.includes("louer") ||
+    text.includes("location")
+  ) {
     return "long_term_rent";
   }
   return "sale";

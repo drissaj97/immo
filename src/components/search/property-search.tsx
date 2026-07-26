@@ -55,6 +55,25 @@ export function PropertySearch({
   const [maxPrice, setMaxPrice] = useState(initial?.maxPrice ?? "");
   const [hasSaved, setHasSaved] = useState(false);
 
+  // Resync si l’URL / les props serveur changent (App Router garde sinon le state client).
+  useEffect(() => {
+    if (initial?.transactionType) setTab(initial.transactionType);
+    if (initial?.region != null) setRegion(initial.region);
+    if (initial?.city != null) setCity(initial.city);
+    if (initial?.neighborhood != null) setNeighborhood(initial.neighborhood);
+    if (initial?.listingType != null) setListingType(initial.listingType);
+    if (initial?.minPrice != null) setMinPrice(initial.minPrice);
+    if (initial?.maxPrice != null) setMaxPrice(initial.maxPrice);
+  }, [
+    initial?.transactionType,
+    initial?.region,
+    initial?.city,
+    initial?.neighborhood,
+    initial?.listingType,
+    initial?.minPrice,
+    initial?.maxPrice,
+  ]);
+
   const regions = geography?.regions ?? [];
 
   const selectedRegion = useMemo(
@@ -79,9 +98,9 @@ export function PropertySearch({
     }
   }, []);
 
-  function buildParams(): URLSearchParams {
+  function buildParams(nextTab: "sale" | "long_term_rent" = tab): URLSearchParams {
     const params = new URLSearchParams();
-    params.set("transactionType", tab);
+    params.set("transactionType", nextTab);
     if (region) params.set("region", region);
     if (city) params.set("city", city);
     if (neighborhood) params.set("neighborhood", neighborhood);
@@ -91,13 +110,12 @@ export function PropertySearch({
     return params;
   }
 
-  function handleSearch(e?: React.FormEvent) {
-    e?.preventDefault();
+  function navigateSearch(nextTab: "sale" | "long_term_rent" = tab) {
     if (requireLocation && (!region || !city || !neighborhood)) return;
 
-    const params = buildParams();
+    const params = buildParams(nextTab);
     const saved: SavedSearch = {
-      transactionType: tab,
+      transactionType: nextTab,
       region,
       city,
       neighborhood,
@@ -111,7 +129,27 @@ export function PropertySearch({
     } catch {
       /* ignore */
     }
-    router.push(`${searchPath ?? `/${locale}/biens`}?${params.toString()}`);
+
+    // Sur /louer ou /acheter, basculer vers la bonne page métier
+    let path = searchPath ?? `/${locale}/biens`;
+    if (path.endsWith("/louer") && nextTab === "sale") path = `/${locale}/acheter`;
+    if (path.endsWith("/acheter") && nextTab === "long_term_rent") path = `/${locale}/louer`;
+
+    router.push(`${path}?${params.toString()}`);
+  }
+
+  function handleSearch(e?: React.FormEvent) {
+    e?.preventDefault();
+    navigateSearch(tab);
+  }
+
+  function selectTab(nextTab: "sale" | "long_term_rent") {
+    setTab(nextTab);
+    // Relance immédiatement la recherche si la zone est déjà choisie
+    // (évite onglet Louer + résultats À vendre encore affichés).
+    if (!requireLocation || (region && city && neighborhood)) {
+      navigateSearch(nextTab);
+    }
   }
 
   function handleReset() {
@@ -168,7 +206,7 @@ export function PropertySearch({
       <div className="mb-6 flex flex-wrap gap-2 border-b border-charcoal/10 pb-4">
         <button
           type="button"
-          onClick={() => setTab("sale")}
+          onClick={() => selectTab("sale")}
           className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
             tab === "sale"
               ? "bg-deep-green text-ivory"
@@ -180,7 +218,7 @@ export function PropertySearch({
         </button>
         <button
           type="button"
-          onClick={() => setTab("long_term_rent")}
+          onClick={() => selectTab("long_term_rent")}
           className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
             tab === "long_term_rent"
               ? "bg-deep-green text-ivory"

@@ -10,11 +10,26 @@ function listingRegion(listing: DemoListing | AggregatedListing): string {
   return resolveMoroccoRegion(city, hint);
 }
 
+/** Signaux texte quand le champ transactionType est faux / ambigu. */
+function textImpliesTransaction(
+  listing: DemoListing | AggregatedListing,
+): "sale" | "long_term_rent" | null {
+  const text = `${listing.title} ${listing.description ?? ""}`.toLowerCase();
+  if (/à vendre|a vendre|vente d['’ ]|for sale/.test(text)) return "sale";
+  if (/à louer|a louer|location d['’ ]|for rent/.test(text)) return "long_term_rent";
+  return null;
+}
+
 export function listingMatchesFilters(
   listing: DemoListing | AggregatedListing,
   filters: SearchFilters,
 ): boolean {
-  if (filters.transactionType && listing.transactionType !== filters.transactionType) return false;
+  if (filters.transactionType) {
+    if (listing.transactionType !== filters.transactionType) return false;
+    // Garde-fou : titre « à vendre » ne doit jamais passer en filtre Louer.
+    const implied = textImpliesTransaction(listing);
+    if (implied && implied !== filters.transactionType) return false;
+  }
   if (filters.listingType && listing.listingType !== filters.listingType) return false;
   if (filters.region && listingRegion(listing).toLowerCase() !== filters.region.toLowerCase()) {
     return false;

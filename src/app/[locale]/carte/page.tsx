@@ -4,6 +4,7 @@ import { PopularSearchLinks } from "@/components/search/popular-search-links";
 import { searchListings } from "@/server/repositories/listings";
 import { getGeographySearchTree } from "@/lib/geography/index";
 import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-gate";
+import { parseListingSearchParams } from "@/lib/search/parse-search-params";
 import { prepareMapPageData } from "@/lib/map/prepare-map-page";
 import { MAP_PAGE_SIZE } from "@/lib/search/page-size";
 import { defaultCatalogHref } from "@/lib/search/popular-searches";
@@ -35,11 +36,7 @@ export default async function CartePage({
   const geography = getGeographySearchTree();
 
   const filters: SearchFilters = {
-    transactionType: (sp.transactionType as SearchFilters["transactionType"]) ?? undefined,
-    region: sp.region as string | undefined,
-    city: sp.city as string | undefined,
-    neighborhood: sp.neighborhood as string | undefined,
-    listingType: (sp.listingType as SearchFilters["listingType"]) ?? undefined,
+    ...parseListingSearchParams(sp, { transactionType: "sale" }),
     limit: MAP_PAGE_SIZE,
   };
 

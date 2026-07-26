@@ -33,7 +33,23 @@ function matchesFilters(listing: ListingWithLocation, filters: SearchFilters): b
     const src = (listing as AggregatedListing).aggregationSource;
     if (src !== filters.source) return false;
   }
-  if (filters.transactionType && listing.transactionType !== filters.transactionType) return false;
+  if (filters.transactionType) {
+    if (listing.transactionType !== filters.transactionType) return false;
+    const text = `${listing.title} ${listing.description ?? ""}`.toLowerCase();
+    if (
+      filters.transactionType === "long_term_rent" &&
+      /à vendre|a vendre|vente d['’ ]/.test(text)
+    ) {
+      return false;
+    }
+    if (
+      filters.transactionType === "sale" &&
+      /à louer|a louer|location d['’ ]/.test(text) &&
+      !/à vendre|a vendre|vente d['’ ]/.test(text)
+    ) {
+      return false;
+    }
+  }
   if (filters.listingType && listing.listingType !== filters.listingType) return false;
   if (filters.region) {
     const listingRegion = resolveMoroccoRegion(

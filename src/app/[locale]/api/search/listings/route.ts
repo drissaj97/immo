@@ -16,7 +16,9 @@ export async function GET(
     region: searchParams.get("region") ?? undefined,
     city: searchParams.get("city") ?? undefined,
     neighborhood: searchParams.get("neighborhood") ?? undefined,
-    transactionType: (searchParams.get("transactionType") as SearchFilters["transactionType"]) ?? undefined,
+    // Défaut vente si absent — ne jamais mélanger location / vente en pagination.
+    transactionType:
+      (searchParams.get("transactionType") as SearchFilters["transactionType"]) ?? "sale",
     listingType: (searchParams.get("listingType") as SearchFilters["listingType"]) ?? undefined,
     minPrice: searchParams.get("minPrice") ? Number(searchParams.get("minPrice")) : undefined,
     maxPrice: searchParams.get("maxPrice") ? Number(searchParams.get("maxPrice")) : undefined,
