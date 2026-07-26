@@ -1,6 +1,7 @@
 import { closeSync, existsSync, openSync, readFileSync, readSync, statSync } from "fs";
 import path from "path";
 import type { AggregatedListing, AggregationSourceId, PartnerFeedFile, RawPartnerListing } from "../types";
+import { sanitizeListingImages } from "@/lib/media/listing-images";
 import { normalizePartnerListing } from "../normalizer";
 
 const FEED_DIR = path.join(process.cwd(), "data/feeds");
@@ -13,7 +14,7 @@ function slimRaw(raw: RawPartnerListing): RawPartnerListing {
   return {
     ...raw,
     description: (raw.description ?? raw.title ?? "").slice(0, 280),
-    images: (raw.images ?? []).slice(0, 2),
+    images: sanitizeListingImages(raw.images).slice(0, 2),
   };
 }
 

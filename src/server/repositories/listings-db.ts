@@ -61,7 +61,7 @@ function mapListing(
     latitude: Number(listing.latitude ?? loc?.latitude ?? 0),
     longitude: Number(listing.longitude ?? loc?.longitude ?? 0),
     reference: listing.reference ?? listing.id.slice(0, 8),
-    images: images.length > 0 ? images : ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80"],
+    images,
     sourceType: listing.sourceType ?? "first_party",
     sourceName: listing.sourceName ?? "DarBladi",
     completenessScore: listing.completenessScore ?? 0,

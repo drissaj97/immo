@@ -1,6 +1,6 @@
 {
   "name": "darbladi",
-  "version": "1.11.6",
+  "version": "1.11.7",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -23,7 +23,10 @@
     "neighborhood-catalog:city": "tsx scripts/build-city-neighborhood-catalog.ts",
     "coordinates:build": "tsx scripts/build-coordinates-index.ts",
     "aggregation:sync": "tsx scripts/sync-aggregation.ts",
-    "scrape:portals": "tsx scripts/scrape-portals.ts"
+    "scrape:portals": "tsx scripts/scrape-portals.ts",
+    "enrich:avito-images": "tsx scripts/enrich-avito-images.ts",
+    "enrich:avito-search": "tsx scripts/enrich-avito-by-search.ts",
+    "enrich:avito-details": "tsx scripts/enrich-avito-details-only.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.3",

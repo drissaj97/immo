@@ -7,6 +7,7 @@ import type {
 } from "./types";
 import { resolvePartnerLocation } from "@/lib/geography/partner-locations";
 import { resolveListingCoordinates } from "@/lib/geography/resolve-coordinates";
+import { sanitizeListingImages } from "@/lib/media/listing-images";
 
 function slugify(text: string): string {
   return text
@@ -62,9 +63,7 @@ export function normalizePartnerListing(
     latitude: coords.latitude,
     longitude: coords.longitude,
     reference: raw.externalId,
-    images: raw.images?.length
-      ? raw.images
-      : ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80"],
+    images: sanitizeListingImages(raw.images),
     sourceType: "partner",
     sourceName: sourceDisplayName(source),
     sourceUrl: absoluteSourceUrl(raw.sourceUrl, source, raw.externalId),

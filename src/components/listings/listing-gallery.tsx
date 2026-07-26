@@ -2,19 +2,20 @@
 
 import { useState } from "react";
 import { ListingImage } from "@/components/listings/listing-image";
+import { sanitizeListingImages } from "@/lib/media/listing-images";
 
 export function ListingGallery({ images, title }: { images: string[]; title: string }) {
   const [active, setActive] = useState(0);
-  const fallback = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80";
-  const safeImages = images.length > 0 ? images : [fallback];
-  const current = safeImages[Math.min(active, safeImages.length - 1)];
+  const safeImages = sanitizeListingImages(images);
+  const hasPhotos = safeImages.length > 0;
+  const current = hasPhotos ? safeImages[Math.min(active, safeImages.length - 1)] : "";
 
   return (
     <div className="space-y-3">
       <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-sand">
         <ListingImage
           src={current}
-          alt={`${title} — photo ${active + 1}`}
+          alt={hasPhotos ? `${title} — photo ${active + 1}` : title}
           fill
           className="object-cover"
           sizes="(max-width: 1024px) 100vw, 50vw"

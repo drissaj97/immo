@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { getListingById } from "@/server/repositories/listings";
 import { getListingInvestmentScore } from "@/server/repositories/investment";
 import { calculateInvestment, applyScenarioMultiplier } from "@/modules/investment/calculations";
@@ -7,6 +6,7 @@ import { formatPrice } from "@/lib/utils";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { Button } from "@/components/ui/button";
 import { InvestmentScoreCard } from "@/components/investment/investment-score-card";
+import { ListingImage } from "@/components/listings/listing-image";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -48,7 +48,13 @@ export default async function ComparerPage({
           listing ? (
             <div key={listing.id} className="rounded-lg border border-charcoal/10 overflow-hidden">
               <div className="relative aspect-video bg-sand">
-                <Image src={listing.images[0]} alt={listing.title} fill className="object-cover" />
+                <ListingImage
+                  src={listing.images?.[0] ?? ""}
+                  alt={listing.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width:768px) 100vw, 50vw"
+                />
               </div>
               <div className="p-4 space-y-3">
                 <p className="text-lg font-medium text-deep-green">{formatPrice(listing.price, listing.currency)}</p>

@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-
-const PLACEHOLDER =
-  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80";
+import { isStockListingImage } from "@/lib/media/listing-images";
 
 const PROXY_HOSTS = new Set([
   "www.mubawab-media.com",
@@ -19,7 +17,6 @@ const PROXY_HOSTS = new Set([
 ]);
 
 const OPTIMIZED_HOSTS = new Set([
-  "images.unsplash.com",
   "holdingimmo.com",
   "www.semsarai.ma",
   "pub-bc0f3ba210da4c89953c1aa5e465d5e1.r2.dev",
@@ -27,9 +24,8 @@ const OPTIMIZED_HOSTS = new Set([
   ...PROXY_HOSTS,
 ]);
 
-function resolveImageSrc(src: string): string {
-  if (!src) return PLACEHOLDER;
-  // Médias locaux gitignorés : on laisse tenter, onError → placeholder
+function resolveImageSrc(src: string): string | null {
+  if (!src || isStockListingImage(src)) return null;
   if (src.startsWith("/")) return src;
   try {
     const host = new URL(src).hostname;
@@ -38,7 +34,7 @@ function resolveImageSrc(src: string): string {
     }
     return src;
   } catch {
-    return PLACEHOLDER;
+    return null;
   }
 }
 
@@ -51,6 +47,46 @@ function isNextImage(src: string): boolean {
   }
 }
 
+function ListingImagePlaceholder({
+  alt,
+  fill,
+  className,
+}: {
+  alt: string;
+  fill?: boolean;
+  className?: string;
+}) {
+  return (
+    <div
+      role="img"
+      aria-label={alt || "Photo non disponible"}
+      className={className}
+      style={{
+        ...(fill
+          ? { position: "absolute", inset: 0, width: "100%", height: "100%" }
+          : undefined),
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background:
+          "linear-gradient(145deg, #e8e0d4 0%, #d4cbb8 55%, #c9bfad 100%)",
+        color: "rgba(28,28,26,0.45)",
+      }}
+    >
+      <span
+        style={{
+          fontSize: 12,
+          letterSpacing: "0.06em",
+          textTransform: "uppercase",
+          fontWeight: 500,
+        }}
+      >
+        Photo non disponible
+      </span>
+    </div>
+  );
+}
+
 type ListingImageProps = {
   src: string;
   alt: string;
@@ -60,7 +96,7 @@ type ListingImageProps = {
   priority?: boolean;
 };
 
-/** Image annonce — proxy Referer pour sources agrégées + fallback si erreur. */
+/** Image annonce — proxy Referer pour sources agrégées ; jamais de photo stock Unsplash. */
 export function ListingImage({
   src,
   alt,
@@ -75,9 +111,13 @@ export function ListingImage({
   const handleError = () => {
     if (!failed) {
       setFailed(true);
-      setCurrentSrc(PLACEHOLDER);
+      setCurrentSrc(null);
     }
   };
+
+  if (!currentSrc || failed) {
+    return <ListingImagePlaceholder alt={alt} fill={fill} className={className} />;
+  }
 
   if (isNextImage(currentSrc)) {
     return (

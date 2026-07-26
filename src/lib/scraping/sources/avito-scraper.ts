@@ -1,4 +1,5 @@
 import type { RawPartnerListing } from "@/lib/aggregation/types";
+import { normalizeAvitoImageUrl, sanitizeListingImages } from "@/lib/media/listing-images";
 import { sleep } from "../http-client";
 import { extractAvitoId } from "../map-listing";
 import type { ScrapeOptions } from "../types";
@@ -27,15 +28,25 @@ const CATEGORIES = [
 
 type PlaywrightModule = typeof import("playwright");
 
-type CardPayload = {
-  href: string;
-  text: string;
-  img: string;
+type AvitoNextAd = {
+  listId?: string | number;
+  subject?: string;
+  description?: string;
+  href?: string;
+  defaultImage?: string;
+  images?: string[];
+  location?: string;
+  price?: { value?: number; currency?: string };
+  adType?: { key?: string; label?: string };
+  category?: { name?: string; formatted?: string };
+  params?: {
+    secondary?: Array<{ key?: string; value?: string | number }>;
+  };
 };
 
 /**
- * Scraping Avito depuis les pages recherche (évite Cloudflare des fiches détail).
- * Multi-catégories + nouveau contexte navigateur par ville pour maximiser le volume.
+ * Scraping Avito via __NEXT_DATA__ (photos + métadonnées fiables).
+ * Multi-catégories + nouveau contexte navigateur par ville.
  */
 export async function scrapeAvito(options: ScrapeOptions = {}): Promise<{
   listings: RawPartnerListing[];
@@ -113,13 +124,17 @@ export async function scrapeAvito(options: ScrapeOptions = {}): Promise<{
               }
             }
 
-            const cards = await extractCards(page);
-            if (!cards.length) break;
+            const ads = extractAdsFromNextData(html);
+            if (!ads.length) {
+              // page vide ou structure changée
+              if (pageNum === 1) errors.push(`Aucune annonce NEXT_DATA ${city}/${category} p${pageNum}`);
+              break;
+            }
 
             let added = 0;
-            for (const card of cards) {
+            for (const ad of ads) {
               if (listings.length >= maxListings) break;
-              const listing = mapCardToListing(card, city);
+              const listing = mapNextAdToListing(ad, city);
               if (!listing || seenIds.has(listing.externalId)) continue;
               seenIds.add(listing.externalId);
               listings.push(listing);
@@ -145,96 +160,108 @@ export async function scrapeAvito(options: ScrapeOptions = {}): Promise<{
   return { listings, errors: errors.slice(0, 100) };
 }
 
-async function extractCards(page: import("playwright").Page): Promise<CardPayload[]> {
-  return page.evaluate(() => {
-    const anchors = [...document.querySelectorAll("a[href*=\".htm\"]")] as HTMLAnchorElement[];
-    const seen = new Set<string>();
-    const out: CardPayload[] = [];
-    for (const a of anchors) {
-      if (!/avito\.ma\/fr\/.+\/.+\.htm/i.test(a.href)) continue;
-      const href = a.href.split("?")[0];
-      if (seen.has(href)) continue;
-      seen.add(href);
-      const text = (a.innerText || "").trim();
-      if (text.length < 12) continue;
-      const img =
-        a.querySelector("img")?.getAttribute("src") ||
-        a.querySelector("img")?.getAttribute("data-src") ||
-        "";
-      out.push({ href, text, img });
-    }
-    return out;
-  });
+/** Parse les annonces depuis le JSON embarqué Next.js (inclut defaultImage / images). */
+export function extractAdsFromNextData(html: string): AvitoNextAd[] {
+  const match = html.match(
+    /<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/,
+  );
+  if (!match) return [];
+
+  try {
+    const data = JSON.parse(match[1]) as {
+      props?: {
+        pageProps?: {
+          componentProps?: { ads?: { ads?: AvitoNextAd[] } };
+          initialReduxState?: { ad?: { search?: { ads?: { ads?: AvitoNextAd[] } } } };
+        };
+      };
+    };
+    const primary = data.props?.pageProps?.componentProps?.ads?.ads;
+    if (Array.isArray(primary) && primary.length) return primary;
+
+    const redux = data.props?.pageProps?.initialReduxState?.ad?.search?.ads?.ads;
+    if (Array.isArray(redux) && redux.length) return redux;
+  } catch {
+    return [];
+  }
+  return [];
 }
 
-function mapCardToListing(card: CardPayload, citySlug: string): RawPartnerListing | null {
-  const externalId = extractAvitoId(card.href);
+export function mapNextAdToListing(ad: AvitoNextAd, citySlug: string): RawPartnerListing | null {
+  const externalId = String(ad.listId ?? extractAvitoId(ad.href ?? "") ?? "").trim();
   if (!externalId) return null;
 
-  const lines = card.text
-    .split("\n")
-    .map((l) => l.trim())
-    .filter(Boolean);
-  const title = lines[0];
+  const title = (ad.subject ?? "").trim();
   if (!title) return null;
 
-  const price = extractPrice(card.text);
-  if (!price) return null;
+  const price = Number(ad.price?.value ?? 0);
+  if (!Number.isFinite(price) || price < 500) return null;
 
-  const locLine = lines.find((l) => /,/i.test(l) && !/DH|m²|chambre|sdb|Étage|il y a/i.test(l));
-  let city = capitalize(citySlug.replace(/_/g, " "));
-  let neighborhood = city;
-  if (locLine) {
-    const parts = locLine.split(",").map((p) => p.trim());
-    if (parts[0]) city = parts[0];
-    if (parts[1]) neighborhood = parts[1];
-  } else {
-    const fromUrl = card.href.match(/avito\.ma\/fr\/([^/]+)\//i);
-    if (fromUrl) neighborhood = capitalize(decodeURIComponent(fromUrl[1]).replace(/_/g, " "));
-  }
+  const locParts = (ad.location ?? "")
+    .split(",")
+    .map((p) => p.trim())
+    .filter(Boolean);
+  const city = locParts[0] || capitalize(citySlug.replace(/_/g, " "));
+  const neighborhood = locParts[1] || city;
 
-  const bedrooms = matchNumber(card.text, /(\d+)\s*chambres?/i);
-  const bathrooms = matchNumber(card.text, /(\d+)\s*sdb/i);
-  const livingArea = matchNumber(card.text, /(\d+)\s*m²/i);
+  const secondary = ad.params?.secondary ?? [];
+  const bedrooms = paramNumber(secondary, "rooms");
+  const bathrooms = paramNumber(secondary, "bathrooms");
+  const livingArea = paramNumber(secondary, "size");
+
+  const rawImages = [
+    ...(ad.images ?? []),
+    ...(ad.defaultImage ? [ad.defaultImage] : []),
+  ];
+  const images = sanitizeListingImages(rawImages.map(normalizeAvitoImageUrl)).slice(0, 8);
+
+  const href = ad.href?.startsWith("http")
+    ? ad.href
+    : ad.href
+      ? `https://www.avito.ma${ad.href}`
+      : `https://www.avito.ma/fr/${citySlug}/immobilier/annonce_${externalId}.htm`;
+
+  const typeHint = `${title} ${ad.category?.name ?? ""} ${ad.category?.formatted ?? ""} ${href}`;
+  const rent =
+    ad.adType?.key === "RENT" ||
+    /louer|location|rent/i.test(ad.adType?.label ?? "") ||
+    /à louer|location/i.test(title);
 
   return {
     externalId,
     title,
-    description: title,
+    description: (ad.description ?? title).slice(0, 2000),
     price,
     currency: "MAD",
-    transactionType: /à louer|location|louer/i.test(card.text) ? "long_term_rent" : "sale",
-    listingType: inferType(title, card.href),
+    transactionType: rent ? "long_term_rent" : "sale",
+    listingType: inferType(typeHint),
     city,
     neighborhood,
     bedrooms,
     bathrooms,
     livingArea,
-    images: card.img ? [card.img] : [],
-    sourceUrl: card.href,
+    images,
+    sourceUrl: href.split("?")[0],
   };
 }
 
-function extractPrice(text: string): number | null {
-  // Prendre le premier montant suivi de DH (pas DH/mois)
-  const matches = [...text.matchAll(/([\d\s\u202f.,]+)\s*\n?\s*DH(?!\s*\/)/gi)];
-  for (const match of matches) {
-    const n = Number(match[1].replace(/[^\d]/g, ""));
-    if (n >= 500) return n;
-  }
-  return null;
+function paramNumber(
+  secondary: Array<{ key?: string; value?: string | number }>,
+  key: string,
+): number | undefined {
+  const row = secondary.find((p) => p.key === key);
+  if (row?.value === undefined || row.value === null) return undefined;
+  const n = Number(row.value);
+  return Number.isFinite(n) ? n : undefined;
 }
 
-function matchNumber(text: string, re: RegExp): number | undefined {
-  const m = text.match(re);
-  return m ? Number(m[1]) : undefined;
-}
-
-function inferType(title: string, url: string): RawPartnerListing["listingType"] {
-  const t = `${title} ${url}`.toLowerCase();
+function inferType(text: string): RawPartnerListing["listingType"] {
+  const t = text.toLowerCase();
   if (t.includes("terrain")) return "land";
   if (t.includes("villa") || t.includes("riad")) return t.includes("riad") ? "riad" : "villa";
-  if (t.includes("local") || t.includes("bureau") || t.includes("commercial")) return "commercial";
+  if (t.includes("local") || t.includes("bureau") || t.includes("commercial") || t.includes("magasin")) {
+    return "commercial";
+  }
   return "apartment";
 }
 
