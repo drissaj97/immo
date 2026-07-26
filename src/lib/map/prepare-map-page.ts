@@ -1,0 +1,110 @@
+import type { ListingWithLocation } from "@/server/repositories/listings";
+import {
+  isValidMoroccoCoordinate,
+  resolveListingCoordinates,
+} from "@/lib/geography/resolve-coordinates";
+import { prepareMapListings, type MapListingsOptions } from "@/lib/map/prepare-map-listings";
+import type { MapListingPoint } from "@/lib/map/listing-map-points";
+import { getNearbyPoisForListings } from "@/lib/map/nearby-pois";
+import type { MapPoiPoint } from "@/lib/map/map-poi-types";
+
+export type MapPageData = {
+  points: MapListingPoint[];
+  nearbyPoisByKey: Record<string, MapPoiPoint[]>;
+  nearbyPois: MapPoiPoint[];
+  mapCount: number;
+  listings: ListingWithLocation[];
+  /** Centre carte [lng, lat] de la zone recherchée. */
+  mapCenter?: [number, number];
+};
+
+const POI_BUDGET_MS = Number(process.env.MAP_POI_BUDGET_MS ?? "1500");
+
+function emptyPois(): MapPageData["nearbyPoisByKey"] {
+  return {};
+}
+
+function resolveMapCenter(
+  options: MapListingsOptions,
+  points: MapListingPoint[],
+): [number, number] | undefined {
+  if (options.searchCity) {
+    const anchor = resolveListingCoordinates({
+      city: options.searchCity,
+      neighborhood: options.searchNeighborhood,
+    });
+    if (
+      anchor.source !== "unknown" &&
+      isValidMoroccoCoordinate(anchor.latitude, anchor.longitude)
+    ) {
+      return [anchor.longitude, anchor.latitude];
+    }
+  }
+  if (!points.length) return undefined;
+  const lng = points.reduce((s, p) => s + p.mapLongitude, 0) / points.length;
+  const lat = points.reduce((s, p) => s + p.mapLatitude, 0) / points.length;
+  return [lng, lat];
+}
+
+/** Prépare données carte côté serveur (coords + POI optionnels, non-bloquants). */
+export async function prepareMapPageData(
+  listings: ListingWithLocation[],
+  options: MapListingsOptions = {},
+): Promise<MapPageData> {
+  const points = prepareMapListings(listings, options);
+  const mapCenter = resolveMapCenter(options, points);
+
+  let poisMap = new Map<string, Awaited<ReturnType<typeof getNearbyPoisForListings>> extends Map<string, infer V> ? V : never>();
+
+  try {
+    poisMap = await Promise.race([
+      getNearbyPoisForListings(
+        points.map((p) => ({
+          mapLatitude: p.mapLatitude,
+          mapLongitude: p.mapLongitude,
+          coordinateSource: p.coordinateSource,
+        })),
+      ),
+      new Promise<typeof poisMap>((resolve) =>
+        setTimeout(() => resolve(new Map()), POI_BUDGET_MS),
+      ),
+    ]);
+  } catch {
+    poisMap = new Map();
+  }
+
+  const nearbyPoisByKey: MapPageData["nearbyPoisByKey"] = emptyPois();
+  const poiSeen = new Set<string>();
+  const nearbyPois: MapPoiPoint[] = [];
+
+  for (const [key, pois] of poisMap.entries()) {
+    nearbyPoisByKey[key] = pois.map((p) => ({
+      name: p.name,
+      category: p.category,
+      distanceM: p.distanceM,
+      latitude: p.latitude,
+      longitude: p.longitude,
+    }));
+    for (const p of pois) {
+      const id = `${p.latitude.toFixed(5)}|${p.longitude.toFixed(5)}`;
+      if (poiSeen.has(id)) continue;
+      poiSeen.add(id);
+      nearbyPois.push({
+        name: p.name,
+        category: p.category,
+        distanceM: p.distanceM,
+        latitude: p.latitude,
+        longitude: p.longitude,
+      });
+    }
+  }
+
+  return {
+    points,
+    nearbyPoisByKey,
+    nearbyPois,
+    mapCount: points.length,
+    listings,
+    mapCenter,
+  };
+}

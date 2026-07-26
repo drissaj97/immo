@@ -1,0 +1,6998 @@
+{
+  "builtAt": "2026-07-25T16:26:25.571Z",
+  "totalListingsScanned": 17100,
+  "apiTotalCount": 72971,
+  "cities": [
+    {
+      "name": "Casablanca",
+      "slug": "casablanca",
+      "count": 7865,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Racine",
+          "count": 672,
+          "slug": "racine"
+        },
+        {
+          "name": "Casablanca Finance City",
+          "count": 541,
+          "slug": "casablanca-finance-city"
+        },
+        {
+          "name": "Ain Diab",
+          "count": 479,
+          "slug": "ain-diab"
+        },
+        {
+          "name": "Gauthier",
+          "count": 375,
+          "slug": "gauthier"
+        },
+        {
+          "name": "Bourgogne Ouest",
+          "count": 290,
+          "slug": "bourgogne-ouest"
+        },
+        {
+          "name": "Maârif",
+          "count": 269,
+          "slug": "maarif"
+        },
+        {
+          "name": "Les princesses",
+          "count": 268,
+          "slug": "les-princesses"
+        },
+        {
+          "name": "Palmier",
+          "count": 235,
+          "slug": "palmier"
+        },
+        {
+          "name": "Californie",
+          "count": 231,
+          "slug": "californie"
+        },
+        {
+          "name": "Les Hôpitaux",
+          "count": 226,
+          "slug": "les-hopitaux"
+        },
+        {
+          "name": "Oasis",
+          "count": 224,
+          "slug": "oasis"
+        },
+        {
+          "name": "Anfa",
+          "count": 213,
+          "slug": "anfa"
+        },
+        {
+          "name": "Ferme Bretonne Hay Arraha",
+          "count": 196,
+          "slug": "ferme-bretonne-hay-arraha"
+        },
+        {
+          "name": "Casablanca",
+          "count": 194,
+          "slug": "casablanca"
+        },
+        {
+          "name": "Sidi Maarouf",
+          "count": 172,
+          "slug": "sidi-maarouf"
+        },
+        {
+          "name": "Aïn Sebaâ",
+          "count": 146,
+          "slug": "ain-sebaa"
+        },
+        {
+          "name": "Maârif Extension",
+          "count": 139,
+          "slug": "maarif-extension"
+        },
+        {
+          "name": "Belvédère",
+          "count": 126,
+          "slug": "belvedere"
+        },
+        {
+          "name": "Oulfa",
+          "count": 114,
+          "slug": "oulfa"
+        },
+        {
+          "name": "CIL Hay Salam",
+          "count": 114,
+          "slug": "cil-hay-salam"
+        },
+        {
+          "name": "Roches Noires",
+          "count": 107,
+          "slug": "roches-noires"
+        },
+        {
+          "name": "Val Fleury",
+          "count": 105,
+          "slug": "val-fleury"
+        },
+        {
+          "name": "Ain Diab Extension",
+          "count": 104,
+          "slug": "ain-diab-extension"
+        },
+        {
+          "name": "Bourgogne Est",
+          "count": 95,
+          "slug": "bourgogne-est"
+        },
+        {
+          "name": "Les Princesses",
+          "count": 92,
+          "slug": "les-princesses"
+        },
+        {
+          "name": "Beauséjour",
+          "count": 71,
+          "slug": "beausejour"
+        },
+        {
+          "name": "Mers Sultan",
+          "count": 70,
+          "slug": "mers-sultan"
+        },
+        {
+          "name": "Les Hopitaux",
+          "count": 70,
+          "slug": "les-hopitaux"
+        },
+        {
+          "name": "Riviera",
+          "count": 66,
+          "slug": "riviera"
+        },
+        {
+          "name": "Triangle d Or",
+          "count": 65,
+          "slug": "triangle-d-or"
+        },
+        {
+          "name": "Maarif",
+          "count": 65,
+          "slug": "maarif"
+        },
+        {
+          "name": "Centre Ville",
+          "count": 63,
+          "slug": "centre-ville"
+        },
+        {
+          "name": "Lissasfa",
+          "count": 52,
+          "slug": "lissasfa"
+        },
+        {
+          "name": "Burger",
+          "count": 51,
+          "slug": "burger"
+        },
+        {
+          "name": "Hermitage",
+          "count": 51,
+          "slug": "hermitage"
+        },
+        {
+          "name": "Maarif Extension",
+          "count": 51,
+          "slug": "maarif-extension"
+        },
+        {
+          "name": "La Gironde",
+          "count": 49,
+          "slug": "la-gironde"
+        },
+        {
+          "name": "Franceville",
+          "count": 45,
+          "slug": "franceville"
+        },
+        {
+          "name": "Ain Chock",
+          "count": 45,
+          "slug": "ain-chock"
+        },
+        {
+          "name": "Ain Sebaa",
+          "count": 44,
+          "slug": "ain-sebaa"
+        },
+        {
+          "name": "Sidi Moumen",
+          "count": 43,
+          "slug": "sidi-moumen"
+        },
+        {
+          "name": "Ferme Bretonne (Hay Arraha)",
+          "count": 42,
+          "slug": "ferme-bretonne-hay-arraha"
+        },
+        {
+          "name": "Almaz",
+          "count": 38,
+          "slug": "almaz"
+        },
+        {
+          "name": "Belvedere",
+          "count": 38,
+          "slug": "belvedere"
+        },
+        {
+          "name": "Racine Extension",
+          "count": 33,
+          "slug": "racine-extension"
+        },
+        {
+          "name": "Beausejour",
+          "count": 31,
+          "slug": "beausejour"
+        },
+        {
+          "name": "Casablanca Marina",
+          "count": 29,
+          "slug": "casablanca-marina"
+        },
+        {
+          "name": "Derb Ghalef",
+          "count": 28,
+          "slug": "derb-ghalef"
+        },
+        {
+          "name": "Ain Borja",
+          "count": 28,
+          "slug": "ain-borja"
+        },
+        {
+          "name": "Moulay Youssef",
+          "count": 27,
+          "slug": "moulay-youssef"
+        },
+        {
+          "name": "Alsace Lorraine",
+          "count": 27,
+          "slug": "alsace-lorraine"
+        },
+        {
+          "name": "Laymoune",
+          "count": 27,
+          "slug": "laymoune"
+        },
+        {
+          "name": "Triangle D'Or",
+          "count": 25,
+          "slug": "triangle-d-or"
+        },
+        {
+          "name": "Al Qods",
+          "count": 23,
+          "slug": "al-qods"
+        },
+        {
+          "name": "Quartier Bachkou",
+          "count": 22,
+          "slug": "quartier-bachkou"
+        },
+        {
+          "name": "El Oulfa",
+          "count": 21,
+          "slug": "el-oulfa"
+        },
+        {
+          "name": "Nassim 1",
+          "count": 20,
+          "slug": "nassim-1"
+        },
+        {
+          "name": "Hopitaux",
+          "count": 20,
+          "slug": "hopitaux"
+        },
+        {
+          "name": "Beausite",
+          "count": 19,
+          "slug": "beausite"
+        },
+        {
+          "name": "Palmiers",
+          "count": 19,
+          "slug": "palmiers"
+        },
+        {
+          "name": "Mandarona",
+          "count": 18,
+          "slug": "mandarona"
+        },
+        {
+          "name": "Liberté",
+          "count": 18,
+          "slug": "liberte"
+        },
+        {
+          "name": "Bernoussi",
+          "count": 17,
+          "slug": "bernoussi"
+        },
+        {
+          "name": "Ferme Bretonne",
+          "count": 17,
+          "slug": "ferme-bretonne"
+        },
+        {
+          "name": "Anfa Supérieur",
+          "count": 16,
+          "slug": "anfa-superieur"
+        },
+        {
+          "name": "Ghalef",
+          "count": 16,
+          "slug": "ghalef"
+        },
+        {
+          "name": "Plateau Al Batha",
+          "count": 15,
+          "slug": "plateau-al-batha"
+        },
+        {
+          "name": "Hassani",
+          "count": 13,
+          "slug": "hassani"
+        },
+        {
+          "name": "Oasis sud",
+          "count": 13,
+          "slug": "oasis-sud"
+        },
+        {
+          "name": "Longchamps Hay Al Hanâa",
+          "count": 13,
+          "slug": "longchamps-hay-al-hanaa"
+        },
+        {
+          "name": "Ancienne Medina",
+          "count": 13,
+          "slug": "ancienne-medina"
+        },
+        {
+          "name": "Prefecture D'Arrondissement De Hay Hassani",
+          "count": 13,
+          "slug": "prefecture-d-arrondissement-de-hay-hassani"
+        },
+        {
+          "name": "Anassi",
+          "count": 12,
+          "slug": "anassi"
+        },
+        {
+          "name": "El Manar - El Hank",
+          "count": 12,
+          "slug": "el-manar-el-hank"
+        },
+        {
+          "name": "L'Hermitage",
+          "count": 12,
+          "slug": "l-hermitage"
+        },
+        {
+          "name": "Bachkou",
+          "count": 12,
+          "slug": "bachkou"
+        },
+        {
+          "name": "Triangle d'Or",
+          "count": 11,
+          "slug": "triangle-d-or"
+        },
+        {
+          "name": "CIL (Hay Salam)",
+          "count": 11,
+          "slug": "cil-hay-salam"
+        },
+        {
+          "name": "Hay Hassani",
+          "count": 11,
+          "slug": "hay-hassani"
+        },
+        {
+          "name": "Lusitania",
+          "count": 11,
+          "slug": "lusitania"
+        },
+        {
+          "name": "Benjdia",
+          "count": 11,
+          "slug": "benjdia"
+        },
+        {
+          "name": "Zone Industrielle",
+          "count": 10,
+          "slug": "zone-industrielle"
+        },
+        {
+          "name": "Sidi Othmane",
+          "count": 10,
+          "slug": "sidi-othmane"
+        },
+        {
+          "name": "Mohammadi",
+          "count": 10,
+          "slug": "mohammadi"
+        },
+        {
+          "name": "Derb Omar",
+          "count": 9,
+          "slug": "derb-omar"
+        },
+        {
+          "name": "Cil Hay Salam",
+          "count": 9,
+          "slug": "cil-hay-salam"
+        },
+        {
+          "name": "Chrifa",
+          "count": 9,
+          "slug": "chrifa"
+        },
+        {
+          "name": "Zone Industrielle Oukacha",
+          "count": 8,
+          "slug": "zone-industrielle-oukacha"
+        },
+        {
+          "name": "Nassim 2",
+          "count": 8,
+          "slug": "nassim-2"
+        },
+        {
+          "name": "La Vilette",
+          "count": 8,
+          "slug": "la-vilette"
+        },
+        {
+          "name": "Sidi Belyout",
+          "count": 8,
+          "slug": "sidi-belyout"
+        },
+        {
+          "name": "Al Azhar",
+          "count": 8,
+          "slug": "al-azhar"
+        },
+        {
+          "name": "Cite Plateau",
+          "count": 8,
+          "slug": "cite-plateau"
+        },
+        {
+          "name": "Cil",
+          "count": 8,
+          "slug": "cil"
+        },
+        {
+          "name": "Tantonville",
+          "count": 7,
+          "slug": "tantonville"
+        },
+        {
+          "name": "Palmier (Maarif)",
+          "count": 7,
+          "slug": "palmier-maarif"
+        },
+        {
+          "name": "Bourgogne",
+          "count": 7,
+          "slug": "bourgogne"
+        },
+        {
+          "name": "Anfa Superieur",
+          "count": 7,
+          "slug": "anfa-superieur"
+        },
+        {
+          "name": "City Dar Es Salaam",
+          "count": 6,
+          "slug": "city-dar-es-salaam"
+        },
+        {
+          "name": "Fes Medina",
+          "count": 6,
+          "slug": "fes-medina"
+        },
+        {
+          "name": "Polo",
+          "count": 5,
+          "slug": "polo"
+        },
+        {
+          "name": "Al Hadika",
+          "count": 5,
+          "slug": "al-hadika"
+        },
+        {
+          "name": "Hay Mohammadi",
+          "count": 5,
+          "slug": "hay-mohammadi"
+        },
+        {
+          "name": "Lekrimat",
+          "count": 5,
+          "slug": "lekrimat"
+        },
+        {
+          "name": "Farah Essalam",
+          "count": 5,
+          "slug": "farah-essalam"
+        },
+        {
+          "name": "Tacharouk Hay Al Walaa",
+          "count": 5,
+          "slug": "tacharouk-hay-al-walaa"
+        },
+        {
+          "name": "Omar",
+          "count": 5,
+          "slug": "omar"
+        },
+        {
+          "name": "CIL",
+          "count": 4,
+          "slug": "cil"
+        },
+        {
+          "name": "Ain Diab Extension 2",
+          "count": 4,
+          "slug": "ain-diab-extension-2"
+        },
+        {
+          "name": "Al Andalous",
+          "count": 4,
+          "slug": "al-andalous"
+        },
+        {
+          "name": "Hay Palestine",
+          "count": 4,
+          "slug": "hay-palestine"
+        },
+        {
+          "name": "Sindibad",
+          "count": 4,
+          "slug": "sindibad"
+        },
+        {
+          "name": "Ain diab",
+          "count": 4,
+          "slug": "ain-diab"
+        },
+        {
+          "name": "Val fleuri",
+          "count": 4,
+          "slug": "val-fleuri"
+        },
+        {
+          "name": "Port",
+          "count": 4,
+          "slug": "port"
+        },
+        {
+          "name": "Club De L'Ormvad",
+          "count": 4,
+          "slug": "club-de-l-ormvad"
+        },
+        {
+          "name": "Lmkansa",
+          "count": 4,
+          "slug": "lmkansa"
+        },
+        {
+          "name": "Ahl Loghlam Hay Assalam",
+          "count": 4,
+          "slug": "ahl-loghlam-hay-assalam"
+        },
+        {
+          "name": "Inara",
+          "count": 4,
+          "slug": "inara"
+        },
+        {
+          "name": "Sidi Maârouf",
+          "count": 4,
+          "slug": "sidi-maarouf"
+        },
+        {
+          "name": "Val Fleurie",
+          "count": 4,
+          "slug": "val-fleurie"
+        },
+        {
+          "name": "Florida",
+          "count": 3,
+          "slug": "florida"
+        },
+        {
+          "name": "حي الفتح",
+          "count": 3,
+          "slug": ""
+        },
+        {
+          "name": "Quartier Bd Med V",
+          "count": 3,
+          "slug": "quartier-bd-med-v"
+        },
+        {
+          "name": "Hay Al Amal",
+          "count": 3,
+          "slug": "hay-al-amal"
+        },
+        {
+          "name": "Hay Arsalan",
+          "count": 3,
+          "slug": "hay-arsalan"
+        },
+        {
+          "name": "Hay Moulay Abdellah",
+          "count": 3,
+          "slug": "hay-moulay-abdellah"
+        },
+        {
+          "name": "Bourgogne (Sidi Belyout)",
+          "count": 3,
+          "slug": "bourgogne-sidi-belyout"
+        },
+        {
+          "name": "Bourgogne (Anfa)",
+          "count": 3,
+          "slug": "bourgogne-anfa"
+        },
+        {
+          "name": "Plateau",
+          "count": 3,
+          "slug": "plateau"
+        },
+        {
+          "name": "Zone Industrielle Moulay Rachid",
+          "count": 3,
+          "slug": "zone-industrielle-moulay-rachid"
+        },
+        {
+          "name": "Khabbazate",
+          "count": 3,
+          "slug": "khabbazate"
+        },
+        {
+          "name": "Zobir",
+          "count": 3,
+          "slug": "zobir"
+        },
+        {
+          "name": "Sidi El Khadir",
+          "count": 3,
+          "slug": "sidi-el-khadir"
+        },
+        {
+          "name": "Carlotti",
+          "count": 3,
+          "slug": "carlotti"
+        },
+        {
+          "name": "Alsace Loraine",
+          "count": 3,
+          "slug": "alsace-loraine"
+        },
+        {
+          "name": "Hay Chrifa",
+          "count": 3,
+          "slug": "hay-chrifa"
+        },
+        {
+          "name": "Sidi Bernoussi",
+          "count": 3,
+          "slug": "sidi-bernoussi"
+        },
+        {
+          "name": "Liberte",
+          "count": 3,
+          "slug": "liberte"
+        },
+        {
+          "name": "Salmia 2",
+          "count": 3,
+          "slug": "salmia-2"
+        },
+        {
+          "name": "Lotissement Al Amri",
+          "count": 3,
+          "slug": "lotissement-al-amri"
+        },
+        {
+          "name": "Hay Idrissia",
+          "count": 2,
+          "slug": "hay-idrissia"
+        },
+        {
+          "name": "El Hank",
+          "count": 2,
+          "slug": "el-hank"
+        },
+        {
+          "name": "Hay Lamiaa",
+          "count": 2,
+          "slug": "hay-lamiaa"
+        },
+        {
+          "name": "Hay Inara",
+          "count": 2,
+          "slug": "hay-inara"
+        },
+        {
+          "name": "Derb Chorfa",
+          "count": 2,
+          "slug": "derb-chorfa"
+        },
+        {
+          "name": "Hay Laâyoune",
+          "count": 2,
+          "slug": "hay-laayoune"
+        },
+        {
+          "name": "Hay Lmkansa",
+          "count": 2,
+          "slug": "hay-lmkansa"
+        },
+        {
+          "name": "Longchamps (Hay Al Hanâa)",
+          "count": 2,
+          "slug": "longchamps-hay-al-hanaa"
+        },
+        {
+          "name": "Al Farah Dar Essalam",
+          "count": 2,
+          "slug": "al-farah-dar-essalam"
+        },
+        {
+          "name": "Bd Raphael",
+          "count": 2,
+          "slug": "bd-raphael"
+        },
+        {
+          "name": "Salama",
+          "count": 2,
+          "slug": "salama"
+        },
+        {
+          "name": "El Manar El Hank",
+          "count": 2,
+          "slug": "el-manar-el-hank"
+        },
+        {
+          "name": "Ibn tachfine",
+          "count": 2,
+          "slug": "ibn-tachfine"
+        },
+        {
+          "name": "Fonciere",
+          "count": 2,
+          "slug": "fonciere"
+        },
+        {
+          "name": "Bouchentouf",
+          "count": 2,
+          "slug": "bouchentouf"
+        },
+        {
+          "name": "La Floride",
+          "count": 2,
+          "slug": "la-floride"
+        },
+        {
+          "name": "Hay Arrahma",
+          "count": 2,
+          "slug": "hay-arrahma"
+        },
+        {
+          "name": "Oasis Sud",
+          "count": 2,
+          "slug": "oasis-sud"
+        },
+        {
+          "name": "Derb Salama",
+          "count": 2,
+          "slug": "derb-salama"
+        },
+        {
+          "name": "Florida Mandarona",
+          "count": 2,
+          "slug": "florida-mandarona"
+        },
+        {
+          "name": "Bourgogne Anfa",
+          "count": 2,
+          "slug": "bourgogne-anfa"
+        },
+        {
+          "name": "Al Omrane",
+          "count": 2,
+          "slug": "al-omrane"
+        },
+        {
+          "name": "Ain sebaa",
+          "count": 2,
+          "slug": "ain-sebaa"
+        },
+        {
+          "name": "Jamila 5",
+          "count": 2,
+          "slug": "jamila-5"
+        },
+        {
+          "name": "Addaman",
+          "count": 2,
+          "slug": "addaman"
+        },
+        {
+          "name": "Foncière",
+          "count": 2,
+          "slug": "fonciere"
+        },
+        {
+          "name": "Miftah Al Khair",
+          "count": 2,
+          "slug": "miftah-al-khair"
+        },
+        {
+          "name": "Belvedere Roches Noires",
+          "count": 2,
+          "slug": "belvedere-roches-noires"
+        },
+        {
+          "name": "Longchamps",
+          "count": 2,
+          "slug": "longchamps"
+        },
+        {
+          "name": "Hay Alfarah",
+          "count": 2,
+          "slug": "hay-alfarah"
+        },
+        {
+          "name": "Marina",
+          "count": 2,
+          "slug": "marina"
+        },
+        {
+          "name": "Val d'anfa",
+          "count": 2,
+          "slug": "val-d-anfa"
+        },
+        {
+          "name": "Mandarouna",
+          "count": 2,
+          "slug": "mandarouna"
+        },
+        {
+          "name": "Hay Mansour",
+          "count": 2,
+          "slug": "hay-mansour"
+        },
+        {
+          "name": "Sidi Abderrahman",
+          "count": 2,
+          "slug": "sidi-abderrahman"
+        },
+        {
+          "name": "Ksar Lebhar",
+          "count": 1,
+          "slug": "ksar-lebhar"
+        },
+        {
+          "name": "Bourgogne Sidi Belyout",
+          "count": 1,
+          "slug": "bourgogne-sidi-belyout"
+        },
+        {
+          "name": "Quartier Avenue Des Far",
+          "count": 1,
+          "slug": "quartier-avenue-des-far"
+        },
+        {
+          "name": "Polo Ain Chok",
+          "count": 1,
+          "slug": "polo-ain-chok"
+        },
+        {
+          "name": "Sidi maarouf",
+          "count": 1,
+          "slug": "sidi-maarouf"
+        },
+        {
+          "name": "Dar Touzani",
+          "count": 1,
+          "slug": "dar-touzani"
+        },
+        {
+          "name": "Angle Omar Riffi Et Bd Alsace",
+          "count": 1,
+          "slug": "angle-omar-riffi-et-bd-alsace"
+        },
+        {
+          "name": "Tabriquet",
+          "count": 1,
+          "slug": "tabriquet"
+        },
+        {
+          "name": "Al Fida",
+          "count": 1,
+          "slug": "al-fida"
+        },
+        {
+          "name": "Zaytoun",
+          "count": 1,
+          "slug": "zaytoun"
+        },
+        {
+          "name": "Palmier Maarif",
+          "count": 1,
+          "slug": "palmier-maarif"
+        },
+        {
+          "name": "Casa Green Town",
+          "count": 1,
+          "slug": "casa-green-town"
+        },
+        {
+          "name": "Ibn Tachfine",
+          "count": 1,
+          "slug": "ibn-tachfine"
+        },
+        {
+          "name": "Riad Bouskoura",
+          "count": 1,
+          "slug": "riad-bouskoura"
+        },
+        {
+          "name": "Palmier (maarif)",
+          "count": 1,
+          "slug": "palmier-maarif"
+        },
+        {
+          "name": "Mesfioui",
+          "count": 1,
+          "slug": "mesfioui"
+        },
+        {
+          "name": "Hay Sadri",
+          "count": 1,
+          "slug": "hay-sadri"
+        },
+        {
+          "name": "Adil",
+          "count": 1,
+          "slug": "adil"
+        },
+        {
+          "name": "Sadri",
+          "count": 1,
+          "slug": "sadri"
+        },
+        {
+          "name": "Derb Loubila",
+          "count": 1,
+          "slug": "derb-loubila"
+        },
+        {
+          "name": "Derb Ben Houmane",
+          "count": 1,
+          "slug": "derb-ben-houmane"
+        },
+        {
+          "name": "Hay Al Qods",
+          "count": 1,
+          "slug": "hay-al-qods"
+        },
+        {
+          "name": "Miamar",
+          "count": 1,
+          "slug": "miamar"
+        },
+        {
+          "name": "Dar Bouazza",
+          "count": 1,
+          "slug": "dar-bouazza"
+        },
+        {
+          "name": "Korea",
+          "count": 1,
+          "slug": "korea"
+        },
+        {
+          "name": "Val D Anfa",
+          "count": 1,
+          "slug": "val-d-anfa"
+        },
+        {
+          "name": "Hay Tasahol",
+          "count": 1,
+          "slug": "hay-tasahol"
+        },
+        {
+          "name": "Michouar",
+          "count": 1,
+          "slug": "michouar"
+        },
+        {
+          "name": "Plateau (Al Batha)",
+          "count": 1,
+          "slug": "plateau-al-batha"
+        },
+        {
+          "name": "Hay Moulay Rachid 1",
+          "count": 1,
+          "slug": "hay-moulay-rachid-1"
+        },
+        {
+          "name": "Mers sultan",
+          "count": 1,
+          "slug": "mers-sultan"
+        },
+        {
+          "name": "Derb Carlotti",
+          "count": 1,
+          "slug": "derb-carlotti"
+        },
+        {
+          "name": "Jamila 7",
+          "count": 1,
+          "slug": "jamila-7"
+        },
+        {
+          "name": "Parc Et Place",
+          "count": 1,
+          "slug": "parc-et-place"
+        },
+        {
+          "name": "Rajaa",
+          "count": 1,
+          "slug": "rajaa"
+        },
+        {
+          "name": "Sour Jdid",
+          "count": 1,
+          "slug": "sour-jdid"
+        },
+        {
+          "name": "Alfoqara",
+          "count": 1,
+          "slug": "alfoqara"
+        },
+        {
+          "name": "Al Osra",
+          "count": 1,
+          "slug": "al-osra"
+        },
+        {
+          "name": "Sidi Abderrahman Extension",
+          "count": 1,
+          "slug": "sidi-abderrahman-extension"
+        },
+        {
+          "name": "Albaraka",
+          "count": 1,
+          "slug": "albaraka"
+        },
+        {
+          "name": "Triangle d'or",
+          "count": 1,
+          "slug": "triangle-d-or"
+        },
+        {
+          "name": "Les Crêtes",
+          "count": 1,
+          "slug": "les-cretes"
+        },
+        {
+          "name": "Hay Moulay Rachid 2",
+          "count": 1,
+          "slug": "hay-moulay-rachid-2"
+        },
+        {
+          "name": "Itissal",
+          "count": 1,
+          "slug": "itissal"
+        },
+        {
+          "name": "Hay Albaraka",
+          "count": 1,
+          "slug": "hay-albaraka"
+        },
+        {
+          "name": "Hay el qods",
+          "count": 1,
+          "slug": "hay-el-qods"
+        },
+        {
+          "name": "Smara",
+          "count": 1,
+          "slug": "smara"
+        },
+        {
+          "name": "Al Ahd Al Jadid",
+          "count": 1,
+          "slug": "al-ahd-al-jadid"
+        },
+        {
+          "name": "Hippodrome",
+          "count": 1,
+          "slug": "hippodrome"
+        },
+        {
+          "name": "Moulay Rachid",
+          "count": 1,
+          "slug": "moulay-rachid"
+        },
+        {
+          "name": "Oulad Dakak",
+          "count": 1,
+          "slug": "oulad-dakak"
+        },
+        {
+          "name": "Angle Omar Riffi et Bd Alsace",
+          "count": 1,
+          "slug": "angle-omar-riffi-et-bd-alsace"
+        },
+        {
+          "name": "Dhar Lamhala",
+          "count": 1,
+          "slug": "dhar-lamhala"
+        },
+        {
+          "name": "Prefecture D'Arrondissements De Ben M'Sick",
+          "count": 1,
+          "slug": "prefecture-d-arrondissements-de-ben-m-sick"
+        },
+        {
+          "name": "Bd Abdelmoumen",
+          "count": 1,
+          "slug": "bd-abdelmoumen"
+        },
+        {
+          "name": "Nassim",
+          "count": 1,
+          "slug": "nassim"
+        },
+        {
+          "name": "الحي الإداري",
+          "count": 1,
+          "slug": ""
+        },
+        {
+          "name": "Garage Allal",
+          "count": 1,
+          "slug": "garage-allal"
+        },
+        {
+          "name": "Ziraoui",
+          "count": 1,
+          "slug": "ziraoui"
+        },
+        {
+          "name": "Ghandi",
+          "count": 1,
+          "slug": "ghandi"
+        },
+        {
+          "name": "Khalid",
+          "count": 1,
+          "slug": "khalid"
+        }
+      ]
+    },
+    {
+      "name": "Marrakech",
+      "slug": "marrakech",
+      "count": 2552,
+      "region": "Marrakech-Safi",
+      "regionSlug": "marrakech-safi",
+      "neighborhoods": [
+        {
+          "name": "Guéliz",
+          "count": 481,
+          "slug": "gueliz"
+        },
+        {
+          "name": "Gueliz",
+          "count": 213,
+          "slug": "gueliz"
+        },
+        {
+          "name": "Route Casablanca",
+          "count": 200,
+          "slug": "route-casablanca"
+        },
+        {
+          "name": "Agdal",
+          "count": 187,
+          "slug": "agdal"
+        },
+        {
+          "name": "Hivernage",
+          "count": 153,
+          "slug": "hivernage"
+        },
+        {
+          "name": "Hay Targa",
+          "count": 89,
+          "slug": "hay-targa"
+        },
+        {
+          "name": "Amelkis",
+          "count": 69,
+          "slug": "amelkis"
+        },
+        {
+          "name": "Mhamid",
+          "count": 64,
+          "slug": "mhamid"
+        },
+        {
+          "name": "Camp Al Ghoul",
+          "count": 61,
+          "slug": "camp-al-ghoul"
+        },
+        {
+          "name": "Samlalia",
+          "count": 55,
+          "slug": "samlalia"
+        },
+        {
+          "name": "Route de Safi",
+          "count": 52,
+          "slug": "route-de-safi"
+        },
+        {
+          "name": "Boulevard Med 6",
+          "count": 51,
+          "slug": "boulevard-med-6"
+        },
+        {
+          "name": "Route de l Ourika",
+          "count": 51,
+          "slug": "route-de-l-ourika"
+        },
+        {
+          "name": "Ennakhil Palmeraie",
+          "count": 50,
+          "slug": "ennakhil-palmeraie"
+        },
+        {
+          "name": "Majorelle",
+          "count": 48,
+          "slug": "majorelle"
+        },
+        {
+          "name": "Route de Tahanaout",
+          "count": 45,
+          "slug": "route-de-tahanaout"
+        },
+        {
+          "name": "Hay Mabrouka",
+          "count": 40,
+          "slug": "hay-mabrouka"
+        },
+        {
+          "name": "Izdihar",
+          "count": 34,
+          "slug": "izdihar"
+        },
+        {
+          "name": "Route de Fez",
+          "count": 34,
+          "slug": "route-de-fez"
+        },
+        {
+          "name": "Route Amizmiz",
+          "count": 30,
+          "slug": "route-amizmiz"
+        },
+        {
+          "name": "Ain Mezouar",
+          "count": 25,
+          "slug": "ain-mezouar"
+        },
+        {
+          "name": "Targa",
+          "count": 20,
+          "slug": "targa"
+        },
+        {
+          "name": "Bouaakkaz",
+          "count": 20,
+          "slug": "bouaakkaz"
+        },
+        {
+          "name": "Menara",
+          "count": 19,
+          "slug": "menara"
+        },
+        {
+          "name": "Daoudiat",
+          "count": 18,
+          "slug": "daoudiat"
+        },
+        {
+          "name": "Route de Ouarzazate",
+          "count": 18,
+          "slug": "route-de-ouarzazate"
+        },
+        {
+          "name": "Marrakech",
+          "count": 17,
+          "slug": "marrakech"
+        },
+        {
+          "name": "Zone Industrielle Sidi Ghanem",
+          "count": 17,
+          "slug": "zone-industrielle-sidi-ghanem"
+        },
+        {
+          "name": "Route d Agadir - Essaouira",
+          "count": 16,
+          "slug": "route-d-agadir-essaouira"
+        },
+        {
+          "name": "Ennakhil (Palmeraie)",
+          "count": 15,
+          "slug": "ennakhil-palmeraie"
+        },
+        {
+          "name": "Les Portes de Marrakech",
+          "count": 14,
+          "slug": "les-portes-de-marrakech"
+        },
+        {
+          "name": "Route De Safi",
+          "count": 13,
+          "slug": "route-de-safi"
+        },
+        {
+          "name": "Route de l'Ourika",
+          "count": 11,
+          "slug": "route-de-l-ourika"
+        },
+        {
+          "name": "Riad Al Atlas",
+          "count": 11,
+          "slug": "riad-al-atlas"
+        },
+        {
+          "name": "Ouasis",
+          "count": 11,
+          "slug": "ouasis"
+        },
+        {
+          "name": "Amerchich",
+          "count": 11,
+          "slug": "amerchich"
+        },
+        {
+          "name": "Sidi Abbad",
+          "count": 10,
+          "slug": "sidi-abbad"
+        },
+        {
+          "name": "Route De L'Ourika",
+          "count": 10,
+          "slug": "route-de-l-ourika"
+        },
+        {
+          "name": "Hay Saada",
+          "count": 9,
+          "slug": "hay-saada"
+        },
+        {
+          "name": "Issil",
+          "count": 9,
+          "slug": "issil"
+        },
+        {
+          "name": "Mohammed VI",
+          "count": 8,
+          "slug": "mohammed-vi"
+        },
+        {
+          "name": "Route D'Agadir Essaouira",
+          "count": 8,
+          "slug": "route-d-agadir-essaouira"
+        },
+        {
+          "name": "Route d'Amizmiz",
+          "count": 6,
+          "slug": "route-d-amizmiz"
+        },
+        {
+          "name": "Hay Alfadl",
+          "count": 6,
+          "slug": "hay-alfadl"
+        },
+        {
+          "name": "Massira 1",
+          "count": 6,
+          "slug": "massira-1"
+        },
+        {
+          "name": "Semlalia",
+          "count": 6,
+          "slug": "semlalia"
+        },
+        {
+          "name": "Hay Lalla Haya",
+          "count": 6,
+          "slug": "hay-lalla-haya"
+        },
+        {
+          "name": "Azli",
+          "count": 6,
+          "slug": "azli"
+        },
+        {
+          "name": "Belbekkar",
+          "count": 6,
+          "slug": "belbekkar"
+        },
+        {
+          "name": "Route D Amizmiz",
+          "count": 6,
+          "slug": "route-d-amizmiz"
+        },
+        {
+          "name": "Masmoudi",
+          "count": 6,
+          "slug": "masmoudi"
+        },
+        {
+          "name": "Hay Saada 1",
+          "count": 6,
+          "slug": "hay-saada-1"
+        },
+        {
+          "name": "Assif",
+          "count": 6,
+          "slug": "assif"
+        },
+        {
+          "name": "Route De Fez",
+          "count": 5,
+          "slug": "route-de-fez"
+        },
+        {
+          "name": "Massira 3",
+          "count": 5,
+          "slug": "massira-3"
+        },
+        {
+          "name": "Sidi Ghanem",
+          "count": 5,
+          "slug": "sidi-ghanem"
+        },
+        {
+          "name": "Golf Argana",
+          "count": 5,
+          "slug": "golf-argana"
+        },
+        {
+          "name": "Mabrouka",
+          "count": 5,
+          "slug": "mabrouka"
+        },
+        {
+          "name": "Azzouzia",
+          "count": 5,
+          "slug": "azzouzia"
+        },
+        {
+          "name": "Douar Dlam",
+          "count": 4,
+          "slug": "douar-dlam"
+        },
+        {
+          "name": "Sanaoubar",
+          "count": 4,
+          "slug": "sanaoubar"
+        },
+        {
+          "name": "Saada",
+          "count": 4,
+          "slug": "saada"
+        },
+        {
+          "name": "Boukar",
+          "count": 4,
+          "slug": "boukar"
+        },
+        {
+          "name": "Route De Tahanaout",
+          "count": 4,
+          "slug": "route-de-tahanaout"
+        },
+        {
+          "name": "Annakhil",
+          "count": 4,
+          "slug": "annakhil"
+        },
+        {
+          "name": "Autre",
+          "count": 4,
+          "slug": "autre"
+        },
+        {
+          "name": "Hay Al Massar",
+          "count": 3,
+          "slug": "hay-al-massar"
+        },
+        {
+          "name": "Arset Sbaia",
+          "count": 3,
+          "slug": "arset-sbaia"
+        },
+        {
+          "name": "Arset Ben Chebli",
+          "count": 3,
+          "slug": "arset-ben-chebli"
+        },
+        {
+          "name": "Route D'Amizmiz",
+          "count": 3,
+          "slug": "route-d-amizmiz"
+        },
+        {
+          "name": "Michouar",
+          "count": 3,
+          "slug": "michouar"
+        },
+        {
+          "name": "Boumesmar",
+          "count": 3,
+          "slug": "boumesmar"
+        },
+        {
+          "name": "Route D’Ourika Douar Moussa",
+          "count": 3,
+          "slug": "route-d-ourika-douar-moussa"
+        },
+        {
+          "name": "Abouab gueliz - mabrouka",
+          "count": 3,
+          "slug": "abouab-gueliz-mabrouka"
+        },
+        {
+          "name": "Tassoultante",
+          "count": 3,
+          "slug": "tassoultante"
+        },
+        {
+          "name": "Bab Ighli",
+          "count": 3,
+          "slug": "bab-ighli"
+        },
+        {
+          "name": "Kasbah",
+          "count": 2,
+          "slug": "kasbah"
+        },
+        {
+          "name": "Douar Lkoudia",
+          "count": 2,
+          "slug": "douar-lkoudia"
+        },
+        {
+          "name": "Hay Mohammadi",
+          "count": 2,
+          "slug": "hay-mohammadi"
+        },
+        {
+          "name": "El Hara",
+          "count": 2,
+          "slug": "el-hara"
+        },
+        {
+          "name": "Maarif Extension",
+          "count": 2,
+          "slug": "maarif-extension"
+        },
+        {
+          "name": "Route De Tahanaout - Cherifia",
+          "count": 2,
+          "slug": "route-de-tahanaout-cherifia"
+        },
+        {
+          "name": "Hay Al Bahja",
+          "count": 2,
+          "slug": "hay-al-bahja"
+        },
+        {
+          "name": "Ksibat Nhas",
+          "count": 2,
+          "slug": "ksibat-nhas"
+        },
+        {
+          "name": "Mouassine",
+          "count": 2,
+          "slug": "mouassine"
+        },
+        {
+          "name": "M'hamid",
+          "count": 2,
+          "slug": "m-hamid"
+        },
+        {
+          "name": "S.y.b.a",
+          "count": 2,
+          "slug": "s-y-b-a"
+        },
+        {
+          "name": "Arset Moulay Moussa",
+          "count": 2,
+          "slug": "arset-moulay-moussa"
+        },
+        {
+          "name": "Ouahat Sidi Brahim",
+          "count": 2,
+          "slug": "ouahat-sidi-brahim"
+        },
+        {
+          "name": "Massira 2",
+          "count": 2,
+          "slug": "massira-2"
+        },
+        {
+          "name": "Cherifia",
+          "count": 2,
+          "slug": "cherifia"
+        },
+        {
+          "name": "Arset El Maach",
+          "count": 2,
+          "slug": "arset-el-maach"
+        },
+        {
+          "name": "Route De Casablanca Jnanate",
+          "count": 2,
+          "slug": "route-de-casablanca-jnanate"
+        },
+        {
+          "name": "Riad Zitoun Kedim",
+          "count": 2,
+          "slug": "riad-zitoun-kedim"
+        },
+        {
+          "name": "Sidi Youssef",
+          "count": 2,
+          "slug": "sidi-youssef"
+        },
+        {
+          "name": "Route D Ourika",
+          "count": 2,
+          "slug": "route-d-ourika"
+        },
+        {
+          "name": "M'Hamidi",
+          "count": 2,
+          "slug": "m-hamidi"
+        },
+        {
+          "name": "Prestigia",
+          "count": 1,
+          "slug": "prestigia"
+        },
+        {
+          "name": "Route de Fès",
+          "count": 1,
+          "slug": "route-de-fes"
+        },
+        {
+          "name": "Quartier Industriel De Sidi Ghanem",
+          "count": 1,
+          "slug": "quartier-industriel-de-sidi-ghanem"
+        },
+        {
+          "name": "Route De Ouarzazate",
+          "count": 1,
+          "slug": "route-de-ouarzazate"
+        },
+        {
+          "name": "Essaada",
+          "count": 1,
+          "slug": "essaada"
+        },
+        {
+          "name": "Lotissement Oued El Makhazine",
+          "count": 1,
+          "slug": "lotissement-oued-el-makhazine"
+        },
+        {
+          "name": "Sidi Bouzguia",
+          "count": 1,
+          "slug": "sidi-bouzguia"
+        },
+        {
+          "name": "Medina Kdima",
+          "count": 1,
+          "slug": "medina-kdima"
+        },
+        {
+          "name": "Alal El Fassi",
+          "count": 1,
+          "slug": "alal-el-fassi"
+        },
+        {
+          "name": "Jardin De La Koutoubia",
+          "count": 1,
+          "slug": "jardin-de-la-koutoubia"
+        },
+        {
+          "name": "Jenan El Ghali",
+          "count": 1,
+          "slug": "jenan-el-ghali"
+        },
+        {
+          "name": "Ancienne medina - dar el bacha",
+          "count": 1,
+          "slug": "ancienne-medina-dar-el-bacha"
+        },
+        {
+          "name": "Route de l'ourika (sidi abdellah ghiat)",
+          "count": 1,
+          "slug": "route-de-l-ourika-sidi-abdellah-ghiat"
+        },
+        {
+          "name": "Route de l'ourika (tassoultante)",
+          "count": 1,
+          "slug": "route-de-l-ourika-tassoultante"
+        },
+        {
+          "name": "Yasmina",
+          "count": 1,
+          "slug": "yasmina"
+        },
+        {
+          "name": "Palmeraie",
+          "count": 1,
+          "slug": "palmeraie"
+        },
+        {
+          "name": "Atlas-Amelkis",
+          "count": 1,
+          "slug": "atlas-amelkis"
+        },
+        {
+          "name": "Rouidate - Majorelle",
+          "count": 1,
+          "slug": "rouidate-majorelle"
+        },
+        {
+          "name": "Douar Al Hana",
+          "count": 1,
+          "slug": "douar-al-hana"
+        },
+        {
+          "name": "Zohor Targa",
+          "count": 1,
+          "slug": "zohor-targa"
+        },
+        {
+          "name": "Hay Chouhada",
+          "count": 1,
+          "slug": "hay-chouhada"
+        },
+        {
+          "name": "Zohor targa - zephyr",
+          "count": 1,
+          "slug": "zohor-targa-zephyr"
+        },
+        {
+          "name": "Rmila",
+          "count": 1,
+          "slug": "rmila"
+        },
+        {
+          "name": "Chwiter",
+          "count": 1,
+          "slug": "chwiter"
+        },
+        {
+          "name": "Route de l’Ourika",
+          "count": 1,
+          "slug": "route-de-l-ourika"
+        },
+        {
+          "name": "Hay menara",
+          "count": 1,
+          "slug": "hay-menara"
+        },
+        {
+          "name": "Route de tahanaout - oulad yahya",
+          "count": 1,
+          "slug": "route-de-tahanaout-oulad-yahya"
+        },
+        {
+          "name": "Camps El Ghoul Victor Hugo",
+          "count": 1,
+          "slug": "camps-el-ghoul-victor-hugo"
+        },
+        {
+          "name": "Ben Saleh",
+          "count": 1,
+          "slug": "ben-saleh"
+        },
+        {
+          "name": "Douar Chouhada",
+          "count": 1,
+          "slug": "douar-chouhada"
+        },
+        {
+          "name": "Annahda",
+          "count": 1,
+          "slug": "annahda"
+        },
+        {
+          "name": "Alfadl",
+          "count": 1,
+          "slug": "alfadl"
+        },
+        {
+          "name": "Chrifia",
+          "count": 1,
+          "slug": "chrifia"
+        },
+        {
+          "name": "S Y B A",
+          "count": 1,
+          "slug": "s-y-b-a"
+        },
+        {
+          "name": "Koudiat Laabid",
+          "count": 1,
+          "slug": "koudiat-laabid"
+        },
+        {
+          "name": "Sidi Youssef Ben Ali",
+          "count": 1,
+          "slug": "sidi-youssef-ben-ali"
+        },
+        {
+          "name": "Douar Bouazza",
+          "count": 1,
+          "slug": "douar-bouazza"
+        },
+        {
+          "name": "Les Portes De Marrakech",
+          "count": 1,
+          "slug": "les-portes-de-marrakech"
+        },
+        {
+          "name": "Route D’Ourika Douar Al Harakat",
+          "count": 1,
+          "slug": "route-d-ourika-douar-al-harakat"
+        }
+      ]
+    },
+    {
+      "name": "Tanger",
+      "slug": "tanger",
+      "count": 1335,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Centre",
+          "count": 166,
+          "slug": "centre"
+        },
+        {
+          "name": "De La Plage",
+          "count": 127,
+          "slug": "de-la-plage"
+        },
+        {
+          "name": "Malabata",
+          "count": 85,
+          "slug": "malabata"
+        },
+        {
+          "name": "Mesnana",
+          "count": 73,
+          "slug": "mesnana"
+        },
+        {
+          "name": "Administratif",
+          "count": 66,
+          "slug": "administratif"
+        },
+        {
+          "name": "Tanja Balia",
+          "count": 64,
+          "slug": "tanja-balia"
+        },
+        {
+          "name": "Iberie",
+          "count": 55,
+          "slug": "iberie"
+        },
+        {
+          "name": "Marjane",
+          "count": 54,
+          "slug": "marjane"
+        },
+        {
+          "name": "Mozart",
+          "count": 46,
+          "slug": "mozart"
+        },
+        {
+          "name": "Castilla",
+          "count": 44,
+          "slug": "castilla"
+        },
+        {
+          "name": "Moujahidine",
+          "count": 36,
+          "slug": "moujahidine"
+        },
+        {
+          "name": "Bel Air - Val fleuri",
+          "count": 34,
+          "slug": "bel-air-val-fleuri"
+        },
+        {
+          "name": "Ahlane",
+          "count": 27,
+          "slug": "ahlane"
+        },
+        {
+          "name": "Boukhalef",
+          "count": 24,
+          "slug": "boukhalef"
+        },
+        {
+          "name": "Sania",
+          "count": 24,
+          "slug": "sania"
+        },
+        {
+          "name": "Route Nationale Assilah N1",
+          "count": 24,
+          "slug": "route-nationale-assilah-n1"
+        },
+        {
+          "name": "Du Golf",
+          "count": 24,
+          "slug": "du-golf"
+        },
+        {
+          "name": "Tanger City Center",
+          "count": 21,
+          "slug": "tanger-city-center"
+        },
+        {
+          "name": "Hay Hassani",
+          "count": 19,
+          "slug": "hay-hassani"
+        },
+        {
+          "name": "Aharrarine",
+          "count": 16,
+          "slug": "aharrarine"
+        },
+        {
+          "name": "Hassani",
+          "count": 15,
+          "slug": "hassani"
+        },
+        {
+          "name": "Jbel Kbir",
+          "count": 14,
+          "slug": "jbel-kbir"
+        },
+        {
+          "name": "Drissia",
+          "count": 14,
+          "slug": "drissia"
+        },
+        {
+          "name": "Achakar",
+          "count": 13,
+          "slug": "achakar"
+        },
+        {
+          "name": "Californie",
+          "count": 11,
+          "slug": "californie"
+        },
+        {
+          "name": "Casabarata",
+          "count": 11,
+          "slug": "casabarata"
+        },
+        {
+          "name": "Tanger",
+          "count": 11,
+          "slug": "tanger"
+        },
+        {
+          "name": "Manar",
+          "count": 10,
+          "slug": "manar"
+        },
+        {
+          "name": "Médina",
+          "count": 8,
+          "slug": "medina"
+        },
+        {
+          "name": "Charf",
+          "count": 8,
+          "slug": "charf"
+        },
+        {
+          "name": "Beni Touzine",
+          "count": 8,
+          "slug": "beni-touzine"
+        },
+        {
+          "name": "Bella Vista",
+          "count": 8,
+          "slug": "bella-vista"
+        },
+        {
+          "name": "Marchan",
+          "count": 7,
+          "slug": "marchan"
+        },
+        {
+          "name": "Ziaten",
+          "count": 7,
+          "slug": "ziaten"
+        },
+        {
+          "name": "Zemmouri",
+          "count": 7,
+          "slug": "zemmouri"
+        },
+        {
+          "name": "Rmilat",
+          "count": 7,
+          "slug": "rmilat"
+        },
+        {
+          "name": "Bel Air Val Fleuri",
+          "count": 7,
+          "slug": "bel-air-val-fleuri"
+        },
+        {
+          "name": "Tanger Medina",
+          "count": 7,
+          "slug": "tanger-medina"
+        },
+        {
+          "name": "Port Tanger ville",
+          "count": 6,
+          "slug": "port-tanger-ville"
+        },
+        {
+          "name": "Mghogha",
+          "count": 5,
+          "slug": "mghogha"
+        },
+        {
+          "name": "Aouama Gharbia",
+          "count": 5,
+          "slug": "aouama-gharbia"
+        },
+        {
+          "name": "Jirrari",
+          "count": 5,
+          "slug": "jirrari"
+        },
+        {
+          "name": "Alia",
+          "count": 4,
+          "slug": "alia"
+        },
+        {
+          "name": "Hanaa 3 - Soussi",
+          "count": 4,
+          "slug": "hanaa-3-soussi"
+        },
+        {
+          "name": "Al Mandar Al Jamil",
+          "count": 4,
+          "slug": "al-mandar-al-jamil"
+        },
+        {
+          "name": "Branes 2",
+          "count": 4,
+          "slug": "branes-2"
+        },
+        {
+          "name": "La Plage",
+          "count": 4,
+          "slug": "la-plage"
+        },
+        {
+          "name": "Charf Mghogha",
+          "count": 4,
+          "slug": "charf-mghogha"
+        },
+        {
+          "name": "Autre",
+          "count": 4,
+          "slug": "autre"
+        },
+        {
+          "name": "Branes 1",
+          "count": 3,
+          "slug": "branes-1"
+        },
+        {
+          "name": "Gzenaya",
+          "count": 3,
+          "slug": "gzenaya"
+        },
+        {
+          "name": "La Nouvelle Ville Ibn Batouta",
+          "count": 3,
+          "slug": "la-nouvelle-ville-ibn-batouta"
+        },
+        {
+          "name": "Ahlan",
+          "count": 3,
+          "slug": "ahlan"
+        },
+        {
+          "name": "Gourziana",
+          "count": 3,
+          "slug": "gourziana"
+        },
+        {
+          "name": "Mister Khouch",
+          "count": 3,
+          "slug": "mister-khouch"
+        },
+        {
+          "name": "Zone Industrielle Mghogha",
+          "count": 3,
+          "slug": "zone-industrielle-mghogha"
+        },
+        {
+          "name": "Msala",
+          "count": 3,
+          "slug": "msala"
+        },
+        {
+          "name": "Medina",
+          "count": 3,
+          "slug": "medina"
+        },
+        {
+          "name": "El Mrabet",
+          "count": 2,
+          "slug": "el-mrabet"
+        },
+        {
+          "name": "Achennad",
+          "count": 2,
+          "slug": "achennad"
+        },
+        {
+          "name": "Azib Haj Kaddour",
+          "count": 2,
+          "slug": "azib-haj-kaddour"
+        },
+        {
+          "name": "El Oued",
+          "count": 2,
+          "slug": "el-oued"
+        },
+        {
+          "name": "Beni Makada Lakdima",
+          "count": 2,
+          "slug": "beni-makada-lakdima"
+        },
+        {
+          "name": "Nzaha",
+          "count": 2,
+          "slug": "nzaha"
+        },
+        {
+          "name": "Benkirane",
+          "count": 2,
+          "slug": "benkirane"
+        },
+        {
+          "name": "Star Hill",
+          "count": 2,
+          "slug": "star-hill"
+        },
+        {
+          "name": "Al Warda",
+          "count": 2,
+          "slug": "al-warda"
+        },
+        {
+          "name": "Aida",
+          "count": 2,
+          "slug": "aida"
+        },
+        {
+          "name": "Branes Kdima",
+          "count": 2,
+          "slug": "branes-kdima"
+        },
+        {
+          "name": "El Mers 2",
+          "count": 2,
+          "slug": "el-mers-2"
+        },
+        {
+          "name": "Ben Dibane",
+          "count": 2,
+          "slug": "ben-dibane"
+        },
+        {
+          "name": "Charf Souani",
+          "count": 2,
+          "slug": "charf-souani"
+        },
+        {
+          "name": "Ennasr",
+          "count": 2,
+          "slug": "ennasr"
+        },
+        {
+          "name": "Dher Lahmam",
+          "count": 2,
+          "slug": "dher-lahmam"
+        },
+        {
+          "name": "Bni Makada",
+          "count": 2,
+          "slug": "bni-makada"
+        },
+        {
+          "name": "Mediouna",
+          "count": 2,
+          "slug": "mediouna"
+        },
+        {
+          "name": "Tanja El Balia",
+          "count": 2,
+          "slug": "tanja-el-balia"
+        },
+        {
+          "name": "Souani",
+          "count": 2,
+          "slug": "souani"
+        },
+        {
+          "name": "Route Nationale Assilah (N1)",
+          "count": 2,
+          "slug": "route-nationale-assilah-n1"
+        },
+        {
+          "name": "Hanaa 1",
+          "count": 2,
+          "slug": "hanaa-1"
+        },
+        {
+          "name": "Val Fleuri",
+          "count": 2,
+          "slug": "val-fleuri"
+        },
+        {
+          "name": "Harrarine",
+          "count": 1,
+          "slug": "harrarine"
+        },
+        {
+          "name": "Ahammar",
+          "count": 1,
+          "slug": "ahammar"
+        },
+        {
+          "name": "Hay El Boughaz",
+          "count": 1,
+          "slug": "hay-el-boughaz"
+        },
+        {
+          "name": "Alliance",
+          "count": 1,
+          "slug": "alliance"
+        },
+        {
+          "name": "Dradeb",
+          "count": 1,
+          "slug": "dradeb"
+        },
+        {
+          "name": "Hay Al Bassatine",
+          "count": 1,
+          "slug": "hay-al-bassatine"
+        },
+        {
+          "name": "Port Tanger Ville",
+          "count": 1,
+          "slug": "port-tanger-ville"
+        },
+        {
+          "name": "Quartier de la plage",
+          "count": 1,
+          "slug": "quartier-de-la-plage"
+        },
+        {
+          "name": "Zone Touristique Ghandouri",
+          "count": 1,
+          "slug": "zone-touristique-ghandouri"
+        },
+        {
+          "name": "El Majd",
+          "count": 1,
+          "slug": "el-majd"
+        },
+        {
+          "name": "Ain El Hayani",
+          "count": 1,
+          "slug": "ain-el-hayani"
+        }
+      ]
+    },
+    {
+      "name": "Rabat",
+      "slug": "rabat",
+      "count": 1071,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Agdal",
+          "count": 252,
+          "slug": "agdal"
+        },
+        {
+          "name": "Riyad",
+          "count": 248,
+          "slug": "riyad"
+        },
+        {
+          "name": "Souissi",
+          "count": 233,
+          "slug": "souissi"
+        },
+        {
+          "name": "Hassan - Centre Ville",
+          "count": 66,
+          "slug": "hassan-centre-ville"
+        },
+        {
+          "name": "Haut Agdal",
+          "count": 45,
+          "slug": "haut-agdal"
+        },
+        {
+          "name": "Guich Oudaya",
+          "count": 20,
+          "slug": "guich-oudaya"
+        },
+        {
+          "name": "Diour Jamaa",
+          "count": 17,
+          "slug": "diour-jamaa"
+        },
+        {
+          "name": "Aviation - Mabella",
+          "count": 16,
+          "slug": "aviation-mabella"
+        },
+        {
+          "name": "Quartier Administratif",
+          "count": 12,
+          "slug": "quartier-administratif"
+        },
+        {
+          "name": "Riyad Extension",
+          "count": 11,
+          "slug": "riyad-extension"
+        },
+        {
+          "name": "Rabat",
+          "count": 11,
+          "slug": "rabat"
+        },
+        {
+          "name": "L Ocean",
+          "count": 11,
+          "slug": "l-ocean"
+        },
+        {
+          "name": "Hay El Menzah",
+          "count": 10,
+          "slug": "hay-el-menzah"
+        },
+        {
+          "name": "Hay Riad",
+          "count": 10,
+          "slug": "hay-riad"
+        },
+        {
+          "name": "Hay Al Fath",
+          "count": 8,
+          "slug": "hay-al-fath"
+        },
+        {
+          "name": "L'Ocean",
+          "count": 6,
+          "slug": "l-ocean"
+        },
+        {
+          "name": "Hay Al Massira",
+          "count": 6,
+          "slug": "hay-al-massira"
+        },
+        {
+          "name": "Kébibat",
+          "count": 6,
+          "slug": "kebibat"
+        },
+        {
+          "name": "Hay Nahda",
+          "count": 6,
+          "slug": "hay-nahda"
+        },
+        {
+          "name": "El Menzah",
+          "count": 5,
+          "slug": "el-menzah"
+        },
+        {
+          "name": "Quartier Des Ambassades",
+          "count": 5,
+          "slug": "quartier-des-ambassades"
+        },
+        {
+          "name": "Yacoub El Mansour",
+          "count": 5,
+          "slug": "yacoub-el-mansour"
+        },
+        {
+          "name": "Ach Chbanat",
+          "count": 4,
+          "slug": "ach-chbanat"
+        },
+        {
+          "name": "Hay Ach-chbanat",
+          "count": 4,
+          "slug": "hay-ach-chbanat"
+        },
+        {
+          "name": "Riad",
+          "count": 4,
+          "slug": "riad"
+        },
+        {
+          "name": "Hay Al Kora",
+          "count": 3,
+          "slug": "hay-al-kora"
+        },
+        {
+          "name": "Fadesa nahda",
+          "count": 2,
+          "slug": "fadesa-nahda"
+        },
+        {
+          "name": "Hay Al Rajaa Fillah",
+          "count": 2,
+          "slug": "hay-al-rajaa-fillah"
+        },
+        {
+          "name": "Médina",
+          "count": 2,
+          "slug": "medina"
+        },
+        {
+          "name": "Les Oudayas",
+          "count": 2,
+          "slug": "les-oudayas"
+        },
+        {
+          "name": "Bab Mansour",
+          "count": 2,
+          "slug": "bab-mansour"
+        },
+        {
+          "name": "Agdal Riyad",
+          "count": 2,
+          "slug": "agdal-riyad"
+        },
+        {
+          "name": "Dar Essalam",
+          "count": 2,
+          "slug": "dar-essalam"
+        },
+        {
+          "name": "Les Orangers",
+          "count": 2,
+          "slug": "les-orangers"
+        },
+        {
+          "name": "Al Fath",
+          "count": 2,
+          "slug": "al-fath"
+        },
+        {
+          "name": "Aviation Mabella",
+          "count": 2,
+          "slug": "aviation-mabella"
+        },
+        {
+          "name": "Administratif",
+          "count": 2,
+          "slug": "administratif"
+        },
+        {
+          "name": "Al Kamra",
+          "count": 2,
+          "slug": "al-kamra"
+        },
+        {
+          "name": "Hassan Centre Ville",
+          "count": 2,
+          "slug": "hassan-centre-ville"
+        },
+        {
+          "name": "Al Kora",
+          "count": 2,
+          "slug": "al-kora"
+        },
+        {
+          "name": "Kebibat",
+          "count": 2,
+          "slug": "kebibat"
+        },
+        {
+          "name": "Autre",
+          "count": 1,
+          "slug": "autre"
+        },
+        {
+          "name": "Nahda",
+          "count": 1,
+          "slug": "nahda"
+        },
+        {
+          "name": "Hay al kora",
+          "count": 1,
+          "slug": "hay-al-kora"
+        },
+        {
+          "name": "Al Irfane",
+          "count": 1,
+          "slug": "al-irfane"
+        },
+        {
+          "name": "Hay Al Amal",
+          "count": 1,
+          "slug": "hay-al-amal"
+        },
+        {
+          "name": "Al Massira",
+          "count": 1,
+          "slug": "al-massira"
+        },
+        {
+          "name": "Al Kouass",
+          "count": 1,
+          "slug": "al-kouass"
+        },
+        {
+          "name": "Hassan",
+          "count": 1,
+          "slug": "hassan"
+        },
+        {
+          "name": "Ocean",
+          "count": 1,
+          "slug": "ocean"
+        },
+        {
+          "name": "Centre Ville Rabat",
+          "count": 1,
+          "slug": "centre-ville-rabat"
+        },
+        {
+          "name": "Fadesa Nahda",
+          "count": 1,
+          "slug": "fadesa-nahda"
+        },
+        {
+          "name": "حي الفتح",
+          "count": 1,
+          "slug": ""
+        },
+        {
+          "name": "Medina",
+          "count": 1,
+          "slug": "medina"
+        },
+        {
+          "name": "Oued Nachef",
+          "count": 1,
+          "slug": "oued-nachef"
+        },
+        {
+          "name": "El Youssoufia",
+          "count": 1,
+          "slug": "el-youssoufia"
+        },
+        {
+          "name": "Akkari",
+          "count": 1,
+          "slug": "akkari"
+        },
+        {
+          "name": "Bas Agdal",
+          "count": 1,
+          "slug": "bas-agdal"
+        }
+      ]
+    },
+    {
+      "name": "Agadir",
+      "slug": "agadir",
+      "count": 496,
+      "region": "Souss-Massa",
+      "regionSlug": "souss-massa",
+      "neighborhoods": [
+        {
+          "name": "Hay Mohammadi",
+          "count": 70,
+          "slug": "hay-mohammadi"
+        },
+        {
+          "name": "Founti",
+          "count": 60,
+          "slug": "founti"
+        },
+        {
+          "name": "Hay Salam",
+          "count": 43,
+          "slug": "hay-salam"
+        },
+        {
+          "name": "Abattoirs",
+          "count": 26,
+          "slug": "abattoirs"
+        },
+        {
+          "name": "Tilila",
+          "count": 26,
+          "slug": "tilila"
+        },
+        {
+          "name": "Secteur Touristique",
+          "count": 24,
+          "slug": "secteur-touristique"
+        },
+        {
+          "name": "Haut Founty",
+          "count": 21,
+          "slug": "haut-founty"
+        },
+        {
+          "name": "Zone Industrielle Agadir",
+          "count": 16,
+          "slug": "zone-industrielle-agadir"
+        },
+        {
+          "name": "Anza",
+          "count": 15,
+          "slug": "anza"
+        },
+        {
+          "name": "Ville Nouvelle",
+          "count": 14,
+          "slug": "ville-nouvelle"
+        },
+        {
+          "name": "Houda",
+          "count": 14,
+          "slug": "houda"
+        },
+        {
+          "name": "Mohammadi",
+          "count": 13,
+          "slug": "mohammadi"
+        },
+        {
+          "name": "Al Wifaq",
+          "count": 12,
+          "slug": "al-wifaq"
+        },
+        {
+          "name": "Hay Dakhla",
+          "count": 11,
+          "slug": "hay-dakhla"
+        },
+        {
+          "name": "Hay Houda",
+          "count": 11,
+          "slug": "hay-houda"
+        },
+        {
+          "name": "Haut Anza",
+          "count": 10,
+          "slug": "haut-anza"
+        },
+        {
+          "name": "Charaf",
+          "count": 10,
+          "slug": "charaf"
+        },
+        {
+          "name": "Salam",
+          "count": 9,
+          "slug": "salam"
+        },
+        {
+          "name": "Dakhla",
+          "count": 9,
+          "slug": "dakhla"
+        },
+        {
+          "name": "Riad Salam",
+          "count": 8,
+          "slug": "riad-salam"
+        },
+        {
+          "name": "Talborjt",
+          "count": 6,
+          "slug": "talborjt"
+        },
+        {
+          "name": "Ben Serguaou",
+          "count": 6,
+          "slug": "ben-serguaou"
+        },
+        {
+          "name": "Tikiouine",
+          "count": 6,
+          "slug": "tikiouine"
+        },
+        {
+          "name": "Lekhiam",
+          "count": 5,
+          "slug": "lekhiam"
+        },
+        {
+          "name": "Bouargane",
+          "count": 5,
+          "slug": "bouargane"
+        },
+        {
+          "name": "Taddart Anza",
+          "count": 4,
+          "slug": "taddart-anza"
+        },
+        {
+          "name": "Amsernate",
+          "count": 3,
+          "slug": "amsernate"
+        },
+        {
+          "name": "Hay Al Farah",
+          "count": 3,
+          "slug": "hay-al-farah"
+        },
+        {
+          "name": "Illigh",
+          "count": 3,
+          "slug": "illigh"
+        },
+        {
+          "name": "Assaka",
+          "count": 3,
+          "slug": "assaka"
+        },
+        {
+          "name": "Hay Massira",
+          "count": 3,
+          "slug": "hay-massira"
+        },
+        {
+          "name": "Cité Adrar",
+          "count": 3,
+          "slug": "cite-adrar"
+        },
+        {
+          "name": "Cite Suisse",
+          "count": 2,
+          "slug": "cite-suisse"
+        },
+        {
+          "name": "Amicales",
+          "count": 2,
+          "slug": "amicales"
+        },
+        {
+          "name": "Hay Al Wafaa",
+          "count": 2,
+          "slug": "hay-al-wafaa"
+        },
+        {
+          "name": "Massira",
+          "count": 2,
+          "slug": "massira"
+        },
+        {
+          "name": "Agadir Oufella",
+          "count": 2,
+          "slug": "agadir-oufella"
+        },
+        {
+          "name": "Taddart",
+          "count": 2,
+          "slug": "taddart"
+        },
+        {
+          "name": "Drargua",
+          "count": 2,
+          "slug": "drargua"
+        },
+        {
+          "name": "Agadir",
+          "count": 2,
+          "slug": "agadir"
+        },
+        {
+          "name": "Hay Hassani",
+          "count": 1,
+          "slug": "hay-hassani"
+        },
+        {
+          "name": "Port",
+          "count": 1,
+          "slug": "port"
+        },
+        {
+          "name": "Sidi Youssef",
+          "count": 1,
+          "slug": "sidi-youssef"
+        },
+        {
+          "name": "Hay Najah",
+          "count": 1,
+          "slug": "hay-najah"
+        },
+        {
+          "name": "Cite Mohammadi",
+          "count": 1,
+          "slug": "cite-mohammadi"
+        },
+        {
+          "name": "Ain Chock",
+          "count": 1,
+          "slug": "ain-chock"
+        },
+        {
+          "name": "Iguil Oḍrḍour",
+          "count": 1,
+          "slug": "iguil-odrdour"
+        },
+        {
+          "name": "Al Farah",
+          "count": 1,
+          "slug": "al-farah"
+        }
+      ]
+    },
+    {
+      "name": "Bouskoura",
+      "slug": "bouskoura",
+      "count": 495,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Ville Verte",
+          "count": 219,
+          "slug": "ville-verte"
+        },
+        {
+          "name": "Bouskoura Ville",
+          "count": 207,
+          "slug": "bouskoura-ville"
+        },
+        {
+          "name": "Victoria",
+          "count": 32,
+          "slug": "victoria"
+        },
+        {
+          "name": "Bouskoura",
+          "count": 23,
+          "slug": "bouskoura"
+        },
+        {
+          "name": "Aeroport Mohammed V",
+          "count": 2,
+          "slug": "aeroport-mohammed-v"
+        },
+        {
+          "name": "Dyar Dakhama",
+          "count": 1,
+          "slug": "dyar-dakhama"
+        },
+        {
+          "name": "Cheraka Oulad Malek",
+          "count": 1,
+          "slug": "cheraka-oulad-malek"
+        },
+        {
+          "name": "Aéroport Mohammed V",
+          "count": 1,
+          "slug": "aeroport-mohammed-v"
+        }
+      ]
+    },
+    {
+      "name": "Dar Bouazza",
+      "slug": "dar-bouazza",
+      "count": 425,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Dar Bouazza",
+          "count": 369,
+          "slug": "dar-bouazza"
+        },
+        {
+          "name": "Tamaris",
+          "count": 17,
+          "slug": "tamaris"
+        },
+        {
+          "name": "Tamaris2",
+          "count": 13,
+          "slug": "tamaris2"
+        },
+        {
+          "name": "Errahma",
+          "count": 12,
+          "slug": "errahma"
+        },
+        {
+          "name": "Tamaris1",
+          "count": 7,
+          "slug": "tamaris1"
+        },
+        {
+          "name": "Zone Industrielle",
+          "count": 2,
+          "slug": "zone-industrielle"
+        },
+        {
+          "name": "Autre",
+          "count": 2,
+          "slug": "autre"
+        },
+        {
+          "name": "Victoria",
+          "count": 1,
+          "slug": "victoria"
+        },
+        {
+          "name": "Route D Azzemmour",
+          "count": 1,
+          "slug": "route-d-azzemmour"
+        },
+        {
+          "name": "Ouled Ahmed",
+          "count": 1,
+          "slug": "ouled-ahmed"
+        }
+      ]
+    },
+    {
+      "name": "Mohammedia",
+      "slug": "mohammedia",
+      "count": 273,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Centre Ville",
+          "count": 41,
+          "slug": "centre-ville"
+        },
+        {
+          "name": "Quartier du Parc",
+          "count": 41,
+          "slug": "quartier-du-parc"
+        },
+        {
+          "name": "La Siesta",
+          "count": 20,
+          "slug": "la-siesta"
+        },
+        {
+          "name": "Al Aalia",
+          "count": 19,
+          "slug": "al-aalia"
+        },
+        {
+          "name": "Mohammedia",
+          "count": 17,
+          "slug": "mohammedia"
+        },
+        {
+          "name": "Mannesmann",
+          "count": 17,
+          "slug": "mannesmann"
+        },
+        {
+          "name": "Wafa",
+          "count": 15,
+          "slug": "wafa"
+        },
+        {
+          "name": "Monica",
+          "count": 13,
+          "slug": "monica"
+        },
+        {
+          "name": "Nassim",
+          "count": 7,
+          "slug": "nassim"
+        },
+        {
+          "name": "Du Parc",
+          "count": 7,
+          "slug": "du-parc"
+        },
+        {
+          "name": "Zone industrielle",
+          "count": 6,
+          "slug": "zone-industrielle"
+        },
+        {
+          "name": "Tenoukchet",
+          "count": 5,
+          "slug": "tenoukchet"
+        },
+        {
+          "name": "Centre",
+          "count": 4,
+          "slug": "centre"
+        },
+        {
+          "name": "Hassania 2",
+          "count": 4,
+          "slug": "hassania-2"
+        },
+        {
+          "name": "Riad 1",
+          "count": 3,
+          "slug": "riad-1"
+        },
+        {
+          "name": "Hay Salam",
+          "count": 3,
+          "slug": "hay-salam"
+        },
+        {
+          "name": "Zenata",
+          "count": 3,
+          "slug": "zenata"
+        },
+        {
+          "name": "Al Qods",
+          "count": 3,
+          "slug": "al-qods"
+        },
+        {
+          "name": "Route De Rabat",
+          "count": 3,
+          "slug": "route-de-rabat"
+        },
+        {
+          "name": "Riad 2",
+          "count": 2,
+          "slug": "riad-2"
+        },
+        {
+          "name": "Houria",
+          "count": 2,
+          "slug": "houria"
+        },
+        {
+          "name": "Ain Harrouda",
+          "count": 2,
+          "slug": "ain-harrouda"
+        },
+        {
+          "name": "Hassania 3",
+          "count": 2,
+          "slug": "hassania-3"
+        },
+        {
+          "name": "Les Cretes",
+          "count": 2,
+          "slug": "les-cretes"
+        },
+        {
+          "name": "Route de rabat",
+          "count": 2,
+          "slug": "route-de-rabat"
+        },
+        {
+          "name": "Salam",
+          "count": 2,
+          "slug": "salam"
+        },
+        {
+          "name": "La Colline",
+          "count": 2,
+          "slug": "la-colline"
+        },
+        {
+          "name": "Bd Hassan 2",
+          "count": 2,
+          "slug": "bd-hassan-2"
+        },
+        {
+          "name": "Bni Yakhlef",
+          "count": 2,
+          "slug": "bni-yakhlef"
+        },
+        {
+          "name": "Fath",
+          "count": 2,
+          "slug": "fath"
+        },
+        {
+          "name": "Mesk Lil",
+          "count": 1,
+          "slug": "mesk-lil"
+        },
+        {
+          "name": "Derb Rbat",
+          "count": 1,
+          "slug": "derb-rbat"
+        },
+        {
+          "name": "La Seista",
+          "count": 1,
+          "slug": "la-seista"
+        },
+        {
+          "name": "Bd De Mohammed Vi",
+          "count": 1,
+          "slug": "bd-de-mohammed-vi"
+        },
+        {
+          "name": "Massira Hassania",
+          "count": 1,
+          "slug": "massira-hassania"
+        },
+        {
+          "name": "Zone Industrielle",
+          "count": 1,
+          "slug": "zone-industrielle"
+        },
+        {
+          "name": "Hay Al Horria",
+          "count": 1,
+          "slug": "hay-al-horria"
+        },
+        {
+          "name": "Al Andalous",
+          "count": 1,
+          "slug": "al-andalous"
+        },
+        {
+          "name": "Diour Dokala",
+          "count": 1,
+          "slug": "diour-dokala"
+        },
+        {
+          "name": "Riad Essalam",
+          "count": 1,
+          "slug": "riad-essalam"
+        },
+        {
+          "name": "Quartier Du Soleil",
+          "count": 1,
+          "slug": "quartier-du-soleil"
+        },
+        {
+          "name": "Bd Palestine",
+          "count": 1,
+          "slug": "bd-palestine"
+        },
+        {
+          "name": "Rachidia",
+          "count": 1,
+          "slug": "rachidia"
+        },
+        {
+          "name": "Hay Mesk Lil",
+          "count": 1,
+          "slug": "hay-mesk-lil"
+        },
+        {
+          "name": "Annasr",
+          "count": 1,
+          "slug": "annasr"
+        },
+        {
+          "name": "Bd Sebta",
+          "count": 1,
+          "slug": "bd-sebta"
+        },
+        {
+          "name": "Dhar Lamhala",
+          "count": 1,
+          "slug": "dhar-lamhala"
+        },
+        {
+          "name": "El Bradaa",
+          "count": 1,
+          "slug": "el-bradaa"
+        },
+        {
+          "name": "Al Falah",
+          "count": 1,
+          "slug": "al-falah"
+        },
+        {
+          "name": "Al Wafae",
+          "count": 1,
+          "slug": "al-wafae"
+        }
+      ]
+    },
+    {
+      "name": "Temara",
+      "slug": "temara",
+      "count": 215,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Wifak",
+          "count": 30,
+          "slug": "wifak"
+        },
+        {
+          "name": "Harhoura",
+          "count": 29,
+          "slug": "harhoura"
+        },
+        {
+          "name": "Centre Ville",
+          "count": 28,
+          "slug": "centre-ville"
+        },
+        {
+          "name": "Riad Oulad Mtaa",
+          "count": 17,
+          "slug": "riad-oulad-mtaa"
+        },
+        {
+          "name": "Skikina",
+          "count": 17,
+          "slug": "skikina"
+        },
+        {
+          "name": "Massira 1",
+          "count": 8,
+          "slug": "massira-1"
+        },
+        {
+          "name": "Ain Atig",
+          "count": 6,
+          "slug": "ain-atig"
+        },
+        {
+          "name": "Temara",
+          "count": 6,
+          "slug": "temara"
+        },
+        {
+          "name": "Oulad Mtaa",
+          "count": 6,
+          "slug": "oulad-mtaa"
+        },
+        {
+          "name": "Maghreb Al Arabi",
+          "count": 5,
+          "slug": "maghreb-al-arabi"
+        },
+        {
+          "name": "Riyad",
+          "count": 5,
+          "slug": "riyad"
+        },
+        {
+          "name": "Val d or",
+          "count": 4,
+          "slug": "val-d-or"
+        },
+        {
+          "name": "Riad",
+          "count": 4,
+          "slug": "riad"
+        },
+        {
+          "name": "Nahda-1",
+          "count": 3,
+          "slug": "nahda-1"
+        },
+        {
+          "name": "Andalousse",
+          "count": 3,
+          "slug": "andalousse"
+        },
+        {
+          "name": "Cigali Cigalon",
+          "count": 3,
+          "slug": "cigali-cigalon"
+        },
+        {
+          "name": "Plage Guy Ville",
+          "count": 3,
+          "slug": "plage-guy-ville"
+        },
+        {
+          "name": "Abbadi",
+          "count": 3,
+          "slug": "abbadi"
+        },
+        {
+          "name": "Autre",
+          "count": 3,
+          "slug": "autre"
+        },
+        {
+          "name": "Al Moustakbal",
+          "count": 2,
+          "slug": "al-moustakbal"
+        },
+        {
+          "name": "Sable d or",
+          "count": 2,
+          "slug": "sable-d-or"
+        },
+        {
+          "name": "Chigaa",
+          "count": 2,
+          "slug": "chigaa"
+        },
+        {
+          "name": "Talaa",
+          "count": 2,
+          "slug": "talaa"
+        },
+        {
+          "name": "El Krouch",
+          "count": 2,
+          "slug": "el-krouch"
+        },
+        {
+          "name": "Fath el Kheir",
+          "count": 2,
+          "slug": "fath-el-kheir"
+        },
+        {
+          "name": "Nahda",
+          "count": 2,
+          "slug": "nahda"
+        },
+        {
+          "name": "Sbata",
+          "count": 2,
+          "slug": "sbata"
+        },
+        {
+          "name": "Temara plage",
+          "count": 1,
+          "slug": "temara-plage"
+        },
+        {
+          "name": "Al Andalous",
+          "count": 1,
+          "slug": "al-andalous"
+        },
+        {
+          "name": "Ibnou Rochd",
+          "count": 1,
+          "slug": "ibnou-rochd"
+        },
+        {
+          "name": "Massira 3",
+          "count": 1,
+          "slug": "massira-3"
+        },
+        {
+          "name": "Centre",
+          "count": 1,
+          "slug": "centre"
+        },
+        {
+          "name": "Ain Attig",
+          "count": 1,
+          "slug": "ain-attig"
+        },
+        {
+          "name": "Oued Nachef",
+          "count": 1,
+          "slug": "oued-nachef"
+        },
+        {
+          "name": "Massira 2",
+          "count": 1,
+          "slug": "massira-2"
+        },
+        {
+          "name": "Firdaouss",
+          "count": 1,
+          "slug": "firdaouss"
+        },
+        {
+          "name": "Nemsia",
+          "count": 1,
+          "slug": "nemsia"
+        },
+        {
+          "name": "Hoda",
+          "count": 1,
+          "slug": "hoda"
+        },
+        {
+          "name": "Sable D'Or",
+          "count": 1,
+          "slug": "sable-d-or"
+        },
+        {
+          "name": "Oumazza",
+          "count": 1,
+          "slug": "oumazza"
+        },
+        {
+          "name": "Al Maghreb Al Arabi",
+          "count": 1,
+          "slug": "al-maghreb-al-arabi"
+        },
+        {
+          "name": "Oued Eddahab",
+          "count": 1,
+          "slug": "oued-eddahab"
+        },
+        {
+          "name": "Fadlallah",
+          "count": 1,
+          "slug": "fadlallah"
+        }
+      ]
+    },
+    {
+      "name": "Fès",
+      "slug": "fes",
+      "count": 211,
+      "region": "Fès-Meknès",
+      "regionSlug": "fes-meknes",
+      "neighborhoods": [
+        {
+          "name": "Nouvelle Ville",
+          "count": 27,
+          "slug": "nouvelle-ville"
+        },
+        {
+          "name": "Agdal",
+          "count": 24,
+          "slug": "agdal"
+        },
+        {
+          "name": "Route Ain Chkaf",
+          "count": 13,
+          "slug": "route-ain-chkaf"
+        },
+        {
+          "name": "Oued Fes",
+          "count": 13,
+          "slug": "oued-fes"
+        },
+        {
+          "name": "Route Immouzer",
+          "count": 10,
+          "slug": "route-immouzer"
+        },
+        {
+          "name": "Route ain Chkaf",
+          "count": 8,
+          "slug": "route-ain-chkaf"
+        },
+        {
+          "name": "Narjis",
+          "count": 8,
+          "slug": "narjis"
+        },
+        {
+          "name": "Mont Fleuri",
+          "count": 8,
+          "slug": "mont-fleuri"
+        },
+        {
+          "name": "Fes City Center",
+          "count": 7,
+          "slug": "fes-city-center"
+        },
+        {
+          "name": "Ain Amiyer",
+          "count": 7,
+          "slug": "ain-amiyer"
+        },
+        {
+          "name": "Zone Industrielle Ain Chkef",
+          "count": 6,
+          "slug": "zone-industrielle-ain-chkef"
+        },
+        {
+          "name": "Centre",
+          "count": 5,
+          "slug": "centre"
+        },
+        {
+          "name": "Bourmana",
+          "count": 4,
+          "slug": "bourmana"
+        },
+        {
+          "name": "Quartier Oued Fes",
+          "count": 4,
+          "slug": "quartier-oued-fes"
+        },
+        {
+          "name": "Zouagha",
+          "count": 4,
+          "slug": "zouagha"
+        },
+        {
+          "name": "Route se Sefrou",
+          "count": 4,
+          "slug": "route-se-sefrou"
+        },
+        {
+          "name": "Hay Al Azhar",
+          "count": 3,
+          "slug": "hay-al-azhar"
+        },
+        {
+          "name": "Route Se Sefrou",
+          "count": 3,
+          "slug": "route-se-sefrou"
+        },
+        {
+          "name": "Zouagha Bas",
+          "count": 3,
+          "slug": "zouagha-bas"
+        },
+        {
+          "name": "Atlas",
+          "count": 3,
+          "slug": "atlas"
+        },
+        {
+          "name": "Hay Anas",
+          "count": 2,
+          "slug": "hay-anas"
+        },
+        {
+          "name": "L'habitat",
+          "count": 2,
+          "slug": "l-habitat"
+        },
+        {
+          "name": "Hay Al Wafaa",
+          "count": 2,
+          "slug": "hay-al-wafaa"
+        },
+        {
+          "name": "Hay Riad",
+          "count": 2,
+          "slug": "hay-riad"
+        },
+        {
+          "name": "Dalia",
+          "count": 2,
+          "slug": "dalia"
+        },
+        {
+          "name": "Massira",
+          "count": 2,
+          "slug": "massira"
+        },
+        {
+          "name": "El Mariniyine",
+          "count": 2,
+          "slug": "el-mariniyine"
+        },
+        {
+          "name": "Hay Karim Amrani",
+          "count": 2,
+          "slug": "hay-karim-amrani"
+        },
+        {
+          "name": "Champ de course",
+          "count": 2,
+          "slug": "champ-de-course"
+        },
+        {
+          "name": "Al Adarissa",
+          "count": 2,
+          "slug": "al-adarissa"
+        },
+        {
+          "name": "El Keddan",
+          "count": 2,
+          "slug": "el-keddan"
+        },
+        {
+          "name": "Annouzha",
+          "count": 2,
+          "slug": "annouzha"
+        },
+        {
+          "name": "Al Andalous",
+          "count": 2,
+          "slug": "al-andalous"
+        },
+        {
+          "name": "Badr",
+          "count": 2,
+          "slug": "badr"
+        },
+        {
+          "name": "Route De Meknes",
+          "count": 2,
+          "slug": "route-de-meknes"
+        },
+        {
+          "name": "L habitat",
+          "count": 1,
+          "slug": "l-habitat"
+        },
+        {
+          "name": "Bassma",
+          "count": 1,
+          "slug": "bassma"
+        },
+        {
+          "name": "Saada",
+          "count": 1,
+          "slug": "saada"
+        },
+        {
+          "name": "Hay Atlas",
+          "count": 1,
+          "slug": "hay-atlas"
+        },
+        {
+          "name": "Al Karaouiyine",
+          "count": 1,
+          "slug": "al-karaouiyine"
+        },
+        {
+          "name": "Al Azhar",
+          "count": 1,
+          "slug": "al-azhar"
+        },
+        {
+          "name": "Fès",
+          "count": 1,
+          "slug": "fes"
+        },
+        {
+          "name": "Ait Skato",
+          "count": 1,
+          "slug": "ait-skato"
+        },
+        {
+          "name": "Hay Badr",
+          "count": 1,
+          "slug": "hay-badr"
+        },
+        {
+          "name": "Tghat",
+          "count": 1,
+          "slug": "tghat"
+        },
+        {
+          "name": "Al Farah",
+          "count": 1,
+          "slug": "al-farah"
+        },
+        {
+          "name": "Dhar Mehraz",
+          "count": 1,
+          "slug": "dhar-mehraz"
+        },
+        {
+          "name": "Moulay El Kamel",
+          "count": 1,
+          "slug": "moulay-el-kamel"
+        },
+        {
+          "name": "Sidi Brahim",
+          "count": 1,
+          "slug": "sidi-brahim"
+        },
+        {
+          "name": "Hay Tarik 2",
+          "count": 1,
+          "slug": "hay-tarik-2"
+        },
+        {
+          "name": "Route immouzer",
+          "count": 1,
+          "slug": "route-immouzer"
+        },
+        {
+          "name": "Al Hadiqa",
+          "count": 1,
+          "slug": "al-hadiqa"
+        }
+      ]
+    },
+    {
+      "name": "Kénitra",
+      "slug": "kenitra",
+      "count": 203,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Centre",
+          "count": 45,
+          "slug": "centre"
+        },
+        {
+          "name": "La Ville Haute",
+          "count": 35,
+          "slug": "la-ville-haute"
+        },
+        {
+          "name": "Mimosas",
+          "count": 27,
+          "slug": "mimosas"
+        },
+        {
+          "name": "Maamora",
+          "count": 25,
+          "slug": "maamora"
+        },
+        {
+          "name": "El Hadadda",
+          "count": 18,
+          "slug": "el-hadadda"
+        },
+        {
+          "name": "Oulad Wjih",
+          "count": 10,
+          "slug": "oulad-wjih"
+        },
+        {
+          "name": "Val Fleuri",
+          "count": 9,
+          "slug": "val-fleuri"
+        },
+        {
+          "name": "Bir Rami Est",
+          "count": 7,
+          "slug": "bir-rami-est"
+        },
+        {
+          "name": "Bir Rami Ouest",
+          "count": 6,
+          "slug": "bir-rami-ouest"
+        },
+        {
+          "name": "Maghrib Arabi",
+          "count": 5,
+          "slug": "maghrib-arabi"
+        },
+        {
+          "name": "Assam",
+          "count": 4,
+          "slug": "assam"
+        },
+        {
+          "name": "Ismalia",
+          "count": 3,
+          "slug": "ismalia"
+        },
+        {
+          "name": "El Fath",
+          "count": 2,
+          "slug": "el-fath"
+        },
+        {
+          "name": "Mellah",
+          "count": 2,
+          "slug": "mellah"
+        },
+        {
+          "name": "Kénitra",
+          "count": 2,
+          "slug": "kenitra"
+        },
+        {
+          "name": "La ville haute",
+          "count": 2,
+          "slug": "la-ville-haute"
+        },
+        {
+          "name": "Bir Rami",
+          "count": 1,
+          "slug": "bir-rami"
+        }
+      ]
+    },
+    {
+      "name": "Meknes",
+      "slug": "meknes",
+      "count": 173,
+      "region": "Fès-Meknès",
+      "regionSlug": "fes-meknes",
+      "neighborhoods": [
+        {
+          "name": "Hamria",
+          "count": 56,
+          "slug": "hamria"
+        },
+        {
+          "name": "Marjane",
+          "count": 37,
+          "slug": "marjane"
+        },
+        {
+          "name": "Centre",
+          "count": 14,
+          "slug": "centre"
+        },
+        {
+          "name": "El Menzeh",
+          "count": 12,
+          "slug": "el-menzeh"
+        },
+        {
+          "name": "Meknes",
+          "count": 7,
+          "slug": "meknes"
+        },
+        {
+          "name": "Al Bassatine",
+          "count": 6,
+          "slug": "al-bassatine"
+        },
+        {
+          "name": "Al bassatine",
+          "count": 5,
+          "slug": "al-bassatine"
+        },
+        {
+          "name": "Wislane",
+          "count": 5,
+          "slug": "wislane"
+        },
+        {
+          "name": "Qobbat Souk",
+          "count": 5,
+          "slug": "qobbat-souk"
+        },
+        {
+          "name": "Cente",
+          "count": 4,
+          "slug": "cente"
+        },
+        {
+          "name": "Hay zitoune",
+          "count": 3,
+          "slug": "hay-zitoune"
+        },
+        {
+          "name": "Toulal",
+          "count": 3,
+          "slug": "toulal"
+        },
+        {
+          "name": "Al Wifaq",
+          "count": 2,
+          "slug": "al-wifaq"
+        },
+        {
+          "name": "Salam",
+          "count": 2,
+          "slug": "salam"
+        },
+        {
+          "name": "Al Ghorfa 2",
+          "count": 2,
+          "slug": "al-ghorfa-2"
+        },
+        {
+          "name": "Autre",
+          "count": 2,
+          "slug": "autre"
+        },
+        {
+          "name": "Hay ez zaitoune",
+          "count": 1,
+          "slug": "hay-ez-zaitoune"
+        },
+        {
+          "name": "Place Lahdim",
+          "count": 1,
+          "slug": "place-lahdim"
+        },
+        {
+          "name": "El Bassatine",
+          "count": 1,
+          "slug": "el-bassatine"
+        },
+        {
+          "name": "Qobat Souk",
+          "count": 1,
+          "slug": "qobat-souk"
+        },
+        {
+          "name": "Saiss",
+          "count": 1,
+          "slug": "saiss"
+        },
+        {
+          "name": "Hay saada",
+          "count": 1,
+          "slug": "hay-saada"
+        },
+        {
+          "name": "El Manar",
+          "count": 1,
+          "slug": "el-manar"
+        },
+        {
+          "name": "Ancien Combatant",
+          "count": 1,
+          "slug": "ancien-combatant"
+        }
+      ]
+    },
+    {
+      "name": "Salé",
+      "slug": "sale",
+      "count": 170,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Sala el Jadida",
+          "count": 22,
+          "slug": "sala-el-jadida"
+        },
+        {
+          "name": "Sala El Jadida",
+          "count": 20,
+          "slug": "sala-el-jadida"
+        },
+        {
+          "name": "Hay Chmaou",
+          "count": 14,
+          "slug": "hay-chmaou"
+        },
+        {
+          "name": "Sidi Hajji",
+          "count": 13,
+          "slug": "sidi-hajji"
+        },
+        {
+          "name": "Chmaou",
+          "count": 12,
+          "slug": "chmaou"
+        },
+        {
+          "name": "Bab Al Bahr",
+          "count": 9,
+          "slug": "bab-al-bahr"
+        },
+        {
+          "name": "Abouab Sala",
+          "count": 8,
+          "slug": "abouab-sala"
+        },
+        {
+          "name": "Tabriquet",
+          "count": 8,
+          "slug": "tabriquet"
+        },
+        {
+          "name": "Sakani",
+          "count": 7,
+          "slug": "sakani"
+        },
+        {
+          "name": "Salé",
+          "count": 5,
+          "slug": "sale"
+        },
+        {
+          "name": "Hay Salam",
+          "count": 5,
+          "slug": "hay-salam"
+        },
+        {
+          "name": "Cherkaoui Marzouka",
+          "count": 5,
+          "slug": "cherkaoui-marzouka"
+        },
+        {
+          "name": "Mkinssia",
+          "count": 4,
+          "slug": "mkinssia"
+        },
+        {
+          "name": "Roustal",
+          "count": 4,
+          "slug": "roustal"
+        },
+        {
+          "name": "Ghrablia",
+          "count": 3,
+          "slug": "ghrablia"
+        },
+        {
+          "name": "El Qods",
+          "count": 3,
+          "slug": "el-qods"
+        },
+        {
+          "name": "Hay Karima",
+          "count": 3,
+          "slug": "hay-karima"
+        },
+        {
+          "name": "Bettana",
+          "count": 3,
+          "slug": "bettana"
+        },
+        {
+          "name": "Pépinière",
+          "count": 2,
+          "slug": "pepiniere"
+        },
+        {
+          "name": "Horria",
+          "count": 2,
+          "slug": "horria"
+        },
+        {
+          "name": "El Qaria",
+          "count": 2,
+          "slug": "el-qaria"
+        },
+        {
+          "name": "Sidi Abdellah",
+          "count": 2,
+          "slug": "sidi-abdellah"
+        },
+        {
+          "name": "Lotissement Oued El Makhazine",
+          "count": 2,
+          "slug": "lotissement-oued-el-makhazine"
+        },
+        {
+          "name": "Bab Lamrissa",
+          "count": 1,
+          "slug": "bab-lamrissa"
+        },
+        {
+          "name": "Frougui",
+          "count": 1,
+          "slug": "frougui"
+        },
+        {
+          "name": "Zone Industrielle Saniat Sbihi",
+          "count": 1,
+          "slug": "zone-industrielle-saniat-sbihi"
+        },
+        {
+          "name": "Cite Militaire",
+          "count": 1,
+          "slug": "cite-militaire"
+        },
+        {
+          "name": "Salam",
+          "count": 1,
+          "slug": "salam"
+        },
+        {
+          "name": "Inbiaat",
+          "count": 1,
+          "slug": "inbiaat"
+        },
+        {
+          "name": "Dar El Lhamra",
+          "count": 1,
+          "slug": "dar-el-lhamra"
+        },
+        {
+          "name": "Sale El Jadida",
+          "count": 1,
+          "slug": "sale-el-jadida"
+        },
+        {
+          "name": "Medina",
+          "count": 1,
+          "slug": "medina"
+        },
+        {
+          "name": "Bab Sebta",
+          "count": 1,
+          "slug": "bab-sebta"
+        },
+        {
+          "name": "Hay Moulay Ismail",
+          "count": 1,
+          "slug": "hay-moulay-ismail"
+        },
+        {
+          "name": "Al Bassatine",
+          "count": 1,
+          "slug": "al-bassatine"
+        }
+      ]
+    },
+    {
+      "name": "Bouznika",
+      "slug": "bouznika",
+      "count": 103,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Plage Oued Cherrat",
+          "count": 43,
+          "slug": "plage-oued-cherrat"
+        },
+        {
+          "name": "Al Kawtar",
+          "count": 25,
+          "slug": "al-kawtar"
+        },
+        {
+          "name": "Quartier Industriel",
+          "count": 13,
+          "slug": "quartier-industriel"
+        },
+        {
+          "name": "Assanaouber",
+          "count": 7,
+          "slug": "assanaouber"
+        },
+        {
+          "name": "Industriel",
+          "count": 3,
+          "slug": "industriel"
+        },
+        {
+          "name": "Hamza",
+          "count": 3,
+          "slug": "hamza"
+        },
+        {
+          "name": "Plage De Bouznika",
+          "count": 2,
+          "slug": "plage-de-bouznika"
+        },
+        {
+          "name": "Dhar Lamhala",
+          "count": 2,
+          "slug": "dhar-lamhala"
+        },
+        {
+          "name": "Bouznika",
+          "count": 2,
+          "slug": "bouznika"
+        },
+        {
+          "name": "Bouznika Bay",
+          "count": 2,
+          "slug": "bouznika-bay"
+        },
+        {
+          "name": "Hay Toummert",
+          "count": 1,
+          "slug": "hay-toummert"
+        }
+      ]
+    },
+    {
+      "name": "Tétouan",
+      "slug": "tetouan",
+      "count": 100,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Wilaya",
+          "count": 15,
+          "slug": "wilaya"
+        },
+        {
+          "name": "Medina",
+          "count": 12,
+          "slug": "medina"
+        },
+        {
+          "name": "Kouilma",
+          "count": 11,
+          "slug": "kouilma"
+        },
+        {
+          "name": "Touabel",
+          "count": 7,
+          "slug": "touabel"
+        },
+        {
+          "name": "El Mdrassi",
+          "count": 7,
+          "slug": "el-mdrassi"
+        },
+        {
+          "name": "Route de Ceuta",
+          "count": 6,
+          "slug": "route-de-ceuta"
+        },
+        {
+          "name": "Rbat AsfaÃ±",
+          "count": 4,
+          "slug": "rbat-asfaa"
+        },
+        {
+          "name": "Martil",
+          "count": 4,
+          "slug": "martil"
+        },
+        {
+          "name": "Tétouan",
+          "count": 4,
+          "slug": "tetouan"
+        },
+        {
+          "name": "Saniat Errmel",
+          "count": 3,
+          "slug": "saniat-errmel"
+        },
+        {
+          "name": "Autre",
+          "count": 3,
+          "slug": "autre"
+        },
+        {
+          "name": "Tetouan",
+          "count": 3,
+          "slug": "tetouan"
+        },
+        {
+          "name": "Touilaa",
+          "count": 3,
+          "slug": "touilaa"
+        },
+        {
+          "name": "Taboula",
+          "count": 3,
+          "slug": "taboula"
+        },
+        {
+          "name": "Ziana",
+          "count": 2,
+          "slug": "ziana"
+        },
+        {
+          "name": "El Ensanche",
+          "count": 2,
+          "slug": "el-ensanche"
+        },
+        {
+          "name": "Mdiq",
+          "count": 2,
+          "slug": "mdiq"
+        },
+        {
+          "name": "Mahannech",
+          "count": 2,
+          "slug": "mahannech"
+        },
+        {
+          "name": "Route De Ceuta",
+          "count": 2,
+          "slug": "route-de-ceuta"
+        },
+        {
+          "name": "Korat Essba",
+          "count": 1,
+          "slug": "korat-essba"
+        },
+        {
+          "name": "Rbat Asfaa±",
+          "count": 1,
+          "slug": "rbat-asfaa"
+        },
+        {
+          "name": "Borj",
+          "count": 1,
+          "slug": "borj"
+        },
+        {
+          "name": "Boussafou",
+          "count": 1,
+          "slug": "boussafou"
+        },
+        {
+          "name": "Aeroport",
+          "count": 1,
+          "slug": "aeroport"
+        }
+      ]
+    },
+    {
+      "name": "Essaouira",
+      "slug": "essaouira",
+      "count": 95,
+      "region": "Marrakech-Safi",
+      "regionSlug": "marrakech-safi",
+      "neighborhoods": [
+        {
+          "name": "Ghazoua",
+          "count": 16,
+          "slug": "ghazoua"
+        },
+        {
+          "name": "Borj",
+          "count": 9,
+          "slug": "borj"
+        },
+        {
+          "name": "Centre ville",
+          "count": 9,
+          "slug": "centre-ville"
+        },
+        {
+          "name": "Argana",
+          "count": 8,
+          "slug": "argana"
+        },
+        {
+          "name": "Raounak",
+          "count": 8,
+          "slug": "raounak"
+        },
+        {
+          "name": "Nouvelle Ville",
+          "count": 7,
+          "slug": "nouvelle-ville"
+        },
+        {
+          "name": "Bab Al Bahar",
+          "count": 6,
+          "slug": "bab-al-bahar"
+        },
+        {
+          "name": "Lahrarta",
+          "count": 5,
+          "slug": "lahrarta"
+        },
+        {
+          "name": "Douar Lareïch",
+          "count": 4,
+          "slug": "douar-lareich"
+        },
+        {
+          "name": "Medina",
+          "count": 3,
+          "slug": "medina"
+        },
+        {
+          "name": "Route d Agadir",
+          "count": 3,
+          "slug": "route-d-agadir"
+        },
+        {
+          "name": "Idaougard",
+          "count": 3,
+          "slug": "idaougard"
+        },
+        {
+          "name": "Jadida",
+          "count": 3,
+          "slug": "jadida"
+        },
+        {
+          "name": "Tafoukt",
+          "count": 2,
+          "slug": "tafoukt"
+        },
+        {
+          "name": "Bab Sbaa",
+          "count": 2,
+          "slug": "bab-sbaa"
+        },
+        {
+          "name": "Autre",
+          "count": 1,
+          "slug": "autre"
+        },
+        {
+          "name": "Douar Laarab",
+          "count": 1,
+          "slug": "douar-laarab"
+        },
+        {
+          "name": "Le boulevard Mohammed V",
+          "count": 1,
+          "slug": "le-boulevard-mohammed-v"
+        },
+        {
+          "name": "Essaouira El Jadida",
+          "count": 1,
+          "slug": "essaouira-el-jadida"
+        },
+        {
+          "name": "Route de Safi",
+          "count": 1,
+          "slug": "route-de-safi"
+        },
+        {
+          "name": "Sidi Kaouki",
+          "count": 1,
+          "slug": "sidi-kaouki"
+        },
+        {
+          "name": "Bab Doukkala",
+          "count": 1,
+          "slug": "bab-doukkala"
+        }
+      ]
+    },
+    {
+      "name": "Martil",
+      "slug": "martil",
+      "count": 84,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Martil",
+          "count": 84,
+          "slug": "martil"
+        }
+      ]
+    },
+    {
+      "name": "El Mansouria",
+      "slug": "el-mansouria",
+      "count": 76,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "El Mansouria",
+          "count": 76,
+          "slug": "el-mansouria"
+        }
+      ]
+    },
+    {
+      "name": "Berrechid",
+      "slug": "berrechid",
+      "count": 58,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Berrechid",
+          "count": 36,
+          "slug": "berrechid"
+        },
+        {
+          "name": "Sidi Rahal Chatai",
+          "count": 7,
+          "slug": "sidi-rahal-chatai"
+        },
+        {
+          "name": "Autre",
+          "count": 7,
+          "slug": "autre"
+        },
+        {
+          "name": "Deroua",
+          "count": 2,
+          "slug": "deroua"
+        },
+        {
+          "name": "Regraga",
+          "count": 2,
+          "slug": "regraga"
+        },
+        {
+          "name": "Soualem Trifiya",
+          "count": 1,
+          "slug": "soualem-trifiya"
+        },
+        {
+          "name": "Sidi El Mekki",
+          "count": 1,
+          "slug": "sidi-el-mekki"
+        },
+        {
+          "name": "La Alcazaba Pueblo",
+          "count": 1,
+          "slug": "la-alcazaba-pueblo"
+        },
+        {
+          "name": "Eglise",
+          "count": 1,
+          "slug": "eglise"
+        }
+      ]
+    },
+    {
+      "name": "Nouaceur",
+      "slug": "nouaceur",
+      "count": 55,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Nouaceur",
+          "count": 47,
+          "slug": "nouaceur"
+        },
+        {
+          "name": "Fadaat al mouhit",
+          "count": 4,
+          "slug": "fadaat-al-mouhit"
+        },
+        {
+          "name": "Victoria",
+          "count": 1,
+          "slug": "victoria"
+        },
+        {
+          "name": "Tamaris2",
+          "count": 1,
+          "slug": "tamaris2"
+        },
+        {
+          "name": "Oulad Dakak",
+          "count": 1,
+          "slug": "oulad-dakak"
+        },
+        {
+          "name": "Ouled Hebik",
+          "count": 1,
+          "slug": "ouled-hebik"
+        }
+      ]
+    },
+    {
+      "name": "Zenata",
+      "slug": "zenata",
+      "count": 53,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Zenata",
+          "count": 53,
+          "slug": "zenata"
+        }
+      ]
+    },
+    {
+      "name": "Harhoura",
+      "slug": "harhoura",
+      "count": 49,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Harhoura",
+          "count": 48,
+          "slug": "harhoura"
+        },
+        {
+          "name": "Harhoura Centre",
+          "count": 1,
+          "slug": "harhoura-centre"
+        }
+      ]
+    },
+    {
+      "name": "El Menzeh",
+      "slug": "el-menzeh",
+      "count": 43,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "El Menzeh",
+          "count": 43,
+          "slug": "el-menzeh"
+        }
+      ]
+    },
+    {
+      "name": "El-jadida",
+      "slug": "el-jadida",
+      "count": 40,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Autre",
+          "count": 6,
+          "slug": "autre"
+        },
+        {
+          "name": "Centre ville",
+          "count": 3,
+          "slug": "centre-ville"
+        },
+        {
+          "name": "Najmat Al Janoub Iii",
+          "count": 3,
+          "slug": "najmat-al-janoub-iii"
+        },
+        {
+          "name": "Lahouna",
+          "count": 2,
+          "slug": "lahouna"
+        },
+        {
+          "name": "Al Kodia",
+          "count": 2,
+          "slug": "al-kodia"
+        },
+        {
+          "name": "Najmat Al Janoub",
+          "count": 2,
+          "slug": "najmat-al-janoub"
+        },
+        {
+          "name": "Bab Mansour",
+          "count": 2,
+          "slug": "bab-mansour"
+        },
+        {
+          "name": "Corniche",
+          "count": 2,
+          "slug": "corniche"
+        },
+        {
+          "name": "Narjiss",
+          "count": 2,
+          "slug": "narjiss"
+        },
+        {
+          "name": "Jawhara",
+          "count": 2,
+          "slug": "jawhara"
+        },
+        {
+          "name": "Biranzarane",
+          "count": 2,
+          "slug": "biranzarane"
+        },
+        {
+          "name": "Cheminoits",
+          "count": 2,
+          "slug": "cheminoits"
+        },
+        {
+          "name": "Riad",
+          "count": 2,
+          "slug": "riad"
+        },
+        {
+          "name": "Ennajd",
+          "count": 1,
+          "slug": "ennajd"
+        },
+        {
+          "name": "Zone industrielle d'el jadida",
+          "count": 1,
+          "slug": "zone-industrielle-d-el-jadida"
+        },
+        {
+          "name": "Essalam",
+          "count": 1,
+          "slug": "essalam"
+        },
+        {
+          "name": "Hay Essalam",
+          "count": 1,
+          "slug": "hay-essalam"
+        },
+        {
+          "name": "Quartier Aérodrome",
+          "count": 1,
+          "slug": "quartier-aerodrome"
+        },
+        {
+          "name": "Azemmour Centre",
+          "count": 1,
+          "slug": "azemmour-centre"
+        },
+        {
+          "name": "El-jadida",
+          "count": 1,
+          "slug": "el-jadida"
+        },
+        {
+          "name": "Sidi Moussa",
+          "count": 1,
+          "slug": "sidi-moussa"
+        }
+      ]
+    },
+    {
+      "name": "Skhirat",
+      "slug": "skhirat",
+      "count": 39,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Plage rose marée",
+          "count": 17,
+          "slug": "plage-rose-maree"
+        },
+        {
+          "name": "Al Fath",
+          "count": 9,
+          "slug": "al-fath"
+        },
+        {
+          "name": "Ain Errouz",
+          "count": 3,
+          "slug": "ain-errouz"
+        },
+        {
+          "name": "Kasbah",
+          "count": 3,
+          "slug": "kasbah"
+        },
+        {
+          "name": "Al fath",
+          "count": 2,
+          "slug": "al-fath"
+        },
+        {
+          "name": "Belkhir",
+          "count": 2,
+          "slug": "belkhir"
+        },
+        {
+          "name": "Plage Rose Maree",
+          "count": 2,
+          "slug": "plage-rose-maree"
+        },
+        {
+          "name": "Ain el Hayat",
+          "count": 1,
+          "slug": "ain-el-hayat"
+        }
+      ]
+    },
+    {
+      "name": "Benslimane",
+      "slug": "benslimane",
+      "count": 39,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Benslimane",
+          "count": 14,
+          "slug": "benslimane"
+        },
+        {
+          "name": "Bouznika",
+          "count": 4,
+          "slug": "bouznika"
+        },
+        {
+          "name": "Autre",
+          "count": 4,
+          "slug": "autre"
+        },
+        {
+          "name": "Les chenes",
+          "count": 2,
+          "slug": "les-chenes"
+        },
+        {
+          "name": "Ain Tizgha",
+          "count": 2,
+          "slug": "ain-tizgha"
+        },
+        {
+          "name": "Plage Mimosa 2",
+          "count": 2,
+          "slug": "plage-mimosa-2"
+        },
+        {
+          "name": "Entree Sud",
+          "count": 2,
+          "slug": "entree-sud"
+        },
+        {
+          "name": "Golf",
+          "count": 1,
+          "slug": "golf"
+        },
+        {
+          "name": "Bouznika Plage",
+          "count": 1,
+          "slug": "bouznika-plage"
+        },
+        {
+          "name": "Qobbat Souk",
+          "count": 1,
+          "slug": "qobbat-souk"
+        },
+        {
+          "name": "Avenue Princesse Lalla Aicha",
+          "count": 1,
+          "slug": "avenue-princesse-lalla-aicha"
+        },
+        {
+          "name": "Route De Rabat",
+          "count": 1,
+          "slug": "route-de-rabat"
+        },
+        {
+          "name": "Oasis",
+          "count": 1,
+          "slug": "oasis"
+        },
+        {
+          "name": "Sidi Bernoussi",
+          "count": 1,
+          "slug": "sidi-bernoussi"
+        },
+        {
+          "name": "Plage David",
+          "count": 1,
+          "slug": "plage-david"
+        },
+        {
+          "name": "Khabbazate",
+          "count": 1,
+          "slug": "khabbazate"
+        }
+      ]
+    },
+    {
+      "name": "Saïdia",
+      "slug": "saidia",
+      "count": 39,
+      "region": "Oriental",
+      "regionSlug": "oriental",
+      "neighborhoods": [
+        {
+          "name": "Saidia",
+          "count": 30,
+          "slug": "saidia"
+        },
+        {
+          "name": "Saïdia",
+          "count": 9,
+          "slug": "saidia"
+        }
+      ]
+    },
+    {
+      "name": "Sidi Rahal",
+      "slug": "sidi-rahal",
+      "count": 36,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Sidi Rahal",
+          "count": 31,
+          "slug": "sidi-rahal"
+        },
+        {
+          "name": "Sidi Rahal Chatai",
+          "count": 3,
+          "slug": "sidi-rahal-chatai"
+        },
+        {
+          "name": "Hay charaf",
+          "count": 1,
+          "slug": "hay-charaf"
+        },
+        {
+          "name": "Plage De Sidi Rahal",
+          "count": 1,
+          "slug": "plage-de-sidi-rahal"
+        }
+      ]
+    },
+    {
+      "name": "Oujda",
+      "slug": "oujda",
+      "count": 31,
+      "region": "Oriental",
+      "regionSlug": "oriental",
+      "neighborhoods": [
+        {
+          "name": "Centre ville",
+          "count": 7,
+          "slug": "centre-ville"
+        },
+        {
+          "name": "Boustane",
+          "count": 4,
+          "slug": "boustane"
+        },
+        {
+          "name": "El Qods",
+          "count": 3,
+          "slug": "el-qods"
+        },
+        {
+          "name": "Sidi Yahya",
+          "count": 3,
+          "slug": "sidi-yahya"
+        },
+        {
+          "name": "Centre Ville",
+          "count": 2,
+          "slug": "centre-ville"
+        },
+        {
+          "name": "Bd Derfoufi",
+          "count": 2,
+          "slug": "bd-derfoufi"
+        },
+        {
+          "name": "Agdal",
+          "count": 2,
+          "slug": "agdal"
+        },
+        {
+          "name": "Hay zitoune",
+          "count": 2,
+          "slug": "hay-zitoune"
+        },
+        {
+          "name": "Lazaret",
+          "count": 2,
+          "slug": "lazaret"
+        },
+        {
+          "name": "Fath",
+          "count": 1,
+          "slug": "fath"
+        },
+        {
+          "name": "Ennasr",
+          "count": 1,
+          "slug": "ennasr"
+        },
+        {
+          "name": "Bd Hassan II",
+          "count": 1,
+          "slug": "bd-hassan-ii"
+        },
+        {
+          "name": "Jawhara",
+          "count": 1,
+          "slug": "jawhara"
+        }
+      ]
+    },
+    {
+      "name": "Errahma",
+      "slug": "errahma",
+      "count": 31,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Errahma",
+          "count": 31,
+          "slug": "errahma"
+        }
+      ]
+    },
+    {
+      "name": "Asilah",
+      "slug": "asilah",
+      "count": 30,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Asilah",
+          "count": 30,
+          "slug": "asilah"
+        }
+      ]
+    },
+    {
+      "name": "Tamesna",
+      "slug": "tamesna",
+      "count": 27,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Tamesna",
+          "count": 27,
+          "slug": "tamesna"
+        }
+      ]
+    },
+    {
+      "name": "Taghazout",
+      "slug": "taghazout",
+      "count": 25,
+      "region": "Souss-Massa",
+      "regionSlug": "souss-massa",
+      "neighborhoods": [
+        {
+          "name": "Taghazout",
+          "count": 25,
+          "slug": "taghazout"
+        }
+      ]
+    },
+    {
+      "name": "Sale",
+      "slug": "sale",
+      "count": 22,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Bab Lamrissa",
+          "count": 7,
+          "slug": "bab-lamrissa"
+        },
+        {
+          "name": "Sale El Jadiia",
+          "count": 3,
+          "slug": "sale-el-jadiia"
+        },
+        {
+          "name": "Autre",
+          "count": 2,
+          "slug": "autre"
+        },
+        {
+          "name": "Plage Des Nations",
+          "count": 2,
+          "slug": "plage-des-nations"
+        },
+        {
+          "name": "Tabriquet",
+          "count": 2,
+          "slug": "tabriquet"
+        },
+        {
+          "name": "Layayda",
+          "count": 2,
+          "slug": "layayda"
+        },
+        {
+          "name": "Salé El Jadiia",
+          "count": 2,
+          "slug": "sale-el-jadiia"
+        },
+        {
+          "name": "Chemaou",
+          "count": 1,
+          "slug": "chemaou"
+        },
+        {
+          "name": "hay chemaou",
+          "count": 1,
+          "slug": "hay-chemaou"
+        }
+      ]
+    },
+    {
+      "name": "M'Diq",
+      "slug": "m-diq",
+      "count": 22,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "M'Diq",
+          "count": 22,
+          "slug": "m-diq"
+        }
+      ]
+    },
+    {
+      "name": "Nador",
+      "slug": "nador",
+      "count": 22,
+      "region": "Oriental",
+      "regionSlug": "oriental",
+      "neighborhoods": [
+        {
+          "name": "Centre ville",
+          "count": 10,
+          "slug": "centre-ville"
+        },
+        {
+          "name": "Aarid",
+          "count": 6,
+          "slug": "aarid"
+        },
+        {
+          "name": "Autre",
+          "count": 2,
+          "slug": "autre"
+        },
+        {
+          "name": "Selouane",
+          "count": 1,
+          "slug": "selouane"
+        },
+        {
+          "name": "Ouled lahcen",
+          "count": 1,
+          "slug": "ouled-lahcen"
+        },
+        {
+          "name": "Hay el matar",
+          "count": 1,
+          "slug": "hay-el-matar"
+        },
+        {
+          "name": "El Matar",
+          "count": 1,
+          "slug": "el-matar"
+        }
+      ]
+    },
+    {
+      "name": "Deroua",
+      "slug": "deroua",
+      "count": 21,
+      "region": "Marrakech-Safi",
+      "regionSlug": "marrakech-safi",
+      "neighborhoods": [
+        {
+          "name": "Deroua",
+          "count": 21,
+          "slug": "deroua"
+        }
+      ]
+    },
+    {
+      "name": "Safi",
+      "slug": "safi",
+      "count": 19,
+      "region": "Marrakech-Safi",
+      "regionSlug": "marrakech-safi",
+      "neighborhoods": [
+        {
+          "name": "Ville nouvelle",
+          "count": 4,
+          "slug": "ville-nouvelle"
+        },
+        {
+          "name": "Lamaachate",
+          "count": 2,
+          "slug": "lamaachate"
+        },
+        {
+          "name": "Lamiaa",
+          "count": 2,
+          "slug": "lamiaa"
+        },
+        {
+          "name": "Sidi Bouzid",
+          "count": 2,
+          "slug": "sidi-bouzid"
+        },
+        {
+          "name": "Safi",
+          "count": 1,
+          "slug": "safi"
+        },
+        {
+          "name": "Autre",
+          "count": 1,
+          "slug": "autre"
+        },
+        {
+          "name": "Azib Derai",
+          "count": 1,
+          "slug": "azib-derai"
+        },
+        {
+          "name": "Plateau",
+          "count": 1,
+          "slug": "plateau"
+        },
+        {
+          "name": "Sania",
+          "count": 1,
+          "slug": "sania"
+        },
+        {
+          "name": "El Matar (Cité Aviation)",
+          "count": 1,
+          "slug": "el-matar-cite-aviation"
+        },
+        {
+          "name": "Karyat Ech Chams",
+          "count": 1,
+          "slug": "karyat-ech-chams"
+        },
+        {
+          "name": "Takabrout",
+          "count": 1,
+          "slug": "takabrout"
+        },
+        {
+          "name": "Salam",
+          "count": 1,
+          "slug": "salam"
+        }
+      ]
+    },
+    {
+      "name": "Had Soualem",
+      "slug": "had-soualem",
+      "count": 17,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Had Soualem",
+          "count": 17,
+          "slug": "had-soualem"
+        }
+      ]
+    },
+    {
+      "name": "Fnideq",
+      "slug": "fnideq",
+      "count": 16,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Fnideq",
+          "count": 16,
+          "slug": "fnideq"
+        }
+      ]
+    },
+    {
+      "name": "Mediouna",
+      "slug": "mediouna",
+      "count": 15,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Médiouna",
+          "count": 6,
+          "slug": "mediouna"
+        },
+        {
+          "name": "Tit Mellil Centre",
+          "count": 3,
+          "slug": "tit-mellil-centre"
+        },
+        {
+          "name": "Lahraouiyine",
+          "count": 2,
+          "slug": "lahraouiyine"
+        },
+        {
+          "name": "Lahraouyine",
+          "count": 1,
+          "slug": "lahraouyine"
+        },
+        {
+          "name": "Mers Sultan",
+          "count": 1,
+          "slug": "mers-sultan"
+        },
+        {
+          "name": "Autre",
+          "count": 1,
+          "slug": "autre"
+        },
+        {
+          "name": "Chellalate",
+          "count": 1,
+          "slug": "chellalate"
+        }
+      ]
+    },
+    {
+      "name": "Bouknadel",
+      "slug": "bouknadel",
+      "count": 15,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Sidi Bouknadel",
+          "count": 15,
+          "slug": "sidi-bouknadel"
+        }
+      ]
+    },
+    {
+      "name": "Al Hoceima",
+      "slug": "al-hoceima",
+      "count": 15,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Al Hoceima",
+          "count": 15,
+          "slug": "al-hoceima"
+        }
+      ]
+    },
+    {
+      "name": "Khouribga",
+      "slug": "khouribga",
+      "count": 15,
+      "region": "Béni Mellal-Khénifra",
+      "regionSlug": "beni-mellal-khenifra",
+      "neighborhoods": [
+        {
+          "name": "Khouribga",
+          "count": 15,
+          "slug": "khouribga"
+        }
+      ]
+    },
+    {
+      "name": "Ben Guerir",
+      "slug": "ben-guerir",
+      "count": 14,
+      "region": "Marrakech-Safi",
+      "regionSlug": "marrakech-safi",
+      "neighborhoods": [
+        {
+          "name": "Ben Guerir",
+          "count": 14,
+          "slug": "ben-guerir"
+        }
+      ]
+    },
+    {
+      "name": "M-diq-fnideq",
+      "slug": "m-diq-fnideq",
+      "count": 13,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Autre",
+          "count": 8,
+          "slug": "autre"
+        },
+        {
+          "name": "Ahrik",
+          "count": 3,
+          "slug": "ahrik"
+        },
+        {
+          "name": "Plage Martil",
+          "count": 2,
+          "slug": "plage-martil"
+        }
+      ]
+    },
+    {
+      "name": "Mehdia",
+      "slug": "mehdia",
+      "count": 13,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Mehdia",
+          "count": 13,
+          "slug": "mehdia"
+        }
+      ]
+    },
+    {
+      "name": "Ait Melloul",
+      "slug": "ait-melloul",
+      "count": 12,
+      "region": "Souss-Massa",
+      "regionSlug": "souss-massa",
+      "neighborhoods": [
+        {
+          "name": "Ait Melloul",
+          "count": 12,
+          "slug": "ait-melloul"
+        }
+      ]
+    },
+    {
+      "name": "Taza",
+      "slug": "taza",
+      "count": 12,
+      "region": "Fès-Meknès",
+      "regionSlug": "fes-meknes",
+      "neighborhoods": [
+        {
+          "name": "Taza",
+          "count": 11,
+          "slug": "taza"
+        },
+        {
+          "name": "Autre",
+          "count": 1,
+          "slug": "autre"
+        }
+      ]
+    },
+    {
+      "name": "Tassoultante",
+      "slug": "tassoultante",
+      "count": 12,
+      "region": "Marrakech-Safi",
+      "regionSlug": "marrakech-safi",
+      "neighborhoods": [
+        {
+          "name": "Tassoultante",
+          "count": 12,
+          "slug": "tassoultante"
+        }
+      ]
+    },
+    {
+      "name": "Aourir",
+      "slug": "aourir",
+      "count": 12,
+      "region": "Souss-Massa",
+      "regionSlug": "souss-massa",
+      "neighborhoods": [
+        {
+          "name": "Aourir",
+          "count": 12,
+          "slug": "aourir"
+        }
+      ]
+    },
+    {
+      "name": "Cabo Negro",
+      "slug": "cabo-negro",
+      "count": 11,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Cabo Negro",
+          "count": 11,
+          "slug": "cabo-negro"
+        }
+      ]
+    },
+    {
+      "name": "Larache",
+      "slug": "larache",
+      "count": 11,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Larache",
+          "count": 10,
+          "slug": "larache"
+        },
+        {
+          "name": "Autre",
+          "count": 1,
+          "slug": "autre"
+        }
+      ]
+    },
+    {
+      "name": "Oulad Salah",
+      "slug": "oulad-salah",
+      "count": 10,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Oulad Salah",
+          "count": 7,
+          "slug": "oulad-salah"
+        },
+        {
+          "name": "Oulad Yaich",
+          "count": 2,
+          "slug": "oulad-yaich"
+        },
+        {
+          "name": "Oulad Frej",
+          "count": 1,
+          "slug": "oulad-frej"
+        }
+      ]
+    },
+    {
+      "name": "Tit Mellil",
+      "slug": "tit-mellil",
+      "count": 10,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Tit Mellil",
+          "count": 8,
+          "slug": "tit-mellil"
+        },
+        {
+          "name": "Mellila",
+          "count": 2,
+          "slug": "mellila"
+        }
+      ]
+    },
+    {
+      "name": "Chefchaouen",
+      "slug": "chefchaouen",
+      "count": 10,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Chefchaouen",
+          "count": 9,
+          "slug": "chefchaouen"
+        },
+        {
+          "name": "El Hafa",
+          "count": 1,
+          "slug": "el-hafa"
+        }
+      ]
+    },
+    {
+      "name": "Khémisset",
+      "slug": "khemisset",
+      "count": 10,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Autre",
+          "count": 4,
+          "slug": "autre"
+        },
+        {
+          "name": "Diour Chouhada",
+          "count": 2,
+          "slug": "diour-chouhada"
+        },
+        {
+          "name": "Essalam",
+          "count": 2,
+          "slug": "essalam"
+        },
+        {
+          "name": "Lot Tadart",
+          "count": 1,
+          "slug": "lot-tadart"
+        },
+        {
+          "name": "Lot Almouna",
+          "count": 1,
+          "slug": "lot-almouna"
+        }
+      ]
+    },
+    {
+      "name": "Ifrane",
+      "slug": "ifrane",
+      "count": 10,
+      "region": "Fès-Meknès",
+      "regionSlug": "fes-meknes",
+      "neighborhoods": [
+        {
+          "name": "Les jardins d ifrane",
+          "count": 2,
+          "slug": "les-jardins-d-ifrane"
+        },
+        {
+          "name": "Cité al alkhawaine",
+          "count": 2,
+          "slug": "cite-al-alkhawaine"
+        },
+        {
+          "name": "La prairie",
+          "count": 2,
+          "slug": "la-prairie"
+        },
+        {
+          "name": "La Prairie",
+          "count": 1,
+          "slug": "la-prairie"
+        },
+        {
+          "name": "Autre",
+          "count": 1,
+          "slug": "autre"
+        },
+        {
+          "name": "Les Jardins D'Ifrane",
+          "count": 1,
+          "slug": "les-jardins-d-ifrane"
+        },
+        {
+          "name": "Atlas",
+          "count": 1,
+          "slug": "atlas"
+        }
+      ]
+    },
+    {
+      "name": "Inezgane-ait-melloul",
+      "slug": "inezgane-ait-melloul",
+      "count": 9,
+      "region": "Souss-Massa",
+      "regionSlug": "souss-massa",
+      "neighborhoods": [
+        {
+          "name": "Dechira",
+          "count": 2,
+          "slug": "dechira"
+        },
+        {
+          "name": "Aeroport",
+          "count": 1,
+          "slug": "aeroport"
+        },
+        {
+          "name": "La Pergola",
+          "count": 1,
+          "slug": "la-pergola"
+        },
+        {
+          "name": "El Faiz",
+          "count": 1,
+          "slug": "el-faiz"
+        },
+        {
+          "name": "Medina",
+          "count": 1,
+          "slug": "medina"
+        },
+        {
+          "name": "Dcheira El Jihadia",
+          "count": 1,
+          "slug": "dcheira-el-jihadia"
+        },
+        {
+          "name": "Autre",
+          "count": 1,
+          "slug": "autre"
+        },
+        {
+          "name": "Inezgane-ait-melloul",
+          "count": 1,
+          "slug": "inezgane-ait-melloul"
+        }
+      ]
+    },
+    {
+      "name": "Gueznaia",
+      "slug": "gueznaia",
+      "count": 8,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Gueznaia",
+          "count": 8,
+          "slug": "gueznaia"
+        }
+      ]
+    },
+    {
+      "name": "Azemmour",
+      "slug": "azemmour",
+      "count": 7,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Azemmour",
+          "count": 7,
+          "slug": "azemmour"
+        }
+      ]
+    },
+    {
+      "name": "Oued Laou",
+      "slug": "oued-laou",
+      "count": 7,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Oued Laou",
+          "count": 7,
+          "slug": "oued-laou"
+        }
+      ]
+    },
+    {
+      "name": "Moulay Bousselham",
+      "slug": "moulay-bousselham",
+      "count": 7,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Moulay Bousselham",
+          "count": 7,
+          "slug": "moulay-bousselham"
+        }
+      ]
+    },
+    {
+      "name": "Oujda-angad",
+      "slug": "oujda-angad",
+      "count": 7,
+      "region": "Oriental",
+      "regionSlug": "oriental",
+      "neighborhoods": [
+        {
+          "name": "Autre",
+          "count": 2,
+          "slug": "autre"
+        },
+        {
+          "name": "Lotissement Benkhirane",
+          "count": 1,
+          "slug": "lotissement-benkhirane"
+        },
+        {
+          "name": "Miloud",
+          "count": 1,
+          "slug": "miloud"
+        },
+        {
+          "name": "Dhar Lamhala",
+          "count": 1,
+          "slug": "dhar-lamhala"
+        },
+        {
+          "name": "Lotissement Najd",
+          "count": 1,
+          "slug": "lotissement-najd"
+        },
+        {
+          "name": "Rabat",
+          "count": 1,
+          "slug": "rabat"
+        }
+      ]
+    },
+    {
+      "name": "Laäyoune",
+      "slug": "laayoune",
+      "count": 6,
+      "region": "Laâyoune-Sakia El Hamra",
+      "regionSlug": "laayoune-sakia-el-hamra",
+      "neighborhoods": [
+        {
+          "name": "Laäyoune",
+          "count": 5,
+          "slug": "laayoune"
+        },
+        {
+          "name": "Laayoune",
+          "count": 1,
+          "slug": "laayoune"
+        }
+      ]
+    },
+    {
+      "name": "Zemamra",
+      "slug": "zemamra",
+      "count": 6,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Zemamra",
+          "count": 6,
+          "slug": "zemamra"
+        }
+      ]
+    },
+    {
+      "name": "Selouane",
+      "slug": "selouane",
+      "count": 5,
+      "region": "Oriental",
+      "regionSlug": "oriental",
+      "neighborhoods": [
+        {
+          "name": "Selouane",
+          "count": 5,
+          "slug": "selouane"
+        }
+      ]
+    },
+    {
+      "name": "Azla",
+      "slug": "azla",
+      "count": 5,
+      "region": "Oriental",
+      "regionSlug": "oriental",
+      "neighborhoods": [
+        {
+          "name": "Azla",
+          "count": 5,
+          "slug": "azla"
+        }
+      ]
+    },
+    {
+      "name": "Settat",
+      "slug": "settat",
+      "count": 5,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Al Kamal",
+          "count": 2,
+          "slug": "al-kamal"
+        },
+        {
+          "name": "Smaâla",
+          "count": 1,
+          "slug": "smaala"
+        },
+        {
+          "name": "Kassam",
+          "count": 1,
+          "slug": "kassam"
+        },
+        {
+          "name": "Smaala",
+          "count": 1,
+          "slug": "smaala"
+        }
+      ]
+    },
+    {
+      "name": "Mirleft",
+      "slug": "mirleft",
+      "count": 4,
+      "region": "Guelmim-Oued Noun",
+      "regionSlug": "guelmim-oued-noun",
+      "neighborhoods": [
+        {
+          "name": "Mirleft",
+          "count": 4,
+          "slug": "mirleft"
+        }
+      ]
+    },
+    {
+      "name": "Drargua",
+      "slug": "drargua",
+      "count": 4,
+      "region": "Souss-Massa",
+      "regionSlug": "souss-massa",
+      "neighborhoods": [
+        {
+          "name": "Drargua",
+          "count": 4,
+          "slug": "drargua"
+        }
+      ]
+    },
+    {
+      "name": "Aïn Harrouda",
+      "slug": "ain-harrouda",
+      "count": 4,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Ain Harrouda",
+          "count": 3,
+          "slug": "ain-harrouda"
+        },
+        {
+          "name": "Centre Ville",
+          "count": 1,
+          "slug": "centre-ville"
+        }
+      ]
+    },
+    {
+      "name": "Ain Attig",
+      "slug": "ain-attig",
+      "count": 4,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Ain Attig",
+          "count": 4,
+          "slug": "ain-attig"
+        }
+      ]
+    },
+    {
+      "name": "Berkane",
+      "slug": "berkane",
+      "count": 4,
+      "region": "Oriental",
+      "regionSlug": "oriental",
+      "neighborhoods": [
+        {
+          "name": "Safaa",
+          "count": 2,
+          "slug": "safaa"
+        },
+        {
+          "name": "Autre",
+          "count": 1,
+          "slug": "autre"
+        },
+        {
+          "name": "Berkane",
+          "count": 1,
+          "slug": "berkane"
+        }
+      ]
+    },
+    {
+      "name": "Ain Aouda",
+      "slug": "ain-aouda",
+      "count": 4,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Ain Aouda",
+          "count": 4,
+          "slug": "ain-aouda"
+        }
+      ]
+    },
+    {
+      "name": "Al Bahraoyine",
+      "slug": "al-bahraoyine",
+      "count": 4,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Al Bahraoyine",
+          "count": 4,
+          "slug": "al-bahraoyine"
+        }
+      ]
+    },
+    {
+      "name": "Dcheïra El Jihadia",
+      "slug": "dcheira-el-jihadia",
+      "count": 4,
+      "region": "Autres communes",
+      "regionSlug": "autres-communes",
+      "neighborhoods": [
+        {
+          "name": "Dcheïra El Jihadia",
+          "count": 3,
+          "slug": "dcheira-el-jihadia"
+        },
+        {
+          "name": "Dcheira El Jihadia",
+          "count": 1,
+          "slug": "dcheira-el-jihadia"
+        }
+      ]
+    },
+    {
+      "name": "Taroudannt",
+      "slug": "taroudannt",
+      "count": 4,
+      "region": "Souss-Massa",
+      "regionSlug": "souss-massa",
+      "neighborhoods": [
+        {
+          "name": "Oulad Hallouf",
+          "count": 1,
+          "slug": "oulad-hallouf"
+        },
+        {
+          "name": "Autre",
+          "count": 1,
+          "slug": "autre"
+        },
+        {
+          "name": "Jamaa el Kbir",
+          "count": 1,
+          "slug": "jamaa-el-kbir"
+        },
+        {
+          "name": "Lotissement Bouthanout",
+          "count": 1,
+          "slug": "lotissement-bouthanout"
+        }
+      ]
+    },
+    {
+      "name": "Sidi Bouzid",
+      "slug": "sidi-bouzid",
+      "count": 4,
+      "region": "Marrakech-Safi",
+      "regionSlug": "marrakech-safi",
+      "neighborhoods": [
+        {
+          "name": "Sidi Bouzid",
+          "count": 4,
+          "slug": "sidi-bouzid"
+        }
+      ]
+    },
+    {
+      "name": "Fahs-anjra-",
+      "slug": "fahs-anjra",
+      "count": 4,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Autre",
+          "count": 4,
+          "slug": "autre"
+        }
+      ]
+    },
+    {
+      "name": "Ouarzazate",
+      "slug": "ouarzazate",
+      "count": 3,
+      "region": "Drâa-Tafilalet",
+      "regionSlug": "draa-tafilalet",
+      "neighborhoods": [
+        {
+          "name": "Autre",
+          "count": 2,
+          "slug": "autre"
+        },
+        {
+          "name": "Al Hassani",
+          "count": 1,
+          "slug": "al-hassani"
+        }
+      ]
+    },
+    {
+      "name": "Agadir Melloul",
+      "slug": "agadir-melloul",
+      "count": 3,
+      "region": "Souss-Massa",
+      "regionSlug": "souss-massa",
+      "neighborhoods": [
+        {
+          "name": "Agadir Melloul",
+          "count": 3,
+          "slug": "agadir-melloul"
+        }
+      ]
+    },
+    {
+      "name": "Guelmim",
+      "slug": "guelmim",
+      "count": 3,
+      "region": "Guelmim-Oued Noun",
+      "regionSlug": "guelmim-oued-noun",
+      "neighborhoods": [
+        {
+          "name": "Guelmim",
+          "count": 3,
+          "slug": "guelmim"
+        }
+      ]
+    },
+    {
+      "name": "Chellalate",
+      "slug": "chellalate",
+      "count": 3,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Chellalate",
+          "count": 3,
+          "slug": "chellalate"
+        }
+      ]
+    },
+    {
+      "name": "Oulad Tayeb",
+      "slug": "oulad-tayeb",
+      "count": 3,
+      "region": "Fès-Meknès",
+      "regionSlug": "fes-meknes",
+      "neighborhoods": [
+        {
+          "name": "Oulad Tayeb",
+          "count": 3,
+          "slug": "oulad-tayeb"
+        }
+      ]
+    },
+    {
+      "name": "El-hajeb",
+      "slug": "el-hajeb",
+      "count": 3,
+      "region": "Fès-Meknès",
+      "regionSlug": "fes-meknes",
+      "neighborhoods": [
+        {
+          "name": "El hajeb",
+          "count": 3,
+          "slug": "el-hajeb"
+        }
+      ]
+    },
+    {
+      "name": "Inzegan",
+      "slug": "inzegan",
+      "count": 3,
+      "region": "Souss-Massa",
+      "regionSlug": "souss-massa",
+      "neighborhoods": [
+        {
+          "name": "Inzegan",
+          "count": 3,
+          "slug": "inzegan"
+        }
+      ]
+    },
+    {
+      "name": "Béni Yakhlef",
+      "slug": "beni-yakhlef",
+      "count": 3,
+      "region": "Autres communes",
+      "regionSlug": "autres-communes",
+      "neighborhoods": [
+        {
+          "name": "Béni Yakhlef",
+          "count": 2,
+          "slug": "beni-yakhlef"
+        },
+        {
+          "name": "Beni Yakhlef",
+          "count": 1,
+          "slug": "beni-yakhlef"
+        }
+      ]
+    },
+    {
+      "name": "Al-haouz",
+      "slug": "al-haouz",
+      "count": 3,
+      "region": "Marrakech-Safi",
+      "regionSlug": "marrakech-safi",
+      "neighborhoods": [
+        {
+          "name": "Autre",
+          "count": 2,
+          "slug": "autre"
+        },
+        {
+          "name": "Tahannaout",
+          "count": 1,
+          "slug": "tahannaout"
+        }
+      ]
+    },
+    {
+      "name": "Sidi-bennour",
+      "slug": "sidi-bennour",
+      "count": 3,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Oualidia",
+          "count": 1,
+          "slug": "oualidia"
+        },
+        {
+          "name": "Sidi Bennour",
+          "count": 1,
+          "slug": "sidi-bennour"
+        },
+        {
+          "name": "Nejara",
+          "count": 1,
+          "slug": "nejara"
+        }
+      ]
+    },
+    {
+      "name": "Beni-mellal",
+      "slug": "beni-mellal",
+      "count": 3,
+      "region": "Béni Mellal-Khénifra",
+      "regionSlug": "beni-mellal-khenifra",
+      "neighborhoods": [
+        {
+          "name": "Autre",
+          "count": 3,
+          "slug": "autre"
+        }
+      ]
+    },
+    {
+      "name": "Soualem",
+      "slug": "soualem",
+      "count": 3,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Had Soualem Ben Abid",
+          "count": 2,
+          "slug": "had-soualem-ben-abid"
+        },
+        {
+          "name": "Lotissement Al Wahda",
+          "count": 1,
+          "slug": "lotissement-al-wahda"
+        }
+      ]
+    },
+    {
+      "name": "Moulay-yacoub",
+      "slug": "moulay-yacoub",
+      "count": 3,
+      "region": "Fès-Meknès",
+      "regionSlug": "fes-meknes",
+      "neighborhoods": [
+        {
+          "name": "Riad",
+          "count": 1,
+          "slug": "riad"
+        },
+        {
+          "name": "Moulay Yaâcoub",
+          "count": 1,
+          "slug": "moulay-yaacoub"
+        },
+        {
+          "name": "Autre",
+          "count": 1,
+          "slug": "autre"
+        }
+      ]
+    },
+    {
+      "name": "Tnine Aglou",
+      "slug": "tnine-aglou",
+      "count": 3,
+      "region": "Souss-Massa",
+      "regionSlug": "souss-massa",
+      "neighborhoods": [
+        {
+          "name": "Tnine Aglou",
+          "count": 3,
+          "slug": "tnine-aglou"
+        }
+      ]
+    },
+    {
+      "name": "Fquih-ben-salah",
+      "slug": "fquih-ben-salah",
+      "count": 3,
+      "region": "Béni Mellal-Khénifra",
+      "regionSlug": "beni-mellal-khenifra",
+      "neighborhoods": [
+        {
+          "name": "Autre",
+          "count": 3,
+          "slug": "autre"
+        }
+      ]
+    },
+    {
+      "name": "Moulay Abdallah",
+      "slug": "moulay-abdallah",
+      "count": 2,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Moulay Abdallah",
+          "count": 2,
+          "slug": "moulay-abdallah"
+        }
+      ]
+    },
+    {
+      "name": "Lamharza Essahel",
+      "slug": "lamharza-essahel",
+      "count": 2,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Lamharza Essahel",
+          "count": 2,
+          "slug": "lamharza-essahel"
+        }
+      ]
+    },
+    {
+      "name": "Cherrat",
+      "slug": "cherrat",
+      "count": 2,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Cherrat",
+          "count": 2,
+          "slug": "cherrat"
+        }
+      ]
+    },
+    {
+      "name": "Tifelt",
+      "slug": "tifelt",
+      "count": 2,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Tifelt",
+          "count": 2,
+          "slug": "tifelt"
+        }
+      ]
+    },
+    {
+      "name": "Haouzia",
+      "slug": "haouzia",
+      "count": 2,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Haouzia",
+          "count": 2,
+          "slug": "haouzia"
+        }
+      ]
+    },
+    {
+      "name": "Rommani",
+      "slug": "rommani",
+      "count": 2,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Rommani",
+          "count": 2,
+          "slug": "rommani"
+        }
+      ]
+    },
+    {
+      "name": "Azrou",
+      "slug": "azrou",
+      "count": 2,
+      "region": "Fès-Meknès",
+      "regionSlug": "fes-meknes",
+      "neighborhoods": [
+        {
+          "name": "Azrou",
+          "count": 2,
+          "slug": "azrou"
+        }
+      ]
+    },
+    {
+      "name": "Sidi allal el bahraoui",
+      "slug": "sidi-allal-el-bahraoui",
+      "count": 2,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Sidi Allal El Bahraoui",
+          "count": 2,
+          "slug": "sidi-allal-el-bahraoui"
+        }
+      ]
+    },
+    {
+      "name": "Ait Youssef Ou Ali",
+      "slug": "ait-youssef-ou-ali",
+      "count": 2,
+      "region": "Fès-Meknès",
+      "regionSlug": "fes-meknes",
+      "neighborhoods": [
+        {
+          "name": "Ait Youssef Ou Ali",
+          "count": 2,
+          "slug": "ait-youssef-ou-ali"
+        }
+      ]
+    },
+    {
+      "name": "El Kelâa des Sraghna",
+      "slug": "el-kelaa-des-sraghna",
+      "count": 2,
+      "region": "Marrakech-Safi",
+      "regionSlug": "marrakech-safi",
+      "neighborhoods": [
+        {
+          "name": "El Kelâa des Sraghna",
+          "count": 1,
+          "slug": "el-kelaa-des-sraghna"
+        },
+        {
+          "name": "El Kelaa Des Sraghna",
+          "count": 1,
+          "slug": "el-kelaa-des-sraghna"
+        }
+      ]
+    },
+    {
+      "name": "Ksar Sghir",
+      "slug": "ksar-sghir",
+      "count": 2,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Ksar Sghir",
+          "count": 2,
+          "slug": "ksar-sghir"
+        }
+      ]
+    },
+    {
+      "name": "Tiznit",
+      "slug": "tiznit",
+      "count": 2,
+      "region": "Souss-Massa",
+      "regionSlug": "souss-massa",
+      "neighborhoods": [
+        {
+          "name": "Tiznit",
+          "count": 1,
+          "slug": "tiznit"
+        },
+        {
+          "name": "Autre",
+          "count": 1,
+          "slug": "autre"
+        }
+      ]
+    },
+    {
+      "name": "Ouislane",
+      "slug": "ouislane",
+      "count": 2,
+      "region": "Fès-Meknès",
+      "regionSlug": "fes-meknes",
+      "neighborhoods": [
+        {
+          "name": "Ouislane",
+          "count": 2,
+          "slug": "ouislane"
+        }
+      ]
+    },
+    {
+      "name": "Ras el Ma",
+      "slug": "ras-el-ma",
+      "count": 1,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Ras El Ma",
+          "count": 1,
+          "slug": "ras-el-ma"
+        }
+      ]
+    },
+    {
+      "name": "Taounate",
+      "slug": "taounate",
+      "count": 1,
+      "region": "Fès-Meknès",
+      "regionSlug": "fes-meknes",
+      "neighborhoods": [
+        {
+          "name": "Autre",
+          "count": 1,
+          "slug": "autre"
+        }
+      ]
+    },
+    {
+      "name": "Rehamna",
+      "slug": "rehamna",
+      "count": 1,
+      "region": "Marrakech-Safi",
+      "regionSlug": "marrakech-safi",
+      "neighborhoods": [
+        {
+          "name": "Ben Guerir",
+          "count": 1,
+          "slug": "ben-guerir"
+        }
+      ]
+    },
+    {
+      "name": "Sidi-ifni",
+      "slug": "sidi-ifni",
+      "count": 1,
+      "region": "Guelmim-Oued Noun",
+      "regionSlug": "guelmim-oued-noun",
+      "neighborhoods": [
+        {
+          "name": "Sidi Ifni",
+          "count": 1,
+          "slug": "sidi-ifni"
+        }
+      ]
+    },
+    {
+      "name": "Boukhalef",
+      "slug": "boukhalef",
+      "count": 1,
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "regionSlug": "tanger-tetouan-al-hoceima",
+      "neighborhoods": [
+        {
+          "name": "Boukhalef",
+          "count": 1,
+          "slug": "boukhalef"
+        }
+      ]
+    },
+    {
+      "name": "Sidi Yahya Zaer",
+      "slug": "sidi-yahya-zaer",
+      "count": 1,
+      "region": "Rabat-Salé-Kénitra",
+      "regionSlug": "rabat-sale-kenitra",
+      "neighborhoods": [
+        {
+          "name": "Sidi Yahya Zaer",
+          "count": 1,
+          "slug": "sidi-yahya-zaer"
+        }
+      ]
+    },
+    {
+      "name": "Thar Es-Souk",
+      "slug": "thar-es-souk",
+      "count": 1,
+      "region": "Fès-Meknès",
+      "regionSlug": "fes-meknes",
+      "neighborhoods": [
+        {
+          "name": "Thar Es Souk",
+          "count": 1,
+          "slug": "thar-es-souk"
+        }
+      ]
+    },
+    {
+      "name": "Ourika",
+      "slug": "ourika",
+      "count": 1,
+      "region": "Marrakech-Safi",
+      "regionSlug": "marrakech-safi",
+      "neighborhoods": [
+        {
+          "name": "Ourika",
+          "count": 1,
+          "slug": "ourika"
+        }
+      ]
+    },
+    {
+      "name": "Sidi Kacem",
+      "slug": "sidi-kacem",
+      "count": 1,
+      "region": "Fès-Meknès",
+      "regionSlug": "fes-meknes",
+      "neighborhoods": [
+        {
+          "name": "Sidi Kacem",
+          "count": 1,
+          "slug": "sidi-kacem"
+        }
+      ]
+    },
+    {
+      "name": "Azilal",
+      "slug": "azilal",
+      "count": 1,
+      "region": "Béni Mellal-Khénifra",
+      "regionSlug": "beni-mellal-khenifra",
+      "neighborhoods": [
+        {
+          "name": "Autre",
+          "count": 1,
+          "slug": "autre"
+        }
+      ]
+    },
+    {
+      "name": "Tan-tan",
+      "slug": "tan-tan",
+      "count": 1,
+      "region": "Guelmim-Oued Noun",
+      "regionSlug": "guelmim-oued-noun",
+      "neighborhoods": [
+        {
+          "name": "El Ouatia",
+          "count": 1,
+          "slug": "el-ouatia"
+        }
+      ]
+    },
+    {
+      "name": "Ouled Teïma",
+      "slug": "ouled-teima",
+      "count": 1,
+      "region": "Autres communes",
+      "regionSlug": "autres-communes",
+      "neighborhoods": [
+        {
+          "name": "Ouled Teima",
+          "count": 1,
+          "slug": "ouled-teima"
+        }
+      ]
+    },
+    {
+      "name": "Bni Ansar",
+      "slug": "bni-ansar",
+      "count": 1,
+      "region": "Oriental",
+      "regionSlug": "oriental",
+      "neighborhoods": [
+        {
+          "name": "Bni Ansar",
+          "count": 1,
+          "slug": "bni-ansar"
+        }
+      ]
+    },
+    {
+      "name": "Sidi Hajjaj Oued Hassar",
+      "slug": "sidi-hajjaj-oued-hassar",
+      "count": 1,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Sidi Hajjaj Oued Hassar",
+          "count": 1,
+          "slug": "sidi-hajjaj-oued-hassar"
+        }
+      ]
+    },
+    {
+      "name": "Ain Beida",
+      "slug": "ain-beida",
+      "count": 1,
+      "region": "Oriental",
+      "regionSlug": "oriental",
+      "neighborhoods": [
+        {
+          "name": "El Koudia El Beida",
+          "count": 1,
+          "slug": "el-koudia-el-beida"
+        }
+      ]
+    },
+    {
+      "name": "Sefrou",
+      "slug": "sefrou",
+      "count": 1,
+      "region": "Fès-Meknès",
+      "regionSlug": "fes-meknes",
+      "neighborhoods": [
+        {
+          "name": "Sefrou",
+          "count": 1,
+          "slug": "sefrou"
+        }
+      ]
+    },
+    {
+      "name": "Oualidia",
+      "slug": "oualidia",
+      "count": 1,
+      "region": "Casablanca-Settat",
+      "regionSlug": "casablanca-settat",
+      "neighborhoods": [
+        {
+          "name": "Oualidia",
+          "count": 1,
+          "slug": "oualidia"
+        }
+      ]
+    }
+  ],
+  "regions": [
+    {
+      "name": "Casablanca-Settat",
+      "slug": "casablanca-settat",
+      "count": 9539,
+      "cities": [
+        "Aïn Harrouda",
+        "Azemmour",
+        "Benslimane",
+        "Berrechid",
+        "Bouskoura",
+        "Casablanca",
+        "Chellalate",
+        "Cherrat",
+        "Dar Bouazza",
+        "El Mansouria",
+        "El-jadida",
+        "Errahma",
+        "Had Soualem",
+        "Haouzia",
+        "Lamharza Essahel",
+        "Mediouna",
+        "Mohammedia",
+        "Moulay Abdallah",
+        "Nouaceur",
+        "Oualidia",
+        "Oulad Salah",
+        "Settat",
+        "Sidi Hajjaj Oued Hassar",
+        "Sidi Rahal",
+        "Sidi-bennour",
+        "Soualem",
+        "Tit Mellil",
+        "Zemamra",
+        "Zenata"
+      ]
+    },
+    {
+      "name": "Marrakech-Safi",
+      "slug": "marrakech-safi",
+      "count": 2724,
+      "cities": [
+        "Al-haouz",
+        "Ben Guerir",
+        "Deroua",
+        "El Kelâa des Sraghna",
+        "Essaouira",
+        "Marrakech",
+        "Ourika",
+        "Rehamna",
+        "Safi",
+        "Sidi Bouzid",
+        "Tassoultante"
+      ]
+    },
+    {
+      "name": "Rabat-Salé-Kénitra",
+      "slug": "rabat-sale-kenitra",
+      "count": 2006,
+      "cities": [
+        "Ain Aouda",
+        "Ain Attig",
+        "Al Bahraoyine",
+        "Bouknadel",
+        "Bouznika",
+        "El Menzeh",
+        "Harhoura",
+        "Kénitra",
+        "Khémisset",
+        "Mehdia",
+        "Moulay Bousselham",
+        "Rabat",
+        "Rommani",
+        "Sale",
+        "Salé",
+        "Sidi allal el bahraoui",
+        "Sidi Yahya Zaer",
+        "Skhirat",
+        "Tamesna",
+        "Temara",
+        "Tifelt"
+      ]
+    },
+    {
+      "name": "Tanger-Tétouan-Al Hoceïma",
+      "slug": "tanger-tetouan-al-hoceima",
+      "count": 1670,
+      "cities": [
+        "Al Hoceima",
+        "Asilah",
+        "Boukhalef",
+        "Cabo Negro",
+        "Chefchaouen",
+        "Fahs-anjra-",
+        "Fnideq",
+        "Gueznaia",
+        "Ksar Sghir",
+        "Larache",
+        "M-diq-fnideq",
+        "M'Diq",
+        "Martil",
+        "Oued Laou",
+        "Ras el Ma",
+        "Tanger",
+        "Tétouan"
+      ]
+    },
+    {
+      "name": "Souss-Massa",
+      "slug": "souss-massa",
+      "count": 573,
+      "cities": [
+        "Agadir",
+        "Agadir Melloul",
+        "Ait Melloul",
+        "Aourir",
+        "Drargua",
+        "Inezgane-ait-melloul",
+        "Inzegan",
+        "Taghazout",
+        "Taroudannt",
+        "Tiznit",
+        "Tnine Aglou"
+      ]
+    },
+    {
+      "name": "Fès-Meknès",
+      "slug": "fes-meknes",
+      "count": 425,
+      "cities": [
+        "Ait Youssef Ou Ali",
+        "Azrou",
+        "El-hajeb",
+        "Fès",
+        "Ifrane",
+        "Meknes",
+        "Moulay-yacoub",
+        "Ouislane",
+        "Oulad Tayeb",
+        "Sefrou",
+        "Sidi Kacem",
+        "Taounate",
+        "Taza",
+        "Thar Es-Souk"
+      ]
+    },
+    {
+      "name": "Oriental",
+      "slug": "oriental",
+      "count": 115,
+      "cities": [
+        "Ain Beida",
+        "Azla",
+        "Berkane",
+        "Bni Ansar",
+        "Nador",
+        "Oujda",
+        "Oujda-angad",
+        "Saïdia",
+        "Selouane"
+      ]
+    },
+    {
+      "name": "Béni Mellal-Khénifra",
+      "slug": "beni-mellal-khenifra",
+      "count": 22,
+      "cities": [
+        "Azilal",
+        "Beni-mellal",
+        "Fquih-ben-salah",
+        "Khouribga"
+      ]
+    },
+    {
+      "name": "Guelmim-Oued Noun",
+      "slug": "guelmim-oued-noun",
+      "count": 9,
+      "cities": [
+        "Guelmim",
+        "Mirleft",
+        "Sidi-ifni",
+        "Tan-tan"
+      ]
+    },
+    {
+      "name": "Autres communes",
+      "slug": "autres-communes",
+      "count": 8,
+      "cities": [
+        "Béni Yakhlef",
+        "Dcheïra El Jihadia",
+        "Ouled Teïma"
+      ]
+    },
+    {
+      "name": "Laâyoune-Sakia El Hamra",
+      "slug": "laayoune-sakia-el-hamra",
+      "count": 6,
+      "cities": [
+        "Laäyoune"
+      ]
+    },
+    {
+      "name": "Drâa-Tafilalet",
+      "slug": "draa-tafilalet",
+      "count": 3,
+      "cities": [
+        "Ouarzazate"
+      ]
+    }
+  ]
+}
