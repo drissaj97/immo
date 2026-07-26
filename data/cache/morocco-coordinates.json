@@ -61,12 +61,6 @@
     },
     {
       "city": "Rabat",
-      "neighborhood": "rabat",
-      "latitude": 0,
-      "longitude": 0
-    },
-    {
-      "city": "Rabat",
       "neighborhood": "Rabat-Salé",
       "latitude": 34.0336969,
       "longitude": -6.7708138
@@ -89,11 +83,6 @@
       "longitude": -6.7
     },
     {
-      "city": "Sale",
-      "latitude": 0,
-      "longitude": 0
-    },
-    {
       "city": "Marrakech",
       "neighborhood": "Ben Saleh",
       "latitude": 31.6283458,
@@ -112,22 +101,10 @@
       "longitude": -2.320808
     },
     {
-      "city": "Sale",
-      "neighborhood": "La Marina Salé",
-      "latitude": 0,
-      "longitude": 0
-    },
-    {
       "city": "Fes",
       "neighborhood": "Rue Abessalem Serghini",
       "latitude": 34.058198,
       "longitude": -4.982165
-    },
-    {
-      "city": "Sale",
-      "neighborhood": "Salé",
-      "latitude": 0,
-      "longitude": 0
     },
     {
       "city": "Sale",
@@ -147,12 +124,6 @@
       "longitude": -8.008889
     },
     {
-      "city": "Marrakech",
-      "neighborhood": "Centre Ville Marrakech",
-      "latitude": 0,
-      "longitude": 0
-    },
-    {
       "city": "Mohammedia",
       "neighborhood": "Derb Marrakech",
       "latitude": 33.6871746,
@@ -169,12 +140,6 @@
       "neighborhood": "Marrakech Golf City",
       "latitude": 31.59876,
       "longitude": -8.004783
-    },
-    {
-      "city": "Agadir",
-      "neighborhood": "Route de Marrakech",
-      "latitude": 0,
-      "longitude": 0
     },
     {
       "city": "Essaouira",
@@ -210,12 +175,6 @@
       "neighborhood": "Quartier Tanger Al Majd",
       "latitude": 35.740921,
       "longitude": -5.79737
-    },
-    {
-      "city": "Tanger",
-      "neighborhood": "Tanger Free Zone",
-      "latitude": 0,
-      "longitude": 0
     },
     {
       "city": "Agadir",
@@ -271,12 +230,6 @@
     },
     {
       "city": "Fes",
-      "neighborhood": "Fès",
-      "latitude": 0,
-      "longitude": 0
-    },
-    {
-      "city": "Fes",
       "neighborhood": "Fès City Center",
       "latitude": 34.03362,
       "longitude": -5.011645
@@ -301,17 +254,6 @@
     },
     {
       "city": "Kenitra",
-      "latitude": 0,
-      "longitude": 0
-    },
-    {
-      "city": "Kenitra",
-      "neighborhood": "Kenitra",
-      "latitude": 0,
-      "longitude": 0
-    },
-    {
-      "city": "Kenitra",
       "neighborhood": "kénitra centre ville",
       "latitude": 34.2576021,
       "longitude": -6.5854521
@@ -328,27 +270,9 @@
       "longitude": -7.3848547
     },
     {
-      "city": "Mohammedia",
-      "neighborhood": "Mohammedia",
-      "latitude": 0,
-      "longitude": 0
-    },
-    {
       "city": "Temara",
       "latitude": 33.9278354,
       "longitude": -6.9051819
-    },
-    {
-      "city": "Rabat",
-      "neighborhood": "Temara",
-      "latitude": 0,
-      "longitude": 0
-    },
-    {
-      "city": "Temara",
-      "neighborhood": "Temara",
-      "latitude": 0,
-      "longitude": 0
     },
     {
       "city": "Temara",
@@ -379,12 +303,6 @@
       "longitude": -2.933333
     },
     {
-      "city": "Nador",
-      "neighborhood": "Nador El Jadid",
-      "latitude": 0,
-      "longitude": 0
-    },
-    {
       "city": "Ain Taoujdate",
       "latitude": 33.9401493,
       "longitude": -5.2269831
@@ -393,12 +311,6 @@
       "city": "Oujda",
       "latitude": 34.686667,
       "longitude": -1.911389
-    },
-    {
-      "city": "Ain Taoujdate",
-      "neighborhood": "Ain Taoujdate",
-      "latitude": 0,
-      "longitude": 0
     },
     {
       "city": "Meknes",
@@ -412,39 +324,15 @@
       "longitude": -7.3681047
     },
     {
-      "city": "Agadir",
-      "neighborhood": "Rue Meknes",
-      "latitude": 0,
-      "longitude": 0
-    },
-    {
       "city": "Essaouira",
       "latitude": 31.50840811867,
       "longitude": -9.75968956947
     },
     {
       "city": "Essaouira",
-      "neighborhood": "Alentours d'essaouira",
-      "latitude": 0,
-      "longitude": 0
-    },
-    {
-      "city": "Essaouira",
       "neighborhood": "Essaouira eljadida",
       "latitude": 31.5084926,
       "longitude": -9.7595041
-    },
-    {
-      "city": "Agadir",
-      "neighborhood": "Route d'Essaouira",
-      "latitude": 0,
-      "longitude": 0
-    },
-    {
-      "city": "Agadir",
-      "neighborhood": "Route d'Essaouira Bord du Mer",
-      "latitude": 0,
-      "longitude": 0
     },
     {
       "city": "Oujda",

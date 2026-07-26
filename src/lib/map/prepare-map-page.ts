@@ -1,5 +1,5 @@
 import type { ListingWithLocation } from "@/server/repositories/listings";
-import { prepareMapListings } from "@/lib/map/prepare-map-listings";
+import { prepareMapListings, type MapListingsOptions } from "@/lib/map/prepare-map-listings";
 import type { MapListingPoint } from "@/lib/map/listing-map-points";
 import { getNearbyPoisForListings } from "@/lib/map/nearby-pois";
 import type { MapPoiPoint } from "@/lib/map/map-poi-types";
@@ -19,8 +19,11 @@ function emptyPois(): MapPageData["nearbyPoisByKey"] {
 }
 
 /** Prépare données carte côté serveur (coords + POI optionnels, non-bloquants). */
-export async function prepareMapPageData(listings: ListingWithLocation[]): Promise<MapPageData> {
-  const points = prepareMapListings(listings);
+export async function prepareMapPageData(
+  listings: ListingWithLocation[],
+  options: MapListingsOptions = {},
+): Promise<MapPageData> {
+  const points = prepareMapListings(listings, options);
 
   let poisMap = new Map<string, Awaited<ReturnType<typeof getNearbyPoisForListings>> extends Map<string, infer V> ? V : never>();
 

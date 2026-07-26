@@ -9,24 +9,28 @@ type LocationRow = typeof locations.$inferSelect;
 
 function mapLocation(loc: LocationRow | null, listing: ListingRow): DemoLocation {
   if (loc) {
+    const latitude = Number(loc.latitude ?? listing.latitude);
+    const longitude = Number(loc.longitude ?? listing.longitude);
     return {
       id: loc.id,
       city: loc.city,
       neighborhood: loc.neighborhood ?? loc.district ?? loc.city,
       region: loc.region ?? "Maroc",
       slug: loc.slug,
-      latitude: Number(loc.latitude ?? listing.latitude ?? 0),
-      longitude: Number(loc.longitude ?? listing.longitude ?? 0),
+      latitude: Number.isFinite(latitude) ? latitude : 33.5,
+      longitude: Number.isFinite(longitude) ? longitude : -7.5,
     };
   }
+  const latitude = Number(listing.latitude);
+  const longitude = Number(listing.longitude);
   return {
     id: "unknown",
     city: "Maroc",
     neighborhood: "",
     region: "Maroc",
     slug: "maroc",
-    latitude: Number(listing.latitude ?? 0),
-    longitude: Number(listing.longitude ?? 0),
+    latitude: Number.isFinite(latitude) ? latitude : 33.5,
+    longitude: Number.isFinite(longitude) ? longitude : -7.5,
   };
 }
 
@@ -58,8 +62,14 @@ function mapListing(
     hasTitleDeed: listing.hasTitleDeed ?? undefined,
     isNew: listing.isNew ?? undefined,
     location: mapLocation(loc, listing),
-    latitude: Number(listing.latitude ?? loc?.latitude ?? 0),
-    longitude: Number(listing.longitude ?? loc?.longitude ?? 0),
+    latitude: (() => {
+      const n = Number(listing.latitude ?? loc?.latitude);
+      return Number.isFinite(n) ? n : 33.5;
+    })(),
+    longitude: (() => {
+      const n = Number(listing.longitude ?? loc?.longitude);
+      return Number.isFinite(n) ? n : -7.5;
+    })(),
     reference: listing.reference ?? listing.id.slice(0, 8),
     images,
     sourceType: listing.sourceType ?? "first_party",

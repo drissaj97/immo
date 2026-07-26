@@ -46,7 +46,10 @@ export default async function CartePage({
   const hasLocation = hasCompleteLocation(filters);
   const { items } = hasLocation ? await searchListings(filters) : { items: [] };
   const mapData = hasLocation
-    ? await prepareMapPageData(items)
+    ? await prepareMapPageData(items, {
+        searchCity: filters.city,
+        searchNeighborhood: filters.neighborhood,
+      })
     : { points: [], nearbyPoisByKey: {}, nearbyPois: [], mapCount: 0, listings: [] };
 
   const neighborhoodLabel =

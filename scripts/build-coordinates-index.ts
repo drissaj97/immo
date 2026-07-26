@@ -55,7 +55,10 @@ async function main() {
     for (const loc of locations) {
       const lat = Number(loc.coordinates_lat);
       const lng = Number(loc.coordinates_lon);
+      // Rejeter Null Island / hors Maroc (évite marqueurs en océan).
       if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
+      if (Math.abs(lat) < 0.05 && Math.abs(lng) < 0.05) continue;
+      if (lat < 20.5 || lat > 36.2 || lng < -17.5 || lng > -0.8) continue;
 
       const city = capitalizeCity(loc.url_city_slug ?? term);
       const neighborhood = loc.type === "DISTRICT" ? loc.name_primary : undefined;

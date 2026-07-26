@@ -61,7 +61,13 @@ export default async function BiensPage({
 
   const { items, total, totalPages } = searchResult;
   const featured = hasLocation ? [] : await getFeaturedListings(6);
-  const mapData = hasLocation && items.length > 0 ? await prepareMapPageData(items) : null;
+  const mapData =
+    hasLocation && items.length > 0
+      ? await prepareMapPageData(items, {
+          searchCity: baseFilters.city,
+          searchNeighborhood: baseFilters.neighborhood,
+        })
+      : null;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8">

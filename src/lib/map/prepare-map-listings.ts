@@ -1,13 +1,46 @@
 import "server-only";
 
 import type { ListingWithLocation } from "@/server/repositories/listings";
-import { isPlaceholderCoordinate, resolveListingCoordinates } from "@/lib/geography/resolve-coordinates";
+import {
+  distanceKm,
+  isPlaceholderCoordinate,
+  isValidMoroccoCoordinate,
+  resolveListingCoordinates,
+} from "@/lib/geography/resolve-coordinates";
 import type { MapListingPoint } from "@/lib/map/listing-map-points";
 
-/** Prépare les points carte côté serveur (coords + anti-collision). */
-export function prepareMapListings(listings: ListingWithLocation[]): MapListingPoint[] {
+export type MapListingsOptions = {
+  /** Ville recherchée — ancre le filtre géographique. */
+  searchCity?: string;
+  /** Quartier recherché — ancre le filtre géographique. */
+  searchNeighborhood?: string;
+  /** Rayon max autour de la zone recherchée (km). Défaut 18. */
+  maxDistanceKm?: number;
+};
+
+/** Prépare les points carte côté serveur (coords + anti-collision + zone recherche). */
+export function prepareMapListings(
+  listings: ListingWithLocation[],
+  options: MapListingsOptions = {},
+): MapListingPoint[] {
   const bucketCount = new Map<string, number>();
   const points: MapListingPoint[] = [];
+
+  const searchCity = options.searchCity?.trim();
+  const searchNeighborhood = options.searchNeighborhood?.trim();
+  const maxDistanceKm = options.maxDistanceKm ?? 18;
+
+  const searchAnchor =
+    searchCity
+      ? resolveListingCoordinates({
+          city: searchCity,
+          neighborhood: searchNeighborhood || undefined,
+        })
+      : null;
+  const hasSearchAnchor =
+    searchAnchor != null &&
+    searchAnchor.source !== "unknown" &&
+    isValidMoroccoCoordinate(searchAnchor.latitude, searchAnchor.longitude);
 
   for (const listing of listings) {
     const resolved = resolveListingCoordinates({
@@ -17,6 +50,15 @@ export function prepareMapListings(listings: ListingWithLocation[]): MapListingP
       longitude: listing.longitude,
     });
     if (resolved.source === "unknown") continue;
+    if (!isValidMoroccoCoordinate(resolved.latitude, resolved.longitude)) continue;
+
+    if (hasSearchAnchor) {
+      const km = distanceKm(
+        { lat: searchAnchor.latitude, lng: searchAnchor.longitude },
+        { lat: resolved.latitude, lng: resolved.longitude },
+      );
+      if (km > maxDistanceKm) continue;
+    }
 
     const bucketKey = `${resolved.latitude.toFixed(4)}|${resolved.longitude.toFixed(4)}`;
     const index = bucketCount.get(bucketKey) ?? 0;

@@ -21,6 +21,14 @@ type CoordinateEntry = {
 const PLACEHOLDER_LAT = 33.5;
 const PLACEHOLDER_LNG = -7.5;
 
+/** Emprise approximative du Maroc (métropole + Sahara) — hors Null Island / océan. */
+const MOROCCO_BOUNDS = {
+  minLat: 20.5,
+  maxLat: 36.2,
+  minLng: -17.5,
+  maxLng: -0.8,
+};
+
 const CITY_CENTROIDS: Record<string, { lat: number; lng: number }> = {
   casablanca: { lat: 33.5731, lng: -7.5898 },
   rabat: { lat: 34.0209, lng: -6.8416 },
@@ -52,11 +60,33 @@ const NEIGHBORHOOD_CENTROIDS: Record<string, { lat: number; lng: number }> = {
   "casablanca|anfa": { lat: 33.588, lng: -7.662 },
   "casablanca|californie": { lat: 33.546, lng: -7.64 },
   "rabat|hayriad": { lat: 33.956, lng: -6.87 },
-  "sale|salaeljadida": { lat: 34.002, lng: -6.733 },
+  "sale|salaeljadida": { lat: 34.045, lng: -6.812 },
   "marrakech|gueliz": { lat: 31.634, lng: -8.007 },
 };
 
 let lookupMap: Map<string, CoordinateEntry> | null = null;
+
+/** Coordonnées exploitables sur une carte Maroc (pas 0,0 / océan / NaN). */
+export function isValidMoroccoCoordinate(
+  lat?: number | null,
+  lng?: number | null,
+): boolean {
+  if (lat == null || lng == null) return false;
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return false;
+  if (Math.abs(lat) < 0.05 && Math.abs(lng) < 0.05) return false;
+  return (
+    lat >= MOROCCO_BOUNDS.minLat &&
+    lat <= MOROCCO_BOUNDS.maxLat &&
+    lng >= MOROCCO_BOUNDS.minLng &&
+    lng <= MOROCCO_BOUNDS.maxLng
+  );
+}
+
+export function isPlaceholderCoordinate(lat?: number, lng?: number): boolean {
+  if (lat == null || lng == null) return true;
+  if (!isValidMoroccoCoordinate(lat, lng)) return true;
+  return Math.abs(lat - PLACEHOLDER_LAT) < 0.001 && Math.abs(lng - PLACEHOLDER_LNG) < 0.001;
+}
 
 function loadEntries(): CoordinateEntry[] {
   const entries: CoordinateEntry[] = DEMO_LOCATIONS.map((loc) => ({
@@ -76,7 +106,7 @@ function loadEntries(): CoordinateEntry[] {
     }
   }
 
-  return entries;
+  return entries.filter((e) => isValidMoroccoCoordinate(e.latitude, e.longitude));
 }
 
 function buildLookup(): Map<string, CoordinateEntry> {
@@ -86,7 +116,11 @@ function buildLookup(): Map<string, CoordinateEntry> {
   for (const entry of loadEntries()) {
     const cityKey = normalizeLocationKey(entry.city);
     if (entry.neighborhood) {
-      lookupMap.set(`${cityKey}|${normalizeLocationKey(entry.neighborhood)}`, entry);
+      const hoodKey = `${cityKey}|${normalizeLocationKey(entry.neighborhood)}`;
+      // Ne pas écraser une entrée déjà valide (DEMO prioritaire sur cache).
+      if (!lookupMap.has(hoodKey)) {
+        lookupMap.set(hoodKey, entry);
+      }
     }
     if (!lookupMap.has(cityKey)) {
       lookupMap.set(cityKey, entry);
@@ -95,9 +129,20 @@ function buildLookup(): Map<string, CoordinateEntry> {
   return lookupMap;
 }
 
-export function isPlaceholderCoordinate(lat?: number, lng?: number): boolean {
-  if (lat == null || lng == null) return true;
-  return Math.abs(lat - PLACEHOLDER_LAT) < 0.001 && Math.abs(lng - PLACEHOLDER_LNG) < 0.001;
+/** Distance approximative en km (Haversine légère). */
+export function distanceKm(
+  a: { lat: number; lng: number },
+  b: { lat: number; lng: number },
+): number {
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(b.lat - a.lat);
+  const dLng = toRad(b.lng - a.lng);
+  const lat1 = toRad(a.lat);
+  const lat2 = toRad(b.lat);
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  return 6371 * 2 * Math.asin(Math.min(1, Math.sqrt(h)));
 }
 
 export function resolveListingCoordinates(input: {
@@ -106,22 +151,32 @@ export function resolveListingCoordinates(input: {
   latitude?: number;
   longitude?: number;
 }): ResolvedCoordinates {
-  if (!isPlaceholderCoordinate(input.latitude, input.longitude) && input.latitude != null && input.longitude != null) {
-    return { latitude: input.latitude, longitude: input.longitude, source: "exact" };
+  if (
+    isValidMoroccoCoordinate(input.latitude, input.longitude) &&
+    !isPlaceholderCoordinate(input.latitude, input.longitude)
+  ) {
+    return {
+      latitude: input.latitude as number,
+      longitude: input.longitude as number,
+      source: "exact",
+    };
   }
 
   const lookup = buildLookup();
   const cityKey = normalizeLocationKey(input.city);
   const hoodKey = input.neighborhood ? normalizeLocationKey(input.neighborhood) : "";
+  // Quartier générique = nom de ville → ignorer pour viser un vrai quartier / centroïde ville.
+  const genericHood = !hoodKey || hoodKey === cityKey;
 
-  if (hoodKey) {
+  if (hoodKey && !genericHood) {
     const exact = lookup.get(`${cityKey}|${hoodKey}`);
-    if (exact) {
+    if (exact && isValidMoroccoCoordinate(exact.latitude, exact.longitude)) {
       return { latitude: exact.latitude, longitude: exact.longitude, source: "neighborhood" };
     }
 
     for (const [key, entry] of lookup.entries()) {
       if (!key.startsWith(`${cityKey}|`)) continue;
+      if (!isValidMoroccoCoordinate(entry.latitude, entry.longitude)) continue;
       const entryHood = key.split("|")[1] ?? "";
       if (entryHood.includes(hoodKey) || hoodKey.includes(entryHood)) {
         return { latitude: entry.latitude, longitude: entry.longitude, source: "neighborhood" };
@@ -131,18 +186,18 @@ export function resolveListingCoordinates(input: {
     const hardHood =
       NEIGHBORHOOD_CENTROIDS[`${cityKey}|${hoodKey}`] ??
       NEIGHBORHOOD_CENTROIDS[`${cityKey.replace(/\s/g, "")}|${hoodKey.replace(/\s/g, "")}`];
-    if (hardHood) {
+    if (hardHood && isValidMoroccoCoordinate(hardHood.lat, hardHood.lng)) {
       return { latitude: hardHood.lat, longitude: hardHood.lng, source: "neighborhood" };
     }
   }
 
   const cityEntry = lookup.get(cityKey);
-  if (cityEntry) {
+  if (cityEntry && isValidMoroccoCoordinate(cityEntry.latitude, cityEntry.longitude)) {
     return { latitude: cityEntry.latitude, longitude: cityEntry.longitude, source: "city" };
   }
 
   const centroid = CITY_CENTROIDS[cityKey.replace(/\s/g, "")] ?? CITY_CENTROIDS[cityKey];
-  if (centroid) {
+  if (centroid && isValidMoroccoCoordinate(centroid.lat, centroid.lng)) {
     return { latitude: centroid.lat, longitude: centroid.lng, source: "city" };
   }
 
