@@ -85,12 +85,14 @@ export function normalizePartnerListing(
 
 function sourceDisplayName(source: AggregationSourceId): string {
   const names: Record<AggregationSourceId, string> = {
-    "darbladi": "DarBladi",
-    semsarai: "SEMSAR AI",
+    darbladi: "DarBladi",
+    semsarai: "Portail immobilier",
     "holding-immo": "Holding IMMO",
     avito: "Avito.ma",
     mubawab: "Mubawab.ma",
     sarouty: "Sarouty.ma",
+    agenz: "Agenz.ma",
+    yakeey: "Yakeey",
   };
   return names[source];
 }
@@ -116,7 +118,9 @@ function absoluteSourceUrl(
     const path = raw?.startsWith("/") ? raw : `/biens/${externalId}`;
     return `https://holdingimmo.com${path}`;
   }
-  return raw || `https://www.semsarai.ma`;
+  if (source === "agenz") return raw || `https://www.agenz.ma`;
+  if (source === "yakeey") return raw || `https://www.yakeey.com`;
+  return raw || "";
 }
 
 export function normalizeHoldingListing(listing: DemoListing): AggregatedListing {

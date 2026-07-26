@@ -5,7 +5,8 @@ const SOURCE_HOME: Record<string, string> = {
   mubawab: "https://www.mubawab.ma",
   avito: "https://www.avito.ma",
   sarouty: "https://www.sarouty.ma",
-  semsarai: "https://www.semsarai.ma",
+  agenz: "https://www.agenz.ma",
+  yakeey: "https://www.yakeey.com",
 };
 
 export function resolveExternalSourceUrl(listing: {

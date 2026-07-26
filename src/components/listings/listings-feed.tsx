@@ -24,7 +24,7 @@ export function ListingsFeed({
   totalPages,
   query,
   columns = "sm:grid-cols-2 xl:grid-cols-3",
-  revealSources = false,
+  revealSources = true,
 }: {
   locale: string;
   initialItems: ListingWithLocation[];

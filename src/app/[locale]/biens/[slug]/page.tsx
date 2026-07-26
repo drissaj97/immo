@@ -12,7 +12,6 @@ import { formatPrice } from "@/lib/utils";
 import { FavoriteButton } from "@/components/listings/favorite-button";
 import { ExternalListingBanner, SourceBadge } from "@/components/listings/source-badge";
 import { resolveExternalSourceUrl } from "@/lib/listings/external-source-url";
-import { canRevealPartnerSources } from "@/lib/auth/admin-access";
 import { InvestmentScoreCard } from "@/components/investment/investment-score-card";
 import { PriceHistoryChart } from "@/components/investment/price-history-chart";
 import { GenerateReportButton } from "@/components/investment/generate-report-button";
@@ -41,19 +40,15 @@ export async function generateMetadata({
 
 export default async function ListingDetailPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ locale: string; slug: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { locale, slug } = await params;
-  const sp = await searchParams;
   const listing = await getListingBySlug(slug);
   if (!listing) notFound();
 
-  const rawKey = sp.key;
-  const key = Array.isArray(rawKey) ? rawKey[0] : rawKey;
-  const revealSources = await canRevealPartnerSources(key);
+  // Source originale (Mubawab / Avito…) affichée publiquement — jamais Semsar AI
+  const revealSources = true;
   const score = getListingInvestmentScore(listing, { revealSources });
   const priceHistory = getPriceHistory(listing);
   const valuation = getListingValuation(listing);

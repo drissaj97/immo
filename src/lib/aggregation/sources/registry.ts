@@ -19,11 +19,28 @@ export const AGGREGATION_SOURCES: AggregationSourceConfig[] = [
   },
   {
     id: "semsarai",
-    name: "SEMSAR AI",
-    website: "https://www.semsarai.ma",
+    name: "Import catalogue (portails)",
+    website: "https://darbladi.ma",
+    licenseStatus: "licensed_api",
+    enabled: false,
+    description:
+      "Ancien pipeline d'import — les annonces sont attribuées à la source originale (Mubawab, Avito, Agenz…)",
+  },
+  {
+    id: "agenz",
+    name: "Agenz.ma",
+    website: "https://www.agenz.ma",
     licenseStatus: "licensed_api",
     enabled: true,
-    description: "Agrégateur semsarai.ma — import API publique (~73k annonces Maroc)",
+    description: "Annonces Agenz indexées via import catalogue (source originale)",
+  },
+  {
+    id: "yakeey",
+    name: "Yakeey",
+    website: "https://www.yakeey.com",
+    licenseStatus: "licensed_api",
+    enabled: true,
+    description: "Annonces Yakeey indexées via import catalogue (source originale)",
   },
   {
     id: "darbladi",

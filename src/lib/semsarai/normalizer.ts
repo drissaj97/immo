@@ -4,6 +4,7 @@ import type { SemsaraiProperty } from "./types";
 
 import { resolveMoroccoRegion } from "@/lib/geography/morocco-regions";
 import { resolveListingCoordinates } from "@/lib/geography/resolve-coordinates";
+import { resolveOriginalPortal } from "@/lib/listings/original-portal";
 
 function slugify(text: string): string {
   return text
@@ -15,7 +16,7 @@ function slugify(text: string): string {
     .slice(0, 72);
 }
 
-/** Slug compatible pages semsarai.ma/property/{slug} */
+/** Slug catalogue DarBladi (historique : préfixe semsar- pour stabilité des URLs). */
 export function semsaraiSlug(title: string, id: string): string {
   return `${slugify(title)}-${id.slice(-8)}`;
 }
@@ -42,7 +43,10 @@ export function semsaraiPropertyToListing(
   const city = p.cityName ?? "Maroc";
   const neighborhood = p.quartier ?? city;
   const region = resolveMoroccoRegion(city, city);
-  const siteLabel = p.site ? p.site.charAt(0).toUpperCase() + p.site.slice(1) : "Portail";
+  const portal = resolveOriginalPortal({
+    site: p.site,
+    sourceUrl: p.link,
+  });
   const coords = resolveListingCoordinates({ city, neighborhood });
 
   return {
@@ -76,10 +80,10 @@ export function semsaraiPropertyToListing(
     reference: p.id.slice(0, 12).toUpperCase(),
     images: images.length
       ? images
-      : ["https://www.semsarai.ma/default-property-image.jpg"],
+      : [],
     sourceType: "partner",
-    sourceName: `SEMSAR AI · ${siteLabel}`,
-    sourceUrl: p.link ?? `https://www.semsarai.ma/property/${slug}`,
+    sourceName: portal.displayName,
+    sourceUrl: p.link ?? undefined,
     externalId: p.id,
     completenessScore: 80,
     freshnessScore: 90,
@@ -89,10 +93,18 @@ export function semsaraiPropertyToListing(
   };
 }
 
+/** Attribue la source originale (Mubawab / Avito…) — jamais la marque Semsar AI. */
 export function normalizeSemsaraiListing(listing: DemoListing): AggregatedListing {
+  const portal = resolveOriginalPortal({
+    sourceName: listing.sourceName,
+    sourceUrl: listing.sourceUrl,
+  });
+
   return {
     ...listing,
-    aggregationSource: "semsarai",
+    sourceName: portal.displayName,
+    sourceUrl: listing.sourceUrl,
+    aggregationSource: portal.aggregationSource,
     isExternal: true,
     licenseStatus: "licensed_api",
   };

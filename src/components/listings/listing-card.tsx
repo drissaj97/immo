@@ -11,12 +11,12 @@ export function ListingCard({
   listing,
   locale,
   currency = "MAD",
-  revealSources = false,
+  revealSources = true,
 }: {
   listing: ListingWithLocation;
   locale: string;
   currency?: "MAD" | "EUR" | "USD";
-  /** Admin uniquement — affiche Avito/Mubawab/… */
+  /** Affiche la source originale (Mubawab, Avito…) — jamais Semsar AI */
   revealSources?: boolean;
 }) {
   const displayPrice =

@@ -11,7 +11,6 @@ import { getGeographySearchTree } from "@/lib/geography/index";
 import { prepareMapPageData } from "@/lib/map/prepare-map-page";
 import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-gate";
 import { LISTINGS_PAGE_SIZE } from "@/lib/search/page-size";
-import { canRevealPartnerSources } from "@/lib/auth/admin-access";
 
 export const revalidate = 60;
 
@@ -35,9 +34,8 @@ export default async function BiensPage({
   const { locale } = await params;
   const sp = await searchParams;
   const geography = getGeographySearchTree();
-  const rawKey = sp.key;
-  const key = Array.isArray(rawKey) ? rawKey[0] : rawKey;
-  const revealSources = await canRevealPartnerSources(key);
+  // Source originale (Mubawab / Avito…) — pas de marque Semsar AI
+  const revealSources = true;
 
   const baseFilters: SearchFilters = {
     transactionType: (sp.transactionType as SearchFilters["transactionType"]) ?? undefined,

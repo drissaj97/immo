@@ -7,7 +7,9 @@ export type AggregationSourceId =
   | "semsarai"
   | "avito"
   | "mubawab"
-  | "sarouty";
+  | "sarouty"
+  | "agenz"
+  | "yakeey";
 
 export type AggregationLicenseStatus =
   | "first_party"

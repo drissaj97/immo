@@ -1,5 +1,4 @@
 import { HOLDING_IMPORT_META } from "@/lib/data/holding-listings";
-import { SEMSARAI_IMPORT_META } from "@/lib/data/semsarai-meta";
 
 export type PartnerOrganization = {
   id: string;
@@ -49,17 +48,6 @@ export const PARTNER_ORGANIZATIONS: PartnerOrganization[] = [
     isVerified: true,
     listingCount: HOLDING_IMPORT_META.count,
     website: "https://holdingimmo.com",
-  },
-  {
-    id: "org-semsarai",
-    name: "SEMSAR AI",
-    slug: "semsar-ai",
-    type: "partner",
-    description: `Agrégateur semsarai.ma — ${SEMSARAI_IMPORT_META.apiTotalCount.toLocaleString("fr-MA")} annonces disponibles, ${SEMSARAI_IMPORT_META.count} indexées sur DarBladi.`,
-    city: "Maroc",
-    isVerified: true,
-    listingCount: SEMSARAI_IMPORT_META.count,
-    website: "https://www.semsarai.ma",
   },
 ];
 

@@ -24,7 +24,8 @@ describe("semsarai normalizer", () => {
     });
     expect(listing.isDemo).toBe(false);
     expect(listing.slug.startsWith("semsar-")).toBe(true);
-    expect(listing.sourceName).toContain("SEMSAR AI");
+    expect(listing.sourceName).toBe("Mubawab.ma");
+    expect(listing.sourceName).not.toMatch(/SEMSAR/i);
     expect(listing.images[0]).toContain("mubawab-media");
   });
 });
