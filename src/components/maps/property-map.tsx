@@ -65,6 +65,12 @@ export function PropertyMap({
   useEffect(() => {
     if (!mapContainer.current || mapRef.current) return;
 
+    let map: L.Map | null = null;
+    let onWheel: ((event: WheelEvent) => void) | null = null;
+    let onLeave: (() => void) | null = null;
+    let engageMap: (() => void) | null = null;
+    let releaseMap: (() => void) | null = null;
+
     try {
       const initial = center ?? computeCenter(points) ?? ([-7.62, 33.57] as [number, number]);
       const touch =
@@ -73,12 +79,11 @@ export function PropertyMap({
 
       // Leaflet uses [lat, lng]
       // scrollWheelZoom off par défaut → le scroll page n'est pas capturé en passant sur la carte
-      const map = L.map(mapContainer.current, {
+      map = L.map(mapContainer.current, {
         center: [initial[1], initial[0]],
         zoom: points.length ? Math.max(zoom, 12) : 6,
         scrollWheelZoom: false,
         dragging: !touch,
-        tapHold: false,
       });
 
       L.tileLayer(OSM_TILES, {
@@ -86,27 +91,28 @@ export function PropertyMap({
         maxZoom: 19,
       }).addTo(map);
 
-      const engageMap = () => {
-        map.scrollWheelZoom.enable();
-        if (touch) map.dragging.enable();
+      engageMap = () => {
+        map?.scrollWheelZoom.enable();
+        if (touch) map?.dragging.enable();
         setMapEngaged(true);
       };
-      const releaseMap = () => {
-        map.scrollWheelZoom.disable();
-        if (touch) map.dragging.disable();
+      releaseMap = () => {
+        map?.scrollWheelZoom.disable();
+        if (touch) map?.dragging.disable();
         setMapEngaged(false);
       };
 
-      // Clic / focus → activer zoom molette & pan tactile
+      // Clic → activer zoom molette & pan tactile
       map.on("click", engageMap);
-      map.on("focus", engageMap);
-      map.on("mouseout", releaseMap);
-      map.on("blur", releaseMap);
 
-      // Ctrl / ⌘ + molette : zoom sans clic préalable (comportement « Google Maps »)
-      const onWheel = (event: WheelEvent) => {
+      // Quitter la carte → redonner le scroll à la page
+      onLeave = () => releaseMap?.();
+      map.getContainer().addEventListener("mouseleave", onLeave);
+
+      // Ctrl / ⌘ + molette : zoom sans clic préalable
+      onWheel = (event: WheelEvent) => {
         if (!(event.ctrlKey || event.metaKey)) return;
-        if (!map.scrollWheelZoom.enabled()) {
+        if (map && !map.scrollWheelZoom.enabled()) {
           map.scrollWheelZoom.enable();
           setMapEngaged(true);
         }
@@ -118,28 +124,20 @@ export function PropertyMap({
       setReady(true);
 
       // corrige tuiles grises si conteneur était hidden au mount
-      requestAnimationFrame(() => map.invalidateSize());
-      setTimeout(() => map.invalidateSize(), 200);
-
-      return () => {
-        map.getContainer().removeEventListener("wheel", onWheel);
-        map.off("click", engageMap);
-        map.off("focus", engageMap);
-        map.off("mouseout", releaseMap);
-        map.off("blur", releaseMap);
-        map.remove();
-        mapRef.current = null;
-        layerRef.current = null;
-        setReady(false);
-        setMapEngaged(false);
-      };
+      requestAnimationFrame(() => map?.invalidateSize());
+      setTimeout(() => map?.invalidateSize(), 200);
     } catch (err) {
       console.warn("[map] init failed", err);
       setError("Impossible de charger la carte");
     }
 
     return () => {
-      mapRef.current?.remove();
+      if (map) {
+        if (onWheel) map.getContainer().removeEventListener("wheel", onWheel);
+        if (onLeave) map.getContainer().removeEventListener("mouseleave", onLeave);
+        if (engageMap) map.off("click", engageMap);
+        map.remove();
+      }
       mapRef.current = null;
       layerRef.current = null;
       setReady(false);

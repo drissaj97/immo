@@ -46,6 +46,17 @@ body {
   background: var(--sand);
 }
 
+/* Scroll page prioritaire tant que la carte n'est pas engagée */
+.map-scroll-safe.leaflet-container {
+  cursor: grab;
+}
+.map-engaged.leaflet-container {
+  cursor: grab;
+}
+.map-engaged.leaflet-container:active {
+  cursor: grabbing;
+}
+
 .leaflet-div-icon {
   background: transparent;
   border: none;
