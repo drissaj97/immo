@@ -12,6 +12,7 @@ import { formatPrice } from "@/lib/utils";
 import { FavoriteButton } from "@/components/listings/favorite-button";
 import { ExternalListingBanner, SourceBadge } from "@/components/listings/source-badge";
 import { resolveExternalSourceUrl } from "@/lib/listings/external-source-url";
+import { canRevealPartnerSources } from "@/lib/auth/admin-access";
 import { InvestmentScoreCard } from "@/components/investment/investment-score-card";
 import { PriceHistoryChart } from "@/components/investment/price-history-chart";
 import { GenerateReportButton } from "@/components/investment/generate-report-button";
@@ -40,14 +41,20 @@ export async function generateMetadata({
 
 export default async function ListingDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string; slug: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { locale, slug } = await params;
+  const sp = await searchParams;
   const listing = await getListingBySlug(slug);
   if (!listing) notFound();
 
-  const score = getListingInvestmentScore(listing);
+  const rawKey = sp.key;
+  const key = Array.isArray(rawKey) ? rawKey[0] : rawKey;
+  const revealSources = await canRevealPartnerSources(key);
+  const score = getListingInvestmentScore(listing, { revealSources });
   const priceHistory = getPriceHistory(listing);
   const valuation = getListingValuation(listing);
   const mapData = await prepareMapPageData([listing]);
@@ -79,9 +86,9 @@ export default async function ListingDetailPage({
               )}
               {listing.isDemo && !listing.isExternal && <Badge variant="demo">Donnée démo</Badge>}
               {listing.isVerified && <Badge variant="verified">Vérifiée</Badge>}
-              <SourceBadge listing={listing} />
+              {revealSources && <SourceBadge listing={listing} />}
             </div>
-            <ExternalListingBanner listing={listing} />
+            {revealSources && <ExternalListingBanner listing={listing} />}
             <h1 className="mt-4 font-serif text-3xl">{listing.title}</h1>
             <p className="mt-2 flex items-center gap-1 text-charcoal/60">
               <MapPin className="h-4 w-4" />
@@ -162,29 +169,38 @@ export default async function ListingDetailPage({
             <div className="rounded-lg border border-charcoal/10 p-4">
               <h3 className="font-medium flex items-center gap-2"><Shield className="h-4 w-4" /> Provenance</h3>
               <dl className="mt-3 space-y-2 text-sm">
-                <div><dt className="text-charcoal/50">Source</dt><dd>{listing.sourceName}</dd></div>
-                {(() => {
-                  const sourceHref = resolveExternalSourceUrl(listing);
-                  if (!sourceHref) return null;
-                  return (
-                    <div>
-                      <dt className="text-charcoal/50">Lien original</dt>
-                      <dd>
-                        <a
-                          href={sourceHref}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-deep-green hover:underline"
-                        >
-                          Voir l&apos;annonce source →
-                        </a>
-                      </dd>
-                    </div>
-                  );
-                })()}
-                <div><dt className="text-charcoal/50">Type</dt><dd>{listing.sourceType}</dd></div>
-                <div><dt className="text-charcoal/50">Complétude</dt><dd>{listing.completenessScore} %</dd></div>
-                <div><dt className="text-charcoal/50">Fraîcheur</dt><dd>{listing.freshnessScore} %</dd></div>
+                {revealSources ? (
+                  <>
+                    <div><dt className="text-charcoal/50">Source</dt><dd>{listing.sourceName}</dd></div>
+                    {(() => {
+                      const sourceHref = resolveExternalSourceUrl(listing);
+                      if (!sourceHref) return null;
+                      return (
+                        <div>
+                          <dt className="text-charcoal/50">Lien original</dt>
+                          <dd>
+                            <a
+                              href={sourceHref}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-deep-green hover:underline"
+                            >
+                              Voir l&apos;annonce source →
+                            </a>
+                          </dd>
+                        </div>
+                      );
+                    })()}
+                    <div><dt className="text-charcoal/50">Type</dt><dd>{listing.sourceType}</dd></div>
+                    <div><dt className="text-charcoal/50">Complétude</dt><dd>{listing.completenessScore} %</dd></div>
+                    <div><dt className="text-charcoal/50">Fraîcheur</dt><dd>{listing.freshnessScore} %</dd></div>
+                  </>
+                ) : (
+                  <div>
+                    <dt className="text-charcoal/50">Publication</dt>
+                    <dd>DarBladi</dd>
+                  </div>
+                )}
                 <div className="flex items-center gap-1"><Clock className="h-3 w-3" /><dd>Réf. {listing.reference}</dd></div>
               </dl>
             </div>

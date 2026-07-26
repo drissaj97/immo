@@ -33,7 +33,14 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
           </div>
         ))}
       </div>
-      <Link href={`/${locale}/dashboard`} className="mt-8 inline-block text-sm text-deep-green hover:underline">← Dashboard</Link>
+      <div className="mt-8 flex flex-wrap gap-4 text-sm">
+        <Link href={`/${locale}/agregateur`} className="text-deep-green hover:underline">
+          Sources partenaires →
+        </Link>
+        <Link href={`/${locale}/dashboard`} className="text-deep-green hover:underline">
+          ← Dashboard
+        </Link>
+      </div>
     </div>
   );
 }

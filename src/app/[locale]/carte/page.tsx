@@ -54,10 +54,6 @@ export default async function CartePage({
       ? `${filters.neighborhood}, ${filters.city}`
       : undefined;
 
-  const scrapedCount = items.filter((l) =>
-    ["avito", "mubawab", "sarouty"].includes(l.aggregationSource ?? ""),
-  ).length;
-
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
       <h1 className="font-serif text-3xl">Carte des biens</h1>
@@ -66,7 +62,6 @@ export default async function CartePage({
           <>
             {mapData.mapCount} bien{mapData.mapCount > 1 ? "s" : ""} sur la carte
             {filters.neighborhood && ` · ${filters.neighborhood}, ${filters.city}`}
-            {scrapedCount > 0 && ` · ${scrapedCount} annonce(s) scrapée(s)`}
           </>
         ) : (
           locationGateMessage()

@@ -24,7 +24,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/professionnels",
     "/promoteurs",
     "/contact",
-    "/developpeurs",
     "/conformite",
   ];
 
@@ -82,7 +81,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }
     }
 
-    for (const org of PARTNER_ORGANIZATIONS) {
+    // Pages partenaires agrégés (SEMSAR AI, etc.) hors sitemap public
+    for (const org of PARTNER_ORGANIZATIONS.filter((o) => o.type === "agency" || o.type === "developer")) {
       const base = org.type === "developer" ? "promoteurs" : "professionnels";
       entries.push({
         url: `${baseUrl}/${locale}/${base}/${org.slug}`,

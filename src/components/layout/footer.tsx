@@ -1,5 +1,6 @@
 import type { Messages } from "@/lib/i18n/config";
 import { defaultCatalogHref } from "@/lib/search/popular-searches";
+import { canAccessAdminTools } from "@/lib/auth/admin-access";
 
 export function DemoBanner({ message }: { message: string }) {
   if (process.env.DEMO_MODE === "false") return null;
@@ -10,8 +11,10 @@ export function DemoBanner({ message }: { message: string }) {
   );
 }
 
-export function Footer({ messages, locale }: { messages: Messages; locale: string }) {
+export async function Footer({ messages, locale }: { messages: Messages; locale: string }) {
   const prefix = `/${locale}`;
+  const admin = await canAccessAdminTools();
+
   return (
     <footer className="mt-auto border-t border-charcoal/10 bg-charcoal text-ivory/90">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 md:grid-cols-4 lg:px-8">
@@ -25,8 +28,14 @@ export function Footer({ messages, locale }: { messages: Messages; locale: strin
             <li><a href={`${prefix}/acheter`} className="hover:text-bronze">{messages.nav.buy}</a></li>
             <li><a href={`${prefix}/investir`} className="hover:text-bronze">{messages.nav.invest}</a></li>
             <li><a href={defaultCatalogHref(locale)} className="hover:text-bronze">Catalogue</a></li>
-            <li><a href={`${prefix}/agregateur`} className="hover:text-bronze">Agrégateur Maroc</a></li>
             <li><a href={`${prefix}/darbladi`} className="hover:text-bronze">{messages.nav.ai}</a></li>
+            {admin.ok && (
+              <li>
+                <a href={`${prefix}/agregateur`} className="hover:text-bronze">
+                  Sources (admin)
+                </a>
+              </li>
+            )}
           </ul>
         </div>
         <div>
@@ -36,13 +45,12 @@ export function Footer({ messages, locale }: { messages: Messages; locale: strin
             <li><a href={`${prefix}/confidentialite`} className="hover:text-bronze">Confidentialité</a></li>
             <li><a href={`${prefix}/conformite`} className="hover:text-bronze">Conformité CNDP</a></li>
             <li><a href={`${prefix}/conditions`} className="hover:text-bronze">Conditions</a></li>
-            <li><a href={`${prefix}/developpeurs`} className="hover:text-bronze">API partenaires</a></li>
           </ul>
         </div>
         <div>
           <p className="mb-3 text-sm font-medium uppercase tracking-wider text-ivory/50">Contact</p>
           <p className="text-sm text-ivory/70">contact@darbladi.demo</p>
-          <p className="mt-2 text-xs text-ivory/50">DarBladi — agrégateur immobilier Maroc</p>
+          <p className="mt-2 text-xs text-ivory/50">DarBladi — immobilier au Maroc</p>
         </div>
       </div>
     </footer>

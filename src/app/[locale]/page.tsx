@@ -50,8 +50,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             Toutes les annonces immobilières du Maroc, en un seul endroit.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-ivory/85">
-            DarBladi agrège les biens de semsarai.ma, Holding IMMO et partenaires agréés — recherche,
-            investissement et assistant intelligent.
+            Recherchez, comparez et investissez dans l&apos;immobilier marocain — données fiables et
+            assistant intelligent DarBladi.
           </p>
           <div className="mt-10 text-left">
             <PropertySearch locale={locale} variant="hero" geography={geography} requireLocation />
@@ -80,7 +80,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <div>
             <h2 className="font-serif text-3xl text-charcoal">Annonces immobilières au Maroc</h2>
             <p className="mt-2 text-charcoal/60">
-              Biens indexés depuis semsarai.ma, Holding IMMO et partenaires agréés
+              Sélection d&apos;annonces immobilières au Maroc
             </p>
           </div>
           <Link href={defaultCatalogHref(locale)} className="text-sm text-deep-green hover:underline">

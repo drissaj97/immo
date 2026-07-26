@@ -11,10 +11,13 @@ export function ListingCard({
   listing,
   locale,
   currency = "MAD",
+  revealSources = false,
 }: {
   listing: ListingWithLocation;
   locale: string;
   currency?: "MAD" | "EUR" | "USD";
+  /** Admin uniquement — affiche Avito/Mubawab/… */
+  revealSources?: boolean;
 }) {
   const displayPrice =
     currency === listing.currency
@@ -47,7 +50,7 @@ export function ListingCard({
         <div className="absolute left-3 top-3 z-10 flex flex-wrap gap-2">
           <Badge>{transactionLabel}</Badge>
           {listing.isVerified && <Badge variant="verified">Vérifié</Badge>}
-          <SourceBadge listing={listing} />
+          {revealSources && <SourceBadge listing={listing} />}
         </div>
       </div>
       <div className="p-4">
@@ -79,7 +82,7 @@ export function ListingCard({
         </div>
         <p className="mt-2 text-xs text-charcoal/40">
           Réf. {listing.reference}
-          {listing.sourceName && ` · ${listing.sourceName}`}
+          {revealSources && listing.sourceName ? ` · ${listing.sourceName}` : ""}
         </p>
       </div>
     </Link>

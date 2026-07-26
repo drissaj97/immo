@@ -11,6 +11,7 @@ import { getGeographySearchTree } from "@/lib/geography/index";
 import { prepareMapPageData } from "@/lib/map/prepare-map-page";
 import { hasCompleteLocation, locationGateMessage } from "@/lib/search/location-gate";
 import { LISTINGS_PAGE_SIZE } from "@/lib/search/page-size";
+import { canRevealPartnerSources } from "@/lib/auth/admin-access";
 
 export const revalidate = 60;
 
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   return buildMetadata({
     title: "Biens immobiliers",
-    description: "Parcourez toutes les annonces immobilières agrégées au Maroc — vente et location.",
+    description: "Parcourez toutes les annonces immobilières au Maroc — vente et location.",
     path: "/biens",
     locale,
   });
@@ -34,6 +35,9 @@ export default async function BiensPage({
   const { locale } = await params;
   const sp = await searchParams;
   const geography = getGeographySearchTree();
+  const rawKey = sp.key;
+  const key = Array.isArray(rawKey) ? rawKey[0] : rawKey;
+  const revealSources = await canRevealPartnerSources(key);
 
   const baseFilters: SearchFilters = {
     transactionType: (sp.transactionType as SearchFilters["transactionType"]) ?? undefined,
@@ -76,10 +80,14 @@ export default async function BiensPage({
           ) : (
             <>Sélectionnez une région, une ville et un quartier pour afficher les annonces</>
           )}
-          {" · "}
-          <Link href={`/${locale}/agregateur`} className="text-deep-green hover:underline">
-            Sources agrégées
-          </Link>
+          {revealSources && (
+            <>
+              {" · "}
+              <Link href={`/${locale}/agregateur`} className="text-deep-green hover:underline">
+                Sources (admin)
+              </Link>
+            </>
+          )}
         </p>
       </div>
 
@@ -125,6 +133,7 @@ export default async function BiensPage({
             initialItems={items}
             total={total}
             totalPages={totalPages}
+            revealSources={revealSources}
             query={{
               region: baseFilters.region,
               city: baseFilters.city,

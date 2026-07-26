@@ -3,13 +3,13 @@ import { getAggregationStats } from "@/lib/aggregation/sync";
 import { AGGREGATION_SOURCES } from "@/lib/aggregation/sources/registry";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { Badge } from "@/components/ui/badge";
+import { requireAdminPage } from "@/lib/auth/require-admin-page";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return buildMetadata({
-    title: "Agrégateur immobilier — Toutes les annonces du Maroc",
-    description:
-      "DarBladi agrège les annonces immobilières du Maroc depuis des sources autorisées : agences partenaires, Avito, Mubawab.",
+    title: "Admin — Sources partenaires",
+    description: "Tableau de bord privé des sources agrégées (accès admin uniquement).",
     path: "/agregateur",
     locale,
   });
@@ -19,20 +19,32 @@ const STATUS_LABELS: Record<string, string> = {
   first_party: "First-party",
   partner_contract: "Contrat partenaire",
   licensed_api: "API licenciée",
+  scraped: "Scrapé",
   pending: "Partenariat requis",
   disabled: "Désactivé",
 };
 
-export default async function AgregateurPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function AgregateurPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { locale } = await params;
+  const sp = await searchParams;
+  await requireAdminPage(locale, sp, { nextPath: `/${locale}/agregateur` });
+
   const stats = await getAggregationStats();
+  const key = Array.isArray(sp.key) ? sp.key[0] : sp.key;
+  const keyQuery = key ? `?key=${encodeURIComponent(key)}` : "";
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 lg:px-8">
-      <h1 className="font-serif text-4xl">Toutes les annonces du Maroc</h1>
+      <p className="mb-2 text-xs font-medium uppercase tracking-wide text-bronze">Espace admin</p>
+      <h1 className="font-serif text-4xl">Sources partenaires</h1>
       <p className="mt-4 text-lg text-charcoal/70">
-        DarBladi agrège les biens immobiliers depuis plusieurs sources — avec provenance explicite et liens vers
-        l&apos;annonce originale.
+        Page privée — les visiteurs ne voient pas les marques partenaires sur le site public.
       </p>
 
       <section className="mt-10 grid gap-4 sm:grid-cols-3">
@@ -51,7 +63,7 @@ export default async function AgregateurPage({ params }: { params: Promise<{ loc
       </section>
 
       <section className="mt-12">
-        <h2 className="font-serif text-2xl">Sources agrégées</h2>
+        <h2 className="font-serif text-2xl">Détail des sources</h2>
         <ul className="mt-6 space-y-4">
           {AGGREGATION_SOURCES.map((source) => {
             const count = stats.bySource[source.id] ?? 0;
@@ -64,7 +76,7 @@ export default async function AgregateurPage({ params }: { params: Promise<{ loc
                   <div className="flex items-center gap-2">
                     <h3 className="font-medium">{source.name}</h3>
                     <Badge variant={source.enabled && count > 0 ? "verified" : "demo"}>
-                      {STATUS_LABELS[source.licenseStatus]}
+                      {STATUS_LABELS[source.licenseStatus] ?? source.licenseStatus}
                     </Badge>
                   </div>
                   <p className="mt-1 text-sm text-charcoal/60">{source.description}</p>
@@ -80,14 +92,6 @@ export default async function AgregateurPage({ params }: { params: Promise<{ loc
                 <div className="text-right">
                   <p className="text-2xl font-bold text-deep-green">{count}</p>
                   <p className="text-xs text-charcoal/50">annonces</p>
-                  {count > 0 && (
-                    <Link
-                      href={`/${locale}/biens?source=${source.id}`}
-                      className="mt-2 inline-block text-sm text-deep-green hover:underline"
-                    >
-                      Parcourir →
-                    </Link>
-                  )}
                 </div>
               </li>
             );
@@ -95,35 +99,15 @@ export default async function AgregateurPage({ params }: { params: Promise<{ loc
         </ul>
       </section>
 
-      <section className="mt-12 rounded-lg border border-amber-200 bg-amber-50/60 p-6">
-        <h2 className="font-serif text-xl">Activer Avito & Mubawab</h2>
-        <p className="mt-3 text-sm text-charcoal/80">
-          Le scraping direct est interdit par les CGU. Pour agréger <strong>toutes</strong> les annonces Avito et
-          Mubawab, trois voies conformes :
-        </p>
-        <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm text-charcoal/80">
-          <li>
-            <strong>Partenariat officiel</strong> — contact commercial Avito / Dubizzle Group (Mubawab)
-          </li>
-          <li>
-            <strong>PropAPIS</strong> — agrégateur licencié (<code>PROPAPIS_API_KEY</code>)
-          </li>
-          <li>
-            <strong>Flux JSON partenaire</strong> — déposer <code>data/feeds/avito.json</code> ou{" "}
-            <code>mubawab.json</code>
-          </li>
-        </ol>
-        <p className="mt-4 text-sm">
-          Documentation :{" "}
-          <Link href={`/${locale}/developpeurs`} className="text-deep-green hover:underline">
-            API développeurs
-          </Link>
-        </p>
-      </section>
-
-      <div className="mt-8">
-        <Link href={`/${locale}/biens`} className="text-deep-green hover:underline">
-          ← Parcourir le catalogue agrégé
+      <div className="mt-8 flex flex-wrap gap-4">
+        <Link href={`/${locale}/admin${keyQuery}`} className="text-deep-green hover:underline">
+          ← Administration
+        </Link>
+        <Link
+          href={`/${locale}/biens?region=Casablanca-Settat&city=Bouskoura&neighborhood=Victoria&transactionType=sale`}
+          className="text-deep-green hover:underline"
+        >
+          Voir le catalogue public →
         </Link>
       </div>
     </div>

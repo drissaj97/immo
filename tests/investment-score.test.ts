@@ -27,4 +27,23 @@ describe("investment score", () => {
     );
     expect(score.overall).toBe(manual);
   });
+
+  it("ne révèle pas le nom de source partenaire au public", () => {
+    const partnerListing = {
+      ...listing,
+      sourceName: "Mubawab.ma",
+      isVerified: false,
+    };
+    const publicScore = calculateInvestmentScore(partnerListing, null);
+    const cred = publicScore.dimensions.find((d) => d.key === "seller_credibility");
+    expect(cred?.value).toBe("Annonceur");
+    expect(String(cred?.value)).not.toMatch(/Mubawab|Avito|Sarouty/i);
+
+    const adminScore = calculateInvestmentScore(partnerListing, null, undefined, {
+      revealSources: true,
+    });
+    expect(adminScore.dimensions.find((d) => d.key === "seller_credibility")?.value).toBe(
+      "Mubawab.ma",
+    );
+  });
 });

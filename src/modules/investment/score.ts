@@ -69,11 +69,18 @@ function scorePriceVsMarket(pricePerSqm: number, marketAvg: number): number {
   return 25;
 }
 
+export type InvestmentScoreOptions = {
+  /** Admin uniquement — expose le nom de source partenaire dans la dimension crédibilité. */
+  revealSources?: boolean;
+};
+
 export function calculateInvestmentScore(
   listing: DemoListing,
   market?: MarketMetric | null,
   inputs?: Partial<InvestmentInputs>,
+  options?: InvestmentScoreOptions,
 ): InvestmentScore {
+  const revealSources = options?.revealSources === true;
   const missingData: string[] = [];
   const annualRent =
     inputs?.annualRent ??
@@ -168,7 +175,11 @@ export function calculateInvestmentScore(
       score: listing.isVerified ? 90 : 55,
       maxScore: 100,
       weight: 0.07,
-      value: listing.sourceName,
+      value: revealSources
+        ? listing.sourceName
+        : listing.isVerified
+          ? "Annonceur vérifié"
+          : "Annonceur",
       explanation: listing.isVerified ? "Professionnel / annonce vérifiée" : "Vérification en attente",
     },
     {

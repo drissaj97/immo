@@ -48,7 +48,7 @@ export async function toolGetListing(id: string, _ctx: ToolContext): Promise<Con
   if (!listing) return null;
   return {
     tool: "getListing",
-    source: listing.sourceName,
+    source: "DarBladi",
     data: {
       id: listing.id,
       title: listing.title,

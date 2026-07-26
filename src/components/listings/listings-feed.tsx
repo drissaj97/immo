@@ -24,6 +24,7 @@ export function ListingsFeed({
   totalPages,
   query,
   columns = "sm:grid-cols-2 xl:grid-cols-3",
+  revealSources = false,
 }: {
   locale: string;
   initialItems: ListingWithLocation[];
@@ -31,6 +32,7 @@ export function ListingsFeed({
   totalPages: number;
   query: SearchQuery;
   columns?: string;
+  revealSources?: boolean;
 }) {
   const [items, setItems] = useState(initialItems);
   const [page, setPage] = useState(1);
@@ -100,7 +102,12 @@ export function ListingsFeed({
     <div>
       <div className={`grid gap-6 ${columns}`}>
         {items.map((listing) => (
-          <ListingCard key={listing.id} listing={listing} locale={locale} />
+          <ListingCard
+            key={listing.id}
+            listing={listing}
+            locale={locale}
+            revealSources={revealSources}
+          />
         ))}
       </div>
 

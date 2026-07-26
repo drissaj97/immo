@@ -2,33 +2,45 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { getAgencies } from "@/lib/data/marketplace-data";
-import { getAggregationStats } from "@/lib/aggregation/sync";
+import { canAccessAdminTools } from "@/lib/auth/admin-access";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return buildMetadata({
     title: "Professionnels immobiliers",
-    description: "Agences et partenaires indexés sur DarBladi — annonces réelles au Maroc.",
+    description: "Agences immobilières sur DarBladi — annonces au Maroc.",
     path: "/professionnels",
     locale,
   });
 }
 
-export default async function ProfessionnelsPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function ProfessionnelsPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { locale } = await params;
-  const agencies = getAgencies();
-  const stats = await getAggregationStats();
+  const sp = await searchParams;
+  const rawKey = sp.key;
+  const key = Array.isArray(rawKey) ? rawKey[0] : rawKey;
+  const admin = await canAccessAdminTools({ key });
+
+  // Public : agences first-party uniquement. Partenaires agrégés = admin.
+  const agencies = getAgencies().filter((org) =>
+    admin.ok ? true : org.type === "agency",
+  );
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
       <h1 className="font-serif text-3xl">Professionnels immobiliers</h1>
       <p className="mt-2 max-w-2xl text-charcoal/70">
-        Partenaires et sources agrégées sur DarBladi — {stats.published.toLocaleString("fr-MA")} annonces
-        réelles indexées au Maroc.
+        Agences présentes sur DarBladi — annonces immobilières au Maroc.
       </p>
 
       <section className="mt-10">
-        <h2 className="font-serif text-xl">Sources partenaires</h2>
+        <h2 className="font-serif text-xl">Agences</h2>
         <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {agencies.map((org) => (
             <Link
@@ -48,16 +60,23 @@ export default async function ProfessionnelsPage({ params }: { params: Promise<{
         </div>
       </section>
 
-      <section className="mt-12 rounded-lg border border-charcoal/10 bg-sand/30 p-6">
-        <h2 className="font-serif text-xl">Rejoindre l&apos;agrégateur</h2>
-        <p className="mt-2 text-sm text-charcoal/70">
-          Agences, promoteurs et portails partenaires : publiez votre flux via l&apos;API DarBladi ou un contrat
-          partenaire Avito / Mubawab.
-        </p>
-        <Link href={`/${locale}/developpeurs`} className="mt-4 inline-block text-sm text-deep-green hover:underline">
-          Documentation API partenaires →
-        </Link>
-      </section>
+      {admin.ok && (
+        <section className="mt-12 rounded-lg border border-charcoal/10 bg-sand/30 p-6">
+          <h2 className="font-serif text-xl">Espace admin</h2>
+          <p className="mt-2 text-sm text-charcoal/70">
+            Sources partenaires et documentation API — visibles uniquement avec un compte admin ou{" "}
+            <code className="rounded bg-sand px-1">ADMIN_KEY</code>.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-4 text-sm">
+            <Link href={`/${locale}/agregateur`} className="text-deep-green hover:underline">
+              Sources partenaires →
+            </Link>
+            <Link href={`/${locale}/developpeurs`} className="text-deep-green hover:underline">
+              Documentation API →
+            </Link>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

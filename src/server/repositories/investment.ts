@@ -27,13 +27,16 @@ export function getPriceHistory(listing: DemoListing): PriceHistoryPoint[] {
   return getDefaultPriceHistory(listing.reference, listing.price);
 }
 
-export function getListingInvestmentScore(listing: DemoListing): InvestmentScore {
+export function getListingInvestmentScore(
+  listing: DemoListing,
+  options?: { revealSources?: boolean },
+): InvestmentScore {
   const market = findMarketMetric(
     listing.location.city,
     listing.location.neighborhood,
     listing.listingType,
   );
-  return calculateInvestmentScore(listing, market);
+  return calculateInvestmentScore(listing, market, undefined, options);
 }
 
 export function getListingValuation(listing: DemoListing): ValuationResult | null {
