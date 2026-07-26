@@ -59,23 +59,59 @@ export function PropertyMap({
   const layerRef = useRef<L.LayerGroup | null>(null);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  /** Carte « active » : molette / doigt ne bloquent plus le scroll de page tant que false. */
+  const [mapEngaged, setMapEngaged] = useState(false);
 
   useEffect(() => {
     if (!mapContainer.current || mapRef.current) return;
 
     try {
       const initial = center ?? computeCenter(points) ?? ([-7.62, 33.57] as [number, number]);
+      const touch =
+        typeof window !== "undefined" &&
+        ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+
       // Leaflet uses [lat, lng]
+      // scrollWheelZoom off par défaut → le scroll page n'est pas capturé en passant sur la carte
       const map = L.map(mapContainer.current, {
         center: [initial[1], initial[0]],
         zoom: points.length ? Math.max(zoom, 12) : 6,
-        scrollWheelZoom: true,
+        scrollWheelZoom: false,
+        dragging: !touch,
+        tapHold: false,
       });
 
       L.tileLayer(OSM_TILES, {
         attribution: OSM_ATTR,
         maxZoom: 19,
       }).addTo(map);
+
+      const engageMap = () => {
+        map.scrollWheelZoom.enable();
+        if (touch) map.dragging.enable();
+        setMapEngaged(true);
+      };
+      const releaseMap = () => {
+        map.scrollWheelZoom.disable();
+        if (touch) map.dragging.disable();
+        setMapEngaged(false);
+      };
+
+      // Clic / focus → activer zoom molette & pan tactile
+      map.on("click", engageMap);
+      map.on("focus", engageMap);
+      map.on("mouseout", releaseMap);
+      map.on("blur", releaseMap);
+
+      // Ctrl / ⌘ + molette : zoom sans clic préalable (comportement « Google Maps »)
+      const onWheel = (event: WheelEvent) => {
+        if (!(event.ctrlKey || event.metaKey)) return;
+        if (!map.scrollWheelZoom.enabled()) {
+          map.scrollWheelZoom.enable();
+          setMapEngaged(true);
+        }
+      };
+      map.getContainer().addEventListener("wheel", onWheel, { passive: true });
 
       layerRef.current = L.layerGroup().addTo(map);
       mapRef.current = map;
@@ -84,6 +120,19 @@ export function PropertyMap({
       // corrige tuiles grises si conteneur était hidden au mount
       requestAnimationFrame(() => map.invalidateSize());
       setTimeout(() => map.invalidateSize(), 200);
+
+      return () => {
+        map.getContainer().removeEventListener("wheel", onWheel);
+        map.off("click", engageMap);
+        map.off("focus", engageMap);
+        map.off("mouseout", releaseMap);
+        map.off("blur", releaseMap);
+        map.remove();
+        mapRef.current = null;
+        layerRef.current = null;
+        setReady(false);
+        setMapEngaged(false);
+      };
     } catch (err) {
       console.warn("[map] init failed", err);
       setError("Impossible de charger la carte");
@@ -94,6 +143,7 @@ export function PropertyMap({
       mapRef.current = null;
       layerRef.current = null;
       setReady(false);
+      setMapEngaged(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- init une seule fois
   }, []);
@@ -146,7 +196,11 @@ export function PropertyMap({
 
   return (
     <div className="relative h-full min-h-[400px] w-full">
-      <div ref={mapContainer} className="h-full min-h-[400px] w-full rounded-lg" style={{ zIndex: 0 }} />
+      <div
+        ref={mapContainer}
+        className={`h-full min-h-[400px] w-full rounded-lg ${mapEngaged ? "map-engaged" : "map-scroll-safe"}`}
+        style={{ zIndex: 0 }}
+      />
 
       {!ready && !error && (
         <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-sand/40">
@@ -180,6 +234,12 @@ export function PropertyMap({
             {nearbyPois.length > 0 && ` · ${nearbyPois.length} commerces à proximité`}
             {" · "}OpenStreetMap
           </p>
+        </div>
+      )}
+
+      {ready && !mapEngaged && (
+        <div className="pointer-events-none absolute bottom-3 left-1/2 z-[1000] -translate-x-1/2 rounded-md bg-charcoal/75 px-3 py-1.5 text-xs text-ivory shadow">
+          Cliquez la carte pour zoomer · Ctrl + molette
         </div>
       )}
     </div>
