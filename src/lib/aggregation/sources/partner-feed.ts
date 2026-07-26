@@ -14,7 +14,7 @@ function slimRaw(raw: RawPartnerListing): RawPartnerListing {
   return {
     ...raw,
     description: (raw.description ?? raw.title ?? "").slice(0, 280),
-    images: sanitizeListingImages(raw.images).slice(0, 2),
+    images: sanitizeListingImages(raw.images).slice(0, 8),
   };
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "darbladi",
-  "version": "1.11.8",
+  "version": "1.11.9",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -26,7 +26,8 @@
     "scrape:portals": "tsx scripts/scrape-portals.ts",
     "enrich:avito-images": "tsx scripts/enrich-avito-images.ts",
     "enrich:avito-search": "tsx scripts/enrich-avito-by-search.ts",
-    "enrich:avito-details": "tsx scripts/enrich-avito-details-only.ts"
+    "enrich:avito-details": "tsx scripts/enrich-avito-details-only.ts",
+    "enrich:avito-galleries": "tsx scripts/refresh-avito-galleries.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.3",

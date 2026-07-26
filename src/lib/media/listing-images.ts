@@ -1,6 +1,10 @@
-/** Ancienne photo stock Unsplash (villa/piscine) — ne plus jamais l'afficher comme annonce. */
+/**
+ * Photos génériques / stock à ne jamais afficher comme photo d'annonce :
+ * - Unsplash villa/piscine (ancien fallback DarBladi)
+ * - Placeholder Semsar AI
+ */
 const STOCK_PLACEHOLDER_RE =
-  /images\.unsplash\.com\/photo-1600596542815|images\.unsplash\.com\/photo-1600607687939/i;
+  /images\.unsplash\.com\/photo-1600596542815|images\.unsplash\.com\/photo-1600607687939|semsarai\.ma\/default-property-image/i;
 
 export function isStockListingImage(url: string | null | undefined): boolean {
   if (!url) return true;

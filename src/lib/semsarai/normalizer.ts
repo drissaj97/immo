@@ -5,6 +5,7 @@ import type { SemsaraiProperty } from "./types";
 import { resolveMoroccoRegion } from "@/lib/geography/morocco-regions";
 import { resolveListingCoordinates } from "@/lib/geography/resolve-coordinates";
 import { resolveOriginalPortal } from "@/lib/listings/original-portal";
+import { sanitizeListingImages } from "@/lib/media/listing-images";
 
 function slugify(text: string): string {
   return text
@@ -78,9 +79,7 @@ export function semsaraiPropertyToListing(
     latitude: coords.latitude,
     longitude: coords.longitude,
     reference: p.id.slice(0, 12).toUpperCase(),
-    images: images.length
-      ? images
-      : [],
+    images: sanitizeListingImages(images),
     sourceType: "partner",
     sourceName: portal.displayName,
     sourceUrl: p.link ?? undefined,
