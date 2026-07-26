@@ -67,7 +67,7 @@ export function normalizePartnerListing(
       : ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80"],
     sourceType: "partner",
     sourceName: sourceDisplayName(source),
-    sourceUrl: raw.sourceUrl,
+    sourceUrl: absoluteSourceUrl(raw.sourceUrl, source, raw.externalId),
     externalId: raw.externalId,
     completenessScore: 75,
     freshnessScore: 90,
@@ -94,6 +94,30 @@ function sourceDisplayName(source: AggregationSourceId): string {
     sarouty: "Sarouty.ma",
   };
   return names[source];
+}
+
+function absoluteSourceUrl(
+  url: string | undefined,
+  source: AggregationSourceId,
+  externalId: string,
+): string {
+  const raw = url?.trim();
+  if (raw && /^https?:\/\//i.test(raw)) return raw;
+  if (raw?.startsWith("//")) return `https:${raw}`;
+  if (source === "mubawab") return `https://www.mubawab.ma/fr/a/${externalId}`;
+  if (source === "avito") {
+    return raw?.startsWith("/")
+      ? `https://www.avito.ma${raw}`
+      : `https://www.avito.ma/fr/${externalId}.htm`;
+  }
+  if (source === "sarouty") {
+    return `https://www.sarouty.ma/property-details/?listing_id=${externalId}`;
+  }
+  if (source === "holding-immo") {
+    const path = raw?.startsWith("/") ? raw : `/biens/${externalId}`;
+    return `https://holdingimmo.com${path}`;
+  }
+  return raw || `https://www.semsarai.ma`;
 }
 
 export function normalizeHoldingListing(listing: DemoListing): AggregatedListing {

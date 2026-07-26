@@ -11,6 +11,7 @@ import { buildMetadata, listingJsonLd } from "@/lib/seo/metadata";
 import { formatPrice } from "@/lib/utils";
 import { FavoriteButton } from "@/components/listings/favorite-button";
 import { ExternalListingBanner, SourceBadge } from "@/components/listings/source-badge";
+import { resolveExternalSourceUrl } from "@/lib/listings/external-source-url";
 import { InvestmentScoreCard } from "@/components/investment/investment-score-card";
 import { PriceHistoryChart } from "@/components/investment/price-history-chart";
 import { GenerateReportButton } from "@/components/investment/generate-report-button";
@@ -162,16 +163,25 @@ export default async function ListingDetailPage({
               <h3 className="font-medium flex items-center gap-2"><Shield className="h-4 w-4" /> Provenance</h3>
               <dl className="mt-3 space-y-2 text-sm">
                 <div><dt className="text-charcoal/50">Source</dt><dd>{listing.sourceName}</dd></div>
-                {listing.sourceUrl && (
-                  <div>
-                    <dt className="text-charcoal/50">Lien original</dt>
-                    <dd>
-                      <a href={listing.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-deep-green hover:underline">
-                        Voir l&apos;annonce source →
-                      </a>
-                    </dd>
-                  </div>
-                )}
+                {(() => {
+                  const sourceHref = resolveExternalSourceUrl(listing);
+                  if (!sourceHref) return null;
+                  return (
+                    <div>
+                      <dt className="text-charcoal/50">Lien original</dt>
+                      <dd>
+                        <a
+                          href={sourceHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-deep-green hover:underline"
+                        >
+                          Voir l&apos;annonce source →
+                        </a>
+                      </dd>
+                    </div>
+                  );
+                })()}
                 <div><dt className="text-charcoal/50">Type</dt><dd>{listing.sourceType}</dd></div>
                 <div><dt className="text-charcoal/50">Complétude</dt><dd>{listing.completenessScore} %</dd></div>
                 <div><dt className="text-charcoal/50">Fraîcheur</dt><dd>{listing.freshnessScore} %</dd></div>

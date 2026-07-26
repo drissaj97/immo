@@ -36,7 +36,55 @@ body {
   transform: scaleX(-1);
 }
 
-/* Carte interactive MapLibre */
+/* Carte Leaflet — reset icônes défaut + marqueurs prix */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  z-index: 0;
+  font: inherit;
+  background: var(--sand);
+}
+
+.leaflet-div-icon {
+  background: transparent;
+  border: none;
+}
+
+.map-popup-body {
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--charcoal);
+}
+
+.map-popup-category {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.map-popup-price {
+  margin-top: 6px;
+  font-weight: 600;
+  color: var(--deep-green);
+}
+
+.map-popup-meta {
+  margin-top: 4px;
+  font-size: 11px;
+  color: #777;
+}
+
+.map-popup-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: var(--deep-green);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
 .map-listing-marker {
   display: flex;
   align-items: center;

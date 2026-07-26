@@ -148,6 +148,22 @@ export async function searchListings(filters: SearchFilters = {}): Promise<{
   return demoSearchListings(enriched);
 }
 
+async function findInPartnerFeeds(slug: string): Promise<ListingWithLocation | null> {
+  const { fetchPartnerFeed } = await import("@/lib/aggregation/sources/partner-feed");
+  const sources = ["avito", "mubawab", "sarouty"] as const;
+  // Priorité au préfixe du slug (ex. mubawab-7881114)
+  const ordered = [
+    ...sources.filter((s) => slug.startsWith(`${s}-`)),
+    ...sources.filter((s) => !slug.startsWith(`${s}-`)),
+  ];
+  for (const source of ordered) {
+    const feed = await fetchPartnerFeed(source);
+    const hit = feed.find((l) => l.slug === slug || l.id === slug);
+    if (hit) return hit as ListingWithLocation;
+  }
+  return null;
+}
+
 export async function getListingBySlug(slug: string): Promise<ListingWithLocation | null> {
   if (useDatabase()) {
     const listing = await dbRepo.dbGetListingBySlug(slug);
@@ -157,15 +173,19 @@ export async function getListingBySlug(slug: string): Promise<ListingWithLocatio
   const holdingHit = HOLDING_LISTINGS.find((l) => l.slug === slug);
   if (holdingHit) return holdingHit as ListingWithLocation;
 
-  if (USE_LIVE_SEARCH) {
-    const semsar = await loadSemsaraiListings();
-    const hit = semsar.find((l) => l.slug === slug);
-    if (hit) return hit as ListingWithLocation;
-    return null;
+  const partnerHit = await findInPartnerFeeds(slug);
+  if (partnerHit) return partnerHit;
+
+  const semsar = await loadSemsaraiListings();
+  const semsarHit = semsar.find((l) => l.slug === slug);
+  if (semsarHit) return semsarHit as ListingWithLocation;
+
+  if (!USE_LIVE_SEARCH) {
+    const all = await getAggregatedListingsLazy();
+    return all.find((l) => l.slug === slug) ?? null;
   }
 
-  const all = await getAggregatedListingsLazy();
-  return all.find((l) => l.slug === slug) ?? null;
+  return null;
 }
 
 export async function getListingById(id: string): Promise<ListingWithLocation | null> {
