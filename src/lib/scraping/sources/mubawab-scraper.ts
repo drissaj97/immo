@@ -1,13 +1,15 @@
 import { readFileSync } from "fs";
 import path from "path";
 import type { RawPartnerListing } from "@/lib/aggregation/types";
-import { fetchText, sleep } from "../http-client";
+import { mapPool } from "../concurrency";
+import { fetchText } from "../http-client";
 import {
   extractMubawabId,
   mapJsonLdToRawListing,
   normalizeMubawabUrl,
 } from "../map-listing";
 import { extractJsonLdBlocks, findRealEstateListing } from "../parse-json-ld";
+import { maybeSleep, resolveConcurrency, resolveDelayMs } from "../scrape-config";
 import type { ScrapeOptions } from "../types";
 
 const LISTING_PATH_PATTERN = /\/fr\/(?:a|pa)\/\d+[^"'\s<>]*/gi;
@@ -35,104 +37,70 @@ export async function scrapeMubawab(options: ScrapeOptions = {}): Promise<{
 }> {
   const maxListings = options.maxListings ?? Number(process.env.SCRAPE_MAX_LISTINGS ?? 3000);
   const seedLimit = options.mubawabSeedLimit ?? Number(process.env.SCRAPE_MUBAWAB_SEED_LIMIT ?? 2000);
-  const delayMs = options.delayMs ?? Number(process.env.SCRAPE_DELAY_MS ?? 120);
-  const concurrency = Number(process.env.SCRAPE_MUBAWAB_CONCURRENCY ?? 6);
+  const delayMs = resolveDelayMs(options.delayMs);
+  const concurrency = resolveConcurrency("SCRAPE_MUBAWAB_CONCURRENCY", 28, 6);
+  const searchConcurrency = resolveConcurrency("SCRAPE_SEARCH_CONCURRENCY", 20, 6);
+  const maxSearchPages = Number(process.env.SCRAPE_MUBAWAB_MAX_PAGES ?? 15);
+
+  const errors: string[] = [];
+  const searchJobs = SEARCH_SEEDS.flatMap((seed) =>
+    Array.from({ length: maxSearchPages }, (_, i) => ({
+      url: i === 0 ? seed : `${seed}?o=${i + 1}`,
+      page: i + 1,
+    })),
+  );
+
+  const discovered = await mapPool(searchJobs, searchConcurrency, async (job) => {
+    try {
+      const html = await fetchText(job.url);
+      const found = extractRelatedListingUrls(html);
+      await maybeSleep(delayMs);
+      return found;
+    } catch (err) {
+      if (job.page === 1) errors.push(`search ${job.url}: ${String(err)}`);
+      return [] as string[];
+    }
+  });
 
   const queue = [
-    ...SEARCH_SEEDS,
-    ...loadMubawabSeedUrls(seedLimit),
-  ];
-  const visited = new Set<string>();
+    ...new Set([...discovered.flat(), ...loadMubawabSeedUrls(seedLimit)]),
+  ].slice(0, maxListings * 3);
+
+  console.info(`[mubawab] ${queue.length} URLs — concurrence ${concurrency} (delay ${delayMs}ms)`);
+
   const listings: RawPartnerListing[] = [];
-  const errors: string[] = [];
   const seenIds = new Set<string>();
 
-  // Découverte rapide via pages recherche
-  for (const searchUrl of SEARCH_SEEDS) {
+  await mapPool(queue, concurrency, async (rawUrl) => {
+    if (listings.length >= maxListings) return;
+    const url = normalizeMubawabUrl(rawUrl);
+    if (!/\/fr\/(?:a|pa)\/\d+/i.test(url)) return;
+
+    const externalId = extractMubawabId(url);
+    if (!externalId || seenIds.has(externalId)) return;
+    seenIds.add(externalId);
+
     try {
-      const html = await fetchText(searchUrl);
-      for (const related of extractRelatedListingUrls(html)) {
-        if (!visited.has(related)) queue.push(related);
+      const html = await fetchText(url);
+      const jsonLd = findRealEstateListing(extractJsonLdBlocks(html));
+      if (!jsonLd) {
+        errors.push(`no JSON-LD: ${url}`);
+        return;
       }
-      // pagination o=2..N
-      for (let page = 2; page <= 15; page++) {
-        try {
-          const pageHtml = await fetchText(`${searchUrl}?o=${page}`);
-          const found = extractRelatedListingUrls(pageHtml);
-          if (!found.length) break;
-          for (const related of found) {
-            if (!visited.has(related)) queue.push(related);
-          }
-          await sleep(delayMs);
-        } catch {
-          break;
-        }
+
+      const listing = mapJsonLdToRawListing(jsonLd, externalId, url);
+      if (!listing) {
+        errors.push(`invalid listing: ${url}`);
+        return;
       }
+
+      if (listings.length < maxListings) listings.push(listing);
     } catch (err) {
-      errors.push(`search ${searchUrl}: ${String(err)}`);
+      errors.push(`${url}: ${String(err)}`);
     }
-    await sleep(delayMs);
-  }
 
-  console.info(`[mubawab] ${queue.length} URLs en file — concurrence ${concurrency}`);
-
-  async function worker() {
-    while (listings.length < maxListings) {
-      const rawUrl = queue.shift();
-      if (!rawUrl) return;
-
-      const url = normalizeMubawabUrl(rawUrl);
-      if (visited.has(url)) continue;
-      visited.add(url);
-
-      // Page listing (pas fiche) → extraire liens
-      if (!/\/fr\/(?:a|pa)\/\d+/i.test(url)) {
-        try {
-          const html = await fetchText(url);
-          for (const related of extractRelatedListingUrls(html)) {
-            if (!visited.has(related) && queue.length < maxListings * 4) queue.push(related);
-          }
-        } catch (err) {
-          errors.push(`${url}: ${String(err)}`);
-        }
-        await sleep(delayMs);
-        continue;
-      }
-
-      const externalId = extractMubawabId(url);
-      if (!externalId || seenIds.has(externalId)) continue;
-
-      try {
-        const html = await fetchText(url);
-        const jsonLd = findRealEstateListing(extractJsonLdBlocks(html));
-        if (!jsonLd) {
-          errors.push(`no JSON-LD: ${url}`);
-          continue;
-        }
-
-        const listing = mapJsonLdToRawListing(jsonLd, externalId, url);
-        if (!listing) {
-          errors.push(`invalid listing: ${url}`);
-          continue;
-        }
-
-        listings.push(listing);
-        seenIds.add(externalId);
-
-        for (const related of extractRelatedListingUrls(html)) {
-          if (!visited.has(related) && queue.length < maxListings * 4) {
-            queue.push(related);
-          }
-        }
-      } catch (err) {
-        errors.push(`${url}: ${String(err)}`);
-      }
-
-      await sleep(delayMs);
-    }
-  }
-
-  await Promise.all(Array.from({ length: concurrency }, () => worker()));
+    await maybeSleep(delayMs);
+  });
 
   return { listings, errors: errors.slice(0, 80) };
 }

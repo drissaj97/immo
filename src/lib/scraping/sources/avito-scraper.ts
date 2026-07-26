@@ -2,6 +2,7 @@ import type { RawPartnerListing } from "@/lib/aggregation/types";
 import { normalizeAvitoImageUrl, sanitizeListingImages } from "@/lib/media/listing-images";
 import { sleep } from "../http-client";
 import { extractAvitoId } from "../map-listing";
+import { resolveDelayMs, scrapeSpeedMode } from "../scrape-config";
 import type { ScrapeOptions } from "../types";
 
 const DEFAULT_CITIES = [
@@ -54,7 +55,14 @@ export async function scrapeAvito(options: ScrapeOptions = {}): Promise<{
 }> {
   const maxListings = options.maxListings ?? Number(process.env.SCRAPE_MAX_LISTINGS ?? 1500);
   const maxPages = options.maxPages ?? Number(process.env.SCRAPE_AVITO_MAX_PAGES ?? 2);
-  const delayMs = options.delayMs ?? Number(process.env.SCRAPE_DELAY_MS ?? 400);
+  // Playwright : petit délai même en turbo (anti-ban), sinon 0 si delay forcé.
+  const delayMs =
+    options.delayMs ??
+    (process.env.SCRAPE_DELAY_MS != null
+      ? resolveDelayMs()
+      : scrapeSpeedMode() === "turbo"
+        ? 50
+        : 400);
   const cities = (process.env.SCRAPE_AVITO_CITIES ?? DEFAULT_CITIES.join(","))
     .split(",")
     .map((c) => c.trim())

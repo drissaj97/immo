@@ -7,6 +7,18 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [1.13.1] — 2026-07-26
+
+### Scrape turbo sans latence
+
+- Mode **`SCRAPE_FAST=true`** (défaut) : `delayMs=0`, concurrence 24–32
+- Découverte recherche **parallèle** (Agenz / Yakeey / Mubawab)
+- Sarouty : pagination API en **fan-out** (`SCRAPE_SAROUTY_CONCURRENCY`)
+- HTTP keep-alive undici (`SCRAPE_HTTP_CONNECTIONS=96`)
+- Flags CLI : `pnpm scrape:portals --fast` / `--polite`
+
+---
+
 ## [1.13.0] — 2026-07-26
 
 ### Scraping multi-portails Maroc (rapide)

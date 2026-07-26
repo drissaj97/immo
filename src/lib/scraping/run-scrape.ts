@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import type { AggregationSourceId, PartnerFeedFile } from "@/lib/aggregation/types";
 import { isScrapePortal } from "./portals";
+import { logScrapeSpeedBanner, resolveDelayMs } from "./scrape-config";
 import { scrapeAgenz } from "./sources/agenz-scraper";
 import { scrapeAvito } from "./sources/avito-scraper";
 import { scrapeMubawab } from "./sources/mubawab-scraper";
@@ -37,17 +38,21 @@ export async function runPortalScrape(options: ScrapeOptions = {}): Promise<Scra
   mkdirSync(FEED_DIR, { recursive: true });
 
   const parallel = process.env.SCRAPE_PARALLEL !== "false";
+  const delayMs = resolveDelayMs(options.delayMs);
+  const turboOptions: ScrapeOptions = { ...options, delayMs };
+  logScrapeSpeedBanner();
   console.info(
-    `[scrape] portails: ${enabled.join(", ")} — mode ${parallel ? "parallèle" : "séquentiel"}`,
+    `[scrape] portails: ${enabled.join(", ")} — ${parallel ? "TOUS EN PARALLÈLE" : "séquentiel"}`,
   );
 
   const runOne = async (portal: ScrapePortal): Promise<ScrapeResult> => {
+    const started = Date.now();
     const scrapedAt = new Date().toISOString();
     let listings: ScrapeResult["listings"] = [];
     let errors: string[] = [];
 
     try {
-      ({ listings, errors } = await PORTAL_RUNNERS[portal](options));
+      ({ listings, errors } = await PORTAL_RUNNERS[portal](turboOptions));
     } catch (err) {
       errors = [String(err)];
     }
@@ -72,7 +77,11 @@ export async function runPortalScrape(options: ScrapeOptions = {}): Promise<Scra
     };
 
     writeFileSync(path.join(FEED_DIR, `${source}.json`), JSON.stringify(feed, null, 2), "utf-8");
-    console.info(`[scrape] ${source}: ${listings.length} annonces`);
+    const elapsedSec = ((Date.now() - started) / 1000).toFixed(1);
+    const rate = listings.length
+      ? (listings.length / Math.max(0.001, (Date.now() - started) / 1000)).toFixed(1)
+      : "0";
+    console.info(`[scrape] ${source}: ${listings.length} annonces en ${elapsedSec}s (~${rate}/s)`);
     return { source, listings, errors, scrapedAt };
   };
 

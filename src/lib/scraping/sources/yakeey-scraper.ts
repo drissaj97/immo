@@ -2,7 +2,7 @@ import { readFileSync } from "fs";
 import path from "path";
 import type { RawPartnerListing } from "@/lib/aggregation/types";
 import { mapPool } from "../concurrency";
-import { fetchText, sleep } from "../http-client";
+import { fetchText } from "../http-client";
 import {
   capitalizeWords,
   decodeHtmlEntities,
@@ -14,6 +14,7 @@ import {
   parseMadPrice,
 } from "../html-utils";
 import { inferTransactionType } from "../map-listing";
+import { maybeSleep, resolveConcurrency, resolveDelayMs } from "../scrape-config";
 import type { ScrapeOptions } from "../types";
 
 const LISTING_PATH_RE =
@@ -40,34 +41,38 @@ export async function scrapeYakeey(options: ScrapeOptions = {}): Promise<{
   errors: string[];
 }> {
   const maxListings = options.maxListings ?? Number(process.env.SCRAPE_MAX_LISTINGS ?? 3000);
-  const delayMs = options.delayMs ?? Number(process.env.SCRAPE_DELAY_MS ?? 80);
-  const concurrency = Number(process.env.SCRAPE_YAKEEY_CONCURRENCY ?? 8);
+  const delayMs = resolveDelayMs(options.delayMs);
+  const concurrency = resolveConcurrency("SCRAPE_YAKEEY_CONCURRENCY", 32, 8);
+  const searchConcurrency = resolveConcurrency("SCRAPE_SEARCH_CONCURRENCY", 20, 6);
   const maxPages = options.maxPages ?? Number(process.env.SCRAPE_YAKEEY_MAX_PAGES ?? 10);
 
-  const fromSearch: string[] = [];
   const errors: string[] = [];
+  const searchJobs = SEARCH_SEEDS.flatMap((seed) =>
+    Array.from({ length: maxPages }, (_, i) => ({
+      url: i === 0 ? seed : `${seed}?page=${i + 1}`,
+      page: i + 1,
+      seed,
+    })),
+  );
 
-  for (const seed of SEARCH_SEEDS) {
+  const fromSearchNested = await mapPool(searchJobs, searchConcurrency, async (job) => {
     try {
-      for (let page = 1; page <= maxPages; page++) {
-        const pageUrl = page === 1 ? seed : `${seed}?page=${page}`;
-        const html = await fetchText(pageUrl);
-        const found = extractYakeeyListingUrls(html);
-        if (!found.length && page > 1) break;
-        fromSearch.push(...found);
-        await sleep(delayMs);
-      }
+      const html = await fetchText(job.url);
+      const found = extractYakeeyListingUrls(html);
+      await maybeSleep(delayMs);
+      return found;
     } catch (err) {
-      errors.push(`search ${seed}: ${String(err)}`);
+      if (job.page === 1) errors.push(`search ${job.seed}: ${String(err)}`);
+      return [] as string[];
     }
-  }
+  });
 
   // Priorité aux URLs fraîches (recherche) — les seeds SEMSAR peuvent être 404.
-  const queue = [...new Set([...fromSearch, ...loadYakeeySeedUrls(600)])].slice(
+  const queue = [...new Set([...fromSearchNested.flat(), ...loadYakeeySeedUrls(200)])].slice(
     0,
     maxListings * 2,
   );
-  console.info(`[yakeey] ${queue.length} fiches — concurrence ${concurrency}`);
+  console.info(`[yakeey] ${queue.length} fiches — concurrence ${concurrency} (delay ${delayMs}ms)`);
 
   const listings: RawPartnerListing[] = [];
   const seen = new Set<string>();
@@ -77,6 +82,7 @@ export async function scrapeYakeey(options: ScrapeOptions = {}): Promise<{
     const url = normalizeYakeeyUrl(rawUrl);
     const id = extractYakeeyId(url);
     if (!id || seen.has(id)) return;
+    seen.add(id);
 
     try {
       const html = await fetchText(url);
@@ -85,14 +91,12 @@ export async function scrapeYakeey(options: ScrapeOptions = {}): Promise<{
         errors.push(`invalid: ${url}`);
         return;
       }
-      if (seen.has(listing.externalId)) return;
-      seen.add(listing.externalId);
       if (listings.length < maxListings) listings.push(listing);
     } catch (err) {
       errors.push(`${url}: ${String(err)}`);
     }
 
-    if (delayMs > 0) await sleep(delayMs);
+    await maybeSleep(delayMs);
   });
 
   return { listings, errors: errors.slice(0, 80) };

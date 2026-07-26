@@ -13,14 +13,15 @@ Objectif : indexer le maximum d’annonces utiles au Maroc, avec **provenance** 
 | **Yakeey** | HTML + meta/RSC | prix, surface, chambres, ville/quartier, photos | `--portals=yakeey` |
 
 ```bash
-# Tous les portails scrapables (parallèle par défaut)
-SCRAPE_MAX_LISTINGS=500 pnpm scrape:portals
+# Turbo (défaut) — delay=0, portails + pages en parallèle, keep-alive HTTP
+pnpm scrape:portals --fast
+SCRAPE_MAX_LISTINGS=500 pnpm scrape:portals --portals=agenz,yakeey,sarouty
 
-# Rapide — Agenz + Yakeey seulement
-SCRAPE_PORTALS=agenz,yakeey SCRAPE_MAX_LISTINGS=200 pnpm scrape:portals
+# Forcer concurrence / connexions
+SCRAPE_CONCURRENCY=48 SCRAPE_HTTP_CONNECTIONS=128 pnpm scrape:portals --fast
 
-# Séquentiel si besoin
-SCRAPE_PARALLEL=false pnpm scrape:portals
+# Mode prudent (délais + concurrence basse)
+pnpm scrape:portals --polite
 
 # Activer dans le catalogue
 SCRAPING_ENABLED=true pnpm aggregation:sync
@@ -44,12 +45,19 @@ Feeds écrits dans `data/feeds/{source}.json`.
 |------|--------|
 | Wandaloo | Auto / véhicules |
 
-## Performance
+## Performance (turbo)
 
-- Portails exécutés **en parallèle** (`SCRAPE_PARALLEL`, défaut on)
-- Concurrence par source : `SCRAPE_AGENZ_CONCURRENCY`, `SCRAPE_YAKEEY_CONCURRENCY`, `SCRAPE_MUBAWAB_CONCURRENCY` (défaut 6–8)
-- Seeds SEMSAR + pages recherche multi-villes pour maximiser la découverte
-- Délai `SCRAPE_DELAY_MS` (défaut ~80 ms) pour limiter la charge
+| Réglage | Défaut turbo | Rôle |
+|---------|--------------|------|
+| `SCRAPE_FAST` | `true` | delay=0 + concurrence haute |
+| `SCRAPE_DELAY_MS` | `0` | **aucune** latence artificielle |
+| `SCRAPE_PARALLEL` | on | tous les portails en même temps |
+| `SCRAPE_CONCURRENCY` | 32 | workers fiches (override global) |
+| `SCRAPE_SEARCH_CONCURRENCY` | 20 | pages recherche en parallèle |
+| `SCRAPE_SAROUTY_CONCURRENCY` | 24 | pages API Sarouty en parallèle |
+| `SCRAPE_HTTP_CONNECTIONS` | 96 | pool undici keep-alive |
+
+Découverte (seeds villes × pages) et fiches détail sont fan-out via `mapPool` — plus de boucles séquentielles.
 
 ## Conformité
 

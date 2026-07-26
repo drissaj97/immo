@@ -1,5 +1,7 @@
 import type { RawPartnerListing } from "@/lib/aggregation/types";
-import { fetchJson, sleep } from "../http-client";
+import { mapPool } from "../concurrency";
+import { fetchJson } from "../http-client";
+import { maybeSleep, resolveConcurrency, resolveDelayMs } from "../scrape-config";
 import type { ScrapeOptions } from "../types";
 
 const API_BASE = "https://b2c-be-prod.api.sarouty.ma/api/properties";
@@ -43,48 +45,66 @@ export async function scrapeSarouty(options: ScrapeOptions = {}): Promise<{
   const pageSize = 50;
   const maxPages = options.maxPages ?? Number(process.env.SCRAPE_SAROUTY_MAX_PAGES ?? 200);
   const maxListings = options.maxListings ?? Number(process.env.SCRAPE_MAX_LISTINGS ?? 5000);
-  const delayMs = options.delayMs ?? Number(process.env.SCRAPE_DELAY_MS ?? 80);
+  const delayMs = resolveDelayMs(options.delayMs);
+  const concurrency = resolveConcurrency("SCRAPE_SAROUTY_CONCURRENCY", 24, 4);
 
   const listings: RawPartnerListing[] = [];
   const errors: string[] = [];
   const seen = new Set<number>();
 
-  for (let page = 1; page <= maxPages; page++) {
-    if (listings.length >= maxListings) break;
-
-    try {
-      const url = `${API_BASE}?limit=${pageSize}&page=${page}`;
-      const response = await fetchJson<SaroutyListResponse>(url);
-
-      if (response.status !== "success" || !response.data?.data?.length) {
-        if (page === 1) errors.push("Sarouty API: réponse vide");
-        break;
-      }
-
-      for (const item of response.data.data) {
-        if (seen.has(item.property_id)) continue;
-        seen.add(item.property_id);
-
-        const mapped = mapSaroutyProperty(item);
-        if (mapped) listings.push(mapped);
-        if (listings.length >= maxListings) break;
-      }
-
-      const totalPages = response.data.meta.total_pages;
-      if (page % 20 === 0) {
-        console.info(`[sarouty] page ${page}/${totalPages} — ${listings.length} annonces`);
-      }
-      if (page >= totalPages) break;
-    } catch (err) {
-      errors.push(`page ${page}: ${String(err)}`);
-      await sleep(delayMs * 2);
-      continue;
+  // Page 1 → connaître total_pages, puis fan-out parallèle
+  let totalPages = 1;
+  try {
+    const first = await fetchJson<SaroutyListResponse>(`${API_BASE}?limit=${pageSize}&page=1`);
+    if (first.status !== "success" || !first.data?.data?.length) {
+      errors.push("Sarouty API: réponse vide");
+      return { listings, errors };
     }
-
-    await sleep(delayMs);
+    for (const item of first.data.data) {
+      if (seen.has(item.property_id)) continue;
+      seen.add(item.property_id);
+      const mapped = mapSaroutyProperty(item);
+      if (mapped) listings.push(mapped);
+    }
+    totalPages = Math.min(maxPages, first.data.meta.total_pages || 1);
+    console.info(
+      `[sarouty] ${first.data.meta.total} annonces API — pages 2..${totalPages} en parallèle (×${concurrency})`,
+    );
+  } catch (err) {
+    errors.push(`page 1: ${String(err)}`);
+    return { listings, errors };
   }
 
-  return { listings, errors };
+  if (listings.length >= maxListings || totalPages <= 1) {
+    return { listings: listings.slice(0, maxListings), errors };
+  }
+
+  const pages = Array.from({ length: totalPages - 1 }, (_, i) => i + 2);
+  await mapPool(pages, concurrency, async (page) => {
+    if (listings.length >= maxListings) return;
+    try {
+      const response = await fetchJson<SaroutyListResponse>(
+        `${API_BASE}?limit=${pageSize}&page=${page}`,
+      );
+      if (response.status !== "success" || !response.data?.data?.length) return;
+
+      for (const item of response.data.data) {
+        if (listings.length >= maxListings) break;
+        if (seen.has(item.property_id)) continue;
+        seen.add(item.property_id);
+        const mapped = mapSaroutyProperty(item);
+        if (mapped) listings.push(mapped);
+      }
+      if (page % 40 === 0) {
+        console.info(`[sarouty] page ${page}/${totalPages} — ${listings.length} annonces`);
+      }
+    } catch (err) {
+      errors.push(`page ${page}: ${String(err)}`);
+    }
+    await maybeSleep(delayMs);
+  });
+
+  return { listings: listings.slice(0, maxListings), errors: errors.slice(0, 80) };
 }
 
 function mapSaroutyProperty(item: SaroutyProperty): RawPartnerListing | null {
