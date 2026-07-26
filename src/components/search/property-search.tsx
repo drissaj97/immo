@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { MapPin, Home, Search, RotateCcw, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input, Select } from "@/components/ui/input";
@@ -15,8 +15,8 @@ type SavedSearch = {
   city: string;
   neighborhood: string;
   listingType: string;
-  minPrice: string;
   maxPrice: string;
+  minPrice: string;
 };
 
 type PropertySearchProps = {
@@ -34,6 +34,14 @@ type PropertySearchProps = {
 const selectClassName =
   "h-11 text-charcoal disabled:text-charcoal/40";
 
+/** Exporte pour tests — déduit Acheter/Louer depuis l’URL. */
+export function tabFromPathname(pathname: string | null): "sale" | "long_term_rent" | null {
+  if (!pathname) return null;
+  if (/\/louer\/?$/.test(pathname)) return "long_term_rent";
+  if (/\/acheter\/?$/.test(pathname)) return "sale";
+  return null;
+}
+
 export function PropertySearch({
   locale,
   variant = "hero",
@@ -44,9 +52,13 @@ export function PropertySearch({
   searchPath,
 }: PropertySearchProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const pathTab = tabFromPathname(pathname);
   const [tab, setTab] = useState<"sale" | "long_term_rent">(
-    initial?.transactionType ?? defaultTransaction,
+    pathTab ?? initial?.transactionType ?? defaultTransaction,
   );
+  /** Onglet affiché = page courante si /acheter|/louer (évite Louer coché sur catalogue vente). */
+  const activeTab = pathTab ?? tab;
   const [region, setRegion] = useState(initial?.region ?? "");
   const [city, setCity] = useState(initial?.city ?? "");
   const [neighborhood, setNeighborhood] = useState(initial?.neighborhood ?? "");
@@ -57,7 +69,8 @@ export function PropertySearch({
 
   // Resync si l’URL / les props serveur changent (App Router garde sinon le state client).
   useEffect(() => {
-    if (initial?.transactionType) setTab(initial.transactionType);
+    if (pathTab) setTab(pathTab);
+    else if (initial?.transactionType) setTab(initial.transactionType);
     if (initial?.region != null) setRegion(initial.region);
     if (initial?.city != null) setCity(initial.city);
     if (initial?.neighborhood != null) setNeighborhood(initial.neighborhood);
@@ -65,6 +78,7 @@ export function PropertySearch({
     if (initial?.minPrice != null) setMinPrice(initial.minPrice);
     if (initial?.maxPrice != null) setMaxPrice(initial.maxPrice);
   }, [
+    pathTab,
     initial?.transactionType,
     initial?.region,
     initial?.city,
@@ -98,7 +112,7 @@ export function PropertySearch({
     }
   }, []);
 
-  function buildParams(nextTab: "sale" | "long_term_rent" = tab): URLSearchParams {
+  function buildParams(nextTab: "sale" | "long_term_rent" = activeTab): URLSearchParams {
     const params = new URLSearchParams();
     params.set("transactionType", nextTab);
     if (region) params.set("region", region);
@@ -115,10 +129,7 @@ export function PropertySearch({
     return nextTab === "sale" ? `/${locale}/acheter` : `/${locale}/louer`;
   }
 
-  function navigateSearch(nextTab: "sale" | "long_term_rent" = tab) {
-    if (requireLocation && (!region || !city || !neighborhood)) return;
-
-    const params = buildParams(nextTab);
+  function persistSearch(nextTab: "sale" | "long_term_rent") {
     const saved: SavedSearch = {
       transactionType: nextTab,
       region,
@@ -134,25 +145,38 @@ export function PropertySearch({
     } catch {
       /* ignore */
     }
+  }
 
-    const path = resultsPathForTab(nextTab);
-    router.push(`${path}?${params.toString()}`);
+  /** Navigation pleine page : garantit un catalogue 100 % vente ou 100 % location. */
+  function goToTransaction(nextTab: "sale" | "long_term_rent", opts?: { requireComplete?: boolean }) {
+    if (opts?.requireComplete && requireLocation && (!region || !city || !neighborhood)) {
+      return false;
+    }
+    persistSearch(nextTab);
+    const href = `${resultsPathForTab(nextTab)}?${buildParams(nextTab).toString()}`;
+    // Hard nav : évite le soft-nav Next qui peut laisser les résultats vente à l’écran.
+    if (typeof window !== "undefined") {
+      window.location.assign(href);
+      return true;
+    }
+    router.push(href);
+    return true;
+  }
+
+  function navigateSearch(nextTab: "sale" | "long_term_rent" = activeTab) {
+    goToTransaction(nextTab, { requireComplete: true });
   }
 
   function handleSearch(e?: React.FormEvent) {
     e?.preventDefault();
-    navigateSearch(tab);
+    navigateSearch(activeTab);
   }
 
   function selectTab(nextTab: "sale" | "long_term_rent") {
+    if (nextTab === activeTab && pathTab === nextTab) return;
     setTab(nextTab);
-    // Toujours basculer vers /acheter ou /louer (évite onglet Louer + résultats vente).
-    if (region && city && neighborhood) {
-      navigateSearch(nextTab);
-      return;
-    }
-    const params = buildParams(nextTab);
-    router.push(`${resultsPathForTab(nextTab)}?${params.toString()}`);
+    // Toujours changer de page métier → le serveur filtre sale vs long_term_rent.
+    goToTransaction(nextTab);
   }
 
   function handleReset() {
@@ -176,13 +200,27 @@ export function PropertySearch({
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return;
       const saved = JSON.parse(raw) as SavedSearch;
-      setTab(saved.transactionType ?? defaultTransaction);
+      const nextTab = saved.transactionType ?? defaultTransaction;
+      setTab(nextTab);
       setRegion(saved.region ?? "");
       setCity(saved.city ?? "");
       setNeighborhood(saved.neighborhood ?? "");
       setListingType(saved.listingType ?? "");
       setMinPrice(saved.minPrice ?? "");
       setMaxPrice(saved.maxPrice ?? "");
+      // Reprend sur la bonne page (vente vs location).
+      const params = new URLSearchParams();
+      params.set("transactionType", nextTab);
+      if (saved.region) params.set("region", saved.region);
+      if (saved.city) params.set("city", saved.city);
+      if (saved.neighborhood) params.set("neighborhood", saved.neighborhood);
+      if (saved.listingType) params.set("listingType", saved.listingType);
+      if (saved.minPrice) params.set("minPrice", saved.minPrice);
+      if (saved.maxPrice) params.set("maxPrice", saved.maxPrice);
+      const path = nextTab === "sale" ? `/${locale}/acheter` : `/${locale}/louer`;
+      if (typeof window !== "undefined") {
+        window.location.assign(`${path}?${params.toString()}`);
+      }
     } catch {
       /* ignore */
     }
@@ -211,7 +249,7 @@ export function PropertySearch({
           type="button"
           onClick={() => selectTab("sale")}
           className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-            tab === "sale"
+            activeTab === "sale"
               ? "bg-deep-green text-ivory"
               : "text-charcoal/70 hover:bg-sand/60"
           }`}
@@ -223,7 +261,7 @@ export function PropertySearch({
           type="button"
           onClick={() => selectTab("long_term_rent")}
           className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-            tab === "long_term_rent"
+            activeTab === "long_term_rent"
               ? "bg-deep-green text-ivory"
               : "text-charcoal/70 hover:bg-sand/60"
           }`}
