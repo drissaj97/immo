@@ -28,7 +28,9 @@ const OPTIMIZED_HOSTS = new Set([
 ]);
 
 function resolveImageSrc(src: string): string {
-  if (!src || src.startsWith("/")) return src || PLACEHOLDER;
+  if (!src) return PLACEHOLDER;
+  // Médias locaux gitignorés : on laisse tenter, onError → placeholder
+  if (src.startsWith("/")) return src;
   try {
     const host = new URL(src).hostname;
     if (PROXY_HOSTS.has(host)) {

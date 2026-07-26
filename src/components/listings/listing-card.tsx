@@ -33,9 +33,12 @@ export function ListingCard({
       href={`/${locale}/biens/${listing.slug}`}
       className="group block overflow-hidden rounded-lg border border-charcoal/10 bg-ivory transition-shadow hover:shadow-lg"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-sand">
+      <div
+        className="relative aspect-[4/3] overflow-hidden bg-sand"
+        style={{ minHeight: 180, background: "#e8e0d4" }}
+      >
         <ListingImage
-          src={listing.images[0]}
+          src={listing.images?.[0] ?? ""}
           alt={listing.title}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"

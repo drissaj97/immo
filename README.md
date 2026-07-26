@@ -57,6 +57,24 @@ Documentation complète : [`docs/`](./docs/)
 
 ---
 
+## Lancer le site (important)
+
+```bash
+pnpm install
+cp .env.example .env.local   # si besoin
+pnpm launch                  # = build + start (stable)
+```
+
+Puis ouvrir **http://localhost:3000/fr**
+
+Si la page est sans styles (liens bleus bruts) : ouvrir  
+**http://localhost:3000/fr/reset-cache** puis recharger.
+
+> ⚠️ N’utilisez pas `pnpm dev` pour une démo : trop gourmand en RAM et instable.  
+> Utilisez toujours `pnpm launch` ou `pnpm build && pnpm start`.
+
+---
+
 ## Installation
 
 ```bash
@@ -98,10 +116,10 @@ cp .env.example .env.local
 
 ### Option A — Mode démo (sans PostgreSQL)
 
-Aucune configuration requise. L'application utilise les données in-memory de `src/lib/data/demo-data.ts`.
+Aucune configuration requise. Données locales + feeds partenaires.
 
 ```bash
-pnpm dev
+pnpm launch
 ```
 
 ### Option B — PostgreSQL local (Docker)

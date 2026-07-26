@@ -1,12 +1,13 @@
 {
   "name": "darbladi",
-  "version": "1.11.3",
+  "version": "1.11.4",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "launch": "next build && next start",
+    "launch:prod": "next build && NODE_OPTIONS=--max-old-space-size=1536 next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
