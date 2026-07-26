@@ -62,6 +62,9 @@ const NEIGHBORHOOD_CENTROIDS: Record<string, { lat: number; lng: number }> = {
   "rabat|hayriad": { lat: 33.956, lng: -6.87 },
   "sale|salaeljadida": { lat: 34.045, lng: -6.812 },
   "marrakech|gueliz": { lat: 31.634, lng: -8.007 },
+  "temara|wifak": { lat: 33.912, lng: -6.918 },
+  "temara|alwifak": { lat: 33.912, lng: -6.918 },
+  "temara|temaraplage": { lat: 33.931, lng: -6.954 },
 };
 
 let lookupMap: Map<string, CoordinateEntry> | null = null;
@@ -145,19 +148,52 @@ export function distanceKm(
   return 6371 * 2 * Math.asin(Math.min(1, Math.sqrt(h)));
 }
 
+/** Centroïde ville connu (ou null). */
+export function getCityCentroid(city: string): { lat: number; lng: number } | null {
+  const cityKey = normalizeLocationKey(city).replace(/\s/g, "");
+  const c = CITY_CENTROIDS[cityKey] ?? CITY_CENTROIDS[normalizeLocationKey(city)];
+  return c ? { lat: c.lat, lng: c.lng } : null;
+}
+
+/** Coords « exactes » acceptables pour une ville (pas océan / pas 2000 km plus loin). */
+export function isReasonableCoordinateForCity(
+  lat: number | null | undefined,
+  lng: number | null | undefined,
+  city: string,
+  maxKm = 75,
+): boolean {
+  if (!isValidMoroccoCoordinate(lat, lng)) return false;
+  if (isPlaceholderCoordinate(lat, lng)) return false;
+  const centroid = getCityCentroid(city);
+  if (!centroid) return true;
+  return distanceKm(centroid, { lat: lat as number, lng: lng as number }) <= maxKm;
+}
+
 export function resolveListingCoordinates(input: {
   city: string;
   neighborhood?: string;
   latitude?: number;
   longitude?: number;
 }): ResolvedCoordinates {
+  let lat = input.latitude;
+  let lng = input.longitude;
+
+  // Lat/lng parfois inversés par les flux partenaires → corriger si le swap est au Maroc.
   if (
-    isValidMoroccoCoordinate(input.latitude, input.longitude) &&
-    !isPlaceholderCoordinate(input.latitude, input.longitude)
+    !isValidMoroccoCoordinate(lat, lng) &&
+    isValidMoroccoCoordinate(lng, lat)
+  ) {
+    lat = input.longitude;
+    lng = input.latitude;
+  }
+
+  if (
+    isReasonableCoordinateForCity(lat, lng, input.city) &&
+    !isPlaceholderCoordinate(lat, lng)
   ) {
     return {
-      latitude: input.latitude as number,
-      longitude: input.longitude as number,
+      latitude: lat as number,
+      longitude: lng as number,
       source: "exact",
     };
   }

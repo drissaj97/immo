@@ -155,8 +155,24 @@ export function PropertyMap({
     layer.clearLayers();
     const bounds = L.latLngBounds([]);
 
-    // POI uniquement s'ils sont proches des annonces (déjà filtrés serveur)
+    // Filet client : ramener les outliers au centre de recherche (évite pins en océan).
+    const safePoints = snapOutliersToCenter(points, center);
+
+    const anchorLatLng: L.LatLngTuple | null = center
+      ? [center[1], center[0]]
+      : safePoints.length
+        ? [
+            safePoints.reduce((s, p) => s + p.mapLatitude, 0) / safePoints.length,
+            safePoints.reduce((s, p) => s + p.mapLongitude, 0) / safePoints.length,
+          ]
+        : null;
+
+    // POI uniquement s'ils sont proches de la zone
     for (const poi of nearbyPois) {
+      if (anchorLatLng && haversineKm(anchorLatLng[0], anchorLatLng[1], poi.latitude, poi.longitude) > 40) {
+        continue;
+      }
+      if (!isInMorocco(poi.latitude, poi.longitude)) continue;
       const latLng: L.LatLngTuple = [poi.latitude, poi.longitude];
       const marker = L.marker(latLng, {
         icon: poiDivIcon(poi.category),
@@ -170,7 +186,7 @@ export function PropertyMap({
       marker.addTo(layer);
     }
 
-    for (const point of points) {
+    for (const point of safePoints) {
       const isExact = point.coordinateSource === "exact";
       const poiKey = `${point.mapLatitude.toFixed(3)}|${point.mapLongitude.toFixed(3)}`;
       const pois = nearbyPoisByKey[poiKey] ?? [];
@@ -183,15 +199,15 @@ export function PropertyMap({
     }
 
     // fitBounds une seule fois par jeu de points — ne pas réinitialiser le zoom utilisateur
-    const fitKey = points.map((p) => p.id).join("|");
+    const fitKey = safePoints.map((p) => `${p.id}:${p.mapLatitude.toFixed(4)}`).join("|");
     if (bounds.isValid() && fittedKeyRef.current !== fitKey) {
       fittedKeyRef.current = fitKey;
-      if (points.length > 1) {
+      if (safePoints.length > 1) {
         map.fitBounds(bounds, { padding: [48, 48], maxZoom: 15 });
-      } else if (points.length === 1) {
+      } else if (safePoints.length === 1) {
         map.setView(bounds.getCenter(), Math.max(zoom, 14));
       }
-    } else if (!points.length && center) {
+    } else if (!safePoints.length && center) {
       map.setView([center[1], center[0]], zoom);
     }
 
@@ -254,6 +270,44 @@ function computeCenter(points: MapListingPoint[]): [number, number] | null {
   const lng = points.reduce((sum, p) => sum + p.mapLongitude, 0) / points.length;
   const lat = points.reduce((sum, p) => sum + p.mapLatitude, 0) / points.length;
   return [lng, lat];
+}
+
+function isInMorocco(lat: number, lng: number): boolean {
+  return lat >= 20.5 && lat <= 36.2 && lng >= -17.5 && lng <= -0.8;
+}
+
+function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return 6371 * 2 * Math.asin(Math.min(1, Math.sqrt(a)));
+}
+
+/** Ramène les pins hors Maroc / trop loin du centre vers le centre de recherche. */
+function snapOutliersToCenter(
+  points: MapListingPoint[],
+  center?: [number, number],
+  maxKm = 25,
+): MapListingPoint[] {
+  if (!points.length) return points;
+
+  const anchorLat = center?.[1] ?? points.reduce((s, p) => s + p.mapLatitude, 0) / points.length;
+  const anchorLng = center?.[0] ?? points.reduce((s, p) => s + p.mapLongitude, 0) / points.length;
+
+  return points.map((point) => {
+    const inMa = isInMorocco(point.mapLatitude, point.mapLongitude);
+    const km = haversineKm(anchorLat, anchorLng, point.mapLatitude, point.mapLongitude);
+    if (inMa && km <= maxKm) return point;
+    return {
+      ...point,
+      mapLatitude: anchorLat,
+      mapLongitude: anchorLng,
+      coordinateSource: point.coordinateSource === "exact" ? "neighborhood" : point.coordinateSource,
+    };
+  });
 }
 
 function poiIcon(category: string): string {

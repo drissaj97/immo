@@ -85,6 +85,49 @@ describe("prepareMapListings", () => {
     expect(points[0].coordinateSource).toBe("neighborhood");
   });
 
+  it("ramène un outlier océan (coords foireuses) au centre Temara", () => {
+    const ocean = {
+      id: "ocean-temara",
+      title: "Appartement 97m2 wifak bien situe residence fermee et securisee",
+      price: 1_400_000,
+      currency: "MAD",
+      slug: "appart-wifak",
+      description: "wifak temara",
+      location: {
+        city: "Temara",
+        neighborhood: "Temara",
+        region: "Rabat-Salé-Kénitra",
+        id: "1",
+        slug: "t",
+      },
+      // Lat/lng type océan Golfe de Guinée
+      latitude: -6.9,
+      longitude: -6.9,
+    } as ListingWithLocation;
+
+    const search = resolveListingCoordinates({
+      city: "Temara",
+      neighborhood: "Temara",
+    });
+
+    const points = prepareMapListings([ocean], {
+      searchCity: "Temara",
+      searchNeighborhood: "Temara",
+      maxDistanceKm: 10,
+    });
+
+    expect(points).toHaveLength(1);
+    const pin = points[0]!;
+    expect(isValidMoroccoCoordinate(pin.mapLatitude, pin.mapLongitude)).toBe(true);
+    expect(
+      distanceKm(
+        { lat: search.latitude, lng: search.longitude },
+        { lat: pin.mapLatitude, lng: pin.mapLongitude },
+      ),
+    ).toBeLessThan(10);
+    expect(pin.coordinateSource).not.toBe("exact");
+  });
+
   it("place l'annonce dans le quartier recherché (pas en océan ni hors zone)", () => {
     const ocean = {
       id: "ocean",
