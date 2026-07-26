@@ -25,6 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/promoteurs",
     "/contact",
     "/conformite",
+    "/deposer-annonce",
   ];
 
   const catalog = await getAggregatedListings();

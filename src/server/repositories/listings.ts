@@ -16,8 +16,25 @@ import { resolveMoroccoRegion } from "@/lib/geography/morocco-regions";
 import { cityMatches, neighborhoodMatches } from "@/lib/search/location-match";
 import { enrichSearchFilters, hasCompleteLocation } from "@/lib/search/location-gate";
 import { fetchHoldingListings } from "@/lib/aggregation/sources/holding-source";
+import { fetchDarbladiListings } from "@/lib/aggregation/sources/darbladi-source";
+import {
+  approveDarbladiListing,
+  createDarbladiListing,
+  getDarbladiListingBySlug,
+  listPendingDarbladiListings,
+  rejectDarbladiListing,
+  type CreateDarbladiInput,
+} from "@/lib/data/darbladi-first-party";
 import { LISTINGS_PAGE_SIZE } from "@/lib/search/page-size";
 import { matchesTransactionFilter } from "@/lib/search/effective-transaction-type";
+import { resetLocalCatalogCache } from "@/lib/search/local-catalog-search";
+
+function bustCatalogCaches() {
+  resetLocalCatalogCache();
+  void import("@/lib/aggregation/sync").then(({ resetAggregationCache }) => {
+    resetAggregationCache();
+  });
+}
 
 const USE_LIVE_SEARCH = process.env.SEMSARAI_LIVE_SEARCH !== "false";
 
@@ -66,6 +83,10 @@ function matchesFilters(listing: ListingWithLocation, filters: SearchFilters): b
 
 function listingPriority(listing: ListingWithLocation): number {
   if (listing.isDemo) return 0;
+  // Annonces DarBladi first-party (dépôt manuel) en tête du catalogue
+  if (listing.aggregationSource === "darbladi" || listing.sourceType === "first_party") {
+    return 4;
+  }
   if (listing.aggregationSource === "holding-immo") return 3;
   if (
     listing.aggregationSource === "mubawab" ||
@@ -181,6 +202,9 @@ export async function getListingBySlug(slug: string): Promise<ListingWithLocatio
     if (listing) return listing;
   }
 
+  const darbladiHit = getDarbladiListingBySlug(slug);
+  if (darbladiHit) return darbladiHit as ListingWithLocation;
+
   const holdingHit = HOLDING_LISTINGS.find((l) => l.slug === slug);
   if (holdingHit) return holdingHit as ListingWithLocation;
 
@@ -214,15 +238,19 @@ export async function getFeaturedListings(limit = 6): Promise<ListingWithLocatio
     if (items.length > 0) return items;
   }
 
-  const holding = fetchHoldingListings().slice(0, limit) as ListingWithLocation[];
-  if (holding.length >= limit) return holding;
+  const darbladi = fetchDarbladiListings().slice(0, limit) as ListingWithLocation[];
+  if (darbladi.length >= limit) return darbladi;
+
+  const holding = fetchHoldingListings().slice(0, limit - darbladi.length) as ListingWithLocation[];
+  const combined = [...darbladi, ...holding];
+  if (combined.length >= limit) return combined.slice(0, limit);
 
   const semsarai = await loadSemsaraiListings();
   const extras = semsarai
     .filter((l) => l.status === "published" && !l.isDemo)
-    .slice(0, limit - holding.length) as ListingWithLocation[];
+    .slice(0, limit - combined.length) as ListingWithLocation[];
 
-  return [...holding, ...extras].slice(0, limit);
+  return [...combined, ...extras].slice(0, limit);
 }
 
 export async function getPendingListings(): Promise<ListingWithLocation[]> {
@@ -230,7 +258,11 @@ export async function getPendingListings(): Promise<ListingWithLocation[]> {
     const items = await dbRepo.dbGetPendingListings();
     if (items.length > 0) return items;
   }
-  return DEMO_LISTINGS.filter((l) => l.status === "pending_review" || l.status === "draft");
+  const pending = listPendingDarbladiListings() as ListingWithLocation[];
+  const demoPending = DEMO_LISTINGS.filter(
+    (l) => l.status === "pending_review" || l.status === "draft",
+  );
+  return [...pending, ...demoPending];
 }
 
 export async function getCities(): Promise<Array<{ city: string; count: number; region?: string }>> {
@@ -294,11 +326,18 @@ export async function getRegionIndex(regionSlug: string) {
   return getAllRegions().find((r) => r.slug === regionSlug.toLowerCase());
 }
 
-const draftStore: DemoListing[] = [];
-
+/** @deprecated utiliser submitDarbladiListing — conserve compat tests. */
 export function addDraftListing(listing: DemoListing) {
-  draftStore.push(listing);
   DEMO_LISTINGS.push(listing);
+}
+
+export function submitDarbladiListing(input: CreateDarbladiInput) {
+  const listing = createDarbladiListing(input);
+  // Invalide les caches pour que la recherche voie les nouvelles annonces publiées.
+  if (listing.status === "published") {
+    bustCatalogCaches();
+  }
+  return listing;
 }
 
 export async function approveListing(id: string): Promise<boolean> {
@@ -306,10 +345,19 @@ export async function approveListing(id: string): Promise<boolean> {
     const ok = await dbRepo.dbApproveListing(id);
     if (ok) return true;
   }
+  const approved = approveDarbladiListing(id);
+  if (approved) {
+    bustCatalogCaches();
+    void import("@/server/repositories/embedding-sync").then(({ syncListingEmbedding }) =>
+      syncListingEmbedding(approved),
+    );
+    return true;
+  }
   const listing = DEMO_LISTINGS.find((l) => l.id === id);
   if (!listing) return false;
   listing.status = "published";
   listing.publishedAt = new Date().toISOString();
+  listing.isDemo = false;
   void import("@/server/repositories/embedding-sync").then(({ syncListingEmbedding }) =>
     syncListingEmbedding(listing),
   );
@@ -321,6 +369,7 @@ export async function rejectListing(id: string): Promise<boolean> {
     const ok = await dbRepo.dbRejectListing(id);
     if (ok) return true;
   }
+  if (rejectDarbladiListing(id)) return true;
   const listing = DEMO_LISTINGS.find((l) => l.id === id);
   if (!listing) return false;
   listing.status = "rejected";

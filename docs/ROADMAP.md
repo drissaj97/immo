@@ -38,6 +38,8 @@ Objectif : transformer la recherche en **leads** et **rétention** (alertes, fav
 | Formulaire contact sur fiche bien → CRM leads | P0 | ✅ v1.12.0 |
 | Favoris locaux visibles sans compte + sync compte | P1 | ✅ v1.12.0 |
 | Cron alertes multi-utilisateurs (mémoire démo) | P1 | ✅ v1.12.0 |
+| **Déposer une annonce** (style SemsarAI DepotAnnonce) | P0 | ✅ v1.12.1 |
+| Annonces manuelles = badge **Annonce DarBladi** en catalogue | P0 | ✅ v1.12.1 |
 | Email transactionnel réel (Resend / SMTP) | P1 | 📋 |
 | Sync favoris local → compte à la connexion | P1 | 📋 |
 | Mobile : SecureStore + favoris offline | P2 | 📋 |

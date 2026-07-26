@@ -63,6 +63,11 @@ export function Header({
         <div className="hidden items-center gap-2 lg:flex">
           <LocaleSwitcher locale={locale} />
           <CurrencySwitcher />
+          <Link href={`${prefix}/deposer-annonce`}>
+            <Button variant="outline" size="sm">
+              Déposer une annonce
+            </Button>
+          </Link>
           <Link href={`${prefix}/dashboard/favoris`}>
             <Button variant="ghost" size="icon" aria-label="Favoris">
               <Heart className="h-4 w-4" />
@@ -101,6 +106,13 @@ export function Header({
                 {link.label}
               </Link>
             ))}
+            <Link
+              href={`${prefix}/deposer-annonce`}
+              onClick={() => setOpen(false)}
+              className="text-sm font-medium text-deep-green"
+            >
+              Déposer une annonce
+            </Link>
             <div className="flex gap-2 pt-2">
               <LocaleSwitcher locale={locale} />
               <CurrencySwitcher />

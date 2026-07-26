@@ -7,6 +7,18 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [1.12.1] — 2026-07-26
+
+### Annonces DarBladi manuelles (style SemsarAI DepotAnnonce)
+
+- Page publique **`/deposer-annonce`** + CTA header
+- Dépôt manuel → `aggregationSource: darbladi`, badge **Annonce DarBladi**
+- Seed Anfa publié visible en recherche Acheter
+- Priorité catalogue : DarBladi first-party devant les portails
+- Validation admin → publication dans le catalogue local / live
+
+---
+
 ## [1.12.0] — 2026-07-26
 
 ### Phase 11 — Conversion & rétention

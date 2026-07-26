@@ -4,6 +4,7 @@ import { resetLocalCatalogCache } from "@/lib/search/local-catalog-search";
 import type { AggregatedListing, AggregationStats, AggregationSyncResult } from "./types";
 import { dedupeAggregatedListings } from "./dedupe";
 import { fetchHoldingListings } from "./sources/holding-source";
+import { fetchDarbladiListings } from "./sources/darbladi-source";
 import { fetchSemsaraiListings, resetSemsaraiLiveCache } from "./sources/semsarai-source";
 import { clearSemsaraiApiCache } from "@/lib/semsarai/client";
 import { fetchPartnerFeed, resetPartnerFeedCache } from "./sources/partner-feed";
@@ -21,6 +22,7 @@ export async function syncAggregatedCatalog(): Promise<{
   const batches: AggregatedListing[] = [];
 
   const sources: Array<{ name: string; fn: () => Promise<AggregatedListing[]> | AggregatedListing[] }> = [
+    { name: "darbladi", fn: fetchDarbladiListings },
     { name: "semsarai", fn: fetchSemsaraiListings },
     { name: "holding-immo", fn: fetchHoldingListings },
     { name: "avito", fn: () => fetchPartnerFeed("avito") },

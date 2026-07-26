@@ -1,4 +1,5 @@
 import { fetchHoldingListings } from "@/lib/aggregation/sources/holding-source";
+import { fetchDarbladiListings } from "@/lib/aggregation/sources/darbladi-source";
 import {
   fetchPartnerFeedForCity,
   resetPartnerFeedCache,
@@ -18,6 +19,7 @@ const partnerByCity = new Map<string, Promise<AggregatedListing[]>>();
 async function getSearchCatalog(): Promise<AggregatedListing[]> {
   if (!catalogPromise) {
     catalogPromise = loadSemsaraiListings().then((semsarai) => [
+      ...fetchDarbladiListings(),
       ...fetchHoldingListings(),
       ...semsarai.map(normalizeSemsaraiListing),
     ]);
@@ -63,7 +65,8 @@ export async function searchLocalCatalog(filters: SearchFilters = {}): Promise<A
   pushMatches(matched, partner, filters);
 
   if (useNeighborhoodCache) {
-    // Holding only — le reste SEMSAR vient du cache quartier dans live-search
+    // First-party DarBladi + Holding — le reste SEMSAR vient du cache quartier
+    pushMatches(matched, fetchDarbladiListings(), filters);
     pushMatches(matched, fetchHoldingListings(), filters);
     return matched;
   }

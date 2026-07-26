@@ -14,18 +14,29 @@ import { LISTINGS_PAGE_SIZE } from "@/lib/search/page-size";
 const API_PAGE_SIZE = Number(process.env.SEMSARAI_PAGE_SIZE ?? "50");
 const MAX_SCAN_PAGES = Number(process.env.SEMSARAI_SEARCH_SCAN_PAGES ?? "25");
 
+function sourcePriority(listing: AggregatedListing): number {
+  if (listing.aggregationSource === "darbladi" || listing.sourceType === "first_party") return 4;
+  if (listing.aggregationSource === "holding-immo") return 3;
+  if (listing.isExternal) return 2;
+  return 1;
+}
+
 function sortListings(listings: AggregatedListing[], sort?: SearchFilters["sort"]): AggregatedListing[] {
   const copy = [...listings];
+  const bySource = (a: AggregatedListing, b: AggregatedListing) =>
+    sourcePriority(b) - sourcePriority(a);
   switch (sort) {
     case "price_asc":
-      return copy.sort((a, b) => a.price - b.price);
+      return copy.sort((a, b) => a.price - b.price || bySource(a, b));
     case "price_desc":
-      return copy.sort((a, b) => b.price - a.price);
+      return copy.sort((a, b) => b.price - a.price || bySource(a, b));
     case "area_desc":
-      return copy.sort((a, b) => (b.livingArea ?? 0) - (a.livingArea ?? 0));
+      return copy.sort((a, b) => (b.livingArea ?? 0) - (a.livingArea ?? 0) || bySource(a, b));
     default:
       return copy.sort(
-        (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+        (a, b) =>
+          bySource(a, b) ||
+          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
       );
   }
 }
