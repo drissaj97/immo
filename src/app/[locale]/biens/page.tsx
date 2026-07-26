@@ -78,14 +78,6 @@ export default async function BiensPage({
           ) : (
             <>Sélectionnez une région, une ville et un quartier pour afficher les annonces</>
           )}
-          {revealSources && (
-            <>
-              {" · "}
-              <Link href={`/${locale}/agregateur`} className="text-deep-green hover:underline">
-                Sources (admin)
-              </Link>
-            </>
-          )}
         </p>
       </div>
 

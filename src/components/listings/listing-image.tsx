@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { isStockListingImage } from "@/lib/media/listing-images";
 
@@ -105,23 +105,29 @@ export function ListingImage({
   sizes,
   priority,
 }: ListingImageProps) {
-  const [currentSrc, setCurrentSrc] = useState(() => resolveImageSrc(src));
-  const [failed, setFailed] = useState(false);
+  const resolved = resolveImageSrc(src);
+  const [failedForSrc, setFailedForSrc] = useState<string | null>(null);
+
+  // Nouvelle photo (galerie) → réessayer, ne pas garder l'échec / l'ancien src
+  useEffect(() => {
+    setFailedForSrc(null);
+  }, [src]);
+
+  const failed = failedForSrc === src;
+  const currentSrc = failed ? null : resolved;
 
   const handleError = () => {
-    if (!failed) {
-      setFailed(true);
-      setCurrentSrc(null);
-    }
+    setFailedForSrc(src);
   };
 
-  if (!currentSrc || failed) {
+  if (!currentSrc) {
     return <ListingImagePlaceholder alt={alt} fill={fill} className={className} />;
   }
 
   if (isNextImage(currentSrc)) {
     return (
       <Image
+        key={currentSrc}
         src={currentSrc}
         alt={alt}
         fill={fill}
@@ -137,6 +143,7 @@ export function ListingImage({
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
+        key={currentSrc}
         src={currentSrc}
         alt={alt}
         className={className}
@@ -150,6 +157,7 @@ export function ListingImage({
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
+      key={currentSrc}
       src={currentSrc}
       alt={alt}
       className={className}

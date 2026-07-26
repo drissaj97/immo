@@ -14,11 +14,13 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
     <div className="space-y-3">
       <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-sand">
         <ListingImage
+          key={`${active}-${current}`}
           src={current}
           alt={hasPhotos ? `${title} — photo ${active + 1}` : title}
           fill
           className="object-cover"
           sizes="(max-width: 1024px) 100vw, 50vw"
+          priority={active === 0}
         />
         {safeImages.length > 1 && (
           <span className="absolute bottom-3 right-3 rounded bg-charcoal/70 px-2 py-1 text-xs text-ivory">
