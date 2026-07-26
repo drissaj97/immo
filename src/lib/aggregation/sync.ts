@@ -28,6 +28,8 @@ export async function syncAggregatedCatalog(): Promise<{
     { name: "avito", fn: () => fetchPartnerFeed("avito") },
     { name: "mubawab", fn: () => fetchPartnerFeed("mubawab") },
     { name: "sarouty", fn: () => fetchPartnerFeed("sarouty") },
+    { name: "agenz", fn: () => fetchPartnerFeed("agenz") },
+    { name: "yakeey", fn: () => fetchPartnerFeed("yakeey") },
     { name: "propapis", fn: fetchPropAPISListings },
   ];
 

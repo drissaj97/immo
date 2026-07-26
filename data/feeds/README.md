@@ -1,8 +1,10 @@
 # Flux partenaires — agrégation DarBladi
 
-Déposez ici les exports JSON **autorisés par contrat** depuis Avito, Mubawab ou autres portails.
+Déposez ici les exports JSON **autorisés par contrat** ou produits par `pnpm scrape:portals`.
 
-## Format (`avito.json`, `mubawab.json`)
+Fichiers supportés : `avito.json`, `mubawab.json`, `sarouty.json`, `agenz.json`, `yakeey.json`.
+
+## Format (`avito.json`, `mubawab.json`, …)
 
 ```json
 {
@@ -34,9 +36,11 @@ Déposez ici les exports JSON **autorisés par contrat** depuis Avito, Mubawab o
 ```bash
 pnpm scrape:portals
 # ou ciblé :
-pnpm scrape:portals --portals=sarouty,mubawab
+pnpm scrape:portals --portals=sarouty,mubawab,agenz,yakeey
 SCRAPING_ENABLED=true pnpm aggregation:sync
 ```
+
+Voir aussi [`docs/MOROCCO_PORTALS.md`](../../docs/MOROCCO_PORTALS.md).
 
 Fichiers générés avec `"licenseStatus": "scraped"`.
 

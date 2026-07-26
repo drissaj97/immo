@@ -7,6 +7,18 @@ Versionnement sémantique : [SemVer](https://semver.org/lang/fr/).
 
 ---
 
+## [1.13.0] — 2026-07-26
+
+### Scraping multi-portails Maroc (rapide)
+
+- Nouveaux scrapers **Agenz.ma** (Astro props) et **Yakeey** (meta/RSC)
+- Pipeline `pnpm scrape:portals` en **parallèle** (5 portails : Sarouty, Mubawab, Avito, Agenz, Yakeey)
+- Feeds `data/feeds/agenz.json` / `yakeey.json` branchés sync + recherche locale
+- Inventaire `docs/MOROCCO_PORTALS.md` (tier 1–3)
+- Champ `phone` sur `RawPartnerListing` quand le portail l’expose
+
+---
+
 ## [1.12.1] — 2026-07-26
 
 ### Annonces DarBladi manuelles (style SemsarAI DepotAnnonce)

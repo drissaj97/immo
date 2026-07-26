@@ -118,8 +118,14 @@ function absoluteSourceUrl(
     const path = raw?.startsWith("/") ? raw : `/biens/${externalId}`;
     return `https://holdingimmo.com${path}`;
   }
-  if (source === "agenz") return raw || `https://www.agenz.ma`;
-  if (source === "yakeey") return raw || `https://www.yakeey.com`;
+  if (source === "agenz") {
+    if (raw?.startsWith("/")) return `https://agenz.ma${raw}`;
+    return raw || `https://agenz.ma/fr/annonces/${externalId}`;
+  }
+  if (source === "yakeey") {
+    if (raw?.startsWith("/")) return `https://www.yakeey.com${raw}`;
+    return raw || `https://www.yakeey.com/fr-ma/${externalId}`;
+  }
   return raw || "";
 }
 

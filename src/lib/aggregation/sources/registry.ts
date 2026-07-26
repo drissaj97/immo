@@ -1,9 +1,12 @@
 import type { AggregationSourceConfig } from "../types";
 import { hasLocalPartnerFeed } from "./partner-feed";
 
-function portalEnabled(source: "avito" | "mubawab" | "sarouty"): boolean {
-  if (process.env[`${source.toUpperCase()}_PARTNER_FEED_URL`]) return true;
-  if (process.env.PROPAPIS_API_KEY && source !== "sarouty") return true;
+function portalEnabled(source: "avito" | "mubawab" | "sarouty" | "agenz" | "yakeey"): boolean {
+  const envKey = `${source.toUpperCase().replace(/-/g, "_")}_PARTNER_FEED_URL`;
+  if (process.env[envKey]) return true;
+  if (process.env.PROPAPIS_API_KEY && source !== "sarouty" && source !== "agenz" && source !== "yakeey") {
+    return true;
+  }
   if (process.env.SCRAPING_ENABLED === "true") return true;
   return hasLocalPartnerFeed(source);
 }
@@ -30,17 +33,25 @@ export const AGGREGATION_SOURCES: AggregationSourceConfig[] = [
     id: "agenz",
     name: "Agenz.ma",
     website: "https://www.agenz.ma",
-    licenseStatus: "licensed_api",
-    enabled: true,
-    description: "Annonces Agenz indexées via import catalogue (source originale)",
+    licenseStatus: hasLocalPartnerFeed("agenz")
+      ? "scraped"
+      : process.env.AGENZ_PARTNER_FEED_URL
+        ? "partner_contract"
+        : "pending",
+    enabled: portalEnabled("agenz"),
+    description: "Feed scrapé (props Astro) ou import catalogue SEMSAR (source originale)",
   },
   {
     id: "yakeey",
     name: "Yakeey",
     website: "https://www.yakeey.com",
-    licenseStatus: "licensed_api",
-    enabled: true,
-    description: "Annonces Yakeey indexées via import catalogue (source originale)",
+    licenseStatus: hasLocalPartnerFeed("yakeey")
+      ? "scraped"
+      : process.env.YAKEEY_PARTNER_FEED_URL
+        ? "partner_contract"
+        : "pending",
+    enabled: portalEnabled("yakeey"),
+    description: "Feed scrapé (meta/RSC) ou import catalogue SEMSAR (source originale)",
   },
   {
     id: "darbladi",

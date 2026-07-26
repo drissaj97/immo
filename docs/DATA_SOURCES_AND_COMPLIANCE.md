@@ -24,6 +24,8 @@
 | **Avito.ma** | Portail annonces | **À vérifier** (partenariat) | Flux partenaire / PropAPIS | Scraping interdit — contrat B2B requis |
 | **Mubawab.ma** | Portail annonces | **À vérifier** (partenariat) | Flux partenaire / PropAPIS | Scraping interdit — contrat Dubizzle Group |
 | **Sarouty.ma** | Portail annonces | **Interdite** (scraping) | — | Idem |
+| **Agenz.ma** | Portail annonces | **À vérifier** | Mode scrape opt-in `pnpm scrape:portals` | CGU — contrat recommandé |
+| **Yakeey** | Portail annonces | **À vérifier** | Mode scrape opt-in | CGU — contrat recommandé |
 | **Holding IMMO / agences tierces** | Sites concurrents | **Interdite** (scraping) | — | Audit public uniquement, pas de reprise contenu |
 | **Réseaux sociaux** | Posts, groupes FB | **Interdite** | — | Pas de collecte sans consentement |
 | **Registres publics (ANCFCC)** | Titres fonciers | **À vérifier** | Futur badge `hasTitleDeed` | Accès réglementé, partenariat officiel requis |

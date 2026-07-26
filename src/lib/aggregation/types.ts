@@ -40,6 +40,8 @@ export type RawPartnerListing = {
   sourceUrl: string;
   publishedAt?: string;
   advertiserName?: string;
+  /** Téléphone annonceur / agent quand exposé par le portail */
+  phone?: string;
 };
 
 export type PartnerFeedFile = {

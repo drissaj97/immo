@@ -11,7 +11,13 @@ import type { SearchFilters } from "@/modules/search/natural-language-parser";
 import { listingMatchesFilters } from "@/lib/search/listing-filters-match";
 import { hasNeighborhoodCatalog } from "@/lib/search/neighborhood-catalog";
 
-const PARTNER_SOURCES: AggregationSourceId[] = ["avito", "mubawab", "sarouty"];
+const PARTNER_SOURCES: AggregationSourceId[] = [
+  "avito",
+  "mubawab",
+  "sarouty",
+  "agenz",
+  "yakeey",
+];
 
 let catalogPromise: Promise<AggregatedListing[]> | null = null;
 const partnerByCity = new Map<string, Promise<AggregatedListing[]>>();

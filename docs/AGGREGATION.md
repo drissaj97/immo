@@ -28,15 +28,21 @@ DarBladi propose un mode scraping **opt-in** pour les cas où vous acceptez ce r
 
 ```bash
 # Limiter la charge — commencer petit
-SCRAPE_PORTALS=sarouty,mubawab SCRAPE_MAX_LISTINGS=100 pnpm scrape:portals
+SCRAPE_PORTALS=sarouty,mubawab,agenz,yakeey SCRAPE_MAX_LISTINGS=100 pnpm scrape:portals
 SCRAPING_ENABLED=true pnpm aggregation:sync
 ```
+
+Inventaire détaillé : [`MOROCCO_PORTALS.md`](./MOROCCO_PORTALS.md).
 
 | Portail | Méthode | Notes |
 |---------|---------|-------|
 | Sarouty | API `b2c-be-prod.api.sarouty.ma` | ~51k annonces, fiable |
 | Mubawab | JSON-LD sur fiches `/fr/a/{id}` | Seeds depuis catalogue SEMSAR |
 | Avito | Playwright + proxy résidentiel | Cloudflare bloque les IP datacenter |
+| Agenz | HTML + props Astro island | Téléphone + galerie photos |
+| Yakeey | HTML meta + payload RSC | IDs `ca######` |
+
+Les portails tournent **en parallèle** par défaut (`SCRAPE_PARALLEL=false` pour séquentiel).
 
 ## Voies conformes pour Avito & Mubawab
 

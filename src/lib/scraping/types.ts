@@ -1,6 +1,6 @@
 import type { AggregationSourceId, RawPartnerListing } from "@/lib/aggregation/types";
 
-export type ScrapePortal = "sarouty" | "mubawab" | "avito";
+export type ScrapePortal = "sarouty" | "mubawab" | "avito" | "agenz" | "yakeey";
 
 export type ScrapeOptions = {
   portals?: ScrapePortal[];
